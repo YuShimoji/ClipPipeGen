@@ -37,6 +37,10 @@ def test_cli_orchestrates_resume_arguments(monkeypatch: pytest.MonkeyPatch, tmp_
         [
             "--source",
             str(tmp_path / "source.mp4"),
+            "--artifact-id",
+            "clip-wiki-test-001",
+            "--editorial-context",
+            str(tmp_path / "editorial_context.json"),
             "--output-dir",
             str(tmp_path / "out"),
             "--profile",
@@ -53,6 +57,77 @@ def test_cli_orchestrates_resume_arguments(monkeypatch: pytest.MonkeyPatch, tmp_
     assert captured["resume"] is True
     assert captured["force"] is False
     assert captured["target_duration_seconds"] == 240.0
+    assert captured["artifact_id"] == "clip-wiki-test-001"
+    assert captured["editorial_context_path"] == tmp_path / "editorial_context.json"
+
+
+def test_editorial_context_drives_chronological_ranges_and_separate_tracks() -> None:
+    chapters = []
+    commentary_events = []
+    for index in range(12):
+        start = float(index * 50)
+        cut_id = f"cut_{index + 1:03d}"
+        chapters.append(
+            {
+                "cut_id": cut_id,
+                "chapter_id": f"chapter_{index + 1:02d}",
+                "title": f"chapter {index + 1}",
+                "source_start_seconds": start,
+                "source_end_seconds": start + 25.0,
+                "source_caption_event_ids": [f"event_{index + 1:04d}"],
+                "topic_tags": ["correction_and_verification"],
+            }
+        )
+        commentary_events.append(
+            {
+                "commentary_id": f"commentary_{index + 1:03d}",
+                "cut_id": cut_id,
+                "text": f"editor note {index + 1}",
+                "provenance_type": "creator_authored_commentary",
+            }
+        )
+    context = {
+        "schema_version": pipeline.EDITORIAL_CONTEXT_SCHEMA_VERSION,
+        "artifact_id": "clip-wiki-test-001",
+        "source_identity": "youtube:test-source",
+        "expected_selection_mode": "editorial_context_caption_dense_chronological_sampling",
+        "expected_target_duration_seconds": 300.0,
+        "expected_cut_count": 12,
+        "source_range_tolerance_seconds": 0.1,
+        "chapters": chapters,
+        "separation_contract": {
+            "source_caption_provenance_type": "source_caption",
+            "creator_commentary_provenance_type": "creator_authored_commentary",
+            "identifiers_disjoint": True,
+            "presentation_merged": False,
+        },
+        "creator_commentary": {
+            "provenance_type": "creator_authored_commentary",
+            "merged_with_source_caption": False,
+            "events": commentary_events,
+        },
+    }
+
+    pipeline.validate_editorial_context_header(
+        context,
+        artifact_id="clip-wiki-test-001",
+        source_identity="youtube:test-source",
+        target_duration_seconds=300.0,
+    )
+    timeline = pipeline.plan_timeline_from_editorial_context(
+        context,
+        source_identity="youtube:test-source",
+        source_duration_seconds=600.0,
+        target_duration_seconds=300.0,
+    )
+    pipeline.validate_editorial_context_against_timeline(context, timeline=timeline)
+
+    assert timeline["selection_mode"] == context["expected_selection_mode"]
+    assert timeline["output_duration_seconds"] == pytest.approx(300.0)
+    assert timeline["cuts"][0]["source_caption_event_ids"] == ["event_0001"]
+    assert {row["commentary_id"] for row in commentary_events}.isdisjoint(
+        {value for row in chapters for value in row["source_caption_event_ids"]}
+    )
 
 
 def test_content_fingerprint_is_stable_and_content_derived() -> None:
@@ -243,7 +318,8 @@ def test_render_filter_contains_each_real_cut_and_concat() -> None:
     assert script.count("[0:v:0]trim=start=") == len(timeline["cuts"])
     assert script.count("[0:a:0]atrim=start=") == len(timeline["cuts"])
     assert f"concat=n={len(timeline['cuts'])}:v=1:a=1" in script
-    assert "loudnorm=I=-15:TP=-2.0" in script
+    assert "loudnorm=I=-12.5:TP=-2.0" in script
+    assert "alimiter=limit=0.50:attack=5:release=50:level=false" in script
 
 
 def test_direct_renderer_uses_real_cut_filter_and_h264(tmp_path: Path) -> None:

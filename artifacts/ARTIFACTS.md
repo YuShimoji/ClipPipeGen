@@ -6,11 +6,11 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, then use the Runtime-driven
-current focus. ED-12 / S1 is the active review target: one exact two-source
-common-context probe with machine validation complete and S4 human review
-pending. Its review package is ignored same-machine evidence. Git carries the
-implementation, tests, contract, identity, and handoff, not the source media or
-final MP4.
+current focus. ED-13 is the active execution lane: a reproducibly inventoried
+Wiki添削 family and its first complete real-source internal artifact. ED-12 / S1
+remains a parked exact review target with S4 human review pending. Both packages
+are ignored same-machine evidence. Git carries implementation, tests, contracts,
+identities, and handoff, not source media or final MP4.
 OUT-13 candidate 005 remains accepted-internal read-only archive evidence whose
 public/monetized path was denied at M6. Candidate 004 has
 the same review-relevant media SHA and inherits the recorded internal dimensions without another full-view gate.
@@ -31,6 +31,39 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-wiki-tensaku-longform-v1-001`
+
+| Field | Value |
+|---|---|
+| title | ED-13 Wiki添削 Long-form Family First Internal Slice v1 |
+| purpose | Prove a rerunnable authoritative public-corpus inventory and one fully playable long-form slice with source-range provenance, source captions, and creator commentary kept separate. |
+| storage class | Tracked collector/render integration/tests/docs plus ignored same-machine corpus receipts, source media, captions, MP4, evidence, and review page. `episodes/` remains untracked. |
+| repo_relative_path | `src/integrations/asset_fetch/wiki_tensaku_corpus.mjs`; `src/integrations/render/real_video_pipeline.py`; `src/cli/build_real_video.py`; `scripts/operator/build_wiki_tensaku_first_slice.ps1`; `tests/test_real_video_pipeline.py`; `docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md` |
+| local_artifact_path | `episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/` |
+| state | `AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1`; family state remains `CONTINUE` until the other two inventory sources have equivalent validated slices. |
+| corpus | Authoritative channel `UC-hM6YJuNYVAmUWxeIr9FeA`; 69 stream pages / 2,033 unique / duplicate 0 / pagination exhausted; 48 playlists / dedicated match not observed; title-rule corpus 3 / available 3. Public-only completeness boundary is explicit. |
+| source | `youtube:1AcId5Yja10`; combined A/V source SHA `a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7`; 197,524,102 bytes; container duration 5,557.812245s. |
+| timeline | 12 chronological caption-dense 25s source ranges sampled across the complete stream; 300.000s output; omitted spans remain explicit and no causal inference is claimed. |
+| final_video | H.264/AAC yuv420p, 640x360, 300.000s, 19,194,868 bytes, SHA `904693b764aa020bcf1834942d93ab30374bf5bdf8d456c265ddfa03e316a36c`. |
+| caption/commentary | 123 remapped source-caption cues in SRT/VTT; 12 creator-authored commentary events in `editorial_context.json`; identifiers disjoint and `merged_with_source_caption=false`. |
+| validation | 13/13 checks passed; full decode, faststart, monotonic timestamps, A/V sync, black/silence, cut loudness, caption containment, mapping 1.0. -15.89 LUFS / -3.98 dBTP. Focused tests 17 passed; resume returned four cache hits with `render_executed=false`; actual launcher returned page 200 / MP4 Range 206 and was stopped. |
+| manifest | 17 payload rows plus manifest; self-integrity SHA `36473a084fb8486eeecdb1c67729d61e167f1ca19fecc015b81ffe3d89740d97`. |
+| preview_url | `http://127.0.0.1:8078/review/index.html` while the artifact launcher is running. |
+| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-longform-v1-001\review\open_preview.ps1` |
+| decision_required | None for continued mechanical corpus processing. Optional human viewing cannot grant rights, production, publishing, monetization, or upload approval. |
+| next_action | Process full source range `[0.000, 6418.000)` of `youtube:82iRbxjvbww` to the same 300s / 12 chapter / 13-check contract, then `[0.000, 3522.000)` of `youtube:Ocqg-RpQURY`. |
+
+Boundary flags:
+
+- `internal_diagnostic_only=true`
+- `rights_status=readback_unresolved`
+- `production_acceptance=false`
+- `public_use=false`
+- `monetized_use=false`
+- `upload_attempted=false`
+- `episodes_tracked=false`
+- `s1_human_review_parked=true`
 
 ## `clip-s1-two-source-common-context-probe-v1-001`
 

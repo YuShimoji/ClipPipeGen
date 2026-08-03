@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 from src.integrations.render.real_video_pipeline import (
+    DEFAULT_ARTIFACT_ID,
     RealVideoPipelineError,
     build_real_video,
 )
@@ -27,10 +28,23 @@ def run(argv: list[str]) -> int:
         "--intake-identity",
         help="Existing intake as <episode-dir>#<source-video-material-id>.",
     )
+    parser.add_argument(
+        "--artifact-id",
+        default=DEFAULT_ARTIFACT_ID,
+        help="Immutable clip-* identity; defaults to the historical OUT-12 identity.",
+    )
     parser.add_argument("--source-identity")
     parser.add_argument("--rights-manifest", type=Path)
     parser.add_argument("--caption-track", type=Path)
     parser.add_argument("--authority-readback", type=Path)
+    parser.add_argument(
+        "--editorial-context",
+        type=Path,
+        help=(
+            "Optional provenance-separated chapter/commentary context bound to the "
+            "deterministic timeline."
+        ),
+    )
     parser.add_argument(
         "--caption-mode",
         choices=("auto", "native", "sidecar", "none"),
@@ -49,12 +63,14 @@ def run(argv: list[str]) -> int:
     args = parser.parse_args(argv)
     try:
         result = build_real_video(
+            artifact_id=args.artifact_id,
             source_path=args.source,
             intake_identity=args.intake_identity,
             source_identity=args.source_identity,
             rights_manifest_path=args.rights_manifest,
             caption_track_path=args.caption_track,
             authority_readback_path=args.authority_readback,
+            editorial_context_path=args.editorial_context,
             caption_mode=args.caption_mode,
             output_dir=args.output_dir,
             profile=args.profile,

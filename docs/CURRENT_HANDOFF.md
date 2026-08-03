@@ -3,57 +3,73 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW
-last_touched: 2026-07-27
-current_slice: ED-12
-phase: s1_s3_probe_built_s4_human_review_pending
-canonical_status: s1_s3_common_context_probe_ready_for_s4_human_review
-active_branch: codex/s1-two-source-common-context-probe-v1
-upstream_branch: origin/codex/s1-two-source-common-context-probe-v1
-base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
+health: WIKI_TENSAKU_FIRST_SLICE_REVIEW_READY_CORPUS_CONTINUE_S1_PARKED
+last_touched: 2026-08-04
+current_slice: ED-13
+phase: wiki_tensaku_first_complete_slice_verified_corpus_continue
+canonical_status: wiki_tensaku_first_slice_review_ready_continue_remaining_corpus
+active_branch: codex/wiki-tensaku-longform-family-v1
+upstream_branch: origin/codex/wiki-tensaku-longform-family-v1
+base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
 latest_remote_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
+implementation_revision: current_remote_branch_tip_after_normal_push
 sync_observed_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
-current_head_locator: refs/heads/codex/s1-two-source-common-context-probe-v1
+current_head_locator: refs/heads/codex/wiki-tensaku-longform-family-v1
 remote_handoff_status: pushed_verify_current_ref_on_resume
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
 parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file
-current_title: S1 two-source common-context probe ready for S4 human review
-human_entrypoint: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html
-portable_entrypoint: docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md
-review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\open_preview.ps1
-review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\serve_preview.ps1
-machine_readback: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/validation_readback.json
-decision_required: s4_human_common_context_verdict
-review_status: s4_human_review_pending
+current_title: Wiki添削 long-form family first complete internal slice verified
+human_entrypoint: episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/review/index.html
+portable_entrypoint: docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md
+review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-longform-v1-001\review\open_preview.ps1
+review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-longform-v1-001\review\serve_preview.ps1
+machine_readback: episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/validation_readback.json
+decision_required: none_for_mechanical_corpus_continue_s1_review_parked
+review_status: internal_review_available_not_requested
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: active_s4_review_target_same_machine_only
+local_artifact_role: active_internal_first_slice_same_machine_only
 portable_local_artifact_available: false
 cross_machine_resume_class: tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_review_package_are_not
-active_artifact: clip-s1-two-source-common-context-probe-v1-001
-artifact_output_sha256: dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be
-artifact_output_byte_size: 93331608
-artifact_package_tree_digest_sha256: a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a
-artifact_manifest_self_sha256: 8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301
-artifact_file_count: 19
-artifact_duration_seconds: 98.896
-artifact_source_count: 2
-artifact_cut_count: 6
-artifact_source_switch_count: 5
-artifact_caption_cue_count: 60
-artifact_commentary_count: 3
+active_artifact: clip-wiki-tensaku-longform-v1-001
+artifact_output_sha256: 904693b764aa020bcf1834942d93ab30374bf5bdf8d456c265ddfa03e316a36c
+artifact_output_byte_size: 19194868
+artifact_package_tree_digest_sha256: not_used_manifest_file_hashes_closed
+artifact_manifest_self_sha256: 36473a084fb8486eeecdb1c67729d61e167f1ca19fecc015b81ffe3d89740d97
+artifact_file_count: 17
+artifact_duration_seconds: 300.0
+artifact_source_count: 1
+artifact_cut_count: 12
+artifact_source_switch_count: 0
+artifact_caption_cue_count: 123
+artifact_commentary_count: 12
 package_validation_status: passed
 s1_review_http_status: 200
 s1_review_range_status: 206
-full_suite_status: passed_689
-human_review_pending: true
-rights_approval: not_granted
+focused_test_status: passed_17
+full_suite_status: not_rerun_preserved_historical_689
+human_review_pending: false
+rights_approval: readback_unresolved
 production_acceptance: false
 public_use: false
 monetized_use: false
 upload_attempted: false
+wiki_authoritative_channel_id: UC-hM6YJuNYVAmUWxeIr9FeA
+wiki_stream_pages: 69
+wiki_stream_unique_count: 2033
+wiki_stream_pagination_exhausted: true
+wiki_playlist_unique_count: 48
+wiki_corpus_total: 3
+wiki_corpus_available: 3
+wiki_first_source_identity: youtube:1AcId5Yja10
+wiki_first_source_sha256: a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7
+wiki_first_slice_validation: passed_13_of_13
+wiki_first_slice_full_decode: passed
+wiki_first_slice_review_http_status: 200
+wiki_first_slice_review_range_status: 206
+wiki_state_code: CONTINUE
+s1_lane_status: parked_human_review_pending
 out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive
 out13_human_review_pending: false
 out13_editorial_acceptance_granted: true
@@ -66,16 +82,48 @@ out13_m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
 out13_m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 out13_public_use_verdict: deny
 out13_monetized_youtube_verdict: deny
-next_review_due: s4_human_common_context_review
-next_action: obtain_s4_human_common_context_verdict_on_exact_probe
+next_review_due: none_for_wiki_mechanical_continue_s1_review_parked
+next_action: process_youtube_82iRbxjvbww_full_range_then_youtube_Ocqg-RpQURY_full_range
 current_handoff: docs/CURRENT_HANDOFF.md
-upstream_parity: 0 0
+upstream_parity: 0 0 after normal push readback
 source_of_truth: true
 owner_lane: editing_review_handoff
-related: docs/RUNTIME_STATE.md, docs/SUPERVISOR_STATUS_REPORT.md, docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md, artifacts/ARTIFACTS.md
+related: docs/RUNTIME_STATE.md, docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md, docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
+
+## 2026-08-04 Wiki添削 first complete slice
+
+`codex/wiki-tensaku-longform-family-v1`でED-13を開始した。これはS1から分岐した別artifact
+identityであり、S1のexact packageとS4 human review pendingは変更せず駐車している。
+既存accepted/denied artifact、他worktree、`.playwright-mcp/`、S2 screenshot、ignored
+`episodes/`の既存内容にはcleanup・track・acceptance継承を行っていない。
+
+authoritative surfaceは`Miko Ch. さくらみこ /streams`。collectorは69ページをcontinuation
+終端まで取得し、2,033 raw / unique、duplicate 0を記録した。48 playlistsは2ページで終端、
+専用playlistは観測されなかった。title rule`非公式wiki|みこスバ調査隊`で3本をinventoryし、
+3本ともavailability`OK`、Japanese auto caption取得済み。complete claimは現在公開の公式stream
+surfaceに限定し、private/deleted/unlisted/futureはnot observableとして残す。
+
+最初のsource`youtube:1AcId5Yja10`はcombined A/V SHA
+`a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7`。
+全5,557.812245sを12 chronological slotsへ分け、caption-denseな各25sを採用した完全再生可能な
+300.000s artifact`clip-wiki-tensaku-longform-v1-001`を生成した。final MP4はH.264/AAC
+640x360、19,194,868 bytes、SHA
+`904693b764aa020bcf1834942d93ab30374bf5bdf8d456c265ddfa03e316a36c`。
+
+13/13 checks、full decode、mapping 1.0、caption 123 cues、commentary 12 eventsの分離、
+closed manifest、resume cache hitを確認した。音量は-15.89 LUFS / -3.98 dBTP、black/silence 0。
+生成済みoffline launcherを実行してpage 200 / MP4 Range 206を確認し、検証processは停止した。
+17 focused testsと`git diff --check`もpass。full 689 suiteは長時間検証を避ける今回方針に従い
+再実行せず、historical resultとしてのみ保持する。
+
+状態コードは`CONTINUE`。次は`youtube:82iRbxjvbww`の全範囲`[0.000, 6418.000)`を
+300s / 12 chapters / 13 checksへ閉じ、その後`youtube:Ocqg-RpQURY`の
+`[0.000, 3522.000)`を同じ契約で処理する。各sliceは新artifact identityを使い、成功済み
+packageを上書きしない。rightsは`readback_unresolved`で、production/public/monetized/
+publishing/uploadは未承認のまま。
 
 ## 2026-07-27同期読戻し
 

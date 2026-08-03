@@ -43,6 +43,9 @@ EDIT_PACK_SCHEMA_VERSION = "clippipegen.out12.edit_pack.v1"
 CAPTION_SCHEMA_VERSION = "clippipegen.out12.caption_readback.v1"
 VALIDATION_SCHEMA_VERSION = "clippipegen.out12.validation_readback.v1"
 PIPELINE_VERSION = "out12-one-command-real-video-v1"
+DEFAULT_ARTIFACT_ID = "clip-out12-one-command-real-video-automation-v1-001"
+EDITORIAL_CONTEXT_SCHEMA_VERSION = "clippipegen.wiki_tensaku_editorial_context.v1"
+ARTIFACT_ID_PATTERN = re.compile(r"^clip-[a-z0-9][a-z0-9-]{2,95}$")
 READY_STATE = "AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1"
 PROFILE_LONG_FORM = "long-form"
 MIN_LONG_FORM_SECONDS = 180.0
@@ -64,12 +67,14 @@ class RealVideoPipelineError(Exception):
 def build_real_video(
     *,
     output_dir: Path,
+    artifact_id: str = DEFAULT_ARTIFACT_ID,
     source_path: Path | None = None,
     intake_identity: str | None = None,
     source_identity: str | None = None,
     rights_manifest_path: Path | None = None,
     caption_track_path: Path | None = None,
     authority_readback_path: Path | None = None,
+    editorial_context_path: Path | None = None,
     caption_mode: str = "auto",
     profile: str = PROFILE_LONG_FORM,
     target_duration_seconds: float = 300.0,
@@ -95,6 +100,7 @@ def build_real_video(
     stage: Path | None = None
     fingerprint: str | None = None
     try:
+        validate_artifact_id(artifact_id)
         if profile != PROFILE_LONG_FORM:
             raise RealVideoPipelineError(
                 f"unsupported profile: {profile}", stage=current_stage
@@ -133,6 +139,23 @@ def build_real_video(
             authority_readback_path=authority_readback_path,
             caption_mode=caption_mode,
         )
+        editorial_context_file = (
+            _resolved(root, editorial_context_path)
+            if editorial_context_path is not None
+            else None
+        )
+        editorial_context = (
+            _read_json(editorial_context_file, "editorial context")
+            if editorial_context_file is not None
+            else None
+        )
+        if editorial_context is not None:
+            validate_editorial_context_header(
+                editorial_context,
+                artifact_id=artifact_id,
+                source_identity=resolved["source_identity"],
+                target_duration_seconds=float(target_duration_seconds),
+            )
         source_probe = probe_media_detail(
             resolved["source_path"], ffprobe_path=ffprobe, runner=runner
         )
@@ -142,6 +165,7 @@ def build_real_video(
                 stage=current_stage,
             )
         fingerprint_payload = {
+            "artifact_id": artifact_id,
             "pipeline_version": PIPELINE_VERSION,
             "profile": profile,
             "target_duration_seconds": float(target_duration_seconds),
@@ -152,6 +176,11 @@ def build_real_video(
             "rights_sha256": resolved.get("rights_sha256"),
             "caption_sha256": resolved.get("caption_sha256"),
             "caption_mode": resolved["caption_mode"],
+            "editorial_context_sha256": (
+                _sha256(editorial_context_file)
+                if editorial_context_file is not None
+                else None
+            ),
             "review_port": int(review_port),
         }
         fingerprint = content_fingerprint(fingerprint_payload)
@@ -160,6 +189,7 @@ def build_real_video(
                 output_dir=output,
                 input_fingerprint=fingerprint,
                 root=root,
+                expected_artifact_id=artifact_id,
             )
             resumed["elapsed_seconds"] = round(time.monotonic() - started, 3)
             return resumed
@@ -175,6 +205,7 @@ def build_real_video(
             stage / "provenance_snapshot.json",
             {
                 "schema_version": SCHEMA_VERSION,
+                "artifact_id": artifact_id,
                 "source_identity": resolved["source_identity"],
                 "source_path": _display_path(resolved["source_path"], root),
                 "source_sha256": resolved["source_sha256"],
@@ -186,14 +217,32 @@ def build_real_video(
                 "closed_gates": _closed_gates(),
             },
         )
+        if editorial_context is not None:
+            _write_json(stage / "editorial_context.json", editorial_context)
 
         current_stage = "content_analysis"
-        analysis = analyze_source(
-            source_path=resolved["source_path"],
-            duration_seconds=source_probe["duration_seconds"],
-            ffmpeg_path=ffmpeg,
-            runner=runner,
-        )
+        if editorial_context is not None:
+            analysis = {
+                "schema_version": SCHEMA_VERSION,
+                "status": "passed",
+                "source_duration_seconds": source_probe["duration_seconds"],
+                "scene_threshold": None,
+                "scene_boundary_count": 0,
+                "scene_boundaries_seconds": [],
+                "black_intervals": [],
+                "silence_intervals": [],
+                "selection_policy": (
+                    "editorial_context_bound_caption_dense_chronological_ranges; "
+                    "full-source scene scan intentionally not required"
+                ),
+            }
+        else:
+            analysis = analyze_source(
+                source_path=resolved["source_path"],
+                duration_seconds=source_probe["duration_seconds"],
+                ffmpeg_path=ffmpeg,
+                runner=runner,
+            )
         analysis["stage_fingerprint"] = content_fingerprint(
             {
                 "input_fingerprint": fingerprint,
@@ -204,12 +253,26 @@ def build_real_video(
         _write_json(stage / "analysis_readback.json", analysis)
 
         current_stage = "timeline_selection"
-        timeline = plan_timeline(
-            source_identity=resolved["source_identity"],
-            source_duration_seconds=source_probe["duration_seconds"],
-            scene_boundaries=analysis["scene_boundaries_seconds"],
-            target_duration_seconds=float(target_duration_seconds),
+        timeline = (
+            plan_timeline_from_editorial_context(
+                editorial_context,
+                source_identity=resolved["source_identity"],
+                source_duration_seconds=source_probe["duration_seconds"],
+                target_duration_seconds=float(target_duration_seconds),
+            )
+            if editorial_context is not None
+            else plan_timeline(
+                source_identity=resolved["source_identity"],
+                source_duration_seconds=source_probe["duration_seconds"],
+                scene_boundaries=analysis["scene_boundaries_seconds"],
+                target_duration_seconds=float(target_duration_seconds),
+            )
         )
+        if editorial_context is not None:
+            validate_editorial_context_against_timeline(
+                editorial_context,
+                timeline=timeline,
+            )
         caption_events = load_caption_events(resolved.get("caption_track_path"))
         caption_rows = remap_caption_events(caption_events, timeline["cuts"])
         _attach_caption_ids(timeline["cuts"], caption_rows)
@@ -227,6 +290,7 @@ def build_real_video(
         _write_json(stage / "caption_readback.json", caption_readback)
         if resolved["caption_mode"] == "official_sidecar":
             _write_text(stage / "captions.srt", render_srt(caption_rows))
+            _write_text(stage / "captions.vtt", render_vtt(caption_rows))
 
         current_stage = "render"
         final_video = stage / "final_video.mp4"
@@ -262,15 +326,18 @@ def build_real_video(
         current_stage = "review_package"
         review = build_review_package(
             stage=stage,
+            artifact_id=artifact_id,
             timeline=timeline,
             resolved=resolved,
             validation=validation,
+            editorial_context=editorial_context,
             review_port=int(review_port),
             ffmpeg_path=ffmpeg,
             runner=runner,
         )
         pipeline_state = {
             "schema_version": SCHEMA_VERSION,
+            "artifact_id": artifact_id,
             "state": READY_STATE,
             "ready": True,
             "failure_stage": None,
@@ -307,19 +374,21 @@ def build_real_video(
         ]
         manifest = build_run_manifest(
             stage=stage,
+            artifact_id=artifact_id,
             input_fingerprint=fingerprint,
             resolved=resolved,
             timeline=timeline,
             validation=validation,
             review=review,
             stages=stage_rows,
+            editorial_context=editorial_context,
         )
         _write_json(stage / "run_manifest.json", manifest)
         validate_run_manifest(stage, manifest)
         promote_output(stage=stage, output=output, force=force)
         stage = None
         return {
-            "artifact_id": "clip-out12-one-command-real-video-automation-v1-001",
+            "artifact_id": artifact_id,
             "state": READY_STATE,
             "output_dir": output,
             "final_video": output / "final_video.mp4",
@@ -787,6 +856,104 @@ def plan_timeline(
     return result
 
 
+def plan_timeline_from_editorial_context(
+    context: dict[str, Any],
+    *,
+    source_identity: str,
+    source_duration_seconds: float,
+    target_duration_seconds: float,
+) -> dict[str, Any]:
+    chapters = context.get("chapters") or []
+    if not 8 <= len(chapters) <= MAX_CUTS:
+        raise RealVideoPipelineError(
+            "editorial context must define 8-20 long-form chapters",
+            stage="timeline_selection",
+        )
+    cuts: list[dict[str, Any]] = []
+    output_cursor = 0.0
+    previous_source_end = -1.0
+    for index, chapter in enumerate(chapters, start=1):
+        source_in = (
+            float(chapter["source_start_seconds"])
+            if chapter.get("source_start_seconds") is not None
+            else -1.0
+        )
+        source_out = (
+            float(chapter["source_end_seconds"])
+            if chapter.get("source_end_seconds") is not None
+            else -1.0
+        )
+        if (
+            source_in < 0
+            or source_out <= source_in
+            or source_out > source_duration_seconds + 0.25
+            or source_in < previous_source_end - 0.001
+        ):
+            raise RealVideoPipelineError(
+                "editorial context contains an invalid source range",
+                stage="timeline_selection",
+            )
+        source_out = min(source_out, source_duration_seconds)
+        duration = source_out - source_in
+        output_end = output_cursor + duration
+        section_index = min(2, int((index - 1) * 3 / len(chapters)))
+        section = ("opening", "development", "resolution")[section_index]
+        cuts.append(
+            {
+                "cut_id": str(chapter.get("cut_id") or f"cut_{index:03d}"),
+                "cut_order": index,
+                "section": section,
+                "chapter_id": chapter.get("chapter_id"),
+                "chapter_title": chapter.get("title"),
+                "topic_tags": list(chapter.get("topic_tags") or []),
+                "source_caption_event_ids": list(
+                    chapter.get("source_caption_event_ids") or []
+                ),
+                "source_identity": source_identity,
+                "source_in_seconds": round(source_in, 6),
+                "source_out_seconds": round(source_out, 6),
+                "output_in_seconds": round(output_cursor, 6),
+                "output_out_seconds": round(output_end, 6),
+                "duration_seconds": round(duration, 6),
+                "selection_reason": (
+                    "caption-dense source range selected inside a chronological "
+                    "whole-stream coverage slot"
+                ),
+                "continuity_context": (
+                    "first chronological coverage slot"
+                    if index == 1
+                    else "later chronological coverage slot; omitted span remains explicit"
+                ),
+                "transition": "sequence_start" if index == 1 else "hard_cut",
+                "caption_ids": [],
+            }
+        )
+        previous_source_end = source_out
+        output_cursor = output_end
+    if abs(output_cursor - target_duration_seconds) > 0.25:
+        raise RealVideoPipelineError(
+            "editorial context output duration does not match target",
+            stage="timeline_selection",
+        )
+    result = {
+        "schema_version": TIMELINE_SCHEMA_VERSION,
+        "source_identity": source_identity,
+        "source_duration_seconds": round(source_duration_seconds, 6),
+        "requested_target_duration_seconds": round(target_duration_seconds, 6),
+        "output_duration_seconds": round(output_cursor, 6),
+        "source_duration_constraint": False,
+        "selection_mode": str(context.get("expected_selection_mode") or ""),
+        "chronology_preserved": True,
+        "causal_order_preserved": False,
+        "causal_order_note": "chronology is preserved; omitted spans forbid causal inference",
+        "semantic_section_count": len({cut["section"] for cut in cuts}),
+        "cut_count": len(cuts),
+        "cuts": cuts,
+    }
+    validate_timeline_ir(result)
+    return result
+
+
 def validate_timeline_ir(timeline: dict[str, Any]) -> None:
     cuts = timeline.get("cuts")
     if timeline.get("schema_version") != TIMELINE_SCHEMA_VERSION or not isinstance(cuts, list):
@@ -825,6 +992,143 @@ def validate_timeline_ir(timeline: dict[str, Any]) -> None:
     if len({cut.get("section") for cut in cuts}) < min(3, len(cuts)):
         raise RealVideoPipelineError(
             "Timeline IR semantic sections are incomplete", stage="timeline_selection"
+        )
+
+
+def validate_artifact_id(artifact_id: str) -> None:
+    if not ARTIFACT_ID_PATTERN.fullmatch(str(artifact_id or "")):
+        raise RealVideoPipelineError(
+            "artifact id must be a lowercase clip-* identity",
+            stage="source_resolution",
+        )
+
+
+def validate_editorial_context_header(
+    context: dict[str, Any],
+    *,
+    artifact_id: str,
+    source_identity: str,
+    target_duration_seconds: float,
+) -> None:
+    if context.get("schema_version") != EDITORIAL_CONTEXT_SCHEMA_VERSION:
+        raise RealVideoPipelineError(
+            "editorial context schema mismatch", stage="source_resolution"
+        )
+    if context.get("artifact_id") != artifact_id:
+        raise RealVideoPipelineError(
+            "editorial context artifact identity mismatch", stage="source_resolution"
+        )
+    if context.get("source_identity") != source_identity:
+        raise RealVideoPipelineError(
+            "editorial context source identity mismatch", stage="source_resolution"
+        )
+    if abs(
+        float(context.get("expected_target_duration_seconds") or 0.0)
+        - target_duration_seconds
+    ) > 0.002:
+        raise RealVideoPipelineError(
+            "editorial context target duration mismatch", stage="source_resolution"
+        )
+    separation = context.get("separation_contract") or {}
+    if (
+        separation.get("source_caption_provenance_type") != "source_caption"
+        or separation.get("creator_commentary_provenance_type")
+        != "creator_authored_commentary"
+        or separation.get("identifiers_disjoint") is not True
+        or separation.get("presentation_merged") is not False
+    ):
+        raise RealVideoPipelineError(
+            "caption/commentary separation contract is incomplete",
+            stage="source_resolution",
+        )
+    commentary = context.get("creator_commentary") or {}
+    if (
+        commentary.get("provenance_type") != "creator_authored_commentary"
+        or commentary.get("merged_with_source_caption") is not False
+        or not isinstance(commentary.get("events"), list)
+    ):
+        raise RealVideoPipelineError(
+            "creator commentary track is invalid", stage="source_resolution"
+        )
+
+
+def validate_editorial_context_against_timeline(
+    context: dict[str, Any], *, timeline: dict[str, Any]
+) -> None:
+    chapters = context.get("chapters") or []
+    cuts = timeline.get("cuts") or []
+    if (
+        len(chapters) != len(cuts)
+        or int(context.get("expected_cut_count") or -1) != len(cuts)
+        or context.get("expected_selection_mode") != timeline.get("selection_mode")
+    ):
+        raise RealVideoPipelineError(
+            "editorial context does not cover the selected timeline",
+            stage="timeline_selection",
+        )
+    chapter_by_cut = {str(row.get("cut_id") or ""): row for row in chapters}
+    source_range_tolerance = float(
+        context.get("source_range_tolerance_seconds") or 0.002
+    )
+    if source_range_tolerance < 0 or source_range_tolerance > 0.25:
+        raise RealVideoPipelineError(
+            "editorial context source range tolerance is invalid",
+            stage="timeline_selection",
+        )
+    commentary = (context.get("creator_commentary") or {}).get("events") or []
+    commentary_ids: set[str] = set()
+    caption_ids: set[str] = set()
+    for cut in cuts:
+        chapter = chapter_by_cut.get(str(cut.get("cut_id") or ""))
+        if not chapter:
+            raise RealVideoPipelineError(
+                "editorial context chapter is missing for a cut",
+                stage="timeline_selection",
+            )
+        if (
+            abs(
+                (
+                    float(chapter["source_start_seconds"])
+                    if chapter.get("source_start_seconds") is not None
+                    else -1.0
+                )
+                - float(cut["source_in_seconds"])
+            )
+            > source_range_tolerance
+            or abs(
+                (
+                    float(chapter["source_end_seconds"])
+                    if chapter.get("source_end_seconds") is not None
+                    else -1.0
+                )
+                - float(cut["source_out_seconds"])
+            )
+            > source_range_tolerance
+        ):
+            raise RealVideoPipelineError(
+                "editorial context source range mismatch",
+                stage="timeline_selection",
+            )
+        caption_ids.update(
+            str(value) for value in chapter.get("source_caption_event_ids") or []
+        )
+    for row in commentary:
+        commentary_id = str(row.get("commentary_id") or "")
+        if (
+            not commentary_id
+            or commentary_id in commentary_ids
+            or row.get("provenance_type") != "creator_authored_commentary"
+            or str(row.get("cut_id") or "") not in chapter_by_cut
+        ):
+            raise RealVideoPipelineError(
+                "creator commentary event is invalid",
+                stage="timeline_selection",
+            )
+        commentary_ids.add(commentary_id)
+    if caption_ids & commentary_ids:
+        raise RealVideoPipelineError(
+            "caption/commentary identifiers collide",
+            stage="timeline_selection",
         )
 
 
@@ -990,6 +1294,17 @@ def render_srt(caption_rows: list[dict[str, Any]]) -> str:
     return "\n\n".join(blocks) + ("\n" if blocks else "")
 
 
+def render_vtt(caption_rows: list[dict[str, Any]]) -> str:
+    blocks = ["WEBVTT"]
+    for index, row in enumerate(caption_rows, start=1):
+        blocks.append(
+            f"{index}\n{_vtt_time(float(row['output_start_seconds']))} --> "
+            f"{_vtt_time(float(row['output_end_seconds']))}\n"
+            f"{row.get('text') or ''}"
+        )
+    return "\n\n".join(blocks) + "\n"
+
+
 def build_edit_pack(
     timeline: dict[str, Any], resolved: dict[str, Any]
 ) -> dict[str, Any]:
@@ -1115,7 +1430,14 @@ def render_filter_complex(cuts: list[dict[str, Any]]) -> str:
         f"{''.join(concat_inputs)}concat=n={len(cuts)}:v=1:a=1[vcat][acat]"
     )
     filters.append("[vcat]format=yuv420p[vout]")
-    filters.append("[acat]loudnorm=I=-15:TP=-2.0:LRA=11[aout]")
+    # One-pass loudnorm can satisfy integrated loudness while still producing
+    # inter-sample peaks above the review ceiling for energetic live sources.
+    # Aim one LU higher, then apply a conservative sample limiter so the
+    # independently measured true peak remains at or below -1 dBTP.
+    filters.append(
+        "[acat]loudnorm=I=-12.5:TP=-2.0:LRA=11,"
+        "alimiter=limit=0.50:attack=5:release=50:level=false[aout]"
+    )
     return ";\n".join(filters) + "\n"
 
 
@@ -1375,9 +1697,11 @@ def validate_mapping_coverage(timeline: dict[str, Any]) -> bool:
 def build_review_package(
     *,
     stage: Path,
+    artifact_id: str,
     timeline: dict[str, Any],
     resolved: dict[str, Any],
     validation: dict[str, Any],
+    editorial_context: dict[str, Any] | None,
     review_port: int,
     ffmpeg_path: str,
     runner: ffmpeg_tiny.Runner,
@@ -1434,7 +1758,16 @@ def build_review_package(
         raise RealVideoPipelineError(
             "review waveform generation failed", stage="review_package"
         )
-    _write_text(review / "index.html", render_review_html(timeline, resolved, validation))
+    _write_text(
+        review / "index.html",
+        render_review_html(
+            timeline,
+            resolved,
+            validation,
+            artifact_id=artifact_id,
+            editorial_context=editorial_context,
+        ),
+    )
     _write_text(review / "serve_preview.ps1", render_serve_script(review_port))
     _write_text(review / "open_preview.ps1", render_open_script(review_port))
     return {
@@ -1495,14 +1828,24 @@ def render_contact_sheet(
 
 
 def render_review_html(
-    timeline: dict[str, Any], resolved: dict[str, Any], validation: dict[str, Any]
+    timeline: dict[str, Any],
+    resolved: dict[str, Any],
+    validation: dict[str, Any],
+    *,
+    artifact_id: str = DEFAULT_ARTIFACT_ID,
+    editorial_context: dict[str, Any] | None = None,
 ) -> str:
+    chapter_by_cut = {
+        str(row.get("cut_id") or ""): row
+        for row in (editorial_context or {}).get("chapters") or []
+    }
     rows = []
     for cut in timeline["cuts"]:
+        chapter = chapter_by_cut.get(str(cut["cut_id"]), {})
         rows.append(
             "<tr>"
             f"<td>{escape(cut['cut_id'])}</td>"
-            f"<td>{escape(cut['section'])}</td>"
+            f"<td>{escape(str(chapter.get('title') or cut['section']))}</td>"
             f"<td>{float(cut['source_in_seconds']):.3f}–{float(cut['source_out_seconds']):.3f}</td>"
             f"<td>{float(cut['output_in_seconds']):.3f}–{float(cut['output_out_seconds']):.3f}</td>"
             f"<td><button type=\"button\" data-seek=\"{float(cut['output_in_seconds']):.3f}\">seek</button></td>"
@@ -1512,15 +1855,41 @@ def render_review_html(
         f"<li>{escape(name)}: {'pass' if value else 'fail'}</li>"
         for name, value in validation["checks"].items()
     )
+    commentary_rows = []
+    for row in ((editorial_context or {}).get("creator_commentary") or {}).get(
+        "events"
+    ) or []:
+        commentary_rows.append(
+            "<li>"
+            f"<strong>{escape(str(row.get('cut_id') or ''))}</strong> "
+            f"{escape(str(row.get('text') or ''))}"
+            "</li>"
+        )
+    commentary_section = (
+        "<section class=\"commentary\"><h2>Creator-authored commentary</h2>"
+        "<p>This editorial track is separate from source captions and is not "
+        "presented as source speech.</p><ol>"
+        + "".join(commentary_rows)
+        + "</ol></section>"
+        if commentary_rows
+        else ""
+    )
+    caption_track = (
+        '<track kind="captions" srclang="ja" label="source captions" '
+        'src="../captions.vtt" default>'
+        if resolved["caption_mode"] == "official_sidecar"
+        else ""
+    )
     return f"""<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OUT-12 real video review</title>
+<title>{escape(artifact_id)} internal review</title>
 <style>body{{margin:0;background:#0b1020;color:#e5edf8;font-family:system-ui,sans-serif}}main{{max-width:1100px;margin:auto;padding:24px;box-sizing:border-box}}video{{display:block;width:100%;max-height:70vh;background:#000}}table{{display:block;width:100%;max-width:100%;overflow-x:auto;border-collapse:collapse}}th,td{{padding:8px;border-bottom:1px solid #334155;text-align:left;white-space:nowrap}}code{{overflow-wrap:anywhere}}details{{margin-top:18px}}img{{width:100%;height:auto}}button{{padding:6px 10px}}</style></head>
-<body><main><h1>OUT-12 One-Command Real Video Automation v1</h1>
+<body><main><h1>{escape(artifact_id)}</h1>
 <p>{escape(resolved['source_identity'])} · {float(validation['media']['duration_seconds']):.3f}s · {len(timeline['cuts'])} cuts · {validation['media']['resolution']}</p>
-<video id="finalVideo" controls muted preload="metadata" playsinline src="../final_video.mp4"></video>
+<video id="finalVideo" controls muted preload="metadata" playsinline src="../final_video.mp4">{caption_track}</video>
 <p>SHA-256 <code>{escape(validation['media']['sha256'])}</code></p>
 <h2>Section / cut map</h2><table><thead><tr><th>cut</th><th>section</th><th>source</th><th>output</th><th></th></tr></thead><tbody>{''.join(rows)}</tbody></table>
+{commentary_section}
 <details><summary>検証証拠</summary><ul>{checks}</ul><p>caption authority: {escape(resolved['caption_mode'])}; rights: {escape(resolved['rights']['status'])}; production/public acceptance: closed.</p>
 <img src="evidence/first_middle_last_contact_sheet.jpg" alt="first middle last contact sheet"><img src="evidence/cut_boundary_contact_sheet.jpg" alt="cut boundary contact sheet"><img src="evidence/waveform.png" alt="waveform"></details>
 </main><script>const v=document.getElementById('finalVideo');v.autoplay=false;v.muted=true;v.volume=0.25;v.currentTime=0;document.querySelectorAll('[data-seek]').forEach(b=>b.addEventListener('click',()=>{{v.pause();v.currentTime=Number(b.dataset.seek);}}));</script></body></html>
@@ -1535,7 +1904,7 @@ $cursor = Get-Item -LiteralPath $outputDir
 while ($null -ne $cursor -and -not (Test-Path -LiteralPath (Join-Path $cursor.FullName 'src\\cli\\main.py'))) {{ $cursor = $cursor.Parent }}
 if ($null -eq $cursor) {{ throw 'ClipPipeGen repository root not found' }}
 Push-Location $cursor.FullName
-try {{ uvx python -m src.cli.serve_review --root $outputDir --port $Port }} finally {{ Pop-Location }}
+try {{ uv run --offline --no-project --python 3.13 python -m src.cli.serve_review --root $outputDir --port $Port }} finally {{ Pop-Location }}
 """
 
 
@@ -1550,12 +1919,14 @@ Start-Process $url
 def build_run_manifest(
     *,
     stage: Path,
+    artifact_id: str = DEFAULT_ARTIFACT_ID,
     input_fingerprint: str,
     resolved: dict[str, Any],
     timeline: dict[str, Any],
     validation: dict[str, Any],
     review: dict[str, Any],
     stages: list[dict[str, Any]],
+    editorial_context: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     files = []
     for path in sorted(item for item in stage.rglob("*") if item.is_file()):
@@ -1570,7 +1941,7 @@ def build_run_manifest(
         )
     manifest = {
         "schema_version": SCHEMA_VERSION,
-        "artifact_id": "clip-out12-one-command-real-video-automation-v1-001",
+        "artifact_id": artifact_id,
         "state": READY_STATE,
         "input_fingerprint": input_fingerprint,
         "source_identity": resolved["source_identity"],
@@ -1585,6 +1956,27 @@ def build_run_manifest(
             "cut_count": timeline["cut_count"],
         },
         "caption_authority": resolved["caption_authority"],
+        "provenance_tracks": {
+            "source_caption": {
+                "provenance_type": "source_caption",
+                "path": "caption_readback.json",
+            },
+            "creator_authored_commentary": (
+                {
+                    "provenance_type": "creator_authored_commentary",
+                    "path": "editorial_context.json",
+                    "merged_with_source_caption": False,
+                    "event_count": len(
+                        ((editorial_context or {}).get("creator_commentary") or {}).get(
+                            "events"
+                        )
+                        or []
+                    ),
+                }
+                if editorial_context is not None
+                else None
+            ),
+        },
         "stages": stages,
         "review": review,
         "validation_status": validation["status"],
@@ -1638,7 +2030,11 @@ def validate_run_manifest(stage: Path, manifest: dict[str, Any]) -> None:
 
 
 def resume_existing_output(
-    *, output_dir: Path, input_fingerprint: str, root: Path
+    *,
+    output_dir: Path,
+    input_fingerprint: str,
+    root: Path,
+    expected_artifact_id: str | None = None,
 ) -> dict[str, Any]:
     manifest_path = output_dir / "run_manifest.json"
     if not manifest_path.is_file():
@@ -1646,6 +2042,10 @@ def resume_existing_output(
             "resume requested but run_manifest.json is missing", stage="resume"
         )
     manifest = _read_json(manifest_path, "run manifest")
+    if expected_artifact_id is not None and manifest.get("artifact_id") != expected_artifact_id:
+        raise RealVideoPipelineError(
+            "resume artifact identity mismatch", stage="resume"
+        )
     if manifest.get("input_fingerprint") != input_fingerprint:
         raise RealVideoPipelineError(
             "resume input fingerprint mismatch; use --force for a new run",
@@ -1938,6 +2338,10 @@ def _srt_time(value: float) -> str:
     minutes, remainder = divmod(remainder, 60_000)
     seconds, milliseconds = divmod(remainder, 1000)
     return f"{hours:02d}:{minutes:02d}:{seconds:02d},{milliseconds:03d}"
+
+
+def _vtt_time(value: float) -> str:
+    return _srt_time(value).replace(",", ".")
 
 
 def _seconds(value: float) -> str:

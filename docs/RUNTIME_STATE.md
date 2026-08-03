@@ -3,15 +3,15 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW
-last_touched: 2026-07-27
-state_revision: s1-common-context-probe-sync-readback-2026-07-27
+health: WIKI_TENSAKU_FIRST_SLICE_REVIEW_READY_CORPUS_CONTINUE_S1_PARKED
+last_touched: 2026-08-04
+state_revision: wiki-tensaku-longform-first-slice-verified-2026-08-04
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
-current_slice: ED-12
-phase: s1_s3_probe_built_s4_human_review_pending
-canonical_status: s1_s3_common_context_probe_ready_for_s4_human_review
-active_branch: codex/s1-two-source-common-context-probe-v1
-source_branch: codex/s1-two-source-common-context-probe-v1
+current_slice: ED-13
+phase: wiki_tensaku_first_complete_slice_verified_corpus_continue
+canonical_status: wiki_tensaku_first_slice_review_ready_continue_remaining_corpus
+active_branch: codex/wiki-tensaku-longform-family-v1
+source_branch: codex/wiki-tensaku-longform-family-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
 verified_implementation_head: a3771bc59cd58b05c00a570e1074118ace3dc15a
 accepted_feature_revision: 18641fe917b084259869263e8db05d78325aa2db
@@ -28,7 +28,7 @@ m6_decision_binding_remote_ref: refs/heads/main
 m5_verification_tree_locator: refs/heads/main^{tree}
 closure_branch: null
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_current_handoff
-upstream_parity: 0 0
+upstream_parity: 0 0 after normal push readback
 sync_audit_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
 latest_remote_sync_head: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
 sync_observed_tracking_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
@@ -41,16 +41,16 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: S1 two-source common-context probe ready for S4 human review
-human_entrypoint: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html
-portable_entrypoint: docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md
-review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\open_preview.ps1
-review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s1_two_source_common_context_probe_20260726\review\clip_s1_two_source_common_context_probe_v001\review\serve_preview.ps1
-machine_readback: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/validation_readback.json
+current_title: Wiki添削 long-form family first complete internal slice verified
+human_entrypoint: episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/review/index.html
+portable_entrypoint: docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md
+review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-longform-v1-001\review\open_preview.ps1
+review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-longform-v1-001\review\serve_preview.ps1
+machine_readback: episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/validation_readback.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: s4_human_common_context_verdict
-review_status: s4_human_review_pending
-review_scope: exact_s1_two_source_common_context_probe
+decision_required: none_for_mechanical_corpus_continue_s1_review_parked
+review_status: internal_review_available_not_requested
+review_scope: exact_wiki_tensaku_first_slice
 reviewed_at: null
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
 m2_review_scope: internal_full_view_editorial_visual_review
@@ -59,7 +59,7 @@ remote_decision_binding_available: false
 local_decision_binding_committed: false
 remote_mutation_authorized: false
 local_artifact_available: true
-local_artifact_role: active_s4_review_target_same_machine_only
+local_artifact_role: active_internal_first_slice_same_machine_only
 portable_local_artifact_available: false
 cross_machine_resume_class: tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_review_package_are_not
 cross_host_resume_status: exact_s1_package_present_on_verified_host_not_portable_through_git
@@ -77,11 +77,11 @@ local_artifact_evidence_receipt: episodes/s1_two_source_common_context_probe_202
 local_package_requirement: satisfied_exact_two_source_plan_design_basis_manifest_and_output_hashes_match
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
-rights_approval: not_granted
-public_use_verdict: not_considered_s1
-monetized_youtube_verdict: not_considered_s1
-publication_decision: not_considered_s1
-monetization_decision: not_considered_s1
+rights_approval: readback_unresolved
+public_use_verdict: not_approved
+monetized_youtube_verdict: not_approved
+publication_decision: not_approved
+monetization_decision: not_approved
 m6_owner_verdict: deny
 m6_decision_evidence_locator: docs/rights/out13_m6_rights_decision_readiness_packet.json#/decision_history/0
 m6_starting_packet_revision: dac5f7fb715cb3a7acd6c982a80cb916492e7880
@@ -95,20 +95,20 @@ last_verified_at: 2026-07-27T20:10:59+09:00
 last_verified_host_local_artifact_available: true
 last_verified_host_entrypoint: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html
 historical_last_verified_host_entrypoint: null
-pause_reason: s4_human_common_context_review_required
+pause_reason: null
 exact_baseline_available: null
 accepted_baseline_status: null
 accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: pending
+human_review_decision: not_requested_for_wiki_first_slice_s1_pending_parked
 user_feedback_overall: pending_s4_exact_probe_review
 content_selection_status: jp_pilot01_provider_caption_evidence_explicit_seven_cut_plan_rendered
 subtitle_presentation_timing_status: provider_json3_102_cues_keifont_two_line_safe_area_pass
 endpoint_status: final_complete_victory_cue_closes_before_post_resolution_tail
 reviewed_by_human: false
-human_review_pending: true
+human_review_pending: false
 acceptance_granted: false
 editorial_acceptance_granted: false
 acceptance_receipt: null
@@ -127,7 +127,7 @@ m6_rights_status: closed_deny_exact_artifact
 m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
 m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 automation_acceptance_granted: false
-automation_acceptance_scope: machine_validated_internal_probe_human_s4_pending
+automation_acceptance_scope: machine_validated_internal_first_slice_only
 batch_acceptance: not_applicable_out12
 candidate_01_acceptance: not_applicable_out12
 candidate_02_acceptance: not_applicable_out12
@@ -136,27 +136,47 @@ winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: stopped_restart_command_available
-next_review_due: s4_human_common_context_review
-next_review_type: exact_probe_common_context_review
-next_action: obtain_s4_human_common_context_verdict_on_exact_probe
-active_artifact: clip-s1-two-source-common-context-probe-v1-001
-current_review_component: s1_two_source_argumentative_timeline_caption_commentary_and_provenance
-base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
-artifact_output_sha256: dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be
-artifact_output_byte_size: 93331608
-artifact_package_tree_digest_sha256: a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a
-artifact_manifest_self_sha256: 8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301
-artifact_file_count: 19
-artifact_duration_seconds: 98.896
-artifact_source_count: 2
-artifact_cut_count: 6
-artifact_source_switch_count: 5
-artifact_caption_cue_count: 60
-artifact_commentary_count: 3
+next_review_due: none_for_wiki_mechanical_continue_s1_review_parked
+next_review_type: optional_exact_first_slice_observation_after_remaining_corpus_processing
+next_action: process_youtube_82iRbxjvbww_full_range_then_youtube_Ocqg-RpQURY_full_range
+active_artifact: clip-wiki-tensaku-longform-v1-001
+current_review_component: wiki_tensaku_caption_dense_chronological_timeline_caption_commentary_and_provenance
+base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
+implementation_revision: current_remote_branch_tip_after_normal_push
+artifact_output_sha256: 904693b764aa020bcf1834942d93ab30374bf5bdf8d456c265ddfa03e316a36c
+artifact_output_byte_size: 19194868
+artifact_package_tree_digest_sha256: not_used_manifest_file_hashes_closed
+artifact_manifest_self_sha256: 36473a084fb8486eeecdb1c67729d61e167f1ca19fecc015b81ffe3d89740d97
+artifact_file_count: 17
+artifact_duration_seconds: 300.0
+artifact_source_count: 1
+artifact_cut_count: 12
+artifact_source_switch_count: 0
+artifact_caption_cue_count: 123
+artifact_commentary_count: 12
 public_use: false
 monetized_use: false
 upload_attempted: false
+wiki_family_id: miko_led_unofficial_wiki_review
+wiki_authoritative_channel_id: UC-hM6YJuNYVAmUWxeIr9FeA
+wiki_stream_pages: 69
+wiki_stream_unique_count: 2033
+wiki_stream_duplicate_count: 0
+wiki_stream_pagination_exhausted: true
+wiki_playlist_unique_count: 48
+wiki_dedicated_playlist_status: not_observed
+wiki_corpus_total: 3
+wiki_corpus_available: 3
+wiki_public_surface_completeness: complete_under_recorded_title_rule
+wiki_private_deleted_unlisted_status: not_observable_from_public_surface
+wiki_first_source_identity: youtube:1AcId5Yja10
+wiki_first_source_sha256: a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7
+wiki_first_slice_validation: passed_13_of_13
+wiki_first_slice_full_decode: passed
+wiki_first_slice_review_http_status: 200
+wiki_first_slice_review_range_status: 206
+wiki_state_code: CONTINUE
+s1_lane_status: parked_human_review_pending
 s1_implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
 s1_base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
 s1_artifact_id: clip-s1-two-source-common-context-probe-v1-001
@@ -586,54 +606,47 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — ED-12 / S1 Ready for S4 Human Review
+## Current Capsule — ED-13 Wiki添削 First Slice Verified, Corpus Continue
 
-- active slice: `ED-12`
-- active artifact: `clip-s1-two-source-common-context-probe-v1-001`
-- review status: `s4_human_review_pending`
-- portable receipt: `docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md`
-- local artifact role: `active_s4_review_target_same_machine_only`
-- human review pending: `true`
+- active slice: `ED-13`
+- active artifact: `clip-wiki-tensaku-longform-v1-001`
+- state code: `CONTINUE`
+- portable receipt: `docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md`
+- local artifact role: `active_internal_first_slice_same_machine_only`
+- human decision required now: `false`
 
-- remote latest`origin/main`は
-  `edb782acd1e06aca46e0a5d10295ea52f30ad5c7`。current branch
-  `codex/s1-two-source-common-context-probe-v1`のHEAD / upstreamは
-  `9656f58e55136c4d4a32f758d65484f9610c6feb`で一致し、mainを完全に含む2 commit先。
-  implementation revisionは`a3771bc59cd58b05c00a570e1074118ace3dc15a`。
-- parallel remote branch`origin/codex/out14-editorial-presentation-v3`は
-  `06975b0e5edab2faed585fd7f5e82d9c699ec235`。S1とはmain後に2対3 commitで分岐した
-  別exact-review laneであり、今回merge、acceptance継承、active artifact切替を行っていない。
-- S1はOUT-13 Candidate 005を変更・改名・再公開候補化しない。新artifact、二つの実source、
-  新しいeditorial question/thesis、range inventory、MP4 SHAを持つmaterially distinct probe。
-- exact local packageは19 payload files、final MP4 93,331,608 bytes / 98.896s、
-  SHA`dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be`、
-  tree digest`a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a`。
-- timelineは6 cuts、各source 3 cuts、5 source switches。source caption 60 cuesと
-  creator-authored commentary 3 eventsを別provenance trackとして保持する。
-- 2026-07-27の再読戻しでmanifest closed set、focused 12 tests、GUI/Electron smoke、
-  review page 200 / MP4 Range 206を再確認した。full 689 testsと16 media/evidence checksは
-  package構築時のpassを保持し、今回のdocs-only同期では再実行していない。確認用serverは停止済み。
-  machine passは二sourceが一つの論として成立するという
-  意味判断を代行しない。
-- 同一マシンのS4 entrypointは
-  `episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html`。
-  `episodes/`はignoredなので、Gitだけの別端末ではreview-readyを推定しない。
-- OUT-13 Candidate 005は`M6_CLOSED_DENY_EXACT_ARTIFACT`のread-only archive evidenceを維持。
-  そのinternal acceptanceやpublic denyをS1へ継承しない。
-- S1は`human_review_pending=true`、`rights_approval=not_granted`、
-  `production_acceptance=false`、`public_use=false`、`monetized_use=false`、
-  `upload_attempted=false`。
+- branch`codex/wiki-tensaku-longform-family-v1`はS1 head
+  `bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471`から分岐した別artifact lane。
+  S1 package、human review pending、既存accepted/denied artifactを変更・継承していない。
+- authoritative public surfaceは`Miko Ch. さくらみこ /streams`。69 pages / 2,033 unique、
+  duplicate 0、pagination exhausted。48 playlistsにも専用Wiki添削playlistは観測されず、
+  recorded title ruleで3本すべてavailability`OK`、Japanese automatic caption取得済み。
+- completenessは現在公開のauthoritative streams surfaceに限定し、private/deleted/unlisted/futureを
+  不在とは推定しない。補助検索3 queryはcorroborationで、complete claimの根拠ではない。
+- first artifactは`youtube:1AcId5Yja10`の全5,557.812245sを12 chronological slotsへ分け、
+  caption-denseな25sを各slotから選んだ300.000s。source caption 123 cuesと
+  creator-authored commentary 12 eventsは別track・別identifierでmergeしていない。
+- final MP4は19,194,868 bytes、H.264/AAC 640x360、SHA
+  `904693b764aa020bcf1834942d93ab30374bf5bdf8d456c265ddfa03e316a36c`。
+  13/13 media checks、独立full decode、manifest closure、resume cache hit、実launcherの
+  page 200 / MP4 Range 206を確認し、検証serverは停止した。
+- `episodes/`はignoredかつtracked 0を維持する。Gitだけの別端末ではsource media、caption payload、
+  corpus receipt、review packageの存在を推定しない。
+- rightsは`readback_unresolved`。local/internal diagnosticは成立したが、production、public、
+  monetized、publishing、uploadの承認はすべてfalse。
+- S1 `clip-s1-two-source-common-context-probe-v1-001`はS4 human review pendingのまま駐車。
+  ED-13のmachine passや今後のoptional observationでS1 reviewを完了扱いしない。
 
 ## Next Action
 
-- action: `obtain_s4_human_common_context_verdict_on_exact_probe`
-- authorization state: `s1_s3_machine_complete_s4_human_decision_pending`
-- owner: `Product owner / User / Supervisor`
-- condition: exact MP4を全編視聴し、中心問いの理解可能性、二sourceの相互深化、
-  attribution/context、commentaryとsource captionの分離を
-  `accept / bounded repair / reject`で判断する。acceptでもrights、production、
-  thumbnail、publishing、upload、public releaseは開かない。repair時はsuccessful
-  packageを上書きせずnew identityを作る。
+- action: `process_youtube_82iRbxjvbww_full_range_then_youtube_Ocqg-RpQURY_full_range`
+- authorization state: `mechanical_internal_corpus_processing_authorized`
+- owner: `ClipPipeGen editing / asset-fetch lane`
+- condition: `youtube:82iRbxjvbww`の`[0.000, 6418.000)`、続いて
+  `youtube:Ocqg-RpQURY`の`[0.000, 3522.000)`を、各300s / 12 chronological chaptersへ
+  source SHA、caption receipt、topic/provenance index、13/13 checks、closed manifest、
+  full decode、localhost Range playback付きで閉じる。availabilityやpaginationが変化した場合は
+  receipt diffを記録し、過去の3本に合わせてcompleteを捏造しない。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 
