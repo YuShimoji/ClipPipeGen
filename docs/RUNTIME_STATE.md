@@ -3,13 +3,13 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: WIKI_TENSAKU_FIRST_SLICE_REVIEW_READY_CORPUS_CONTINUE_S1_PARKED
+health: BENCHMARK_PORTFOLIO_QUICKWIN_READY_WIKI002_EXTERNAL_DEPENDENCY_PARKED_S1_PARKED
 last_touched: 2026-08-04
-state_revision: wiki-tensaku-longform-first-slice-verified-2026-08-04
+state_revision: benchmark-portfolio-quickwin-15-families-27-slots-2026-08-04
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
-current_slice: ED-13
-phase: wiki_tensaku_first_complete_slice_verified_corpus_continue
-canonical_status: wiki_tensaku_first_slice_review_ready_continue_remaining_corpus
+current_slice: SH-05
+phase: benchmark_portfolio_materialized_and_focused_validation_passed
+canonical_status: benchmark_portfolio_15_families_27_slots_internal_review_ready
 active_branch: codex/wiki-tensaku-longform-family-v1
 source_branch: codex/wiki-tensaku-longform-family-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
@@ -28,12 +28,13 @@ m6_decision_binding_remote_ref: refs/heads/main
 m5_verification_tree_locator: refs/heads/main^{tree}
 closure_branch: null
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_current_handoff
-upstream_parity: 0 0 after normal push readback
-sync_audit_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
+upstream_parity: 0 0 at slice start; verify after normal push
+current_slice_push_status: pending_normal_push_after_focused_validation
+sync_audit_head: be30a3a64bc73c767ab33d25a845d42b11197ee5
 latest_remote_sync_head: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-sync_observed_tracking_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
-sync_audit_status: sync_input_tracking_parity_zero_handoff_pushed_to_tracking_ref
-remote_handoff_status: pushed_verify_current_ref_on_resume
+sync_observed_tracking_head: be30a3a64bc73c767ab33d25a845d42b11197ee5
+sync_audit_status: sync_input_tracking_parity_zero_portfolio_slice_in_progress
+remote_handoff_status: pending_portfolio_commit_and_normal_push
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
 parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
 parallel_branch_relation: divergent_exact_review_lanes_no_merge_or_acceptance_inheritance
@@ -41,16 +42,16 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: Wiki添削 long-form family first complete internal slice verified
-human_entrypoint: episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/review/index.html
-portable_entrypoint: docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md
-review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-longform-v1-001\review\open_preview.ps1
-review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-longform-v1-001\review\serve_preview.ps1
-machine_readback: episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/validation_readback.json
+current_title: All registered output benchmark families materialized as a tiered internal portfolio
+human_entrypoint: docs/benchmarks/index.html
+portable_entrypoint: docs/benchmarks/index.html
+review_open_command: start docs\benchmarks\index.html
+review_server_restart_command: not_required_static_portfolio
+machine_readback: docs/benchmarks/benchmark_portfolio.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: none_for_mechanical_corpus_continue_s1_review_parked
-review_status: internal_review_available_not_requested
-review_scope: exact_wiki_tensaku_first_slice
+decision_required: none_for_portfolio_navigation_existing_candidate_specific_gates_preserved
+review_status: internal_portfolio_review_available_candidate_acceptance_not_inferred
+review_scope: 15_registered_output_families_27_family_scoped_candidate_slots
 reviewed_at: null
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
 m2_review_scope: internal_full_view_editorial_visual_review
@@ -59,9 +60,9 @@ remote_decision_binding_available: false
 local_decision_binding_committed: false
 remote_mutation_authorized: false
 local_artifact_available: true
-local_artifact_role: active_internal_first_slice_same_machine_only
-portable_local_artifact_available: false
-cross_machine_resume_class: tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_review_package_are_not
+local_artifact_role: tracked_portfolio_with_links_to_preserved_same_machine_evidence
+portable_local_artifact_available: true
+cross_machine_resume_class: tracked_portfolio_cards_and_contracts_are_portable_local_media_tiers_must_be_reobserved_per_host
 cross_host_resume_status: exact_s1_package_present_on_verified_host_not_portable_through_git
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
@@ -102,7 +103,7 @@ accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: not_requested_for_wiki_first_slice_s1_pending_parked
+human_review_decision: not_required_for_portfolio_navigation_existing_candidate_specific_gates_unchanged
 user_feedback_overall: pending_s4_exact_probe_review
 content_selection_status: jp_pilot01_provider_caption_evidence_explicit_seven_cut_plan_rendered
 subtitle_presentation_timing_status: provider_json3_102_cues_keifont_two_line_safe_area_pass
@@ -136,24 +137,34 @@ winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: stopped_restart_command_available
-next_review_due: none_for_wiki_mechanical_continue_s1_review_parked
-next_review_type: optional_exact_first_slice_observation_after_remaining_corpus_processing
-next_action: process_youtube_82iRbxjvbww_full_range_then_youtube_Ocqg-RpQURY_full_range
-active_artifact: clip-wiki-tensaku-longform-v1-001
-current_review_component: wiki_tensaku_caption_dense_chronological_timeline_caption_commentary_and_provenance
+next_review_due: s1_human_review_remains_parked_per_existing_exact_gate
+next_review_type: candidate_specific_only_when_existing_ledger_upgrade_condition_calls_for_human_judgment
+next_action: upgrade_static_benchmark_slots_without_network_auth_or_existing_artifact_rerender
+active_artifact: clip-benchmark-portfolio-coverage-v1-001
+current_review_component: tiered_benchmark_portfolio_and_per_candidate_reverse_engineering_cards
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
-implementation_revision: current_remote_branch_tip_after_normal_push
-artifact_output_sha256: 904693b764aa020bcf1834942d93ab30374bf5bdf8d456c265ddfa03e316a36c
-artifact_output_byte_size: 19194868
-artifact_package_tree_digest_sha256: not_used_manifest_file_hashes_closed
-artifact_manifest_self_sha256: 36473a084fb8486eeecdb1c67729d61e167f1ca19fecc015b81ffe3d89740d97
-artifact_file_count: 17
-artifact_duration_seconds: 300.0
-artifact_source_count: 1
-artifact_cut_count: 12
-artifact_source_switch_count: 0
-artifact_caption_cue_count: 123
-artifact_commentary_count: 12
+implementation_revision: current_branch_tip_after_portfolio_commit
+artifact_output_sha256: not_applicable_tracked_multi_artifact_portfolio
+artifact_output_byte_size: not_applicable
+artifact_package_tree_digest_sha256: not_used_tracked_regenerable_portfolio
+artifact_manifest_self_sha256: not_applicable
+artifact_file_count: 31
+artifact_duration_seconds: not_applicable
+artifact_source_count: 15
+artifact_cut_count: 27
+artifact_source_switch_count: not_applicable
+artifact_caption_cue_count: inherited_per_candidate_not_aggregated
+artifact_commentary_count: inherited_per_candidate_not_aggregated
+benchmark_family_denominator: 15
+benchmark_candidate_slot_denominator: 27
+benchmark_materialized_card_count: 27
+benchmark_fully_viewable_count: 20
+benchmark_playable_proxy_count: 2
+benchmark_static_reviewable_count: 5
+benchmark_contract_only_count: 0
+benchmark_all_registered_materialized: true
+benchmark_portfolio_gate_status: MET_QUICKWIN_INTERNAL_PORTFOLIO
+benchmark_rights_publication_approval_inferred: false
 public_use: false
 monetized_use: false
 upload_attempted: false
@@ -175,7 +186,23 @@ wiki_first_slice_validation: passed_13_of_13
 wiki_first_slice_full_decode: passed
 wiki_first_slice_review_http_status: 200
 wiki_first_slice_review_range_status: 206
-wiki_state_code: CONTINUE
+wiki_second_artifact_id: clip-wiki-tensaku-longform-v1-002
+wiki_second_source_identity: youtube:82iRbxjvbww
+wiki_second_source_inventory_range_seconds: [0, 6418]
+wiki_second_source_caption_sha256: 42cc8ae804d8ca2d4e7a7185264a3d7930724a55f5162c09b1b4b86bbd37c3e3
+wiki_second_source_caption_event_count: 2145
+wiki_second_topic_window_count: 22
+wiki_second_correction_anchor_count: 55
+wiki_second_chapter_input_count: 12
+wiki_second_creator_commentary_count: 12
+wiki_second_input_contract_validation: passed
+wiki_second_source_bytes_acquired: false
+wiki_second_acquisition_blocker: YOUTUBE_PUBLIC_ANONYMOUS_PLAYER_REQUIRES_LOGIN
+wiki_second_artifact_status: not_created
+wiki_second_media_validation: not_run
+wiki_second_product_gate_status: NOT_MET
+wiki_second_external_state: BLOCKED_EXTERNAL
+wiki_state_code: PARKED_BLOCKED_EXTERNAL_NOT_PORTFOLIO_BOTTLENECK
 s1_lane_status: parked_human_review_pending
 s1_implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
 s1_base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
@@ -202,7 +229,7 @@ s1_upload_attempted: false
 package_validation_status: passed
 s1_review_http_status: 200
 s1_review_range_status: 206
-full_suite_status: passed_689
+full_suite_status: not_rerun_preserved_historical_689
 out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive
 out13_human_review_pending: false
 out13_editorial_acceptance_granted: true
@@ -606,47 +633,46 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — ED-13 Wiki添削 First Slice Verified, Corpus Continue
+## Current Capsule — SH-05 Benchmark Portfolio Quick-Win Ready
 
-- active slice: `ED-13`
-- active artifact: `clip-wiki-tensaku-longform-v1-001`
-- state code: `CONTINUE`
-- portable receipt: `docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md`
-- local artifact role: `active_internal_first_slice_same_machine_only`
-- human decision required now: `false`
+- active slice: `SH-05`
+- active artifact: `clip-benchmark-portfolio-coverage-v1-001`
+- portfolio entrypoint: `docs/benchmarks/index.html`
+- machine ledger: `docs/benchmarks/benchmark_portfolio.json`
+- registered denominator: `15 families / 27 family-scoped candidate slots`
+- observed tiers: `20 fully-viewable / 2 playable-proxy / 5 static-reviewable / 0 contract-only`
+- materialization: `27/27 tracked candidate cards`
+- human decision required now: `false` for portfolio navigation
+- acceptance rule: each existing exact artifact/SHA gate remains unchanged
 
-- branch`codex/wiki-tensaku-longform-family-v1`はS1 head
-  `bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471`から分岐した別artifact lane。
-  S1 package、human review pending、既存accepted/denied artifactを変更・継承していない。
-- authoritative public surfaceは`Miko Ch. さくらみこ /streams`。69 pages / 2,033 unique、
-  duplicate 0、pagination exhausted。48 playlistsにも専用Wiki添削playlistは観測されず、
-  recorded title ruleで3本すべてavailability`OK`、Japanese automatic caption取得済み。
-- completenessは現在公開のauthoritative streams surfaceに限定し、private/deleted/unlisted/futureを
-  不在とは推定しない。補助検索3 queryはcorroborationで、complete claimの根拠ではない。
-- first artifactは`youtube:1AcId5Yja10`の全5,557.812245sを12 chronological slotsへ分け、
-  caption-denseな25sを各slotから選んだ300.000s。source caption 123 cuesと
-  creator-authored commentary 12 eventsは別track・別identifierでmergeしていない。
-- final MP4は19,194,868 bytes、H.264/AAC 640x360、SHA
-  `904693b764aa020bcf1834942d93ab30374bf5bdf8d456c265ddfa03e316a36c`。
-  13/13 media checks、独立full decode、manifest closure、resume cache hit、実launcherの
-  page 200 / MP4 Range 206を確認し、検証serverは停止した。
-- `episodes/`はignoredかつtracked 0を維持する。Gitだけの別端末ではsource media、caption payload、
-  corpus receipt、review packageの存在を推定しない。
-- rightsは`readback_unresolved`。local/internal diagnosticは成立したが、production、public、
-  monetized、publishing、uploadの承認はすべてfalse。
-- S1 `clip-s1-two-source-common-context-probe-v1-001`はS4 human review pendingのまま駐車。
-  ED-13のmachine passや今後のoptional observationでS1 reviewを完了扱いしない。
+- 母数は`docs/output_layer`のWiki、S1、OUT-01〜OUT-13に有限化した。同一候補がOUT-11の
+  比較枠にも現れる場合はfamily-scoped slotとして数え、`reuse_of`で重複を明示するため、
+  27はunique media byte数ではない。
+- builderはcontract、static evidence、local entrypoint、登録mediaの現物を確認し、既知SHAを
+  照合してtierを決める。現物が欠けるhostでは自動的に低いtierへ降格し、生成済みと捏造しない。
+- 既存のWiki 001、S1、OUT-03〜OUT-06、OUT-08〜OUT-13等の完全再生可能packageは変更も
+  再生成もせず参照した。OUT-07はexact Planner baseline不在を保ったままproxy、OUT-01/02は
+  tracked static proof、OUT-13 001はhistorical receiptとして表示する。
+- Wiki 002は2,145 caption events、22 topic windows、55 correction anchors、12 chapters、12
+  creator commentary eventsのstatic input packetを持つ。source-byte取得のexternal stateは
+  `BLOCKED_EXTERNAL`だが、portfolio全体のbottleneckではなくparked upgrade conditionである。
+  cookies / OAuth / anonymous acquisition retryは行わない。
+- Wiki 003はretained caption payload、corpus inventory、family topic indexが存在するため
+  `static-reviewable`。candidate-specific 12章packetはまだなく、次のnetwork-free upgrade候補。
+- S1 `clip-s1-two-source-common-context-probe-v1-001`のS4 human review pending、OUT-13 M6 deny、
+  既存accepted/parked判定、rights/publication gateはすべて元のexact scopeのまま保持する。
+- `episodes/`はignoredかつtracked 0。Gitへ追加したのはregistry、generator、ledger、HTML card、
+  tests、runtime/handoffだけで、source mediaやreview packageはtrackしない。
 
 ## Next Action
 
-- action: `process_youtube_82iRbxjvbww_full_range_then_youtube_Ocqg-RpQURY_full_range`
-- authorization state: `mechanical_internal_corpus_processing_authorized`
-- owner: `ClipPipeGen editing / asset-fetch lane`
-- condition: `youtube:82iRbxjvbww`の`[0.000, 6418.000)`、続いて
-  `youtube:Ocqg-RpQURY`の`[0.000, 3522.000)`を、各300s / 12 chronological chaptersへ
-  source SHA、caption receipt、topic/provenance index、13/13 checks、closed manifest、
-  full decode、localhost Range playback付きで閉じる。availabilityやpaginationが変化した場合は
-  receipt diffを記録し、過去の3本に合わせてcompleteを捏造しない。
+- action: `upgrade_static_benchmark_slots_without_network_auth_or_existing_artifact_rerender`
+- authorization state: `internal_static_and_existing_local_evidence_processing_authorized`
+- owner: `ClipPipeGen shared-infra / benchmark readback lane`
+- condition: まずWiki 003を既存caption/inventoryだけでcandidate-specific 12章・topic/provenance packetへ
+  上げる。次にstatic/proxy tierを、exact local bytesが既に供給された時だけfully-viewableへ上げる。
+  Wiki 002の`LOGIN_REQUIRED`はparkしたままにし、cookie、OAuth、既存artifactのrerender、
+  rights/publication推定をupgrade条件へ混ぜない。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 

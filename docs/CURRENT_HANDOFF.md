@@ -3,51 +3,61 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: WIKI_TENSAKU_FIRST_SLICE_REVIEW_READY_CORPUS_CONTINUE_S1_PARKED
+health: BENCHMARK_PORTFOLIO_QUICKWIN_READY_WIKI002_EXTERNAL_DEPENDENCY_PARKED_S1_PARKED
 last_touched: 2026-08-04
-current_slice: ED-13
-phase: wiki_tensaku_first_complete_slice_verified_corpus_continue
-canonical_status: wiki_tensaku_first_slice_review_ready_continue_remaining_corpus
+current_slice: SH-05
+phase: benchmark_portfolio_materialized_and_focused_validation_passed
+canonical_status: benchmark_portfolio_15_families_27_slots_internal_review_ready
 active_branch: codex/wiki-tensaku-longform-family-v1
 upstream_branch: origin/codex/wiki-tensaku-longform-family-v1
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
 latest_remote_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-implementation_revision: current_remote_branch_tip_after_normal_push
-sync_observed_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
+implementation_revision: current_branch_tip_after_portfolio_commit
+sync_observed_head: be30a3a64bc73c767ab33d25a845d42b11197ee5
 current_head_locator: refs/heads/codex/wiki-tensaku-longform-family-v1
-remote_handoff_status: pushed_verify_current_ref_on_resume
+remote_handoff_status: pending_portfolio_commit_and_normal_push
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
 parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file
-current_title: Wiki添削 long-form family first complete internal slice verified
-human_entrypoint: episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/review/index.html
-portable_entrypoint: docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md
-review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-longform-v1-001\review\open_preview.ps1
-review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-longform-v1-001\review\serve_preview.ps1
-machine_readback: episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/validation_readback.json
-decision_required: none_for_mechanical_corpus_continue_s1_review_parked
-review_status: internal_review_available_not_requested
+current_title: All registered output benchmark families materialized as a tiered internal portfolio
+human_entrypoint: docs/benchmarks/index.html
+portable_entrypoint: docs/benchmarks/index.html
+review_open_command: start docs\benchmarks\index.html
+review_server_restart_command: not_required_static_portfolio
+machine_readback: docs/benchmarks/benchmark_portfolio.json
+decision_required: none_for_portfolio_navigation_existing_candidate_specific_gates_preserved
+review_status: internal_portfolio_review_available_candidate_acceptance_not_inferred
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: active_internal_first_slice_same_machine_only
-portable_local_artifact_available: false
-cross_machine_resume_class: tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_review_package_are_not
-active_artifact: clip-wiki-tensaku-longform-v1-001
-artifact_output_sha256: 904693b764aa020bcf1834942d93ab30374bf5bdf8d456c265ddfa03e316a36c
-artifact_output_byte_size: 19194868
-artifact_package_tree_digest_sha256: not_used_manifest_file_hashes_closed
-artifact_manifest_self_sha256: 36473a084fb8486eeecdb1c67729d61e167f1ca19fecc015b81ffe3d89740d97
-artifact_file_count: 17
-artifact_duration_seconds: 300.0
-artifact_source_count: 1
-artifact_cut_count: 12
-artifact_source_switch_count: 0
-artifact_caption_cue_count: 123
-artifact_commentary_count: 12
+local_artifact_role: tracked_portfolio_with_links_to_preserved_same_machine_evidence
+portable_local_artifact_available: true
+cross_machine_resume_class: tracked_portfolio_cards_and_contracts_are_portable_local_media_tiers_must_be_reobserved_per_host
+active_artifact: clip-benchmark-portfolio-coverage-v1-001
+artifact_output_sha256: not_applicable_tracked_multi_artifact_portfolio
+artifact_output_byte_size: not_applicable
+artifact_package_tree_digest_sha256: not_used_tracked_regenerable_portfolio
+artifact_manifest_self_sha256: not_applicable
+artifact_file_count: 31
+artifact_duration_seconds: not_applicable
+artifact_source_count: 15
+artifact_cut_count: 27
+artifact_source_switch_count: not_applicable
+artifact_caption_cue_count: inherited_per_candidate_not_aggregated
+artifact_commentary_count: inherited_per_candidate_not_aggregated
+benchmark_family_denominator: 15
+benchmark_candidate_slot_denominator: 27
+benchmark_materialized_card_count: 27
+benchmark_fully_viewable_count: 20
+benchmark_playable_proxy_count: 2
+benchmark_static_reviewable_count: 5
+benchmark_contract_only_count: 0
+benchmark_all_registered_materialized: true
+benchmark_portfolio_gate_status: MET_QUICKWIN_INTERNAL_PORTFOLIO
+benchmark_rights_publication_approval_inferred: false
 package_validation_status: passed
 s1_review_http_status: 200
 s1_review_range_status: 206
-focused_test_status: passed_17
+focused_test_status: benchmark_portfolio_3_passed_plus_wiki_renderer_17_passed
 full_suite_status: not_rerun_preserved_historical_689
 human_review_pending: false
 rights_approval: readback_unresolved
@@ -68,7 +78,23 @@ wiki_first_slice_validation: passed_13_of_13
 wiki_first_slice_full_decode: passed
 wiki_first_slice_review_http_status: 200
 wiki_first_slice_review_range_status: 206
-wiki_state_code: CONTINUE
+wiki_second_artifact_id: clip-wiki-tensaku-longform-v1-002
+wiki_second_source_identity: youtube:82iRbxjvbww
+wiki_second_source_inventory_range_seconds: [0, 6418]
+wiki_second_source_caption_sha256: 42cc8ae804d8ca2d4e7a7185264a3d7930724a55f5162c09b1b4b86bbd37c3e3
+wiki_second_source_caption_event_count: 2145
+wiki_second_topic_window_count: 22
+wiki_second_correction_anchor_count: 55
+wiki_second_chapter_input_count: 12
+wiki_second_creator_commentary_count: 12
+wiki_second_input_contract_validation: passed
+wiki_second_source_bytes_acquired: false
+wiki_second_acquisition_blocker: YOUTUBE_PUBLIC_ANONYMOUS_PLAYER_REQUIRES_LOGIN
+wiki_second_artifact_status: not_created
+wiki_second_media_validation: not_run
+wiki_second_product_gate_status: NOT_MET
+wiki_second_external_state: BLOCKED_EXTERNAL
+wiki_state_code: PARKED_BLOCKED_EXTERNAL_NOT_PORTFOLIO_BOTTLENECK
 s1_lane_status: parked_human_review_pending
 out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive
 out13_human_review_pending: false
@@ -83,15 +109,62 @@ out13_m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 out13_public_use_verdict: deny
 out13_monetized_youtube_verdict: deny
 next_review_due: none_for_wiki_mechanical_continue_s1_review_parked
-next_action: process_youtube_82iRbxjvbww_full_range_then_youtube_Ocqg-RpQURY_full_range
+next_action: upgrade_static_benchmark_slots_without_network_auth_or_existing_artifact_rerender
 current_handoff: docs/CURRENT_HANDOFF.md
-upstream_parity: 0 0 after normal push readback
+upstream_parity: 0 0 at slice start; verify after normal push
+current_slice_push_status: pending_normal_push_after_focused_validation
 source_of_truth: true
-owner_lane: editing_review_handoff
-related: docs/RUNTIME_STATE.md, docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md, docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md, artifacts/ARTIFACTS.md
+owner_lane: shared_infra_benchmark_readback
+related: docs/RUNTIME_STATE.md, docs/benchmarks/benchmark_registry.json, docs/benchmarks/benchmark_portfolio.json, docs/benchmarks/COVERAGE_LEDGER.md, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
+
+## 2026-08-04 registered benchmark portfolio quick-win
+
+`clip-benchmark-portfolio-coverage-v1-001`は、`docs/output_layer`で正本化されている
+Wiki、S1、OUT-01〜OUT-13の15 familyを有限母数とし、family-scoped comparison slotを
+27件へ展開した。媒体を別familyで比較再利用するslotは`reuse_of`で明記しており、27は
+unique media byte数ではない。
+
+tracked entrypointは`docs/benchmarks/index.html`。各slotに一つのtracked HTML cardを生成し、
+machine ledger`docs/benchmarks/benchmark_portfolio.json`とMarkdown coverage ledger
+`docs/benchmarks/COVERAGE_LEDGER.md`へ接続した。現hostの現物検査は20 fully-viewable、
+2 playable-proxy、5 static-reviewable、0 contract-only、27/27 card materialized。既知SHAを持つ
+登録mediaはbuilderがbyte hashを照合し、不一致なら生成をfailする。
+
+既存accepted/parked artifact、S1 review pending、OUT-13 M6 deny、rights/publication gateは変更して
+いない。`episodes/`配下は参照だけで、再生成・copy・track・cleanupなし。Wiki 002の
+`LOGIN_REQUIRED`はexternal state`BLOCKED_EXTERNAL`として残すが、portfolio全体は止めず
+static-reviewable rowへparkした。cookies / OAuth / acquisition retryは行わない。
+
+次の安全なupgradeは、既存`Ocqg-RpQURY`caption、corpus inventory、family topic indexだけで
+Wiki 003のcandidate-specific 12章・topic/provenance packetを作るnetwork-free slice。
+fully-viewableへの昇格はexact local source bytesが別途存在する時だけ行い、portfolio tierを
+human acceptanceやrights/publication承認へ読み替えない。
+
+## 2026-08-04 Wiki添削 002 parked external dependency receipt
+
+target artifact`clip-wiki-tensaku-longform-v1-002`は既存corpus receiptの
+`youtube:82iRbxjvbww`、全範囲`[0, 6418)`、caption SHA
+`42cc8ae804d8ca2d4e7a7185264a3d7930724a55f5162c09b1b4b86bbd37c3e3`へ固定した。
+2,145 timed caption events全域を索引化し、22 topic windows、55 correction anchors、
+12章、12 creator-authored commentary eventsを生成した。commentaryはsource captionと
+mergeせず、source speech claimもfalse。入力contractと17 focused renderer testsはpassした。
+
+source media取得はfail-closed。public Android playerと現行yt-dlpは`LOGIN_REQUIRED`、
+匿名embedもbot gate、公開Piped/Invidious instanceも利用可能なexact mediaを返さなかった。
+cookie / OAuthは使用せず、ignored receipt
+`episodes/wiki_tensaku_family_20260804/corpus/materials/82iRbxjvbww/acquisition_blocker.json`
+へ記録した。従って002 MP4、closed manifest、13/13、full decode、offline launcher、HTTP 200 /
+Range 206は存在せず、Product Gateは`NOT_MET`、外部状態は`BLOCKED_EXTERNAL`。
+
+前sliceでは002の13/13 gate未達を理由にこのfail-closed変更を未commitで止めた。今回のpriority
+overrideでは002完成をportfolio全体の前提から外し、collectorのsuccessor input contract、
+resume script、blocker receiptを`static-reviewable`のupgrade routeとして保持する。これは002を
+完成・review-readyとする変更ではない。再開条件はexact video IDのsource bytesをfresh anonymous
+public player accessまたはuser-provided exact source locatorで得ること。001、S1/S2 review、
+既存episodesは変更・再生成・track・cleanupしていない。
 
 ## 2026-08-04 Wiki添削 first complete slice
 

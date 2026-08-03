@@ -4,13 +4,17 @@
 
 | ID | Feature | State | Observable acceptance |
 |---|---|---|---|
+| **SH-05** | Benchmark portfolio coverage readback | done | The finite current output-layer registry is reconciled as 15 families / 27 family-scoped candidate slots. `clip-benchmark-portfolio-coverage-v1-001` emits one tracked review card per slot plus JSON, Markdown, and HTML ledgers. Current-host observation resolves 20 `fully-viewable`, 2 `playable-proxy`, 5 `static-reviewable`, and 0 `contract-only`; all registered exact media paths with known SHA are checked without rerendering or tracking `episodes/`. Tiers express review availability only and do not alter human acceptance, rights, production, public, monetized, or upload gates. |
 | **ED-13** | Wiki添削 long-form family v1 | in_progress | Public authoritative `Miko Ch. さくらみこ /streams` surface was exhausted at 69 pages / 2,033 unique streams and 48 playlists; the recorded title rule yields 3 available official videos with captions and no duplicate IDs. The reproducible collector, topic/provenance index, and first complete internal artifact `clip-wiki-tensaku-longform-v1-001` are implemented. Its real-source 300s / 12-chapter H.264/AAC output passes 13/13 checks, full decode, closed manifest, resume, and localhost Range playback. Continue with full source ranges of `82iRbxjvbww`, then `Ocqg-RpQURY`. Rights, production, public/monetized use, and upload remain closed; S1 review stays parked. |
 | **ED-12** | S1 two-source common-context probe | in_progress | Tracked implementation `a3771bc` adds `build-common-context-probe`, a bounded two-source renderer, exact evidence/provenance/manifest contracts, and 12 focused tests. Same-machine artifact `clip-s1-two-source-common-context-probe-v1-001` is 6 cuts / 98.896s / SHA `dc621bfe...f95be`; 16 machine checks and the 689-test full suite pass. Exit remains S4 human review of coherence, mutual deepening, attribution/context, and commentary/caption separation. Rights, production, public/monetized use, and upload remain closed. |
 | **ED-11** | OUT-12 one-command real long-form video automation | done | Artifact `clip-out12-one-command-real-video-automation-v1-001`. `build-real-video` takes one acquired real source or episode material identity through provenance, content analysis, chronological Timeline IR, caption timing remap, H.264/AAC render, full validation, manifest, localhost review, and hash-verified resume. The actual `youtube:gUwJBRUIWow` run produced 11 cuts / 260.693767s / SHA `5d391ffd...a584`; all validation checks and mobile/desktop review QA passed. Rights, production subtitle/design/render acceptance, thumbnail, winner, public/publishing, and upload remain closed. |
 
-Current evidence: `docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md` and
-`clip-wiki-tensaku-longform-v1-001` in `artifacts/ARTIFACTS.md`. ED-12/S1 remains
-a parked human-review lane and is not superseded or accepted by ED-13.
+Current evidence: `docs/benchmarks/benchmark_portfolio.json`,
+`docs/benchmarks/COVERAGE_LEDGER.md`, and
+`clip-benchmark-portfolio-coverage-v1-001` in `artifacts/ARTIFACTS.md`. ED-13
+Wiki 002 source-byte acquisition is a parked external dependency rather than
+the portfolio bottleneck. ED-12/S1 remains a parked human-review lane and is
+not superseded or accepted by SH-05 or ED-13.
 
 蜈ｨ讖溯・繧・ID 縺ｧ邂｡逅・☆繧九ら匳骭ｲ縺輔ｌ縺ｦ縺・↑縺・ｩ溯・縺ｯ霑ｽ蜉縺励↑縺・Ａproposed` 縺ｯ繝ｦ繝ｼ繧ｶ繝ｼ謇ｿ隱榊ｾ後↓ `approved` 縺ｸ譏・ｼ縺励※縺九ｉ螳溯｣・☆繧九・
 ## ID 隕丞援

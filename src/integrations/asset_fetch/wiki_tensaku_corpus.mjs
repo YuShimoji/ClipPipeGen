@@ -18,7 +18,7 @@ import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 
 const SCHEMA_VERSION = "clippipegen.wiki_tensaku_corpus.v1";
-const ARTIFACT_ID = "clip-wiki-tensaku-longform-v1-001";
+const DEFAULT_ARTIFACT_ID = "clip-wiki-tensaku-longform-v1-001";
 const CHANNEL_HANDLE = "SakuraMiko";
 const CHANNEL_ID = "UC-hM6YJuNYVAmUWxeIr9FeA";
 const CHANNEL_NAME = "Miko Ch. さくらみこ";
@@ -31,7 +31,9 @@ const SEARCH_QUERIES = [
   "みこスバ調査隊",
 ];
 const DEFAULT_MAX_PAGES = 120;
-const FIRST_SLICE_TARGET_SECONDS = 300;
+const SLICE_TARGET_SECONDS = 300;
+const VIDEO_ID_PATTERN = /^[A-Za-z0-9_-]{11}$/u;
+const ARTIFACT_ID_PATTERN = /^clip-[a-z0-9][a-z0-9-]*$/u;
 const ANDROID_CLIENT = {
   clientName: "ANDROID",
   clientVersion: "20.10.38",
@@ -75,12 +77,23 @@ const TOPICS = [
 const CORRECTION_PATTERN = /(違う|間違|訂正|修正|本当|事実|嘘|正しく|更新)/u;
 
 function parseArgs(argv) {
-  const args = { outputDir: null, maxPages: DEFAULT_MAX_PAGES, downloadFirstSource: false };
+  const args = {
+    outputDir: null,
+    maxPages: DEFAULT_MAX_PAGES,
+    downloadSelectedSource: false,
+    selectedVideoId: null,
+    artifactId: DEFAULT_ARTIFACT_ID,
+    reuseInventory: false,
+  };
   for (let index = 0; index < argv.length; index += 1) {
     const value = argv[index];
     if (value === "--output-dir") args.outputDir = argv[++index];
     else if (value === "--max-pages") args.maxPages = Number(argv[++index]);
-    else if (value === "--download-first-source") args.downloadFirstSource = true;
+    else if (value === "--download-first-source" || value === "--download-selected-source") {
+      args.downloadSelectedSource = true;
+    } else if (value === "--slice-video-id") args.selectedVideoId = argv[++index];
+    else if (value === "--artifact-id") args.artifactId = argv[++index];
+    else if (value === "--reuse-inventory") args.reuseInventory = true;
     else if (value === "--help" || value === "-h") args.help = true;
     else throw new Error(`unknown argument: ${value}`);
   }
@@ -88,6 +101,15 @@ function parseArgs(argv) {
   if (!args.outputDir) throw new Error("--output-dir is required");
   if (!Number.isInteger(args.maxPages) || args.maxPages < 1) {
     throw new Error("--max-pages must be a positive integer");
+  }
+  if (args.selectedVideoId && !VIDEO_ID_PATTERN.test(args.selectedVideoId)) {
+    throw new Error("--slice-video-id must be an 11-character YouTube video ID");
+  }
+  if (!ARTIFACT_ID_PATTERN.test(args.artifactId)) {
+    throw new Error("--artifact-id must be a lowercase clip-* identity");
+  }
+  if (args.reuseInventory && !args.selectedVideoId) {
+    throw new Error("--reuse-inventory requires --slice-video-id");
   }
   return args;
 }
@@ -97,6 +119,10 @@ function usage() {
     "node src/integrations/asset_fetch/wiki_tensaku_corpus.mjs \\",
     "  --output-dir episodes/wiki_tensaku_family_20260804/corpus \\",
     "  [--max-pages 120] [--download-first-source]",
+    "",
+    "Existing-corpus successor slice:",
+    "  --reuse-inventory --slice-video-id <id> --artifact-id <clip-*> \\",
+    "  [--download-selected-source]",
   ].join("\n");
 }
 
@@ -274,7 +300,7 @@ function parsePlayerResponse(html) {
   return extractAssignedJson(html, "var ytInitialPlayerResponse = ");
 }
 
-async function collectWatch(videoId) {
+async function collectWatch(videoId, { fetchCaption = true } = {}) {
   const url = `https://www.youtube.com/watch?v=${videoId}&hl=ja`;
   const html = await fetchText(url);
   const player = parsePlayerResponse(html);
@@ -287,7 +313,7 @@ async function collectWatch(videoId) {
   const japanese = tracks.find((track) => track.languageCode === "ja") || null;
   let captionPayload = null;
   let captionStatus = "absent";
-  if (japanese?.baseUrl) {
+  if (fetchCaption && japanese?.baseUrl) {
     const captionUrl = new URL(japanese.baseUrl);
     captionUrl.searchParams.set("fmt", "json3");
     const response = await fetch(captionUrl, { headers: WEB_HEADERS });
@@ -307,6 +333,7 @@ async function collectWatch(videoId) {
       captionStatus = `http_${response.status}`;
     }
   }
+  if (!fetchCaption && japanese) captionStatus = "existing_payload_reused_not_refetched";
   return {
     receipt: {
       schema_version: SCHEMA_VERSION,
@@ -449,11 +476,34 @@ function expectedUniformCuts(sourceDuration, targetDuration) {
   return cuts;
 }
 
-function buildEditorialContext(first, captionPayload) {
+const SUCCESSOR_CHAPTER_PHASES = [
+  "導入と調査対象",
+  "プロフィールの入口",
+  "語録と表現",
+  "関係性の照合",
+  "記述のズレ",
+  "訂正点の掘り下げ",
+  "過去と現在",
+  "共演者の視点",
+  "事実確認",
+  "更新される人物像",
+  "終盤の再照合",
+  "総括と残る論点",
+];
+
+function buildEditorialContext(
+  source,
+  captionPayload,
+  {
+    artifactId = DEFAULT_ARTIFACT_ID,
+    sourceDurationBasis = "provider_combined_format_approx_duration",
+  } = {},
+) {
   const events = captionEvents(captionPayload);
-  const uniformCuts = expectedUniformCuts(first.duration_seconds, FIRST_SLICE_TARGET_SECONDS);
-  const slotSeconds = first.duration_seconds / uniformCuts.length;
-  const segmentSeconds = FIRST_SLICE_TARGET_SECONDS / uniformCuts.length;
+  const uniformCuts = expectedUniformCuts(source.duration_seconds, SLICE_TARGET_SECONDS);
+  const slotSeconds = source.duration_seconds / uniformCuts.length;
+  const segmentSeconds = SLICE_TARGET_SECONDS / uniformCuts.length;
+  const successorStyle = artifactId !== DEFAULT_ARTIFACT_ID;
   const cuts = uniformCuts.map((fallback, index) => {
     const slotStart = index * slotSeconds;
     const slotEnd = (index + 1) * slotSeconds;
@@ -493,13 +543,22 @@ function buildEditorialContext(first, captionPayload) {
     }
     const topics = Object.entries(topicScores).filter(([, score]) => score > 0)
       .sort((left, right) => right[1] - left[1]);
-    const primary = TOPICS.find((topic) => topic.id === topics[0]?.[0]);
-    const chapterTitle = primary?.label || "時系列サンプル";
+    const topicLabels = topics.slice(0, 3).map(([id]) => TOPICS.find((topic) => topic.id === id)?.label || id);
+    const primary = topicLabels[0] || "時系列サンプル";
+    const phase = SUCCESSOR_CHAPTER_PHASES[index] || `時系列区間${index + 1}`;
+    const chapterTitle = successorStyle ? `${phase} — ${primary}` : primary;
     const cutId = `cut_${String(index + 1).padStart(3, "0")}`;
     return {
       cut_id: cutId,
       chapter_id: `chapter_${String(index + 1).padStart(2, "0")}`,
       title: `第${index + 1}章：${chapterTitle}`,
+      organization: {
+        chronological_phase: phase,
+        primary_topic: topics[0]?.[0] || null,
+        secondary_topics: topics.slice(1, 3).map(([id]) => id),
+        whole_source_slot_index: index + 1,
+        whole_source_slot_count: uniformCuts.length,
+      },
       source_start_seconds: range.start,
       source_end_seconds: range.end,
       source_caption_event_ids: evidence.map((event) => event.event_id),
@@ -510,14 +569,14 @@ function buildEditorialContext(first, captionPayload) {
   });
   return {
     schema_version: "clippipegen.wiki_tensaku_editorial_context.v1",
-    artifact_id: ARTIFACT_ID,
+    artifact_id: artifactId,
     family_id: "miko_led_unofficial_wiki_review",
-    source_identity: `youtube:${first.video_id}`,
+    source_identity: `youtube:${source.video_id}`,
     expected_selection_mode: "editorial_context_caption_dense_chronological_sampling",
-    expected_source_duration_seconds: first.duration_seconds,
-    source_duration_basis: "provider_combined_format_approx_duration",
+    expected_source_duration_seconds: source.duration_seconds,
+    source_duration_basis: sourceDurationBasis,
     source_range_tolerance_seconds: 0.1,
-    expected_target_duration_seconds: FIRST_SLICE_TARGET_SECONDS,
+    expected_target_duration_seconds: SLICE_TARGET_SECONDS,
     expected_cut_count: chapters.length,
     chapters,
     creator_commentary: {
@@ -527,9 +586,12 @@ function buildEditorialContext(first, captionPayload) {
       events: chapters.map((chapter, index) => ({
         commentary_id: `commentary_${String(index + 1).padStart(3, "0")}`,
         cut_id: chapter.cut_id,
-        text: `${chapter.title}。公式配信 ${formatTime(chapter.source_start_seconds)}–${formatTime(chapter.source_end_seconds)} の索引範囲。`,
+        text: successorStyle
+          ? `編集整理「${chapter.organization.chronological_phase}」。${chapter.title.split(" — ").at(-1)}を軸に、公式配信 ${formatTime(chapter.source_start_seconds)}–${formatTime(chapter.source_end_seconds)} を配置した章であり、source captionの発話引用ではない。`
+          : `${chapter.title}。公式配信 ${formatTime(chapter.source_start_seconds)}–${formatTime(chapter.source_end_seconds)} の索引範囲。`,
         evidence_caption_event_ids: chapter.source_caption_event_ids,
         provenance_type: "creator_authored_commentary",
+        source_caption_claim: false,
       })),
     },
     separation_contract: {
@@ -600,8 +662,8 @@ async function androidPlayer(videoId, html) {
   return response.json();
 }
 
-async function downloadFirstSource(first, html, outputDir, observedAt) {
-  const mediaDir = join(outputDir, "materials", first.video_id);
+async function downloadSelectedSource(source, html, outputDir, observedAt) {
+  const mediaDir = join(outputDir, "materials", source.video_id);
   const mediaPath = join(mediaDir, "source_video.mp4");
   const receiptPath = join(mediaDir, "acquisition_receipt.json");
   await mkdir(mediaDir, { recursive: true });
@@ -610,7 +672,7 @@ async function downloadFirstSource(first, html, outputDir, observedAt) {
     const digest = await sha256File(mediaPath);
     if (receipt.source_sha256 === digest) {
       if (!Number(receipt.format?.approx_duration_seconds || 0)) {
-        const player = await androidPlayer(first.video_id, html);
+        const player = await androidPlayer(source.video_id, html);
         const formats = [...(player.streamingData?.formats || []), ...(player.streamingData?.adaptiveFormats || [])];
         const chosen = formats.find((format) => format.itag === 18 && format.url);
         if (chosen) {
@@ -622,8 +684,24 @@ async function downloadFirstSource(first, html, outputDir, observedAt) {
     }
     throw new Error("existing source media does not match acquisition receipt");
   }
-  const player = await androidPlayer(first.video_id, html);
+  const player = await androidPlayer(source.video_id, html);
   if (player.playabilityStatus?.status !== "OK") {
+    await writeJson(join(mediaDir, "acquisition_blocker.json"), {
+      schema_version: SCHEMA_VERSION,
+      observed_at: observedAt,
+      state: "BLOCKED_EXTERNAL_CURRENT_ATTEMPT",
+      blocker_code: "YOUTUBE_PUBLIC_ANONYMOUS_PLAYER_REQUIRES_LOGIN",
+      provider: "youtube_public_android_player",
+      source_url: source.url,
+      source_identity: `youtube:${source.video_id}`,
+      playability_status: player.playabilityStatus?.status || "UNKNOWN",
+      playability_reason: player.playabilityStatus?.reason || null,
+      cookies_used: false,
+      oauth_used: false,
+      source_bytes_acquired: false,
+      resume_requirement:
+        "fresh anonymous public player access or exact user-provided source bytes for this video ID",
+    });
     throw new Error(`source is not playable: ${player.playabilityStatus?.status}`);
   }
   const formats = [...(player.streamingData?.formats || []), ...(player.streamingData?.adaptiveFormats || [])];
@@ -642,8 +720,8 @@ async function downloadFirstSource(first, html, outputDir, observedAt) {
     schema_version: SCHEMA_VERSION,
     acquired_at: observedAt,
     provider: "youtube_public_android_player",
-    source_url: first.url,
-    source_identity: `youtube:${first.video_id}`,
+    source_url: source.url,
+    source_identity: `youtube:${source.video_id}`,
     format: {
       itag: chosen.itag,
       mime_type: chosen.mimeType,
@@ -666,6 +744,118 @@ async function downloadFirstSource(first, html, outputDir, observedAt) {
   return { mediaPath, receipt, reused: false };
 }
 
+async function runExistingCorpusSlice(args, outputDir, observedAt) {
+  const inventoryPath = join(outputDir, "corpus_inventory.json");
+  const corpusReceiptPath = join(outputDir, "corpus_receipt.json");
+  if (!existsSync(inventoryPath) || !existsSync(corpusReceiptPath)) {
+    throw new Error("--reuse-inventory requires existing corpus_inventory.json and corpus_receipt.json");
+  }
+  const corpusInventory = JSON.parse(await readFile(inventoryPath, "utf8"));
+  const corpusReceipt = JSON.parse(await readFile(corpusReceiptPath, "utf8"));
+  const source = (corpusInventory.videos || []).find((row) => row.video_id === args.selectedVideoId);
+  if (!source) throw new Error("selected video is absent from the fixed corpus inventory");
+  if (source.availability !== "OK" || source.caption_status !== "fetched") {
+    throw new Error("selected inventory source is not fixed as available with captions");
+  }
+  const captionPath = join(outputDir, "captions", `${source.video_id}.ja.json3`);
+  if (!existsSync(captionPath)) throw new Error("selected source caption payload is missing");
+  const captionPayload = JSON.parse(await readFile(captionPath, "utf8"));
+  const captionDigest = await sha256File(captionPath);
+  const captionRows = captionEvents(captionPayload);
+  if (!captionRows.length) throw new Error("selected source caption payload has no timed events");
+
+  const liveWatch = await collectWatch(source.video_id, { fetchCaption: false });
+  let acquisition = null;
+  if (args.downloadSelectedSource) {
+    acquisition = await downloadSelectedSource(source, liveWatch.html, outputDir, observedAt);
+  }
+  const acquiredDuration = Number(acquisition?.receipt?.format?.approx_duration_seconds || 0);
+  const sourceForSlice = acquiredDuration > 0
+    ? { ...source, duration_seconds: acquiredDuration }
+    : source;
+  const captionById = new Map([[source.video_id, captionPayload]]);
+  const topicIndex = buildTopicIndex([source], captionById);
+  const editorialContext = buildEditorialContext(sourceForSlice, captionPayload, {
+    artifactId: args.artifactId,
+    sourceDurationBasis: acquiredDuration > 0
+      ? "provider_combined_format_approx_duration"
+      : "fixed_corpus_inventory_duration_seconds",
+  });
+  const rights = buildRightsManifest(sourceForSlice, observedAt);
+  const sourceTopicIndex = topicIndex.sources[0];
+  const sliceDir = join(outputDir, "slice_inputs", args.artifactId);
+  const sliceReceipt = {
+    schema_version: SCHEMA_VERSION,
+    artifact_id: args.artifactId,
+    family_id: corpusInventory.family_id,
+    created_at: observedAt,
+    corpus_binding: {
+      inventory_path: "corpus_inventory.json",
+      inventory_sha256: await sha256File(inventoryPath),
+      receipt_path: "corpus_receipt.json",
+      receipt_sha256: await sha256File(corpusReceiptPath),
+      canonical_inventory_sha256: corpusReceipt.corpus?.canonical_inventory_sha256 || null,
+      public_surface_completeness: corpusReceipt.missing_and_private?.completeness_claim || null,
+    },
+    source: {
+      source_identity: `youtube:${source.video_id}`,
+      inventory_duration_seconds: source.duration_seconds,
+      inventory_full_range_seconds: [0, source.duration_seconds],
+      acquired_container_approx_duration_seconds: acquiredDuration || null,
+      acquisition_receipt_path: `materials/${source.video_id}/acquisition_receipt.json`,
+      source_sha256: acquisition?.receipt?.source_sha256 || null,
+      source_byte_size: acquisition?.receipt?.source_byte_size || null,
+    },
+    source_caption: {
+      provenance_type: "source_caption",
+      path: `captions/${source.video_id}.ja.json3`,
+      sha256: captionDigest,
+      timed_event_count: captionRows.length,
+      full_source_indexed: true,
+    },
+    whole_source_index: {
+      path: `slice_inputs/${args.artifactId}/topic_index.json`,
+      topic_window_count: sourceTopicIndex.topic_windows.length,
+      correction_anchor_count: sourceTopicIndex.correction_anchors.length,
+      chronology_basis: "source_time_ascending_with_before_after_event_context",
+      causal_inference_allowed: false,
+    },
+    creator_commentary: {
+      provenance_type: "creator_authored_commentary",
+      path: `slice_inputs/${args.artifactId}/editorial_context.json`,
+      event_count: editorialContext.creator_commentary.events.length,
+      merged_with_source_caption: false,
+      source_caption_claim: false,
+    },
+    live_availability_readback: liveWatch.receipt,
+    rights_status: "readback_unresolved",
+    production_public_monetized_upload_approved: false,
+  };
+  await writeJson(join(sliceDir, "editorial_context.json"), editorialContext);
+  await writeJson(join(sliceDir, "rights_manifest.json"), rights);
+  await writeJson(join(sliceDir, "topic_index.json"), topicIndex);
+  await writeJson(join(sliceDir, "slice_receipt.json"), sliceReceipt);
+  await writeJson(join(sliceDir, "live_player_readback.json"), liveWatch.receipt);
+
+  const result = {
+    state: "EXISTING_CORPUS_SUCCESSOR_SLICE_INPUTS_READY",
+    artifact_id: args.artifactId,
+    output_dir: outputDir,
+    slice_input_dir: sliceDir,
+    selected_source_video_id: source.video_id,
+    selected_source_inventory_range_seconds: [0, source.duration_seconds],
+    selected_source_media: acquisition?.mediaPath || null,
+    selected_source_media_sha256: acquisition?.receipt?.source_sha256 || null,
+    selected_source_media_reused: acquisition?.reused || false,
+    source_caption_sha256: captionDigest,
+    source_caption_event_count: captionRows.length,
+    topic_window_count: sourceTopicIndex.topic_windows.length,
+    correction_anchor_count: sourceTopicIndex.correction_anchors.length,
+  };
+  await writeJson(join(outputDir, "collector_runs", `${args.artifactId}.json`), result);
+  return result;
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) {
@@ -675,6 +865,10 @@ async function main() {
   const outputDir = resolve(args.outputDir);
   await mkdir(outputDir, { recursive: true });
   const observedAt = new Date().toISOString();
+  if (args.reuseInventory) {
+    console.log(JSON.stringify(await runExistingCorpusSlice(args, outputDir, observedAt), null, 2));
+    return;
+  }
 
   const streams = await crawlChannelTab({
     url: `${CHANNEL_BASE}/streams`,
@@ -798,20 +992,31 @@ async function main() {
     rerun: usage(),
   };
   const topicIndex = buildTopicIndex(inventory, captionById);
-  const first = inventory[0];
-  if (!first || !captionById.has(first.video_id)) {
+  const selected = args.selectedVideoId
+    ? inventory.find((row) => row.video_id === args.selectedVideoId)
+    : inventory[0];
+  if (!selected || !captionById.has(selected.video_id)) {
     throw new Error("no caption-bearing authoritative family source for first slice");
   }
   let acquisition = null;
-  if (args.downloadFirstSource) {
-    acquisition = await downloadFirstSource(first, watchById.get(first.video_id).html, outputDir, observedAt);
+  if (args.downloadSelectedSource) {
+    acquisition = await downloadSelectedSource(
+      selected,
+      watchById.get(selected.video_id).html,
+      outputDir,
+      observedAt,
+    );
   }
   const acquiredDuration = Number(acquisition?.receipt?.format?.approx_duration_seconds || 0);
-  const firstForSlice = acquiredDuration > 0
-    ? { ...first, duration_seconds: acquiredDuration }
-    : first;
-  const editorialContext = buildEditorialContext(firstForSlice, captionById.get(first.video_id));
-  const rights = buildRightsManifest(firstForSlice, observedAt);
+  const selectedForSlice = acquiredDuration > 0
+    ? { ...selected, duration_seconds: acquiredDuration }
+    : selected;
+  const editorialContext = buildEditorialContext(
+    selectedForSlice,
+    captionById.get(selected.video_id),
+    { artifactId: args.artifactId },
+  );
+  const rights = buildRightsManifest(selectedForSlice, observedAt);
   await writeJson(join(outputDir, "corpus_inventory.json"), corpusInventory);
   await writeJson(join(outputDir, "corpus_receipt.json"), corpusReceipt);
   await writeJson(join(outputDir, "topic_index.json"), topicIndex);
@@ -827,7 +1032,7 @@ async function main() {
     streams_total: streams.unique_count,
     playlists_total: playlists.unique_count,
     dedicated_playlist_status: corpusReceipt.playlists_surface.dedicated_playlist_status,
-    first_source_video_id: first.video_id,
+    first_source_video_id: selected.video_id,
     first_source_media: acquisition?.mediaPath || null,
     first_source_media_sha256: acquisition?.receipt?.source_sha256 || null,
     first_source_media_reused: acquisition?.reused || false,

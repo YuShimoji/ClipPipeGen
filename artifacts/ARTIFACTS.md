@@ -6,11 +6,13 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, then use the Runtime-driven
-current focus. ED-13 is the active execution lane: a reproducibly inventoried
-Wiki添削 family and its first complete real-source internal artifact. ED-12 / S1
-remains a parked exact review target with S4 human review pending. Both packages
-are ignored same-machine evidence. Git carries implementation, tests, contracts,
-identities, and handoff, not source media or final MP4.
+current focus. SH-05 is the active readback surface: a tracked benchmark
+portfolio spanning the 15 registered output-layer families and 27
+family-scoped candidate slots. ED-13 Wiki 002 source-byte acquisition is parked
+as one explicit upgrade condition instead of blocking the portfolio. ED-12 / S1
+remains a parked exact review target with S4 human review pending. Local packages
+remain ignored same-machine evidence. Git carries implementation, tests,
+contracts, identities, benchmark cards, and handoff, not source media or final MP4.
 OUT-13 candidate 005 remains accepted-internal read-only archive evidence whose
 public/monetized path was denied at M6. Candidate 004 has
 the same review-relevant media SHA and inherits the recorded internal dimensions without another full-view gate.
@@ -31,6 +33,35 @@ for the supporting regenerated ED-10l real-font comparison, use
 `episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_known_kirinuki_font_pack_comparison\open_comparison.ps1`;
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
+
+## `clip-benchmark-portfolio-coverage-v1-001`
+
+| Field | Value |
+|---|---|
+| title | ClipPipeGen Benchmark Portfolio Coverage v1 |
+| purpose | Materialize every currently registered output-layer family and family-scoped candidate slot as the thinnest honest reverse-engineering review surface, while preserving exact acceptance and external gates. |
+| storage class | Tracked registry, deterministic builder, JSON/Markdown/HTML ledgers, and 27 tracked static candidate cards. Existing playable packages and media remain ignored under `episodes/`; no media was copied, regenerated, tracked, or cleaned. |
+| repo_relative_path | `docs/benchmarks/benchmark_registry.json`; `tools/benchmarks/build_benchmark_portfolio.py`; `docs/benchmarks/benchmark_portfolio.json`; `docs/benchmarks/COVERAGE_LEDGER.md`; `docs/benchmarks/index.html`; `docs/benchmarks/candidates/*.html`; `tests/test_benchmark_portfolio.py` |
+| artifact_id | `clip-benchmark-portfolio-coverage-v1-001` |
+| denominator | 15 registered families / 27 family-scoped candidate slots. Reused media remains a separate comparison slot and is marked through `reuse_of`; this is not a unique-media count. |
+| current coverage | 20 `fully-viewable`; 2 `playable-proxy`; 5 `static-reviewable`; 0 `contract-only`; 27/27 materialized cards. |
+| open_command | `start docs\benchmarks\index.html` |
+| machine_output | `docs/benchmarks/benchmark_portfolio.json` |
+| coverage_ledger | `docs/benchmarks/COVERAGE_LEDGER.md` |
+| validation_command | `uv run --offline --no-project --python 3.13 python tools/benchmarks/build_benchmark_portfolio.py --hash-local-media --format json`; `uv run --offline --no-project --python 3.13 --with pytest pytest -q tests/test_benchmark_portfolio.py`; focused Wiki successor tests; `git diff --check`; `git ls-files episodes`. |
+| review_status | Internal portfolio review available. A tier is an availability/readback classification, not fresh human acceptance. Existing accepted and parked decisions retain their exact artifact/SHA scope. |
+| next_action | Upgrade static Wiki 003 to a candidate-specific indexed input packet without network acquisition, then upgrade media tiers only when exact existing/local source bytes are available. Keep Wiki 002 anonymous-login blocker parked and do not use cookies or OAuth. |
+
+Boundary flags remain false or explicit:
+
+- `rights_approval_inferred=false`
+- `production_acceptance_inferred=false`
+- `public_or_monetized_acceptance_inferred=false`
+- `upload_attempted=false`
+- `episodes_paths_tracked=false`
+- `existing_artifacts_rerendered=false`
+- `human_review_required_for_portfolio_navigation=false`
+- `human_review_required_for_candidate_acceptance=per_existing_exact_gate`
 
 ## `clip-wiki-tensaku-longform-v1-001`
 

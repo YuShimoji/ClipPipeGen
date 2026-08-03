@@ -2,6 +2,13 @@
 
 ## 現在の結論
 
+2026-08-04のportfolio priority overrideにより、002 source-byte acquisitionは全体のmain
+bottleneckではない。`clip-wiki-tensaku-longform-v1-002`はcaption/topic/chapter/commentary inputと
+fail-closed blocker receiptを持つ`static-reviewable` benchmarkとしてparkし、cookies / OAuth /
+anonymous acquisition retryを行わない。15 family / 27 slotの現在の横断入口は
+[`../benchmarks/index.html`](../benchmarks/index.html)。002の完全動画条件と権利境界は下記の
+まま保持し、完成済みとは扱わない。
+
 `ED-13`は、さくらみこ公式チャンネルの公開`/streams`面を正本surfaceとして、
 タイトルが`非公式wiki`または`みこスバ調査隊`に一致する配信を「Wiki添削」familyへ
 含める。2026-08-04の再実行では69ページ、2,033 unique streamsをpagination終端まで列挙し、

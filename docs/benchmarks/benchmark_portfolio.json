@@ -1,0 +1,1419 @@
+{
+  "schema_version": "clippipegen.benchmark_portfolio.v1",
+  "portfolio_id": "clip-benchmark-portfolio-coverage-v1-001",
+  "observed_at": "2026-08-04T18:30:00+09:00",
+  "scope": "The 15 output-layer families currently registered by docs/output_layer: Wiki, S1, and OUT-01 through OUT-13.",
+  "candidate_counting_rule": "Count family-scoped benchmark slots. A slot reused by another family remains a separate comparison slot, while reused media bytes are identified with reuse_of.",
+  "family_denominator": 15,
+  "candidate_denominator": 27,
+  "materialized_candidate_cards": 27,
+  "all_registered_candidates_materialized": true,
+  "coverage_by_tier": {
+    "contract-only": 0,
+    "static-reviewable": 5,
+    "playable-proxy": 2,
+    "fully-viewable": 20
+  },
+  "rights_publication_approval_inferred": false,
+  "episodes_paths_tracked_by_this_artifact": false,
+  "families": [
+    {
+      "family_id": "wiki-tensaku-longform-v1",
+      "title": "Wiki添削 Long-form Family v1",
+      "contract_path": "docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md",
+      "candidate_count": 3,
+      "coverage_by_tier": {
+        "fully-viewable": 1,
+        "static-reviewable": 2
+      },
+      "candidates": [
+        {
+          "candidate_id": "wiki-001",
+          "artifact_identity": "clip-wiki-tensaku-longform-v1-001",
+          "role": "First complete chronological long-form slice",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md",
+          "local_entrypoint": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/review/index.html",
+          "local_media": [
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/final_video.mp4",
+              "expected_sha256": "904693b764aa020bcf1834942d93ab30374bf5bdf8d456c265ddfa03e316a36c"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\wiki_tensaku_family_20260804\\artifacts\\clip-wiki-tensaku-longform-v1-001\\review\\open_preview.ps1",
+          "state": "verified_13_of_13_internal",
+          "missing_upgrade_condition": "none_for_current_internal_review_tier",
+          "boundary": "Rights remain readback_unresolved; production, public, monetized, and upload approval are not inferred.",
+          "family_id": "wiki-tensaku-longform-v1",
+          "family_title": "Wiki添削 Long-form Family v1",
+          "contract": {
+            "path": "docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md",
+            "present": true,
+            "byte_size": 6104
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md",
+            "present": true,
+            "byte_size": 6104
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/review/index.html",
+            "present": true,
+            "byte_size": 6056
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/final_video.mp4",
+              "present": true,
+              "byte_size": 19194868,
+              "expected_sha256": "904693b764aa020bcf1834942d93ab30374bf5bdf8d456c265ddfa03e316a36c",
+              "observed_sha256": "904693b764aa020bcf1834942d93ab30374bf5bdf8d456c265ddfa03e316a36c",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/wiki-001.html"
+        },
+        {
+          "candidate_id": "wiki-002",
+          "artifact_identity": "clip-wiki-tensaku-longform-v1-002",
+          "role": "Second full-corpus-indexed source; media build parked",
+          "target_tier": "static-reviewable",
+          "static_entrypoint": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-002/slice_receipt.json",
+          "local_evidence": [
+            "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-002/editorial_context.json",
+            "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-002/topic_index.json",
+            "episodes/wiki_tensaku_family_20260804/corpus/materials/82iRbxjvbww/acquisition_blocker.json"
+          ],
+          "local_media": [],
+          "open_command": "start docs\\benchmarks\\candidates\\wiki-002.html",
+          "state": "static_inputs_ready_external_source_bytes_blocked",
+          "missing_upgrade_condition": "Exact youtube:82iRbxjvbww source bytes or fresh anonymous public player access, then the existing 300-second build and 13-of-13 verification route.",
+          "boundary": "Do not retry cookies or OAuth. The source-byte blocker does not block the benchmark portfolio.",
+          "family_id": "wiki-tensaku-longform-v1",
+          "family_title": "Wiki添削 Long-form Family v1",
+          "contract": {
+            "path": "docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md",
+            "present": true,
+            "byte_size": 6104
+          },
+          "static_entrypoint_state": {
+            "path": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-002/slice_receipt.json",
+            "present": true,
+            "byte_size": 2777
+          },
+          "local_entrypoint_state": null,
+          "local_evidence_state": [
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-002/editorial_context.json",
+              "present": true,
+              "byte_size": 23436
+            },
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-002/topic_index.json",
+              "present": true,
+              "byte_size": 105991
+            },
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/corpus/materials/82iRbxjvbww/acquisition_blocker.json",
+              "present": true,
+              "byte_size": 713
+            }
+          ],
+          "local_media_state": [],
+          "observed_tier": "static-reviewable",
+          "materialized_card": "docs/benchmarks/candidates/wiki-002.html"
+        },
+        {
+          "candidate_id": "wiki-003",
+          "artifact_identity": "clip-wiki-tensaku-longform-v1-003",
+          "role": "Third inventoried source with retained caption and family index",
+          "target_tier": "static-reviewable",
+          "static_entrypoint": "episodes/wiki_tensaku_family_20260804/corpus/captions/Ocqg-RpQURY.ja.json3",
+          "local_evidence": [
+            "episodes/wiki_tensaku_family_20260804/corpus/corpus_inventory.json",
+            "episodes/wiki_tensaku_family_20260804/corpus/topic_index.json"
+          ],
+          "local_media": [],
+          "open_command": "start docs\\benchmarks\\candidates\\wiki-003.html",
+          "state": "caption_and_family_index_present_not_built",
+          "missing_upgrade_condition": "Create candidate-specific 12-chapter inputs, obtain exact youtube:Ocqg-RpQURY source bytes, then run the existing long-form build and 13-of-13 verification route.",
+          "boundary": "Caption availability is not a media, rights, production, or publication approval.",
+          "family_id": "wiki-tensaku-longform-v1",
+          "family_title": "Wiki添削 Long-form Family v1",
+          "contract": {
+            "path": "docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md",
+            "present": true,
+            "byte_size": 6104
+          },
+          "static_entrypoint_state": {
+            "path": "episodes/wiki_tensaku_family_20260804/corpus/captions/Ocqg-RpQURY.ja.json3",
+            "present": true,
+            "byte_size": 452217
+          },
+          "local_entrypoint_state": null,
+          "local_evidence_state": [
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/corpus/corpus_inventory.json",
+              "present": true,
+              "byte_size": 2876
+            },
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/corpus/topic_index.json",
+              "present": true,
+              "byte_size": 259178
+            }
+          ],
+          "local_media_state": [],
+          "observed_tier": "static-reviewable",
+          "materialized_card": "docs/benchmarks/candidates/wiki-003.html"
+        }
+      ]
+    },
+    {
+      "family_id": "s1-two-source-common-context",
+      "title": "S1 Two-Source Common-Context Probe",
+      "contract_path": "docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md",
+      "candidate_count": 1,
+      "coverage_by_tier": {
+        "fully-viewable": 1
+      },
+      "candidates": [
+        {
+          "candidate_id": "s1-001",
+          "artifact_identity": "clip-s1-two-source-common-context-probe-v1-001",
+          "role": "Two-source argumentative probe",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md",
+          "local_entrypoint": "episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html",
+          "local_media": [
+            {
+              "path": "episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/final_video.mp4",
+              "expected_sha256": "dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\s1_two_source_common_context_probe_20260726\\review\\clip_s1_two_source_common_context_probe_v001\\review\\open_preview.ps1",
+          "state": "human_review_pending_parked",
+          "missing_upgrade_condition": "Human S4 review bound to the exact MP4 SHA; no rerender is required.",
+          "boundary": "Machine validation does not establish the two-source editorial thesis or public use.",
+          "family_id": "s1-two-source-common-context",
+          "family_title": "S1 Two-Source Common-Context Probe",
+          "contract": {
+            "path": "docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md",
+            "present": true,
+            "byte_size": 6515
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md",
+            "present": true,
+            "byte_size": 6515
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html",
+            "present": true,
+            "byte_size": 6907
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/final_video.mp4",
+              "present": true,
+              "byte_size": 93331608,
+              "expected_sha256": "dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be",
+              "observed_sha256": "dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/s1-001.html"
+        }
+      ]
+    },
+    {
+      "family_id": "out13-editorial-video-candidate",
+      "title": "OUT-13 Editorial Video Candidate",
+      "contract_path": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+      "candidate_count": 5,
+      "coverage_by_tier": {
+        "static-reviewable": 1,
+        "fully-viewable": 4
+      },
+      "candidates": [
+        {
+          "candidate_id": "out13-001",
+          "artifact_identity": "clip-out13-editorial-video-candidate-v1-001",
+          "role": "Historical source-host receipt",
+          "target_tier": "static-reviewable",
+          "static_entrypoint": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+          "local_media": [],
+          "open_command": "start docs\\benchmarks\\candidates\\out13-001.html",
+          "state": "historical_receipt_not_local_on_this_host",
+          "missing_upgrade_condition": "Restore its exact source-host package only if historical byte-level comparison is explicitly needed.",
+          "boundary": "Do not call this the active Thank-host candidate.",
+          "family_id": "out13-editorial-video-candidate",
+          "family_title": "OUT-13 Editorial Video Candidate",
+          "contract": {
+            "path": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+            "present": true,
+            "byte_size": 16039
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+            "present": true,
+            "byte_size": 16039
+          },
+          "local_entrypoint_state": null,
+          "local_evidence_state": [],
+          "local_media_state": [],
+          "observed_tier": "static-reviewable",
+          "materialized_card": "docs/benchmarks/candidates/out13-001.html"
+        },
+        {
+          "candidate_id": "out13-002",
+          "artifact_identity": "clip-out13-editorial-video-candidate-v1-002",
+          "role": "Superseded first Thank-host immutable rebuild",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+          "local_entrypoint": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v002/review/index.html",
+          "local_media": [
+            {
+              "path": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v002/final_video.mp4",
+              "expected_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out13_editorial_video_candidate_20260723\\review\\out13_editorial_video_candidate_v002\\review\\open_preview.ps1",
+          "state": "superseded_provenance_wording",
+          "missing_upgrade_condition": "none_for_historical_reverse_engineering; use 005 for current closed provenance",
+          "boundary": "Superseded evidence is not an accepted publication candidate.",
+          "family_id": "out13-editorial-video-candidate",
+          "family_title": "OUT-13 Editorial Video Candidate",
+          "contract": {
+            "path": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+            "present": true,
+            "byte_size": 16039
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+            "present": true,
+            "byte_size": 16039
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v002/review/index.html",
+            "present": true,
+            "byte_size": 9465
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v002/final_video.mp4",
+              "present": true,
+              "byte_size": 82594810,
+              "expected_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+              "observed_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out13-002.html"
+        },
+        {
+          "candidate_id": "out13-003",
+          "artifact_identity": "clip-out13-editorial-video-candidate-v1-003",
+          "role": "Media-reviewable technical predecessor",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+          "local_entrypoint": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v003/review/index.html",
+          "local_media": [
+            {
+              "path": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v003/final_video.mp4",
+              "expected_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out13_editorial_video_candidate_20260723\\review\\out13_editorial_video_candidate_v003\\review\\open_preview.ps1",
+          "state": "technical_predecessor_unaccepted",
+          "missing_upgrade_condition": "none_for_historical_reverse_engineering; package immutability gaps are closed only in successors",
+          "boundary": "Playable bytes do not upgrade its historical acceptance state.",
+          "family_id": "out13-editorial-video-candidate",
+          "family_title": "OUT-13 Editorial Video Candidate",
+          "contract": {
+            "path": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+            "present": true,
+            "byte_size": 16039
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+            "present": true,
+            "byte_size": 16039
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v003/review/index.html",
+            "present": true,
+            "byte_size": 9465
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v003/final_video.mp4",
+              "present": true,
+              "byte_size": 82594810,
+              "expected_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+              "observed_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out13-003.html"
+        },
+        {
+          "candidate_id": "out13-004",
+          "artifact_identity": "clip-out13-editorial-video-candidate-v1-004",
+          "role": "Closed-package predecessor with accepted media bytes",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+          "local_entrypoint": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v004/review/index.html",
+          "local_media": [
+            {
+              "path": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v004/final_video.mp4",
+              "expected_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out13_editorial_video_candidate_20260723\\review\\out13_editorial_video_candidate_v004\\review\\open_preview.ps1",
+          "state": "closed_package_predecessor",
+          "missing_upgrade_condition": "none_for_media comparison; use 005 for the current preservation contract",
+          "boundary": "Acceptance inherited only for the identical media dimensions recorded in the receipt.",
+          "family_id": "out13-editorial-video-candidate",
+          "family_title": "OUT-13 Editorial Video Candidate",
+          "contract": {
+            "path": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+            "present": true,
+            "byte_size": 16039
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+            "present": true,
+            "byte_size": 16039
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v004/review/index.html",
+            "present": true,
+            "byte_size": 9465
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v004/final_video.mp4",
+              "present": true,
+              "byte_size": 82594810,
+              "expected_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+              "observed_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out13-004.html"
+        },
+        {
+          "candidate_id": "out13-005",
+          "artifact_identity": "clip-out13-editorial-video-candidate-v1-005",
+          "role": "Accepted-internal read-only archive evidence",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+          "local_entrypoint": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html",
+          "local_media": [
+            {
+              "path": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/final_video.mp4",
+              "expected_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out13_editorial_video_candidate_20260723\\review\\out13_editorial_video_candidate_v005\\review\\open_preview.ps1",
+          "state": "accepted_internal_m6_public_and_monetized_deny",
+          "missing_upgrade_condition": "A materially distinct successor is required before any new public or monetized consideration.",
+          "boundary": "Read-only archive; do not rerender, publish, monetize, upload, or reinterpret the M6 deny.",
+          "family_id": "out13-editorial-video-candidate",
+          "family_title": "OUT-13 Editorial Video Candidate",
+          "contract": {
+            "path": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+            "present": true,
+            "byte_size": 16039
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_13_EDITORIAL_VIDEO_CANDIDATE.md",
+            "present": true,
+            "byte_size": 16039
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/review/index.html",
+            "present": true,
+            "byte_size": 9465
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/out13_editorial_video_candidate_20260723/review/out13_editorial_video_candidate_v005/final_video.mp4",
+              "present": true,
+              "byte_size": 82594810,
+              "expected_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+              "observed_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out13-005.html"
+        }
+      ]
+    },
+    {
+      "family_id": "out12-one-command-real-video",
+      "title": "OUT-12 One-Command Real Video Automation",
+      "contract_path": "docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md",
+      "candidate_count": 1,
+      "coverage_by_tier": {
+        "fully-viewable": 1
+      },
+      "candidates": [
+        {
+          "candidate_id": "out12-001",
+          "artifact_identity": "clip-out12-one-command-real-video-automation-v1-001",
+          "role": "One-command long-form automation proof",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md",
+          "local_entrypoint": "episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/review/index.html",
+          "local_media": [
+            {
+              "path": "episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/final_video.mp4",
+              "expected_sha256": "5d391ffd5ff48da03858d8f558ff680bd45643e108d765fefefceb32c250a584"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out12_source05_one_command_real_video_20260721\\review\\out12_one_command_real_video_automation\\review\\open_preview.ps1",
+          "state": "operational_predecessor_verified",
+          "missing_upgrade_condition": "none_for_internal automation benchmark",
+          "boundary": "Operational proof does not approve production, rights, thumbnail, publication, or upload.",
+          "family_id": "out12-one-command-real-video",
+          "family_title": "OUT-12 One-Command Real Video Automation",
+          "contract": {
+            "path": "docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md",
+            "present": true,
+            "byte_size": 4978
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md",
+            "present": true,
+            "byte_size": 4978
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/review/index.html",
+            "present": true,
+            "byte_size": 3925
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/out12_source05_one_command_real_video_20260721/review/out12_one_command_real_video_automation/final_video.mp4",
+              "present": true,
+              "byte_size": 142789781,
+              "expected_sha256": "5d391ffd5ff48da03858d8f558ff680bd45643e108d765fefefceb32c250a584",
+              "observed_sha256": "5d391ffd5ff48da03858d8f558ff680bd45643e108d765fefefceb32c250a584",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out12-001.html"
+        }
+      ]
+    },
+    {
+      "family_id": "out11-five-source-portfolio",
+      "title": "OUT-11 Five-Source Short Portfolio",
+      "contract_path": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+      "candidate_count": 5,
+      "coverage_by_tier": {
+        "fully-viewable": 5
+      },
+      "candidates": [
+        {
+          "candidate_id": "out11-slot-out08",
+          "artifact_identity": "clip-out11-five-source-short-portfolio-wave-v0-002#OUT-08",
+          "role": "Accepted two-candidate baseline comparison slot",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+          "local_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/index.html",
+          "local_media": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/candidate_01.mp4",
+              "expected_sha256": "f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a"
+            },
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/candidate_02.mp4",
+              "expected_sha256": "47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out08_real_unused_range_short_minibatch\\open_preview.ps1 -Serve",
+          "reuse_of": [
+            "out08-candidate-01",
+            "out08-candidate-02"
+          ],
+          "state": "accepted_internal_context_slot",
+          "missing_upgrade_condition": "none_for_current comparison slot",
+          "boundary": "The five-source portfolio selected no winner or universal production policy.",
+          "family_id": "out11-five-source-portfolio",
+          "family_title": "OUT-11 Five-Source Short Portfolio",
+          "contract": {
+            "path": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+            "present": true,
+            "byte_size": 7456
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+            "present": true,
+            "byte_size": 7456
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/index.html",
+            "present": true,
+            "byte_size": 3682
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/candidate_01.mp4",
+              "present": true,
+              "byte_size": 16172576,
+              "expected_sha256": "f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a",
+              "observed_sha256": "f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a",
+              "sha256_matches_expected": true
+            },
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/candidate_02.mp4",
+              "present": true,
+              "byte_size": 36043376,
+              "expected_sha256": "47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b",
+              "observed_sha256": "47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out11-slot-out08.html"
+        },
+        {
+          "candidate_id": "out11-slot-out09",
+          "artifact_identity": "clip-out11-five-source-short-portfolio-wave-v0-002#OUT-09",
+          "role": "Accepted second-source comparison slot",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+          "local_entrypoint": "episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/index.html",
+          "local_media": [
+            {
+              "path": "episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_01.mp4",
+              "expected_sha256": "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\holoen01_kronii_wisdomteeth_out09_20260718\\review\\out09_second_source_short_repeatability\\open_preview.ps1 -Serve",
+          "reuse_of": [
+            "out09-001"
+          ],
+          "state": "accepted_internal_context_slot",
+          "missing_upgrade_condition": "none_for_current comparison slot",
+          "boundary": "Speaker identity, rights, and production policy remain unapproved.",
+          "family_id": "out11-five-source-portfolio",
+          "family_title": "OUT-11 Five-Source Short Portfolio",
+          "contract": {
+            "path": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+            "present": true,
+            "byte_size": 7456
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+            "present": true,
+            "byte_size": 7456
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/index.html",
+            "present": true,
+            "byte_size": 4645
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_01.mp4",
+              "present": true,
+              "byte_size": 5976722,
+              "expected_sha256": "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
+              "observed_sha256": "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out11-slot-out09.html"
+        },
+        {
+          "candidate_id": "out11-slot-out10",
+          "artifact_identity": "clip-out11-five-source-short-portfolio-wave-v0-002#OUT-10",
+          "role": "Accepted repaired third-source comparison slot",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+          "local_entrypoint": "episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/index.html",
+          "local_media": [
+            {
+              "path": "episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/candidate_01.mp4",
+              "expected_sha256": "62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out10_hololive_secret_clinic_20260719\\review\\out10_third_source_short_portfolio\\open_preview.ps1 -Serve",
+          "reuse_of": [
+            "out10-001"
+          ],
+          "state": "accepted_internal_with_source_specific_debt",
+          "missing_upgrade_condition": "none_for_current comparison slot",
+          "boundary": "Source-specific endpoint debt is retained; no production or publication approval.",
+          "family_id": "out11-five-source-portfolio",
+          "family_title": "OUT-11 Five-Source Short Portfolio",
+          "contract": {
+            "path": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+            "present": true,
+            "byte_size": 7456
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+            "present": true,
+            "byte_size": 7456
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/index.html",
+            "present": true,
+            "byte_size": 5253
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/candidate_01.mp4",
+              "present": true,
+              "byte_size": 19319488,
+              "expected_sha256": "62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd",
+              "observed_sha256": "62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out11-slot-out10.html"
+        },
+        {
+          "candidate_id": "out11-slot-source04",
+          "artifact_identity": "clip-out11-five-source-short-portfolio-wave-v0-002#SOURCE-04",
+          "role": "Accepted unchanged fourth-source receipt",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+          "local_entrypoint": "episodes/out11_source04_indonesia_laugh_20260720/review/out11_source04_candidate/index.html",
+          "local_media": [
+            {
+              "path": "episodes/out11_source04_indonesia_laugh_20260720/review/out11_source04_candidate/candidate.mp4",
+              "expected_sha256": "465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524"
+            }
+          ],
+          "open_command": "start episodes\\out11_source04_indonesia_laugh_20260720\\review\\out11_source04_candidate\\index.html",
+          "state": "accepted_internal_exact_bytes_unchanged",
+          "missing_upgrade_condition": "none_for_current comparison slot",
+          "boundary": "Acceptance covers this internal candidate flow, not rights or a general subtitle rule.",
+          "family_id": "out11-five-source-portfolio",
+          "family_title": "OUT-11 Five-Source Short Portfolio",
+          "contract": {
+            "path": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+            "present": true,
+            "byte_size": 7456
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+            "present": true,
+            "byte_size": 7456
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/out11_source04_indonesia_laugh_20260720/review/out11_source04_candidate/index.html",
+            "present": true,
+            "byte_size": 740
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/out11_source04_indonesia_laugh_20260720/review/out11_source04_candidate/candidate.mp4",
+              "present": true,
+              "byte_size": 8523260,
+              "expected_sha256": "465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524",
+              "observed_sha256": "465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out11-slot-source04.html"
+        },
+        {
+          "candidate_id": "out11-slot-source05",
+          "artifact_identity": "clip-out11-five-source-short-portfolio-wave-v0-002#SOURCE-05",
+          "role": "Accepted repaired fifth-source candidate",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+          "local_entrypoint": "episodes/out11_source05_dramatic_xviltration_20260720/review/out11_source05_candidate/index.html",
+          "local_media": [
+            {
+              "path": "episodes/out11_source05_dramatic_xviltration_20260720/review/out11_source05_candidate/candidate.mp4",
+              "expected_sha256": "b4a01413202e3e177a11dc42754d38f5a4b7b10cd7c7bec0aa43536d440a4969"
+            }
+          ],
+          "open_command": "start episodes\\out11_source05_dramatic_xviltration_20260720\\review\\out11_source05_candidate\\index.html",
+          "state": "accepted_internal_no_lyrics_or_speaker_claim",
+          "missing_upgrade_condition": "none_for_current comparison slot",
+          "boundary": "Singing, lyrics, speaker identity, rights, and publication are not inferred.",
+          "family_id": "out11-five-source-portfolio",
+          "family_title": "OUT-11 Five-Source Short Portfolio",
+          "contract": {
+            "path": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+            "present": true,
+            "byte_size": 7456
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md",
+            "present": true,
+            "byte_size": 7456
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/out11_source05_dramatic_xviltration_20260720/review/out11_source05_candidate/index.html",
+            "present": true,
+            "byte_size": 715
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/out11_source05_dramatic_xviltration_20260720/review/out11_source05_candidate/candidate.mp4",
+              "present": true,
+              "byte_size": 20469323,
+              "expected_sha256": "b4a01413202e3e177a11dc42754d38f5a4b7b10cd7c7bec0aa43536d440a4969",
+              "observed_sha256": "b4a01413202e3e177a11dc42754d38f5a4b7b10cd7c7bec0aa43536d440a4969",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out11-slot-source05.html"
+        }
+      ]
+    },
+    {
+      "family_id": "out10-third-source-portfolio",
+      "title": "OUT-10 Third-Source Portfolio Expansion",
+      "contract_path": "docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md",
+      "candidate_count": 1,
+      "coverage_by_tier": {
+        "fully-viewable": 1
+      },
+      "candidates": [
+        {
+          "candidate_id": "out10-001",
+          "artifact_identity": "clip-out10-third-source-short-portfolio-expansion-v0-001",
+          "role": "Repaired third-source short",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md",
+          "local_entrypoint": "episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/index.html",
+          "local_media": [
+            {
+              "path": "episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/candidate_01.mp4",
+              "expected_sha256": "62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\out10_hololive_secret_clinic_20260719\\review\\out10_third_source_short_portfolio\\open_preview.ps1 -Serve",
+          "state": "accepted_internal_with_source_specific_debt",
+          "missing_upgrade_condition": "none_for_current internal benchmark",
+          "boundary": "No winner, rights, production, or publishing approval.",
+          "family_id": "out10-third-source-portfolio",
+          "family_title": "OUT-10 Third-Source Portfolio Expansion",
+          "contract": {
+            "path": "docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md",
+            "present": true,
+            "byte_size": 3600
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md",
+            "present": true,
+            "byte_size": 3600
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/index.html",
+            "present": true,
+            "byte_size": 5253
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/out10_hololive_secret_clinic_20260719/review/out10_third_source_short_portfolio/candidate_01.mp4",
+              "present": true,
+              "byte_size": 19319488,
+              "expected_sha256": "62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd",
+              "observed_sha256": "62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out10-001.html"
+        }
+      ]
+    },
+    {
+      "family_id": "out09-second-source-repeatability",
+      "title": "OUT-09 Second-Source Short Repeatability",
+      "contract_path": "docs/output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md",
+      "candidate_count": 1,
+      "coverage_by_tier": {
+        "fully-viewable": 1
+      },
+      "candidates": [
+        {
+          "candidate_id": "out09-001",
+          "artifact_identity": "clip-out09-second-source-short-repeatability-v0-001#candidate_01",
+          "role": "Second-source short repeatability proof",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md",
+          "local_entrypoint": "episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/index.html",
+          "local_media": [
+            {
+              "path": "episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_01.mp4",
+              "expected_sha256": "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\holoen01_kronii_wisdomteeth_out09_20260718\\review\\out09_second_source_short_repeatability\\open_preview.ps1 -Serve",
+          "state": "accepted_internal",
+          "missing_upgrade_condition": "none_for_current internal benchmark",
+          "boundary": "Low-resolution source and unverified speaker identity remain source-specific limitations.",
+          "family_id": "out09-second-source-repeatability",
+          "family_title": "OUT-09 Second-Source Short Repeatability",
+          "contract": {
+            "path": "docs/output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md",
+            "present": true,
+            "byte_size": 12836
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md",
+            "present": true,
+            "byte_size": 12836
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/index.html",
+            "present": true,
+            "byte_size": 4645
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/holoen01_kronii_wisdomteeth_out09_20260718/review/out09_second_source_short_repeatability/candidate_01.mp4",
+              "present": true,
+              "byte_size": 5976722,
+              "expected_sha256": "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
+              "observed_sha256": "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out09-001.html"
+        }
+      ]
+    },
+    {
+      "family_id": "out08-unused-range-minibatch",
+      "title": "OUT-08 Real Unused-Range Short Minibatch",
+      "contract_path": "docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md",
+      "candidate_count": 2,
+      "coverage_by_tier": {
+        "fully-viewable": 2
+      },
+      "candidates": [
+        {
+          "candidate_id": "out08-candidate-01",
+          "artifact_identity": "clip-out08-real-unused-range-short-minibatch-v0-001#candidate_01",
+          "role": "Unused-range candidate 01",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md",
+          "local_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/index.html",
+          "local_media": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/candidate_01.mp4",
+              "expected_sha256": "f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out08_real_unused_range_short_minibatch\\open_preview.ps1 -Serve",
+          "state": "accepted_internal",
+          "missing_upgrade_condition": "none_for_current internal benchmark",
+          "boundary": "Navigation frames are not accepted thumbnails; rights and publication remain closed.",
+          "family_id": "out08-unused-range-minibatch",
+          "family_title": "OUT-08 Real Unused-Range Short Minibatch",
+          "contract": {
+            "path": "docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md",
+            "present": true,
+            "byte_size": 8412
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md",
+            "present": true,
+            "byte_size": 8412
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/index.html",
+            "present": true,
+            "byte_size": 3682
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/candidate_01.mp4",
+              "present": true,
+              "byte_size": 16172576,
+              "expected_sha256": "f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a",
+              "observed_sha256": "f7ea3f7097118656ebfd36f13cd698c11f0fcf04f042e8fe507965af073e388a",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out08-candidate-01.html"
+        },
+        {
+          "candidate_id": "out08-candidate-02",
+          "artifact_identity": "clip-out08-real-unused-range-short-minibatch-v0-001#candidate_02",
+          "role": "Unused-range candidate 02",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md",
+          "local_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/index.html",
+          "local_media": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/candidate_02.mp4",
+              "expected_sha256": "47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out08_real_unused_range_short_minibatch\\open_preview.ps1 -Serve",
+          "state": "accepted_internal",
+          "missing_upgrade_condition": "none_for_current internal benchmark",
+          "boundary": "Navigation frames are not accepted thumbnails; rights and publication remain closed.",
+          "family_id": "out08-unused-range-minibatch",
+          "family_title": "OUT-08 Real Unused-Range Short Minibatch",
+          "contract": {
+            "path": "docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md",
+            "present": true,
+            "byte_size": 8412
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_08_REAL_UNUSED_RANGE_SHORT_MINIBATCH.md",
+            "present": true,
+            "byte_size": 8412
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/index.html",
+            "present": true,
+            "byte_size": 3682
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out08_real_unused_range_short_minibatch/candidate_02.mp4",
+              "present": true,
+              "byte_size": 36043376,
+              "expected_sha256": "47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b",
+              "observed_sha256": "47c844b1e74aac10d37c8cfc470ba84eb9915a5707dd84028be5b227344d593b",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out08-candidate-02.html"
+        }
+      ]
+    },
+    {
+      "family_id": "out07-cover-routes",
+      "title": "OUT-07 Native Shorts Cover Review Routes",
+      "contract_path": "docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md",
+      "candidate_count": 2,
+      "coverage_by_tier": {
+        "playable-proxy": 2
+      },
+      "candidates": [
+        {
+          "candidate_id": "out07-strict-route",
+          "artifact_identity": "clip-out07-shorts-poster-frame-direction-proof-v0-001#strict-exact-route",
+          "role": "Historical strict-route poster direction proof",
+          "target_tier": "playable-proxy",
+          "static_entrypoint": "docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md",
+          "local_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/index.html",
+          "local_media": [],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_shorts_poster_frame_direction_proof\\open_preview.ps1",
+          "state": "parked_historical_proxy_exact_baseline_absent_on_host",
+          "missing_upgrade_condition": "Restore the exact accepted Planner baseline bytes before claiming the strict route itself is fully viewable on this host.",
+          "boundary": "The retained transition clips and frame proof do not substitute for the unavailable exact baseline.",
+          "family_id": "out07-cover-routes",
+          "family_title": "OUT-07 Native Shorts Cover Review Routes",
+          "contract": {
+            "path": "docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md",
+            "present": true,
+            "byte_size": 11291
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md",
+            "present": true,
+            "byte_size": 11291
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_shorts_poster_frame_direction_proof/index.html",
+            "present": true,
+            "byte_size": 9237
+          },
+          "local_evidence_state": [],
+          "local_media_state": [],
+          "observed_tier": "playable-proxy",
+          "materialized_card": "docs/benchmarks/candidates/out07-strict-route.html"
+        },
+        {
+          "candidate_id": "out07-thank-proxy",
+          "artifact_identity": "clip-out07-shorts-poster-frame-direction-proof-v0-001#thank-semantic-direction-proxy",
+          "role": "Thank-host semantic direction proxy",
+          "target_tier": "playable-proxy",
+          "static_entrypoint": "docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md",
+          "local_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/index.html",
+          "local_media": [],
+          "open_command": "start episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out07_native_shorts_cover_direction_proxy\\index.html",
+          "state": "parked_provisionally_usable_not_selected",
+          "missing_upgrade_condition": "Wait until 3-5 real Shorts exist before a new cover-system exploration; do not reopen this proxy now.",
+          "boundary": "Semantic proxy only; no Planner pixel equivalence, final selection, reusable template, rights, or publication approval.",
+          "family_id": "out07-cover-routes",
+          "family_title": "OUT-07 Native Shorts Cover Review Routes",
+          "contract": {
+            "path": "docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md",
+            "present": true,
+            "byte_size": 11291
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_07_INTERNAL_OPERATOR_DELIVERY_PACK.md",
+            "present": true,
+            "byte_size": 11291
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out07_native_shorts_cover_direction_proxy/index.html",
+            "present": true,
+            "byte_size": 4560
+          },
+          "local_evidence_state": [],
+          "local_media_state": [],
+          "observed_tier": "playable-proxy",
+          "materialized_card": "docs/benchmarks/candidates/out07-thank-proxy.html"
+        }
+      ]
+    },
+    {
+      "family_id": "out06-complete-narrative-short",
+      "title": "OUT-06 Complete Narrative Short",
+      "contract_path": "docs/output_layer/OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md",
+      "candidate_count": 1,
+      "coverage_by_tier": {
+        "fully-viewable": 1
+      },
+      "candidates": [
+        {
+          "candidate_id": "out06-001",
+          "artifact_identity": "clip-out06-complete-narrative-short-delivery-candidate-v0-001",
+          "role": "Complete narrative vertical short",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md",
+          "local_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/index.html",
+          "local_media": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/assets/complete_narrative_short.mp4",
+              "expected_sha256": "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out06_complete_narrative_short_delivery_candidate\\open_preview.ps1",
+          "state": "accepted_internal_after_bounded_repair",
+          "missing_upgrade_condition": "none_for_current internal benchmark",
+          "boundary": "Production subtitle design, rights, publication, and upload remain separate gates.",
+          "family_id": "out06-complete-narrative-short",
+          "family_title": "OUT-06 Complete Narrative Short",
+          "contract": {
+            "path": "docs/output_layer/OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md",
+            "present": true,
+            "byte_size": 7424
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_06_COMPLETE_NARRATIVE_SHORT_DELIVERY_CANDIDATE.md",
+            "present": true,
+            "byte_size": 7424
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/index.html",
+            "present": true,
+            "byte_size": 9524
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out06_complete_narrative_short_delivery_candidate/assets/complete_narrative_short.mp4",
+              "present": true,
+              "byte_size": 20780180,
+              "expected_sha256": "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0",
+              "observed_sha256": "02cfc1b25afbc7b280481453cb53c8f66d915a39389098cb70e2f37b31504bf0",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out06-001.html"
+        }
+      ]
+    },
+    {
+      "family_id": "out05-vertical-short",
+      "title": "OUT-05 Vertical Short Internal Candidate",
+      "contract_path": "docs/output_layer/OUT_05_VERTICAL_SHORT_INTERNAL_CANDIDATE.md",
+      "candidate_count": 1,
+      "coverage_by_tier": {
+        "fully-viewable": 1
+      },
+      "candidates": [
+        {
+          "candidate_id": "out05-001",
+          "artifact_identity": "clip-out05-vertical-short-internal-candidate-v0-001",
+          "role": "Vertical opening candidate",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_05_VERTICAL_SHORT_INTERNAL_CANDIDATE.md",
+          "local_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/index.html",
+          "local_media": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/assets/vertical_short_candidate.mp4",
+              "expected_sha256": "d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out05_vertical_short_internal_candidate\\open_preview.ps1",
+          "state": "accepted_internal",
+          "missing_upgrade_condition": "none_for_current internal benchmark",
+          "boundary": "Production, subtitle-system, rights, and publishing acceptance remain closed.",
+          "family_id": "out05-vertical-short",
+          "family_title": "OUT-05 Vertical Short Internal Candidate",
+          "contract": {
+            "path": "docs/output_layer/OUT_05_VERTICAL_SHORT_INTERNAL_CANDIDATE.md",
+            "present": true,
+            "byte_size": 4933
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_05_VERTICAL_SHORT_INTERNAL_CANDIDATE.md",
+            "present": true,
+            "byte_size": 4933
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/index.html",
+            "present": true,
+            "byte_size": 4601
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out05_vertical_short_internal_candidate/assets/vertical_short_candidate.mp4",
+              "present": true,
+              "byte_size": 4846775,
+              "expected_sha256": "d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827",
+              "observed_sha256": "d2a75ed5f85a0869d4178917c258624ccf083bbefce33ab468549f93a982b827",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out05-001.html"
+        }
+      ]
+    },
+    {
+      "family_id": "out04-editorial-sequence",
+      "title": "OUT-04 Editorial Representative Sequence",
+      "contract_path": "docs/output_layer/OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md",
+      "candidate_count": 1,
+      "coverage_by_tier": {
+        "fully-viewable": 1
+      },
+      "candidates": [
+        {
+          "candidate_id": "out04-001",
+          "artifact_identity": "clip-out04-editorial-representative-sequence-v0-001",
+          "role": "Accepted multi-cut editorial sequence",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md",
+          "local_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html",
+          "local_media": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/assets/editorial_sequence.mp4",
+              "expected_sha256": "9fa17e8566acd3e4237793840edffa2485350575876c99b04bed065a8ae6e19a"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out04_editorial_representative_sequence\\open_preview.ps1",
+          "state": "accepted_internal",
+          "missing_upgrade_condition": "none_for_current internal benchmark",
+          "boundary": "No rights, production, publication, or system-wide subtitle acceptance is inherited.",
+          "family_id": "out04-editorial-sequence",
+          "family_title": "OUT-04 Editorial Representative Sequence",
+          "contract": {
+            "path": "docs/output_layer/OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md",
+            "present": true,
+            "byte_size": 3162
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_04_EDITORIAL_REPRESENTATIVE_SEQUENCE.md",
+            "present": true,
+            "byte_size": 3162
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/index.html",
+            "present": true,
+            "byte_size": 4697
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out04_editorial_representative_sequence/assets/editorial_sequence.mp4",
+              "present": true,
+              "byte_size": 6395882,
+              "expected_sha256": "9fa17e8566acd3e4237793840edffa2485350575876c99b04bed065a8ae6e19a",
+              "observed_sha256": "9fa17e8566acd3e4237793840edffa2485350575876c99b04bed065a8ae6e19a",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out04-001.html"
+        }
+      ]
+    },
+    {
+      "family_id": "out03-selected-cut-proof",
+      "title": "OUT-03 Real-Local Selected-Cut Proof",
+      "contract_path": "docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md",
+      "candidate_count": 1,
+      "coverage_by_tier": {
+        "fully-viewable": 1
+      },
+      "candidates": [
+        {
+          "candidate_id": "out03-001",
+          "artifact_identity": "clip-out03-real-local-selected-cut-proof-v0-001",
+          "role": "Accepted single-cut real-local proof",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md",
+          "local_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/index.html",
+          "local_media": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/assets/cut_002.mp4",
+              "expected_sha256": "a18bdb86bc05ba6bab6575826069de58e30183a50d578fb2dcacaaf467474740"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\jp_pilot01_hololive_bancho_20260525\\review\\out03_real_local_selected_cut_proof\\open_preview.ps1",
+          "state": "accepted_internal",
+          "missing_upgrade_condition": "none_for_current internal benchmark",
+          "boundary": "Diagnostic selected-cut acceptance does not grant rights, production, or public use.",
+          "family_id": "out03-selected-cut-proof",
+          "family_title": "OUT-03 Real-Local Selected-Cut Proof",
+          "contract": {
+            "path": "docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md",
+            "present": true,
+            "byte_size": 3624
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/OUT_03_REAL_LOCAL_SELECTED_CUT_PROOF.md",
+            "present": true,
+            "byte_size": 3624
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/index.html",
+            "present": true,
+            "byte_size": 3230
+          },
+          "local_evidence_state": [],
+          "local_media_state": [
+            {
+              "path": "episodes/jp_pilot01_hololive_bancho_20260525/review/out03_real_local_selected_cut_proof/assets/cut_002.mp4",
+              "present": true,
+              "byte_size": 2303520,
+              "expected_sha256": "a18bdb86bc05ba6bab6575826069de58e30183a50d578fb2dcacaaf467474740",
+              "observed_sha256": "a18bdb86bc05ba6bab6575826069de58e30183a50d578fb2dcacaaf467474740",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/out03-001.html"
+        }
+      ]
+    },
+    {
+      "family_id": "out02-fixture-proof",
+      "title": "OUT-02 Local Fixture Output Proof",
+      "contract_path": "docs/output_layer/OUT_02_HANDOFF.md",
+      "candidate_count": 1,
+      "coverage_by_tier": {
+        "static-reviewable": 1
+      },
+      "candidates": [
+        {
+          "candidate_id": "out02-001",
+          "artifact_identity": "clip-out02-local-fixture-output-proof-smoke-v0-001",
+          "role": "Tracked synthetic fixture proof",
+          "target_tier": "static-reviewable",
+          "static_entrypoint": "docs/output_layer/local_fixture_output_proof/proof_timeline.html",
+          "local_media": [],
+          "open_command": "start docs\\output_layer\\local_fixture_output_proof\\proof_timeline.html",
+          "state": "tracked_fixture_proof_present",
+          "missing_upgrade_condition": "Use a real-local family such as OUT-03 when real-media behavior is the question.",
+          "boundary": "Synthetic fixture only; it proves package shape, not real media, production, rights, or public readiness.",
+          "family_id": "out02-fixture-proof",
+          "family_title": "OUT-02 Local Fixture Output Proof",
+          "contract": {
+            "path": "docs/output_layer/OUT_02_HANDOFF.md",
+            "present": true,
+            "byte_size": 7836
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/local_fixture_output_proof/proof_timeline.html",
+            "present": true,
+            "byte_size": 5241
+          },
+          "local_entrypoint_state": null,
+          "local_evidence_state": [],
+          "local_media_state": [],
+          "observed_tier": "static-reviewable",
+          "materialized_card": "docs/benchmarks/candidates/out02-001.html"
+        }
+      ]
+    },
+    {
+      "family_id": "out01-gap-readback",
+      "title": "OUT-01 Output Layer Gap Logger",
+      "contract_path": "docs/output_layer/OUT_01_HANDOFF.md",
+      "candidate_count": 1,
+      "coverage_by_tier": {
+        "static-reviewable": 1
+      },
+      "candidates": [
+        {
+          "candidate_id": "out01-001",
+          "artifact_identity": "clip-out01-output-layer-gap-logger-v0-001",
+          "role": "Tracked no-media capability and gap readback",
+          "target_tier": "static-reviewable",
+          "static_entrypoint": "docs/output_layer/local_output_readback.html",
+          "local_media": [],
+          "open_command": "start docs\\output_layer\\local_output_readback.html",
+          "state": "tracked_no_media_readback",
+          "missing_upgrade_condition": "Use OUT-02 for fixture shape or OUT-03 and later families for real-media proof.",
+          "boundary": "The unrelated ignored OUT-01 smoke media is not promoted into this no-media benchmark identity.",
+          "family_id": "out01-gap-readback",
+          "family_title": "OUT-01 Output Layer Gap Logger",
+          "contract": {
+            "path": "docs/output_layer/OUT_01_HANDOFF.md",
+            "present": true,
+            "byte_size": 7277
+          },
+          "static_entrypoint_state": {
+            "path": "docs/output_layer/local_output_readback.html",
+            "present": true,
+            "byte_size": 13851
+          },
+          "local_entrypoint_state": null,
+          "local_evidence_state": [],
+          "local_media_state": [],
+          "observed_tier": "static-reviewable",
+          "materialized_card": "docs/benchmarks/candidates/out01-001.html"
+        }
+      ]
+    }
+  ]
+}

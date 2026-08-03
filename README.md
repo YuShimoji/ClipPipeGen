@@ -6,6 +6,14 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
+SH-05 benchmark portfolio note: the current finite output benchmark surface is
+15 families / 27 family-scoped candidate slots, materialized as 27 tracked
+review cards. Open [docs/benchmarks/index.html](docs/benchmarks/index.html).
+The current-host ledger reports 20 fully-viewable, 2 playable-proxy, 5
+static-reviewable, and 0 contract-only slots. These tiers describe evidence
+availability only; existing acceptance, rights, production, publication,
+monetization, and upload gates remain exact-artifact decisions.
+
 ED-12 / S1 note: `build-common-context-probe`は、取得済み実source二本だけをexact
 media/caption/transcript/rights hashへbindし、source captionとcreator-authored commentaryを
 別provenance trackとして一つのargumentative timelineへ運ぶ。current artifactは
