@@ -12,10 +12,10 @@ active_branch: codex/wiki-tensaku-longform-family-v1
 upstream_branch: origin/codex/wiki-tensaku-longform-family-v1
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
 latest_remote_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-implementation_revision: current_branch_tip_after_portfolio_commit
-sync_observed_head: be30a3a64bc73c767ab33d25a845d42b11197ee5
+implementation_revision: 4ef801e54d85bc5bbb47655a8167397550d7b5a6
+sync_observed_head: 4ef801e54d85bc5bbb47655a8167397550d7b5a6
 current_head_locator: refs/heads/codex/wiki-tensaku-longform-family-v1
-remote_handoff_status: pending_portfolio_commit_and_normal_push
+remote_handoff_status: pushed_and_remote_sha_readback_passed_for_implementation_revision
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
 parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file
@@ -111,8 +111,8 @@ out13_monetized_youtube_verdict: deny
 next_review_due: none_for_wiki_mechanical_continue_s1_review_parked
 next_action: upgrade_static_benchmark_slots_without_network_auth_or_existing_artifact_rerender
 current_handoff: docs/CURRENT_HANDOFF.md
-upstream_parity: 0 0 at slice start; verify after normal push
-current_slice_push_status: pending_normal_push_after_focused_validation
+upstream_parity: 0 0 after normal push and remote SHA readback of implementation revision
+current_slice_push_status: normal_push_completed_remote_sha_readback_passed
 source_of_truth: true
 owner_lane: shared_infra_benchmark_readback
 related: docs/RUNTIME_STATE.md, docs/benchmarks/benchmark_registry.json, docs/benchmarks/benchmark_portfolio.json, docs/benchmarks/COVERAGE_LEDGER.md, artifacts/ARTIFACTS.md
