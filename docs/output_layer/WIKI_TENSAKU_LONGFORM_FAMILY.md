@@ -5,7 +5,9 @@
 2026-08-05時点で002と003はどちらもcandidate-specific caption/topic/chapter/commentary inputを持つ
 `static-reviewable` benchmarkである。003はretained evidenceだけからnetwork request 0で生成した。
 両者のexact source bytesは未供給で、media validationとProduct Gateは未達。cookies / OAuth /
-anonymous acquisition retryを行わない。15 family / 27 slotの現在の横断入口は
+anonymous acquisition retryを行わない。一方、exact retained source bytesを持つ001から、既存成果を
+上書きせず訂正anchor主導の新turn`clip-wiki-tensaku-family-turn-v1-001`を完全視聴可能にした。
+15 family / 28 slotの現在の横断入口は
 [`../benchmarks/index.html`](../benchmarks/index.html)。002の完全動画条件と権利境界は下記の
 まま保持し、完成済みとは扱わない。
 
@@ -73,6 +75,38 @@ URLは`http://127.0.0.1:8078/review/index.html`。launcherはrepoのローカル
 `uv --offline`で起動し、動画Range requestを受ける。2026-08-04にpage 200、MP4 Range 206、
 1,024 bytesを実行確認し、検証processは停止した。
 
+## 訂正anchor主導のFamily Turn 1
+
+`clip-wiki-tensaku-family-turn-v1-001`は、同じ`youtube:1AcId5Yja10`を別artifact identityで
+編集比較できるsuccessorである。collectorの`--offline-existing-evidence
+--reuse-retained-source-media --selection-profile correction-led`は、retained watch/captionに加え、
+acquisition receiptのsource identity、SHA、byte size、duration、`cookies_used=false`、
+`oauth_used=false`を照合し、network request 0で入力を閉じる。offline rights timestampはcorpusの
+観測時刻へ固定し、同一入力rerunのfingerprint driftを防ぐ。
+
+全5,557.858秒を12の時系列slotへ分け、各slot内でcorrection/verification anchor、topic多様性、
+caption evidenceの順に25秒を選ぶ。12/12章に訂正anchorを含み、選択anchorは23件、topic軸は
+`correction_and_verification`、`before_after_change`、`relationships_and_collaborations`、
+`quoted_phrases_and_wording`の4種。これはkeyword indexに基づく候補選択で、意味・意図・正誤の
+人間判断を代行しない。source caption 106 cuesとcreator-authored commentary 12 eventsは分離する。
+
+final MP4はH.264/AAC 640x360 / 300.000s / 21,800,858 bytes、SHA
+`1f965e537d5a767d8cfe5c456ed0481ea88a119743f207ada9764bbc0ebe3284`。13/13、full decode、
+faststart、A/V sync、black/silence 0、mapping 1.0をpassした。manifestは17 payload rows、
+self-integrity SHA`84e9c788c0840a35148755ba3ac6975eade7c80f4f6fd4c85f8bbd9ad1ada971`。
+deterministic resumeはanalysis/caption remap/render/media validationをskipし、MP4 hashとmtimeを保持。
+localhostはpage 200、MP4 Range 206 / 1,024 bytesをfresh確認後停止した。
+
+同一マシンでの入口:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-family-turn-v1-001\review\open_preview.ps1
+```
+
+machine validationはhuman editorial acceptanceではない。次のproduct actionはexact MP4 SHAへ
+`accept / bounded repair / reject`をbindすること。いずれの判断もrights、production subtitle/design、
+thumbnail、public/monetized use、publishing、uploadを開かない。
+
 ## 第三sourceのnetwork-free static packet
 
 `clip-wiki-tensaku-longform-v1-003`は`youtube:Ocqg-RpQURY`のretained caption payload、
@@ -95,9 +129,10 @@ external stateは`WAITING_EXACT_SOURCE_BYTES`。static input contractのpassを�
 
 ## CONTINUEする次slice
 
-1. `youtube:82iRbxjvbww`または`youtube:Ocqg-RpQURY`のexact source bytesが明示的に供給された時だけ、
+1. correction-led Family Turn 1をexact MP4 SHAへbindしてinternal editorial reviewする。
+2. `youtube:82iRbxjvbww`または`youtube:Ocqg-RpQURY`のexact source bytesが明示的に供給された時だけ、
    該当full source rangeをhash固定して既存12章inputから300s / 12 chapters / 13 checksを通す。
-2. 3本のvalidated sliceが揃った後、topic/事件/訂正の重複と前後関係を人間が確認し、
+3. 3本のvalidated source sliceが揃った後、topic/事件/訂正の重複と前後関係を人間が確認し、
    family-level chapter planへsource-range provenanceをbindする。
 
 次sliceの合格条件は、source acquisition SHA receipt、caption receipt、12章すべてのsource mapping、

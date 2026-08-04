@@ -512,7 +512,8 @@ def test_runtime_handoff_preserve_packet_agreement_as_out13_predecessor_state() 
             "out13_m6_rights_decision_readiness_packet.json"
             in text
         )
-        assert "rights_approval: not_granted" in text
+        assert "rights_approval: readback_unresolved" in text
+        assert "wiki_family_turn_rights_approval: not_granted" in text
         assert "out13_public_use_verdict: deny" in text
         assert "out13_monetized_youtube_verdict: deny" in text
         assert "production_acceptance: false" in text

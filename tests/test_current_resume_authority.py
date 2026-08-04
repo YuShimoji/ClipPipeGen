@@ -166,36 +166,29 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
                 f"next_action_mismatch={actions[0]}!={runtime.get('next_action', '')}"
             )
 
-    if runtime.get("current_slice") != "ED-12":
+    if runtime.get("current_slice") != "SH-05":
         errors.append(f"runtime_current_slice={runtime.get('current_slice', '')}")
-    if runtime.get("active_artifact") != "clip-s1-two-source-common-context-probe-v1-001":
+    if runtime.get("active_artifact") != "clip-benchmark-portfolio-coverage-v1-001":
         errors.append(f"runtime_active_artifact={runtime.get('active_artifact', '')}")
 
     expected_runtime_values = {
-        "active_branch": "codex/s1-two-source-common-context-probe-v1",
-        "base_main_revision": "edb782acd1e06aca46e0a5d10295ea52f30ad5c7",
-        "implementation_revision": "a3771bc59cd58b05c00a570e1074118ace3dc15a",
-        "artifact_output_sha256": (
-            "dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be"
-        ),
-        "artifact_package_tree_digest_sha256": (
-            "a46fd90d9b61b2251029168bab8b44a86f95536eaf574a1e7b19fd5b6af8364a"
-        ),
-        "artifact_manifest_self_sha256": (
-            "8ab92212cf1a9dcc6072120191ce5aebc018c86310b496be53a788c12db8f301"
-        ),
+        "active_branch": "codex/wiki-tensaku-longform-family-v1",
+        "base_main_revision": "bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471",
+        "artifact_output_sha256": "not_applicable_tracked_multi_artifact_portfolio",
+        "artifact_package_tree_digest_sha256": "not_used_tracked_regenerable_portfolio",
+        "artifact_manifest_self_sha256": "not_applicable",
         "package_validation_status": "passed",
-        "full_suite_status": "passed_689",
+        "full_suite_status": "passed_696",
         "human_review_pending": "true",
-        "rights_approval": "not_granted",
+        "rights_approval": "readback_unresolved",
         "production_acceptance": "false",
         "public_use": "false",
         "monetized_use": "false",
         "upload_attempted": "false",
-        "upstream_parity": "0 0",
+        "upstream_parity": "0 0 after normal push and remote SHA readback of implementation revision",
         "remote_code_complete": "true",
-        "decision_required": "s4_human_common_context_verdict",
-        "next_review_due": "s4_human_common_context_review",
+        "decision_required": "wiki_family_turn_exact_sha_internal_editorial_verdict",
+        "next_review_due": "wiki_family_turn_exact_sha_internal_editorial_review_s1_remains_parked",
     }
     for field, expected in expected_runtime_values.items():
         if runtime.get(field, "") != expected:
@@ -228,13 +221,13 @@ def test_current_resume_surfaces_have_one_semantically_aligned_live_authority() 
     assert _authority_errors(runtime, handoff) == []
 
 
-def test_s1_resume_rejects_stale_local_only_state() -> None:
+def test_current_resume_rejects_stale_local_only_state() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
     stale_runtime = (
         runtime.replace(
-            "active_branch: codex/s1-two-source-common-context-probe-v1",
-            "active_branch: codex/stale-s1",
+            "active_branch: codex/wiki-tensaku-longform-family-v1",
+            "active_branch: codex/stale-wiki-turn",
             1,
         )
         .replace("upstream_parity: 0 0", "upstream_parity: 1 0", 1)
@@ -289,7 +282,7 @@ def test_multiple_live_next_actions_fail_semantic_authority_check() -> None:
 def test_runtime_handoff_portability_role_disagreement_fails_semantic_check() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8").replace(
-        "local_artifact_role: active_s4_review_target_same_machine_only",
+        "local_artifact_role: tracked_portfolio_with_links_to_preserved_same_machine_evidence",
         "local_artifact_role: stale_review_target",
         1,
     )

@@ -287,6 +287,7 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
 
 
 def test_current_resume_surfaces_point_to_s1_and_historical_sources_remain_linked():
+    current_portfolio_artifact = "clip-benchmark-portfolio-coverage-v1-001"
     current_s1_artifact = "clip-s1-two-source-common-context-probe-v1-001"
     current_out06_artifact = (
         "clip-out06-complete-narrative-short-delivery-candidate-v0-001"
@@ -347,19 +348,17 @@ def test_current_resume_surfaces_point_to_s1_and_historical_sources_remain_linke
         text = path.read_text(encoding="utf-8")
 
         if path.name == "CURRENT_HANDOFF.md":
-            assert f"active_artifact: {current_s1_artifact}" in text
+            assert f"active_artifact: {current_portfolio_artifact}" in text
             assert "local_artifact_available: true" in text
-            assert (
-                "human_entrypoint: "
-                "episodes/s1_two_source_common_context_probe_20260726/review/"
-                "clip_s1_two_source_common_context_probe_v001/review/index.html"
-                in text
-            )
+            assert "human_entrypoint: docs/benchmarks/index.html" in text
+            assert f"s1_artifact_id: {current_s1_artifact}" in text
+            assert "s1_lane_status: parked_human_review_pending" in text
             assert "latest_out06_complete_narrative_short" not in text
             continue
 
         if path.name in {"CURRENT_HANDOFF.md", "RUNTIME_STATE.md"}:
-            assert f"active_artifact: {current_s1_artifact}" in text
+            assert f"active_artifact: {current_portfolio_artifact}" in text
+            assert f"s1_artifact_id: {current_s1_artifact}" in text
             assert (
                 "historical_source_host_out06_artifact: "
                 f"{current_out06_artifact}" in text
@@ -1618,47 +1617,41 @@ def test_docs_dashboard_current_focus_registration_uses_runtime_artifact(
     assert status["artifact_coverage"]["current_focus_artifact_registered"] is False
 
 
-def test_artifact_registry_records_s1_current_focus_and_historical_sources():
+def test_artifact_registry_records_wiki_turn_current_focus_and_historical_sources():
     status = build_project_status(base_dir=REPO_ROOT, generated_at="test-run")
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
-    assert status["current_focus"]["active_branch"] == (
-        "codex/s1-two-source-common-context-probe-v1"
-    )
+    assert status["current_focus"]["active_branch"] == "codex/wiki-tensaku-longform-family-v1"
     assert status["current_focus"]["canonical_main_head"] == "refs/heads/main"
     assert status["current_focus"]["canonical_main_baseline"] == (
         "OUT-09 accepted internal exact SHA "
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "s1_s3_common_context_probe_ready_for_s4_human_review"
+        "benchmark_portfolio_15_families_28_slots_wiki_family_turn_ready"
     )
     assert status["current_focus"]["review_status"] == (
-        "s4_human_review_pending"
+        "correction_led_family_turn_machine_validated_human_editorial_review_pending"
     )
     assert status["current_focus"]["decision_required"] == (
-        "s4_human_common_context_verdict"
+        "wiki_family_turn_exact_sha_internal_editorial_verdict"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "s4_human_common_context_review"
+        "wiki_family_turn_exact_sha_internal_editorial_review_s1_remains_parked"
     )
     assert status["current_focus"]["human_entrypoint"] == (
-        "episodes/s1_two_source_common_context_probe_20260726/review/"
-        "clip_s1_two_source_common_context_probe_v001/review/index.html"
+        "docs/benchmarks/index.html"
     )
-    assert status["current_focus"]["review_open_command"].endswith(
-        "clip_s1_two_source_common_context_probe_v001\\review\\open_preview.ps1"
-    )
+    assert status["current_focus"]["review_open_command"] == "start docs\\benchmarks\\index.html"
     assert status["current_focus"]["machine_readback"] == (
-        "episodes/s1_two_source_common_context_probe_20260726/review/"
-        "clip_s1_two_source_common_context_probe_v001/validation_readback.json"
+        "docs/benchmarks/benchmark_portfolio.json"
     )
     assert status["current_focus"]["remote_code_complete"] == "true"
     assert status["current_focus"]["remote_decision_binding_available"] == "false"
     assert status["current_focus"]["local_artifact_available"] == "true"
-    assert status["current_focus"]["portable_local_artifact_available"] == "false"
+    assert status["current_focus"]["portable_local_artifact_available"] == "true"
     assert status["current_focus"]["portable_entrypoint"] == (
-        "docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md"
+        "docs/benchmarks/index.html"
     )
     assert status["current_focus"]["exact_baseline_available"] == ""
     assert status["current_focus"]["accepted_baseline_status"] == ""
@@ -1677,23 +1670,21 @@ def test_artifact_registry_records_s1_current_focus_and_historical_sources():
         "clip_s1_two_source_common_context_probe_v001/review/index.html"
     )
     assert status["current_focus"]["local_verified_host"] == "DESKTOP-U9P4LKJ"
-    assert status["current_focus"]["pause_reason"] == (
-        "s4_human_common_context_review_required"
-    )
+    assert status["current_focus"]["pause_reason"] == ""
     assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
     assert status["current_focus"]["cover_review_status"] == ""
     current_surfaces = [
         item
         for item in status["open_surfaces"]
-        if item["label"] == "ED-12 Current Focus"
+        if item["label"] == "SH-05 Current Focus"
     ]
     assert len(current_surfaces) == 1
     assert current_surfaces[0]["target"].endswith(
-        "clip_s1_two_source_common_context_probe_v001/review/index.html"
+        "docs/benchmarks/index.html"
     )
     assert status["current_focus"]["cross_machine_resume_class"] == (
-        "tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_"
-        "review_package_are_not"
+        "tracked_portfolio_cards_and_contracts_are_portable_local_media_tiers_"
+        "must_be_reobserved_per_host"
     )
     assert status["current_focus"]["active_rebuild_contract"] == ""
     assert status["current_focus"]["accepted_baseline_sha256"] == (
@@ -1704,8 +1695,9 @@ def test_artifact_registry_records_s1_current_focus_and_historical_sources():
     assert status["current_focus"]["recommended_cover_timestamp_seconds"] == ""
     assert status["current_focus"]["recommended_cover_selection_status"] == ""
     assert status["current_focus"]["artifact_id"] == (
-        "clip-s1-two-source-common-context-probe-v1-001"
+        "clip-benchmark-portfolio-coverage-v1-001"
     )
+    assert "clip-wiki-tensaku-family-turn-v1-001" in artifact_ids
     assert "clip-s1-two-source-common-context-probe-v1-001" in artifact_ids
     assert "clip-out13-editorial-video-candidate-v1-005" in artifact_ids
     assert "clip-out13-editorial-video-candidate-v1-004" in artifact_ids

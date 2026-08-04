@@ -34,6 +34,7 @@ const DEFAULT_MAX_PAGES = 120;
 const SLICE_TARGET_SECONDS = 300;
 const VIDEO_ID_PATTERN = /^[A-Za-z0-9_-]{11}$/u;
 const ARTIFACT_ID_PATTERN = /^clip-[a-z0-9][a-z0-9-]*$/u;
+const SELECTION_PROFILES = new Set(["caption-dense", "correction-led"]);
 const ANDROID_CLIENT = {
   clientName: "ANDROID",
   clientVersion: "20.10.38",
@@ -85,6 +86,8 @@ function parseArgs(argv) {
     artifactId: DEFAULT_ARTIFACT_ID,
     reuseInventory: false,
     offlineExistingEvidence: false,
+    reuseRetainedSourceMedia: false,
+    selectionProfile: "caption-dense",
   };
   for (let index = 0; index < argv.length; index += 1) {
     const value = argv[index];
@@ -96,6 +99,8 @@ function parseArgs(argv) {
     else if (value === "--artifact-id") args.artifactId = argv[++index];
     else if (value === "--reuse-inventory") args.reuseInventory = true;
     else if (value === "--offline-existing-evidence") args.offlineExistingEvidence = true;
+    else if (value === "--reuse-retained-source-media") args.reuseRetainedSourceMedia = true;
+    else if (value === "--selection-profile") args.selectionProfile = argv[++index];
     else if (value === "--help" || value === "-h") args.help = true;
     else throw new Error(`unknown argument: ${value}`);
   }
@@ -119,6 +124,12 @@ function parseArgs(argv) {
   if (args.offlineExistingEvidence && args.downloadSelectedSource) {
     throw new Error("--offline-existing-evidence cannot download source bytes");
   }
+  if (!SELECTION_PROFILES.has(args.selectionProfile)) {
+    throw new Error("--selection-profile must be caption-dense or correction-led");
+  }
+  if (args.reuseRetainedSourceMedia && !args.offlineExistingEvidence) {
+    throw new Error("--reuse-retained-source-media requires --offline-existing-evidence");
+  }
   return args;
 }
 
@@ -130,7 +141,8 @@ function usage() {
     "",
     "Existing-corpus successor slice:",
     "  --reuse-inventory --slice-video-id <id> --artifact-id <clip-*> \\",
-    "  [--offline-existing-evidence | --download-selected-source]",
+    "  [--offline-existing-evidence [--reuse-retained-source-media] | --download-selected-source] \\",
+    "  [--selection-profile caption-dense|correction-led]",
   ].join("\n");
 }
 
@@ -505,6 +517,7 @@ function buildEditorialContext(
   {
     artifactId = DEFAULT_ARTIFACT_ID,
     sourceDurationBasis = "provider_combined_format_approx_duration",
+    selectionProfile = "caption-dense",
   } = {},
 ) {
   const events = captionEvents(captionPayload);
@@ -533,7 +546,13 @@ function buildEditorialContext(
         (total, event) => total + Object.values(scoreTopics(event.text)).reduce((sum, value) => sum + value, 0),
         0,
       );
-      const score = evidence.length * 10 + topicScore;
+      const correctionCount = evidence.filter((event) => CORRECTION_PATTERN.test(event.text)).length;
+      const uniqueTopicCount = new Set(evidence.flatMap((event) => Object.entries(scoreTopics(event.text))
+        .filter(([, value]) => value > 0)
+        .map(([topicId]) => topicId))).size;
+      const score = selectionProfile === "correction-led"
+        ? correctionCount * 100 + uniqueTopicCount * 20 + topicScore * 2 + evidence.length
+        : evidence.length * 10 + topicScore;
       if (score > bestScore || (score === bestScore && start < best.start)) {
         best = { start: round6(start), end: round6(end) };
         bestScore = score;
@@ -552,6 +571,9 @@ function buildEditorialContext(
     const topics = Object.entries(topicScores).filter(([, score]) => score > 0)
       .sort((left, right) => right[1] - left[1]);
     const topicLabels = topics.slice(0, 3).map(([id]) => TOPICS.find((topic) => topic.id === id)?.label || id);
+    const correctionAnchorEventIds = evidence
+      .filter((event) => CORRECTION_PATTERN.test(event.text))
+      .map((event) => event.event_id);
     const primary = topicLabels[0] || "時系列サンプル";
     const phase = SUCCESSOR_CHAPTER_PHASES[index] || `時系列区間${index + 1}`;
     const chapterTitle = successorStyle ? `${phase} — ${primary}` : primary;
@@ -566,11 +588,14 @@ function buildEditorialContext(
         secondary_topics: topics.slice(1, 3).map(([id]) => id),
         whole_source_slot_index: index + 1,
         whole_source_slot_count: uniformCuts.length,
+        selection_profile: selectionProfile,
       },
       source_start_seconds: range.start,
       source_end_seconds: range.end,
       source_caption_event_ids: evidence.map((event) => event.event_id),
       topic_tags: topics.slice(0, 3).map(([id]) => id),
+      correction_anchor_event_ids: correctionAnchorEventIds,
+      correction_anchor_count: correctionAnchorEventIds.length,
       provenance_type: "source_range_index",
       semantic_status: "machine_indexed_requires_editorial_review",
     };
@@ -580,7 +605,21 @@ function buildEditorialContext(
     artifact_id: artifactId,
     family_id: "miko_led_unofficial_wiki_review",
     source_identity: `youtube:${source.video_id}`,
-    expected_selection_mode: "editorial_context_caption_dense_chronological_sampling",
+    expected_selection_mode: selectionProfile === "correction-led"
+      ? "editorial_context_correction_led_chronological_sampling"
+      : "editorial_context_caption_dense_chronological_sampling",
+    selection_profile: selectionProfile,
+    selection_summary: {
+      chronology_partition: "12_uniform_whole_source_slots",
+      chapter_duration_seconds: SLICE_TARGET_SECONDS / chapters.length,
+      chapters_with_correction_anchor: chapters.filter((chapter) => chapter.correction_anchor_count > 0).length,
+      selected_correction_anchor_count: chapters.reduce(
+        (total, chapter) => total + chapter.correction_anchor_count,
+        0,
+      ),
+      selected_topic_ids: [...new Set(chapters.flatMap((chapter) => chapter.topic_tags))],
+      semantic_status: "machine_keyword_selection_requires_editorial_review",
+    },
     expected_source_duration_seconds: source.duration_seconds,
     source_duration_basis: sourceDurationBasis,
     source_range_tolerance_seconds: 0.1,
@@ -752,6 +791,32 @@ async function downloadSelectedSource(source, html, outputDir, observedAt) {
   return { mediaPath, receipt, reused: false };
 }
 
+async function reuseRetainedSourceMedia(source, outputDir) {
+  const mediaDir = join(outputDir, "materials", source.video_id);
+  const mediaPath = join(mediaDir, "source_video.mp4");
+  const receiptPath = join(mediaDir, "acquisition_receipt.json");
+  if (!existsSync(mediaPath) || !existsSync(receiptPath)) {
+    throw new Error("--reuse-retained-source-media requires source_video.mp4 and acquisition_receipt.json");
+  }
+  const receipt = JSON.parse(await readFile(receiptPath, "utf8"));
+  const expectedIdentity = `youtube:${source.video_id}`;
+  if (receipt.source_identity !== expectedIdentity) {
+    throw new Error("retained source acquisition receipt identity mismatch");
+  }
+  if (receipt.cookies_used !== false || receipt.oauth_used !== false) {
+    throw new Error("retained source receipt must record cookies_used=false and oauth_used=false");
+  }
+  const info = await stat(mediaPath);
+  const digest = await sha256File(mediaPath);
+  if (receipt.source_sha256 !== digest || Number(receipt.source_byte_size) !== info.size) {
+    throw new Error("retained source media does not match acquisition receipt");
+  }
+  if (!Number(receipt.format?.approx_duration_seconds || 0)) {
+    throw new Error("retained source acquisition receipt lacks duration identity");
+  }
+  return { mediaPath, receipt, reused: true, retained: true };
+}
+
 async function runExistingCorpusSlice(args, outputDir, observedAt) {
   const inventoryPath = join(outputDir, "corpus_inventory.json");
   const corpusReceiptPath = join(outputDir, "corpus_receipt.json");
@@ -795,13 +860,24 @@ async function runExistingCorpusSlice(args, outputDir, observedAt) {
     liveWatch = await collectWatch(source.video_id, { fetchCaption: false });
   }
   let acquisition = null;
-  if (args.downloadSelectedSource) {
+  if (args.reuseRetainedSourceMedia) {
+    acquisition = await reuseRetainedSourceMedia(source, outputDir);
+  } else if (args.downloadSelectedSource) {
     acquisition = await downloadSelectedSource(source, liveWatch.html, outputDir, observedAt);
   }
   const acquiredDuration = Number(acquisition?.receipt?.format?.approx_duration_seconds || 0);
   const sourceForSlice = acquiredDuration > 0
     ? { ...source, duration_seconds: acquiredDuration }
     : source;
+  const evidenceTimestamp = args.offlineExistingEvidence
+    ? String(
+      corpusInventory.observed_at
+      || corpusReceipt.observed_at
+      || retainedWatch?.receipt?.observed_at
+      || acquisition?.receipt?.acquired_at
+      || "retained_evidence_timestamp_unavailable"
+    )
+    : observedAt;
   const captionById = new Map([[source.video_id, captionPayload]]);
   const topicIndex = buildTopicIndex([source], captionById);
   const editorialContext = buildEditorialContext(sourceForSlice, captionPayload, {
@@ -809,15 +885,16 @@ async function runExistingCorpusSlice(args, outputDir, observedAt) {
     sourceDurationBasis: acquiredDuration > 0
       ? "provider_combined_format_approx_duration"
       : "fixed_corpus_inventory_duration_seconds",
+    selectionProfile: args.selectionProfile,
   });
-  const rights = buildRightsManifest(sourceForSlice, observedAt);
+  const rights = buildRightsManifest(sourceForSlice, evidenceTimestamp);
   const sourceTopicIndex = topicIndex.sources[0];
   const sliceDir = join(outputDir, "slice_inputs", args.artifactId);
   const sliceReceipt = {
     schema_version: SCHEMA_VERSION,
     artifact_id: args.artifactId,
     family_id: corpusInventory.family_id,
-    created_at: observedAt,
+    created_at: evidenceTimestamp,
     corpus_binding: {
       inventory_path: "corpus_inventory.json",
       inventory_sha256: await sha256File(inventoryPath),
@@ -834,6 +911,7 @@ async function runExistingCorpusSlice(args, outputDir, observedAt) {
       acquisition_receipt_path: `materials/${source.video_id}/acquisition_receipt.json`,
       source_sha256: acquisition?.receipt?.source_sha256 || null,
       source_byte_size: acquisition?.receipt?.source_byte_size || null,
+      media_reuse_mode: acquisition?.retained ? "retained_exact_bytes_no_network" : null,
     },
     source_caption: {
       provenance_type: "source_caption",
@@ -856,8 +934,10 @@ async function runExistingCorpusSlice(args, outputDir, observedAt) {
       merged_with_source_caption: false,
       source_caption_claim: false,
     },
-    evidence_mode: args.offlineExistingEvidence
-      ? "retained_caption_inventory_topic_and_watch_snapshot_no_network"
+    evidence_mode: args.reuseRetainedSourceMedia
+      ? "retained_caption_inventory_topic_watch_and_source_bytes_no_network"
+      : args.offlineExistingEvidence
+        ? "retained_caption_inventory_topic_and_watch_snapshot_no_network"
       : "live_watch_readback",
     live_availability_readback: liveWatch?.receipt || null,
     retained_availability_readback: retainedWatch,
@@ -890,6 +970,7 @@ async function runExistingCorpusSlice(args, outputDir, observedAt) {
     correction_anchor_count: sourceTopicIndex.correction_anchors.length,
     availability_readback_mode: availabilityReadbackMode,
     network_requests_performed: args.offlineExistingEvidence ? 0 : 1,
+    selection_profile: args.selectionProfile,
   };
   await writeJson(join(outputDir, "collector_runs", `${args.artifactId}.json`), result);
   return result;
@@ -1053,7 +1134,7 @@ async function main() {
   const editorialContext = buildEditorialContext(
     selectedForSlice,
     captionById.get(selected.video_id),
-    { artifactId: args.artifactId },
+    { artifactId: args.artifactId, selectionProfile: args.selectionProfile },
   );
   const rights = buildRightsManifest(selectedForSlice, observedAt);
   await writeJson(join(outputDir, "corpus_inventory.json"), corpusInventory);

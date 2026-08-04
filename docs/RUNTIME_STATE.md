@@ -3,13 +3,13 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: BENCHMARK_PORTFOLIO_WIKI003_STATIC_PACKET_READY_MEDIA_GATES_PARKED_S1_PARKED
+health: BENCHMARK_PORTFOLIO_WIKI_FAMILY_TURN_READY_MEDIA_GATES_PARKED_S1_PARKED
 last_touched: 2026-08-05
-state_revision: wiki003-network-free-static-packet-2026-08-05
+state_revision: wiki-family-turn-correction-led-media-2026-08-05
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: SH-05
-phase: wiki003_candidate_specific_static_packet_verified
-canonical_status: benchmark_portfolio_15_families_27_slots_wiki003_static_packet_ready
+phase: wiki_family_turn_correction_led_media_verified
+canonical_status: benchmark_portfolio_15_families_28_slots_wiki_family_turn_ready
 active_branch: codex/wiki-tensaku-longform-family-v1
 source_branch: codex/wiki-tensaku-longform-family-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
@@ -42,16 +42,16 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: Wiki 003 candidate-specific static packet materialized with zero network requests
+current_title: Wiki correction-led family turn materialized from retained exact source bytes
 human_entrypoint: docs/benchmarks/index.html
 portable_entrypoint: docs/benchmarks/index.html
 review_open_command: start docs\benchmarks\index.html
 review_server_restart_command: not_required_static_portfolio
 machine_readback: docs/benchmarks/benchmark_portfolio.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: none_for_portfolio_navigation_existing_candidate_specific_gates_preserved
-review_status: internal_portfolio_review_available_candidate_acceptance_not_inferred
-review_scope: 15_registered_output_families_27_family_scoped_candidate_slots
+decision_required: wiki_family_turn_exact_sha_internal_editorial_verdict
+review_status: correction_led_family_turn_machine_validated_human_editorial_review_pending
+review_scope: 15_registered_output_families_28_family_scoped_candidate_slots
 reviewed_at: null
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
 m2_review_scope: internal_full_view_editorial_visual_review
@@ -109,7 +109,7 @@ content_selection_status: jp_pilot01_provider_caption_evidence_explicit_seven_cu
 subtitle_presentation_timing_status: provider_json3_102_cues_keifont_two_line_safe_area_pass
 endpoint_status: final_complete_victory_cue_closes_before_post_resolution_tail
 reviewed_by_human: false
-human_review_pending: false
+human_review_pending: true
 acceptance_granted: false
 editorial_acceptance_granted: false
 acceptance_receipt: null
@@ -137,9 +137,9 @@ winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: stopped_restart_command_available
-next_review_due: s1_human_review_remains_parked_per_existing_exact_gate
-next_review_type: candidate_specific_only_when_existing_ledger_upgrade_condition_calls_for_human_judgment
-next_action: wait_for_exact_source_bytes_or_existing_s1_human_verdict_without_network_retry
+next_review_due: wiki_family_turn_exact_sha_internal_editorial_review_s1_remains_parked
+next_review_type: accept_bounded_repair_or_reject_exact_wiki_family_turn_sha
+next_action: review_wiki_family_turn_exact_sha_then_wait_for_002_or_003_source_bytes_without_network_retry
 active_artifact: clip-benchmark-portfolio-coverage-v1-001
 current_review_component: tiered_benchmark_portfolio_and_per_candidate_reverse_engineering_cards
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
@@ -148,17 +148,17 @@ artifact_output_sha256: not_applicable_tracked_multi_artifact_portfolio
 artifact_output_byte_size: not_applicable
 artifact_package_tree_digest_sha256: not_used_tracked_regenerable_portfolio
 artifact_manifest_self_sha256: not_applicable
-artifact_file_count: 31
+artifact_file_count: 32
 artifact_duration_seconds: not_applicable
 artifact_source_count: 15
-artifact_cut_count: 27
+artifact_cut_count: 28
 artifact_source_switch_count: not_applicable
 artifact_caption_cue_count: inherited_per_candidate_not_aggregated
 artifact_commentary_count: inherited_per_candidate_not_aggregated
 benchmark_family_denominator: 15
-benchmark_candidate_slot_denominator: 27
-benchmark_materialized_card_count: 27
-benchmark_fully_viewable_count: 20
+benchmark_candidate_slot_denominator: 28
+benchmark_materialized_card_count: 28
+benchmark_fully_viewable_count: 21
 benchmark_playable_proxy_count: 2
 benchmark_static_reviewable_count: 5
 benchmark_contract_only_count: 0
@@ -220,6 +220,34 @@ wiki_third_artifact_status: candidate_specific_static_inputs_ready_no_network
 wiki_third_media_validation: not_run
 wiki_third_product_gate_status: NOT_MET
 wiki_third_external_state: WAITING_EXACT_SOURCE_BYTES
+wiki_family_turn_artifact_id: clip-wiki-tensaku-family-turn-v1-001
+wiki_family_turn_source_identity: youtube:1AcId5Yja10
+wiki_family_turn_source_sha256: a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7
+wiki_family_turn_caption_sha256: f58c248f23b29845a94ae01b789f122c8759687125375a2650cc7a8074107e4f
+wiki_family_turn_caption_event_count: 1557
+wiki_family_turn_whole_source_correction_anchor_count: 66
+wiki_family_turn_selected_correction_anchor_count: 23
+wiki_family_turn_chapters_with_correction_anchor: 12
+wiki_family_turn_chapter_count: 12
+wiki_family_turn_commentary_count: 12
+wiki_family_turn_caption_cue_count: 106
+wiki_family_turn_output_sha256: 1f965e537d5a767d8cfe5c456ed0481ea88a119743f207ada9764bbc0ebe3284
+wiki_family_turn_output_byte_size: 21800858
+wiki_family_turn_output_duration_seconds: 300.0
+wiki_family_turn_manifest_self_sha256: 84e9c788c0840a35148755ba3ac6975eade7c80f4f6fd4c85f8bbd9ad1ada971
+wiki_family_turn_validation: passed_13_of_13
+wiki_family_turn_full_decode: passed
+wiki_family_turn_mapping_coverage: 1.0
+wiki_family_turn_network_requests_performed: 0
+wiki_family_turn_resume_render_executed: false
+wiki_family_turn_review_http_status: 200
+wiki_family_turn_review_range_status: 206
+wiki_family_turn_human_review_pending: true
+wiki_family_turn_editorial_acceptance_granted: false
+wiki_family_turn_rights_approval: not_granted
+wiki_family_turn_production_acceptance: false
+wiki_family_turn_public_use: false
+wiki_family_turn_upload_attempted: false
 wiki_state_code: PARKED_BLOCKED_EXTERNAL_NOT_PORTFOLIO_BOTTLENECK
 s1_lane_status: parked_human_review_pending
 s1_implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
@@ -247,7 +275,7 @@ s1_upload_attempted: false
 package_validation_status: passed
 s1_review_http_status: 200
 s1_review_range_status: 206
-full_suite_status: not_rerun_preserved_historical_689
+full_suite_status: passed_696
 out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive
 out13_human_review_pending: false
 out13_editorial_acceptance_granted: true
@@ -651,17 +679,21 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — SH-05 Wiki 003 Static Packet Ready
+## Current Capsule — SH-05 Wiki Correction-Led Family Turn Ready
 
 - active slice: `SH-05`
 - active artifact: `clip-benchmark-portfolio-coverage-v1-001`
 - portfolio entrypoint: `docs/benchmarks/index.html`
 - machine ledger: `docs/benchmarks/benchmark_portfolio.json`
-- registered denominator: `15 families / 27 family-scoped candidate slots`
-- observed tiers: `20 fully-viewable / 2 playable-proxy / 5 static-reviewable / 0 contract-only`
-- materialization: `27/27 tracked candidate cards`
+- registered denominator: `15 families / 28 family-scoped candidate slots`
+- observed tiers: `21 fully-viewable / 2 playable-proxy / 5 static-reviewable / 0 contract-only`
+- materialization: `28/28 tracked candidate cards`
 - human decision required now: `false` for portfolio navigation
 - acceptance rule: each existing exact artifact/SHA gate remains unchanged
+- review status: `correction_led_family_turn_machine_validated_human_editorial_review_pending`
+- portable receipt: `docs/benchmarks/index.html`
+- local artifact role: `tracked_portfolio_with_links_to_preserved_same_machine_evidence`
+- human review pending: `true`
 
 - 母数は`docs/output_layer`のWiki、S1、OUT-01〜OUT-13に有限化した。同一候補がOUT-11の
   比較枠にも現れる場合はfamily-scoped slotとして数え、`reuse_of`で重複を明示するため、
@@ -679,6 +711,11 @@ instructions.
   使用し、network request 0でcandidate-specific 12章packetへ昇格した。979 caption events全域から
   12 topic windows、44 correction anchors、12 chapters、12 creator commentary eventsを分離保存した。
   source bytesとMP4は存在せず、media/Product Gateは未達のまま。
+- Wiki 001のexact retained source bytesをidentity/SHA/size/duration/no-cookie/no-OAuth receiptへ再bindし、
+  network request 0で訂正anchor主導の新artifact`clip-wiki-tensaku-family-turn-v1-001`を生成した。
+  12時系列slotすべてに訂正anchorを含む300秒 / 12章 / 106 caption cue / 12 commentary eventで、
+  MP4 SHA`1f965e53...3284`、13/13、full decode、mapping 1.0、resume非render、page 200 / Range 206をpass。
+  machine keyword selectionはhuman editorial acceptanceではなく、exact SHA verdictを次gateとする。
 - S1 `clip-s1-two-source-common-context-probe-v1-001`のS4 human review pending、OUT-13 M6 deny、
   既存accepted/parked判定、rights/publication gateはすべて元のexact scopeのまま保持する。
 - `episodes/`はignoredかつtracked 0。Gitへ追加したのはregistry、generator、ledger、HTML card、
@@ -686,12 +723,12 @@ instructions.
 
 ## Next Action
 
-- action: `wait_for_exact_source_bytes_or_existing_s1_human_verdict_without_network_retry`
-- authorization state: `no_claimable_media_upgrade_without_exact_bytes_or_human_decision`
-- owner: `ClipPipeGen shared-infra / user FB intake`
-- condition: Wiki 002または003のexact source bytesが明示的に供給された場合だけ、対応する300s / 12章 /
-  13-check media sliceへ進む。別laneのS1 exact probe verdictも既存identityへbindされた回答が届いた時だけ
-  更新する。cookie、OAuth、anonymous acquisition retry、既存artifact rerender、rights/publication推定は行わない。
+- action: `review_wiki_family_turn_exact_sha_then_wait_for_002_or_003_source_bytes_without_network_retry`
+- authorization state: `human_editorial_verdict_required_for_new_turn_acceptance_media_upgrades_remain_exact_bytes_only`
+- owner: `ClipPipeGen editing / user FB intake`
+- condition: 新family turnはexact MP4 SHAへ`accept / bounded repair / reject`をbindする。Wiki 002または003は
+  exact source bytesが明示的に供給された場合だけ対応する300s / 12章 / 13-check media sliceへ進む。
+  別laneのS1 verdictはparkしたまま。cookie、OAuth、anonymous acquisition retry、rights/publication推定は行わない。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 

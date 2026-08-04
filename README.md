@@ -7,12 +7,20 @@
 > states unless the Runtime capsule records a later reviewed transition.
 
 SH-05 benchmark portfolio note: the current finite output benchmark surface is
-15 families / 27 family-scoped candidate slots, materialized as 27 tracked
+15 families / 28 family-scoped candidate slots, materialized as 28 tracked
 review cards. Open [docs/benchmarks/index.html](docs/benchmarks/index.html).
-The current-host ledger reports 20 fully-viewable, 2 playable-proxy, 5
+The current-host ledger reports 21 fully-viewable, 2 playable-proxy, 5
 static-reviewable, and 0 contract-only slots. These tiers describe evidence
 availability only; existing acceptance, rights, production, publication,
 monetization, and upload gates remain exact-artifact decisions.
+
+ED-13 Wiki family-turn note: `clip-wiki-tensaku-family-turn-v1-001` reuses the exact
+retained `youtube:1AcId5Yja10` source bytes with zero network requests and selects one
+25-second correction-led chapter from each of 12 chronological whole-source slots. The
+300-second H.264/AAC MP4 SHA is `1f965e53...3284`; 12/12 chapters contain correction
+anchors, 13/13 media checks and full decode pass, localhost returns page 200 / Range 206,
+and deterministic resume skips render while preserving hash and mtime. This is a new
+internal review artifact, not human editorial acceptance or rights/production/public approval.
 
 ED-12 / S1 note: `build-common-context-probe`は、取得済み実source二本だけをexact
 media/caption/transcript/rights hashへbindし、source captionとcreator-authored commentaryを
@@ -167,11 +175,12 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 
 ## 現在のスライス
 
-現在のactive sliceは`SH-05` benchmark portfolio readback。15 family / 27 family-scoped slotを
-tracked review surfaceへ有限化し、20 fully-viewable / 2 playable-proxy / 5 static-reviewable /
-0 contract-onlyを観測している。ED-13 Wiki 003はtracked implementation
-`e7539e03b680d8a79ba7e4c389a69b45130ea0d0`で、retained evidenceだけからnetwork request 0の
-candidate-specific 12章static packetへ昇格した。Wiki 002/003のexact source bytesは未供給。
+現在のactive sliceは`SH-05` benchmark portfolio readback。15 family / 28 family-scoped slotを
+tracked review surfaceへ有限化し、21 fully-viewable / 2 playable-proxy / 5 static-reviewable /
+0 contract-onlyを観測している。ED-13 Wiki 003はretained evidenceだけからnetwork request 0の
+candidate-specific 12章static packetへ昇格済み。さらに既存Wiki 001 source bytesをSHA再照合して、
+12/12章に訂正anchorを含む300秒の`clip-wiki-tensaku-family-turn-v1-001`を新規生成した。
+Wiki 002/003のexact source bytesは未供給のままで、そのmedia gateは変更していない。
 ED-12/S1 exact probeのhuman reviewは別laneにparkしている。
 
 実装履歴として、**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 /
@@ -186,8 +195,9 @@ subtitles -> diagnostic render -> NLE CSV`まで通る。`review-transcript`は�
 transcriptを既存downstreamへ戻す入口であり、transcript approvalは
 edit / render / publish / production acceptanceではない。
 
-直近のnext actionは、Wiki 002または003のexact source bytesが明示的に供給された場合だけ、
-対応する300s / 12章 / 13-check media sliceへ進むこと。S1はexact MP4への
+直近のproduct actionは、新しいWiki family turnのexact MP4 SHAへ
+`accept / bounded repair / reject`をbindする内部editorial review。Wiki 002または003のmedia
+upgradeはexact source bytesが明示的に供給された場合だけ進む。S1は別exact MP4への
 `accept / bounded repair / reject`をidentityへbindするhuman verdict待ち。rights approval、
 production render/subtitle design/image quality、thumbnail、Publishing / OAuth、upload、
 public releaseは開始しておらず、独立した未承認gateのままである。

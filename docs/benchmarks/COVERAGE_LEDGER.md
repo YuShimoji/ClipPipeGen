@@ -1,16 +1,17 @@
 # Benchmark Portfolio Coverage Ledger
 
 - portfolio: `clip-benchmark-portfolio-coverage-v1-001`
-- observed_at: `2026-08-05T00:32:21+09:00`
+- observed_at: `2026-08-05T04:15:06+09:00`
 - family denominator: **15**
-- candidate-slot denominator: **27**
-- coverage: `{"contract-only": 0, "fully-viewable": 20, "playable-proxy": 2, "static-reviewable": 5}`
+- candidate-slot denominator: **28**
+- coverage: `{"contract-only": 0, "fully-viewable": 21, "playable-proxy": 2, "static-reviewable": 5}`
 - counting: family-scoped slots; reused media are listed through `reuse_of` and are not claimed as unique bytes.
 - boundary: internal reverse-engineering readback only; no rights, production, public, monetized, or upload approval is inferred.
 
 | Family | Candidate | Exact identity | Tier | State | Missing upgrade condition |
 |---|---|---|---|---|---|
 | wiki-tensaku-longform-v1 | wiki-001 | clip-wiki-tensaku-longform-v1-001 | fully-viewable | verified_13_of_13_internal | none_for_current_internal_review_tier |
+| wiki-tensaku-longform-v1 | wiki-turn-001 | clip-wiki-tensaku-family-turn-v1-001 | fully-viewable | verified_13_of_13_correction_led_internal | none_for_current_internal_review_tier |
 | wiki-tensaku-longform-v1 | wiki-002 | clip-wiki-tensaku-longform-v1-002 | static-reviewable | static_inputs_ready_external_source_bytes_blocked | Exact youtube:82iRbxjvbww source bytes or fresh anonymous public player access, then the existing 300-second build and 13-of-13 verification route. |
 | wiki-tensaku-longform-v1 | wiki-003 | clip-wiki-tensaku-longform-v1-003 | static-reviewable | candidate_specific_static_inputs_ready_no_network | Obtain exact youtube:Ocqg-RpQURY source bytes, then run the existing 300-second build and 13-of-13 verification route. |
 | s1-two-source-common-context | s1-001 | clip-s1-two-source-common-context-probe-v1-001 | fully-viewable | human_review_pending_parked | Human S4 review bound to the exact MP4 SHA; no rerender is required. |

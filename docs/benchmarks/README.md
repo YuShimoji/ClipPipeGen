@@ -44,3 +44,14 @@ The command requires the retained corpus inventory, watch receipt, and caption
 payload already present under the ignored episode directory. It emits 12
 chapter inputs and provenance readbacks, but never upgrades the candidate to a
 playable tier or changes its rights/publication state.
+
+The correction-led Wiki family turn is a separate zero-network route that also
+requires the exact retained Wiki 001 source bytes and matching acquisition receipt:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\operator\build_wiki_tensaku_family_turn_one.ps1
+```
+
+It fails closed on source identity, SHA, byte size, duration, cookies/OAuth receipt
+flags, and missing retained evidence. It creates or resumes a new artifact identity;
+it does not overwrite Wiki 001 or change the parked Wiki 002/003 media gates.

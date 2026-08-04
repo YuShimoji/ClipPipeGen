@@ -1,18 +1,18 @@
 {
   "schema_version": "clippipegen.benchmark_portfolio.v1",
   "portfolio_id": "clip-benchmark-portfolio-coverage-v1-001",
-  "observed_at": "2026-08-05T00:32:21+09:00",
+  "observed_at": "2026-08-05T04:15:06+09:00",
   "scope": "The 15 output-layer families currently registered by docs/output_layer: Wiki, S1, and OUT-01 through OUT-13.",
   "candidate_counting_rule": "Count family-scoped benchmark slots. A slot reused by another family remains a separate comparison slot, while reused media bytes are identified with reuse_of.",
   "family_denominator": 15,
-  "candidate_denominator": 27,
-  "materialized_candidate_cards": 27,
+  "candidate_denominator": 28,
+  "materialized_candidate_cards": 28,
   "all_registered_candidates_materialized": true,
   "coverage_by_tier": {
     "contract-only": 0,
     "static-reviewable": 5,
     "playable-proxy": 2,
-    "fully-viewable": 20
+    "fully-viewable": 21
   },
   "rights_publication_approval_inferred": false,
   "episodes_paths_tracked_by_this_artifact": false,
@@ -21,9 +21,9 @@
       "family_id": "wiki-tensaku-longform-v1",
       "title": "Wiki添削 Long-form Family v1",
       "contract_path": "docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md",
-      "candidate_count": 3,
+      "candidate_count": 4,
       "coverage_by_tier": {
-        "fully-viewable": 1,
+        "fully-viewable": 2,
         "static-reviewable": 2
       },
       "candidates": [
@@ -49,12 +49,12 @@
           "contract": {
             "path": "docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md",
             "present": true,
-            "byte_size": 6104
+            "byte_size": 6989
           },
           "static_entrypoint_state": {
             "path": "docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md",
             "present": true,
-            "byte_size": 6104
+            "byte_size": 6989
           },
           "local_entrypoint_state": {
             "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/review/index.html",
@@ -74,6 +74,75 @@
           ],
           "observed_tier": "fully-viewable",
           "materialized_card": "docs/benchmarks/candidates/wiki-001.html"
+        },
+        {
+          "candidate_id": "wiki-turn-001",
+          "artifact_identity": "clip-wiki-tensaku-family-turn-v1-001",
+          "role": "Correction-led full-range successor turn from exact retained Wiki 001 source bytes",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-family-turn-v1-001/slice_receipt.json",
+          "local_entrypoint": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v1-001/review/index.html",
+          "local_evidence": [
+            "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-family-turn-v1-001/editorial_context.json",
+            "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v1-001/validation_readback.json",
+            "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v1-001/resume_readback.json"
+          ],
+          "local_media": [
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v1-001/final_video.mp4",
+              "expected_sha256": "1f965e537d5a767d8cfe5c456ed0481ea88a119743f207ada9764bbc0ebe3284"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\wiki_tensaku_family_20260804\\artifacts\\clip-wiki-tensaku-family-turn-v1-001\\review\\open_preview.ps1",
+          "state": "verified_13_of_13_correction_led_internal",
+          "missing_upgrade_condition": "none_for_current_internal_review_tier",
+          "boundary": "This successor reuses exact retained Wiki 001 source bytes without network requests. Machine keyword selection still requires editorial judgment; rights, production, public, monetized, and upload approval remain closed.",
+          "family_id": "wiki-tensaku-longform-v1",
+          "family_title": "Wiki添削 Long-form Family v1",
+          "contract": {
+            "path": "docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md",
+            "present": true,
+            "byte_size": 6989
+          },
+          "static_entrypoint_state": {
+            "path": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-family-turn-v1-001/slice_receipt.json",
+            "present": true,
+            "byte_size": 3493
+          },
+          "local_entrypoint_state": {
+            "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v1-001/review/index.html",
+            "present": true,
+            "byte_size": 7521
+          },
+          "local_evidence_state": [
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-family-turn-v1-001/editorial_context.json",
+              "present": true,
+              "byte_size": 24675
+            },
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v1-001/validation_readback.json",
+              "present": true,
+              "byte_size": 5067
+            },
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v1-001/resume_readback.json",
+              "present": true,
+              "byte_size": 693
+            }
+          ],
+          "local_media_state": [
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v1-001/final_video.mp4",
+              "present": true,
+              "byte_size": 21800858,
+              "expected_sha256": "1f965e537d5a767d8cfe5c456ed0481ea88a119743f207ada9764bbc0ebe3284",
+              "observed_sha256": "1f965e537d5a767d8cfe5c456ed0481ea88a119743f207ada9764bbc0ebe3284",
+              "sha256_matches_expected": true
+            }
+          ],
+          "observed_tier": "fully-viewable",
+          "materialized_card": "docs/benchmarks/candidates/wiki-turn-001.html"
         },
         {
           "candidate_id": "wiki-002",
@@ -96,7 +165,7 @@
           "contract": {
             "path": "docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md",
             "present": true,
-            "byte_size": 6104
+            "byte_size": 6989
           },
           "static_entrypoint_state": {
             "path": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-002/slice_receipt.json",
@@ -146,7 +215,7 @@
           "contract": {
             "path": "docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md",
             "present": true,
-            "byte_size": 6104
+            "byte_size": 6989
           },
           "static_entrypoint_state": {
             "path": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/slice_receipt.json",

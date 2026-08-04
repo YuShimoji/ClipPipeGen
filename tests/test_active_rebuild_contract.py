@@ -228,7 +228,7 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_s1_and_keeps_out13_and_out07_predecessors_parked() -> (
+def test_runtime_points_to_wiki_turn_and_keeps_s1_out13_and_out07_parked() -> (
     None
 ):
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
@@ -239,65 +239,42 @@ def test_runtime_points_to_s1_and_keeps_out13_and_out07_predecessors_parked() ->
     )
     assert "remote_code_complete: true" in runtime
     assert "remote_decision_binding_available: false" in runtime
-    assert "active_branch: codex/s1-two-source-common-context-probe-v1" in runtime
+    assert "active_branch: codex/wiki-tensaku-longform-family-v1" in runtime
     assert "upstream_parity: 0 0" in runtime
     assert (
         "base_main_revision: "
-        "edb782acd1e06aca46e0a5d10295ea52f30ad5c7"
+        "bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471"
         in runtime
     )
     assert "local_artifact_available: true" in runtime
-    assert "portable_local_artifact_available: false" in runtime
-    assert (
-        "human_entrypoint: episodes/s1_two_source_common_context_probe_20260726/"
-        "review/clip_s1_two_source_common_context_probe_v001/review/index.html"
-        in runtime
-    )
-    assert (
-        "portable_entrypoint: "
-        "docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md" in runtime
-    )
+    assert "portable_local_artifact_available: true" in runtime
+    assert "human_entrypoint: docs/benchmarks/index.html" in runtime
+    assert "portable_entrypoint: docs/benchmarks/index.html" in runtime
     assert (
         "cross_machine_resume_class: "
-        "tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_"
-        "review_package_are_not"
+        "tracked_portfolio_cards_and_contracts_are_portable_local_media_tiers_"
+        "must_be_reobserved_per_host"
         in runtime
     )
     assert (
         "health: "
-        "S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW"
+        "BENCHMARK_PORTFOLIO_WIKI_FAMILY_TURN_READY_MEDIA_GATES_PARKED_S1_PARKED"
         in runtime
     )
-    assert "current_slice: ED-12" in runtime
+    assert "current_slice: SH-05" in runtime
     assert (
-        "canonical_status: s1_s3_common_context_probe_ready_for_s4_human_review"
+        "canonical_status: benchmark_portfolio_15_families_28_slots_wiki_family_turn_ready"
         in runtime
     )
-    assert "active_artifact: clip-s1-two-source-common-context-probe-v1-001" in runtime
+    assert "active_artifact: clip-benchmark-portfolio-coverage-v1-001" in runtime
     assert (
-        "review_status: s4_human_review_pending"
+        "review_status: correction_led_family_turn_machine_validated_human_editorial_review_pending"
         in runtime
     )
-    assert "automation_acceptance_granted: false" in runtime
-    assert (
-        "automation_acceptance_scope: "
-        "machine_validated_internal_probe_human_s4_pending"
-        in runtime
-    )
-    assert "acceptance_granted: false" in runtime
-    assert "editorial_acceptance_granted: false" in runtime
+    assert "wiki_family_turn_validation: passed_13_of_13" in runtime
+    assert "wiki_family_turn_editorial_acceptance_granted: false" in runtime
     assert "human_review_pending: true" in runtime
-    assert (
-        "artifact_output_sha256: "
-        "dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be"
-        in runtime
-    )
-    assert "main_integration_approved: false" in runtime
-    assert (
-        "main_integration_preflight_verdict: "
-        "not_requested_for_s1"
-        in runtime
-    )
+    assert "s1_lane_status: parked_human_review_pending" in runtime
     assert "out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive" in runtime
     assert "out13_human_review_pending: false" in runtime
     assert "out13_editorial_acceptance_granted: true" in runtime

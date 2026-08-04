@@ -34,6 +34,29 @@
           "boundary": "Rights remain readback_unresolved; production, public, monetized, and upload approval are not inferred."
         },
         {
+          "candidate_id": "wiki-turn-001",
+          "artifact_identity": "clip-wiki-tensaku-family-turn-v1-001",
+          "role": "Correction-led full-range successor turn from exact retained Wiki 001 source bytes",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-family-turn-v1-001/slice_receipt.json",
+          "local_entrypoint": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v1-001/review/index.html",
+          "local_evidence": [
+            "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-family-turn-v1-001/editorial_context.json",
+            "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v1-001/validation_readback.json",
+            "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v1-001/resume_readback.json"
+          ],
+          "local_media": [
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v1-001/final_video.mp4",
+              "expected_sha256": "1f965e537d5a767d8cfe5c456ed0481ea88a119743f207ada9764bbc0ebe3284"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\wiki_tensaku_family_20260804\\artifacts\\clip-wiki-tensaku-family-turn-v1-001\\review\\open_preview.ps1",
+          "state": "verified_13_of_13_correction_led_internal",
+          "missing_upgrade_condition": "none_for_current_internal_review_tier",
+          "boundary": "This successor reuses exact retained Wiki 001 source bytes without network requests. Machine keyword selection still requires editorial judgment; rights, production, public, monetized, and upload approval remain closed."
+        },
+        {
           "candidate_id": "wiki-002",
           "artifact_identity": "clip-wiki-tensaku-longform-v1-002",
           "role": "Second full-corpus-indexed source; media build parked",

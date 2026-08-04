@@ -144,7 +144,8 @@ def test_out13_predecessor_closure_survives_s1_without_opening_external_gates() 
         assert "out13_m5_integrated_baseline_verification_status: passed" in text
         assert "out13_m6_rights_status: closed_deny_exact_artifact" in text
         assert "out13_m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT" in text
-        assert "rights_approval: not_granted" in text
+        assert "rights_approval: readback_unresolved" in text
+        assert "wiki_family_turn_rights_approval: not_granted" in text
         assert "production_acceptance: false" in text
         assert "public_use: false" in text
         assert "this_commit_after_push" not in text
