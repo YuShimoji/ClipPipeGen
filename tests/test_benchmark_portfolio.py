@@ -54,6 +54,10 @@ def test_builder_materializes_every_candidate_card(tmp_path: Path) -> None:
     wiki_002 = (tmp_path / "candidates/wiki-002.html").read_text(encoding="utf-8")
     assert "static-reviewable" in wiki_002
     assert "Do not retry cookies or OAuth" in wiki_002
+    wiki_003 = (tmp_path / "candidates/wiki-003.html").read_text(encoding="utf-8")
+    assert "candidate_specific_static_inputs_ready_no_network" in wiki_003
+    assert "zero network requests" in wiki_003
+    assert "Create candidate-specific 12-chapter inputs" not in wiki_003
 
 
 def test_checked_in_portfolio_matches_registry_and_keeps_episodes_untracked() -> None:

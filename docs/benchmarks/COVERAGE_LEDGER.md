@@ -1,7 +1,7 @@
 # Benchmark Portfolio Coverage Ledger
 
 - portfolio: `clip-benchmark-portfolio-coverage-v1-001`
-- observed_at: `2026-08-04T18:30:00+09:00`
+- observed_at: `2026-08-05T00:32:21+09:00`
 - family denominator: **15**
 - candidate-slot denominator: **27**
 - coverage: `{"contract-only": 0, "fully-viewable": 20, "playable-proxy": 2, "static-reviewable": 5}`
@@ -12,7 +12,7 @@
 |---|---|---|---|---|---|
 | wiki-tensaku-longform-v1 | wiki-001 | clip-wiki-tensaku-longform-v1-001 | fully-viewable | verified_13_of_13_internal | none_for_current_internal_review_tier |
 | wiki-tensaku-longform-v1 | wiki-002 | clip-wiki-tensaku-longform-v1-002 | static-reviewable | static_inputs_ready_external_source_bytes_blocked | Exact youtube:82iRbxjvbww source bytes or fresh anonymous public player access, then the existing 300-second build and 13-of-13 verification route. |
-| wiki-tensaku-longform-v1 | wiki-003 | clip-wiki-tensaku-longform-v1-003 | static-reviewable | caption_and_family_index_present_not_built | Create candidate-specific 12-chapter inputs, obtain exact youtube:Ocqg-RpQURY source bytes, then run the existing long-form build and 13-of-13 verification route. |
+| wiki-tensaku-longform-v1 | wiki-003 | clip-wiki-tensaku-longform-v1-003 | static-reviewable | candidate_specific_static_inputs_ready_no_network | Obtain exact youtube:Ocqg-RpQURY source bytes, then run the existing 300-second build and 13-of-13 verification route. |
 | s1-two-source-common-context | s1-001 | clip-s1-two-source-common-context-probe-v1-001 | fully-viewable | human_review_pending_parked | Human S4 review bound to the exact MP4 SHA; no rerender is required. |
 | out13-editorial-video-candidate | out13-001 | clip-out13-editorial-video-candidate-v1-001 | static-reviewable | historical_receipt_not_local_on_this_host | Restore its exact source-host package only if historical byte-level comparison is explicitly needed. |
 | out13-editorial-video-candidate | out13-002 | clip-out13-editorial-video-candidate-v1-002 | fully-viewable | superseded_provenance_wording | none_for_historical_reverse_engineering; use 005 for current closed provenance |

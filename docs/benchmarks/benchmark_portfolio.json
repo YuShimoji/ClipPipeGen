@@ -1,7 +1,7 @@
 {
   "schema_version": "clippipegen.benchmark_portfolio.v1",
   "portfolio_id": "clip-benchmark-portfolio-coverage-v1-001",
-  "observed_at": "2026-08-04T18:30:00+09:00",
+  "observed_at": "2026-08-05T00:32:21+09:00",
   "scope": "The 15 output-layer families currently registered by docs/output_layer: Wiki, S1, and OUT-01 through OUT-13.",
   "candidate_counting_rule": "Count family-scoped benchmark slots. A slot reused by another family remains a separate comparison slot, while reused media bytes are identified with reuse_of.",
   "family_denominator": 15,
@@ -128,18 +128,19 @@
         {
           "candidate_id": "wiki-003",
           "artifact_identity": "clip-wiki-tensaku-longform-v1-003",
-          "role": "Third inventoried source with retained caption and family index",
+          "role": "Third source with network-free candidate-specific chapter and provenance packet",
           "target_tier": "static-reviewable",
-          "static_entrypoint": "episodes/wiki_tensaku_family_20260804/corpus/captions/Ocqg-RpQURY.ja.json3",
+          "static_entrypoint": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/slice_receipt.json",
           "local_evidence": [
-            "episodes/wiki_tensaku_family_20260804/corpus/corpus_inventory.json",
-            "episodes/wiki_tensaku_family_20260804/corpus/topic_index.json"
+            "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/editorial_context.json",
+            "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/topic_index.json",
+            "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/retained_availability_readback.json"
           ],
           "local_media": [],
           "open_command": "start docs\\benchmarks\\candidates\\wiki-003.html",
-          "state": "caption_and_family_index_present_not_built",
-          "missing_upgrade_condition": "Create candidate-specific 12-chapter inputs, obtain exact youtube:Ocqg-RpQURY source bytes, then run the existing long-form build and 13-of-13 verification route.",
-          "boundary": "Caption availability is not a media, rights, production, or publication approval.",
+          "state": "candidate_specific_static_inputs_ready_no_network",
+          "missing_upgrade_condition": "Obtain exact youtube:Ocqg-RpQURY source bytes, then run the existing 300-second build and 13-of-13 verification route.",
+          "boundary": "The 12-chapter packet was built from retained evidence with zero network requests. It is not media, human acceptance, rights, production, or publication approval.",
           "family_id": "wiki-tensaku-longform-v1",
           "family_title": "Wiki添削 Long-form Family v1",
           "contract": {
@@ -148,21 +149,26 @@
             "byte_size": 6104
           },
           "static_entrypoint_state": {
-            "path": "episodes/wiki_tensaku_family_20260804/corpus/captions/Ocqg-RpQURY.ja.json3",
+            "path": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/slice_receipt.json",
             "present": true,
-            "byte_size": 452217
+            "byte_size": 3346
           },
           "local_entrypoint_state": null,
           "local_evidence_state": [
             {
-              "path": "episodes/wiki_tensaku_family_20260804/corpus/corpus_inventory.json",
+              "path": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/editorial_context.json",
               "present": true,
-              "byte_size": 2876
+              "byte_size": 22260
             },
             {
-              "path": "episodes/wiki_tensaku_family_20260804/corpus/topic_index.json",
+              "path": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/topic_index.json",
               "present": true,
-              "byte_size": 259178
+              "byte_size": 60426
+            },
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/retained_availability_readback.json",
+              "present": true,
+              "byte_size": 1122
             }
           ],
           "local_media_state": [],

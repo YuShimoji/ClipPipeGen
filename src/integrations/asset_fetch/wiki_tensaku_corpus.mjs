@@ -84,6 +84,7 @@ function parseArgs(argv) {
     selectedVideoId: null,
     artifactId: DEFAULT_ARTIFACT_ID,
     reuseInventory: false,
+    offlineExistingEvidence: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const value = argv[index];
@@ -94,6 +95,7 @@ function parseArgs(argv) {
     } else if (value === "--slice-video-id") args.selectedVideoId = argv[++index];
     else if (value === "--artifact-id") args.artifactId = argv[++index];
     else if (value === "--reuse-inventory") args.reuseInventory = true;
+    else if (value === "--offline-existing-evidence") args.offlineExistingEvidence = true;
     else if (value === "--help" || value === "-h") args.help = true;
     else throw new Error(`unknown argument: ${value}`);
   }
@@ -111,6 +113,12 @@ function parseArgs(argv) {
   if (args.reuseInventory && !args.selectedVideoId) {
     throw new Error("--reuse-inventory requires --slice-video-id");
   }
+  if (args.offlineExistingEvidence && !args.reuseInventory) {
+    throw new Error("--offline-existing-evidence requires --reuse-inventory");
+  }
+  if (args.offlineExistingEvidence && args.downloadSelectedSource) {
+    throw new Error("--offline-existing-evidence cannot download source bytes");
+  }
   return args;
 }
 
@@ -122,7 +130,7 @@ function usage() {
     "",
     "Existing-corpus successor slice:",
     "  --reuse-inventory --slice-video-id <id> --artifact-id <clip-*> \\",
-    "  [--download-selected-source]",
+    "  [--offline-existing-evidence | --download-selected-source]",
   ].join("\n");
 }
 
@@ -764,7 +772,28 @@ async function runExistingCorpusSlice(args, outputDir, observedAt) {
   const captionRows = captionEvents(captionPayload);
   if (!captionRows.length) throw new Error("selected source caption payload has no timed events");
 
-  const liveWatch = await collectWatch(source.video_id, { fetchCaption: false });
+  let liveWatch = null;
+  let retainedWatch = null;
+  let availabilityReadbackMode = "live_watch_page";
+  if (args.offlineExistingEvidence) {
+    const retainedWatchPath = join(outputDir, "watch_receipts", `${source.video_id}.json`);
+    if (!existsSync(retainedWatchPath)) {
+      throw new Error("--offline-existing-evidence requires the retained watch receipt");
+    }
+    const receipt = JSON.parse(await readFile(retainedWatchPath, "utf8"));
+    if (receipt.video_id !== source.video_id) {
+      throw new Error("retained watch receipt video identity mismatch");
+    }
+    retainedWatch = {
+      mode: "retained_corpus_snapshot_no_network",
+      path: `watch_receipts/${source.video_id}.json`,
+      sha256: await sha256File(retainedWatchPath),
+      receipt,
+    };
+    availabilityReadbackMode = retainedWatch.mode;
+  } else {
+    liveWatch = await collectWatch(source.video_id, { fetchCaption: false });
+  }
   let acquisition = null;
   if (args.downloadSelectedSource) {
     acquisition = await downloadSelectedSource(source, liveWatch.html, outputDir, observedAt);
@@ -827,7 +856,11 @@ async function runExistingCorpusSlice(args, outputDir, observedAt) {
       merged_with_source_caption: false,
       source_caption_claim: false,
     },
-    live_availability_readback: liveWatch.receipt,
+    evidence_mode: args.offlineExistingEvidence
+      ? "retained_caption_inventory_topic_and_watch_snapshot_no_network"
+      : "live_watch_readback",
+    live_availability_readback: liveWatch?.receipt || null,
+    retained_availability_readback: retainedWatch,
     rights_status: "readback_unresolved",
     production_public_monetized_upload_approved: false,
   };
@@ -835,7 +868,11 @@ async function runExistingCorpusSlice(args, outputDir, observedAt) {
   await writeJson(join(sliceDir, "rights_manifest.json"), rights);
   await writeJson(join(sliceDir, "topic_index.json"), topicIndex);
   await writeJson(join(sliceDir, "slice_receipt.json"), sliceReceipt);
-  await writeJson(join(sliceDir, "live_player_readback.json"), liveWatch.receipt);
+  if (liveWatch) {
+    await writeJson(join(sliceDir, "live_player_readback.json"), liveWatch.receipt);
+  } else {
+    await writeJson(join(sliceDir, "retained_availability_readback.json"), retainedWatch);
+  }
 
   const result = {
     state: "EXISTING_CORPUS_SUCCESSOR_SLICE_INPUTS_READY",
@@ -851,6 +888,8 @@ async function runExistingCorpusSlice(args, outputDir, observedAt) {
     source_caption_event_count: captionRows.length,
     topic_window_count: sourceTopicIndex.topic_windows.length,
     correction_anchor_count: sourceTopicIndex.correction_anchors.length,
+    availability_readback_mode: availabilityReadbackMode,
+    network_requests_performed: args.offlineExistingEvidence ? 0 : 1,
   };
   await writeJson(join(outputDir, "collector_runs", `${args.artifactId}.json`), result);
   return result;

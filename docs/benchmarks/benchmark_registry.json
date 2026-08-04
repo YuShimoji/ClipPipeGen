@@ -53,18 +53,19 @@
         {
           "candidate_id": "wiki-003",
           "artifact_identity": "clip-wiki-tensaku-longform-v1-003",
-          "role": "Third inventoried source with retained caption and family index",
+          "role": "Third source with network-free candidate-specific chapter and provenance packet",
           "target_tier": "static-reviewable",
-          "static_entrypoint": "episodes/wiki_tensaku_family_20260804/corpus/captions/Ocqg-RpQURY.ja.json3",
+          "static_entrypoint": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/slice_receipt.json",
           "local_evidence": [
-            "episodes/wiki_tensaku_family_20260804/corpus/corpus_inventory.json",
-            "episodes/wiki_tensaku_family_20260804/corpus/topic_index.json"
+            "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/editorial_context.json",
+            "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/topic_index.json",
+            "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/retained_availability_readback.json"
           ],
           "local_media": [],
           "open_command": "start docs\\benchmarks\\candidates\\wiki-003.html",
-          "state": "caption_and_family_index_present_not_built",
-          "missing_upgrade_condition": "Create candidate-specific 12-chapter inputs, obtain exact youtube:Ocqg-RpQURY source bytes, then run the existing long-form build and 13-of-13 verification route.",
-          "boundary": "Caption availability is not a media, rights, production, or publication approval."
+          "state": "candidate_specific_static_inputs_ready_no_network",
+          "missing_upgrade_condition": "Obtain exact youtube:Ocqg-RpQURY source bytes, then run the existing 300-second build and 13-of-13 verification route.",
+          "boundary": "The 12-chapter packet was built from retained evidence with zero network requests. It is not media, human acceptance, rights, production, or publication approval."
         }
       ]
     },

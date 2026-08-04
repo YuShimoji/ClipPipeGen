@@ -32,3 +32,15 @@ Coverage tiers are ordered by what can be inspected on the current host:
 The portfolio never changes acceptance, rights, production, publication,
 monetization, upload, or visibility state. Generated cards and ledgers are
 tracked; all `episodes/` media and review packages remain ignored and untracked.
+
+Wiki 003's candidate-specific static packet can be regenerated without network
+access or media acquisition:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\operator\build_wiki_tensaku_third_static_packet.ps1
+```
+
+The command requires the retained corpus inventory, watch receipt, and caption
+payload already present under the ignored episode directory. It emits 12
+chapter inputs and provenance readbacks, but never upgrades the candidate to a
+playable tier or changes its rights/publication state.
