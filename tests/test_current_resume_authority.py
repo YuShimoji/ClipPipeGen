@@ -185,7 +185,7 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "public_use": "false",
         "monetized_use": "false",
         "upload_attempted": "false",
-        "upstream_parity": "0 0 after normal push and remote SHA readback of implementation revision",
+        "upstream_parity": "0 0 after normal push and remote SHA readback of current handoff revision",
         "remote_code_complete": "true",
         "decision_required": "wiki_family_turn_exact_sha_internal_editorial_verdict",
         "next_review_due": "wiki_family_turn_exact_sha_internal_editorial_review_s1_remains_parked",
