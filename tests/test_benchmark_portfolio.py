@@ -82,4 +82,8 @@ def test_runtime_and_handoff_route_to_the_portfolio_without_erasing_parked_gates
         assert "benchmark_playable_proxy_count: 2" in document
         assert "benchmark_static_reviewable_count: 5" in document
         assert "wiki_second_external_state: BLOCKED_EXTERNAL" in document
+        assert "wiki_third_artifact_id: clip-wiki-tensaku-longform-v1-003" in document
+        assert "wiki_third_input_contract_validation: passed" in document
+        assert "wiki_third_network_requests_performed: 0" in document
+        assert "wiki_third_external_state: WAITING_EXACT_SOURCE_BYTES" in document
         assert "s1_lane_status: parked_human_review_pending" in document

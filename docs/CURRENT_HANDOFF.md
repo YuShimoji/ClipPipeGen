@@ -3,23 +3,23 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: BENCHMARK_PORTFOLIO_QUICKWIN_READY_WIKI002_EXTERNAL_DEPENDENCY_PARKED_S1_PARKED
-last_touched: 2026-08-04
+health: BENCHMARK_PORTFOLIO_WIKI003_STATIC_PACKET_READY_MEDIA_GATES_PARKED_S1_PARKED
+last_touched: 2026-08-05
 current_slice: SH-05
-phase: benchmark_portfolio_materialized_and_focused_validation_passed
-canonical_status: benchmark_portfolio_15_families_27_slots_internal_review_ready
+phase: wiki003_candidate_specific_static_packet_verified
+canonical_status: benchmark_portfolio_15_families_27_slots_wiki003_static_packet_ready
 active_branch: codex/wiki-tensaku-longform-family-v1
 upstream_branch: origin/codex/wiki-tensaku-longform-family-v1
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
 latest_remote_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-implementation_revision: 4ef801e54d85bc5bbb47655a8167397550d7b5a6
-sync_observed_head: 4ef801e54d85bc5bbb47655a8167397550d7b5a6
+implementation_revision: e7539e03b680d8a79ba7e4c389a69b45130ea0d0
+sync_observed_head: e7539e03b680d8a79ba7e4c389a69b45130ea0d0
 current_head_locator: refs/heads/codex/wiki-tensaku-longform-family-v1
 remote_handoff_status: pushed_and_remote_sha_readback_passed_for_implementation_revision
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
 parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file
-current_title: All registered output benchmark families materialized as a tiered internal portfolio
+current_title: Wiki 003 candidate-specific static packet materialized with zero network requests
 human_entrypoint: docs/benchmarks/index.html
 portable_entrypoint: docs/benchmarks/index.html
 review_open_command: start docs\benchmarks\index.html
@@ -94,6 +94,24 @@ wiki_second_artifact_status: not_created
 wiki_second_media_validation: not_run
 wiki_second_product_gate_status: NOT_MET
 wiki_second_external_state: BLOCKED_EXTERNAL
+wiki_third_artifact_id: clip-wiki-tensaku-longform-v1-003
+wiki_third_source_identity: youtube:Ocqg-RpQURY
+wiki_third_source_inventory_range_seconds: [0, 3522]
+wiki_third_source_caption_sha256: a383ad8a545fe9a24da142dace96fe19f05bf834a03e1e52616a5332db3c3992
+wiki_third_source_caption_event_count: 979
+wiki_third_topic_window_count: 12
+wiki_third_correction_anchor_count: 44
+wiki_third_chapter_input_count: 12
+wiki_third_creator_commentary_count: 12
+wiki_third_input_contract_validation: passed
+wiki_third_evidence_mode: retained_caption_inventory_topic_and_watch_snapshot_no_network
+wiki_third_retained_watch_receipt_sha256: 2375832271019ef06d6ac8b9124e35d200a6202d81c52e3de295ad1b607c5b84
+wiki_third_network_requests_performed: 0
+wiki_third_source_bytes_acquired: false
+wiki_third_artifact_status: candidate_specific_static_inputs_ready_no_network
+wiki_third_media_validation: not_run
+wiki_third_product_gate_status: NOT_MET
+wiki_third_external_state: WAITING_EXACT_SOURCE_BYTES
 wiki_state_code: PARKED_BLOCKED_EXTERNAL_NOT_PORTFOLIO_BOTTLENECK
 s1_lane_status: parked_human_review_pending
 out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive
@@ -109,7 +127,7 @@ out13_m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 out13_public_use_verdict: deny
 out13_monetized_youtube_verdict: deny
 next_review_due: none_for_wiki_mechanical_continue_s1_review_parked
-next_action: upgrade_static_benchmark_slots_without_network_auth_or_existing_artifact_rerender
+next_action: wait_for_exact_source_bytes_or_existing_s1_human_verdict_without_network_retry
 current_handoff: docs/CURRENT_HANDOFF.md
 upstream_parity: 0 0 after normal push and remote SHA readback of implementation revision
 current_slice_push_status: normal_push_completed_remote_sha_readback_passed
@@ -119,6 +137,21 @@ related: docs/RUNTIME_STATE.md, docs/benchmarks/benchmark_registry.json, docs/be
 ---
 
 # Current Handoff - ClipPipeGen
+
+## 2026-08-05 Wiki添削 003 network-free static packet
+
+tracked implementation `e7539e03b680d8a79ba7e4c389a69b45130ea0d0`は、既存の
+`Ocqg-RpQURY` caption、corpus inventory、family topic index、retained watch receiptだけから
+`clip-wiki-tensaku-longform-v1-003`のcandidate-specific inputを作るoffline routeを追加した。
+network requestは0。caption SHA `a383ad8a545fe9a24da142dace96fe19f05bf834a03e1e52616a5332db3c3992`
+の979 timed eventsを全域索引化し、12 topic windows、44 correction anchors、12 chapters、
+12 creator-authored commentary eventsを生成した。source captionとcommentaryはmergeしていない。
+
+ignored same-machine receiptは`episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/
+clip-wiki-tensaku-longform-v1-003/`。source bytes、MP4、closed media manifest、full decode、13/13 media QAは
+存在せず、Product Gateは`NOT_MET`。次のmedia upgradeはWiki 002または003のexact source bytesが
+明示的に供給された場合だけ再開する。cookies / OAuth / anonymous acquisition retryは行わず、
+S1 human review、rights、production、public/monetized use、upload gateも変更しない。
 
 ## 2026-08-04 registered benchmark portfolio quick-win
 
@@ -138,10 +171,9 @@ machine ledger`docs/benchmarks/benchmark_portfolio.json`とMarkdown coverage led
 `LOGIN_REQUIRED`はexternal state`BLOCKED_EXTERNAL`として残すが、portfolio全体は止めず
 static-reviewable rowへparkした。cookies / OAuth / acquisition retryは行わない。
 
-次の安全なupgradeは、既存`Ocqg-RpQURY`caption、corpus inventory、family topic indexだけで
-Wiki 003のcandidate-specific 12章・topic/provenance packetを作るnetwork-free slice。
-fully-viewableへの昇格はexact local source bytesが別途存在する時だけ行い、portfolio tierを
-human acceptanceやrights/publication承認へ読み替えない。
+Wiki 003のnetwork-free upgradeは2026-08-05に完了した。fully-viewableへの昇格はWiki 002または
+003のexact local source bytesが別途存在する時だけ行い、portfolio tierをhuman acceptanceや
+rights/publication承認へ読み替えない。
 
 ## 2026-08-04 Wiki添削 002 parked external dependency receipt
 

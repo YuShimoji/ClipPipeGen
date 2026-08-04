@@ -2,9 +2,9 @@
 
 ## 現在の結論
 
-2026-08-04のportfolio priority overrideにより、002 source-byte acquisitionは全体のmain
-bottleneckではない。`clip-wiki-tensaku-longform-v1-002`はcaption/topic/chapter/commentary inputと
-fail-closed blocker receiptを持つ`static-reviewable` benchmarkとしてparkし、cookies / OAuth /
+2026-08-05時点で002と003はどちらもcandidate-specific caption/topic/chapter/commentary inputを持つ
+`static-reviewable` benchmarkである。003はretained evidenceだけからnetwork request 0で生成した。
+両者のexact source bytesは未供給で、media validationとProduct Gateは未達。cookies / OAuth /
 anonymous acquisition retryを行わない。15 family / 27 slotの現在の横断入口は
 [`../benchmarks/index.html`](../benchmarks/index.html)。002の完全動画条件と権利境界は下記の
 まま保持し、完成済みとは扱わない。
@@ -73,6 +73,19 @@ URLは`http://127.0.0.1:8078/review/index.html`。launcherはrepoのローカル
 `uv --offline`で起動し、動画Range requestを受ける。2026-08-04にpage 200、MP4 Range 206、
 1,024 bytesを実行確認し、検証processは停止した。
 
+## 第三sourceのnetwork-free static packet
+
+`clip-wiki-tensaku-longform-v1-003`は`youtube:Ocqg-RpQURY`のretained caption payload、
+corpus inventory、family topic index、retained watch receiptだけから生成する。実装revisionは
+`e7539e03b680d8a79ba7e4c389a69b45130ea0d0`。caption SHA
+`a383ad8a545fe9a24da142dace96fe19f05bf834a03e1e52616a5332db3c3992`、979 timed events、
+12 topic windows、44 correction anchors、12 chapters、12 creator commentary eventsを持つ。
+evidence modeは`retained_caption_inventory_topic_and_watch_snapshot_no_network`、network requestは0。
+
+source bytes、MP4、closed media manifest、full decode、13/13 media QA、localhost playbackは存在しない。
+従ってstateは`candidate_specific_static_inputs_ready_no_network`、Product Gateは`NOT_MET`、
+external stateは`WAITING_EXACT_SOURCE_BYTES`。static input contractのpassを完成動画の証拠へ拡張しない。
+
 ## Provenanceと索引境界
 
 `topic_index.json`はcaption keyword windowからtopic、事件、訂正、前後、関係性を検索可能にする。
@@ -82,10 +95,9 @@ URLは`http://127.0.0.1:8078/review/index.html`。launcherはrepoのローカル
 
 ## CONTINUEする次slice
 
-1. `youtube:82iRbxjvbww`の全source範囲`[0.000, 6418.000)`を取得・hash固定し、
-   同じ12 chronological slotsからcaption-dense 25sを選び、300s / 12 chapters / 13 checksを通す。
-2. 続いて`youtube:Ocqg-RpQURY`の全source範囲`[0.000, 3522.000)`を同じ条件で処理する。
-3. 3本のvalidated sliceを横断してtopic/事件/訂正の重複と前後関係を人間が確認し、
+1. `youtube:82iRbxjvbww`または`youtube:Ocqg-RpQURY`のexact source bytesが明示的に供給された時だけ、
+   該当full source rangeをhash固定して既存12章inputから300s / 12 chapters / 13 checksを通す。
+2. 3本のvalidated sliceが揃った後、topic/事件/訂正の重複と前後関係を人間が確認し、
    family-level chapter planへsource-range provenanceをbindする。
 
 次sliceの合格条件は、source acquisition SHA receipt、caption receipt、12章すべてのsource mapping、

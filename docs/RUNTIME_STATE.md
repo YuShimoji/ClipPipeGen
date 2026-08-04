@@ -3,13 +3,13 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: BENCHMARK_PORTFOLIO_QUICKWIN_READY_WIKI002_EXTERNAL_DEPENDENCY_PARKED_S1_PARKED
-last_touched: 2026-08-04
-state_revision: benchmark-portfolio-quickwin-15-families-27-slots-2026-08-04
+health: BENCHMARK_PORTFOLIO_WIKI003_STATIC_PACKET_READY_MEDIA_GATES_PARKED_S1_PARKED
+last_touched: 2026-08-05
+state_revision: wiki003-network-free-static-packet-2026-08-05
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: SH-05
-phase: benchmark_portfolio_materialized_and_focused_validation_passed
-canonical_status: benchmark_portfolio_15_families_27_slots_internal_review_ready
+phase: wiki003_candidate_specific_static_packet_verified
+canonical_status: benchmark_portfolio_15_families_27_slots_wiki003_static_packet_ready
 active_branch: codex/wiki-tensaku-longform-family-v1
 source_branch: codex/wiki-tensaku-longform-family-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
@@ -42,7 +42,7 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: All registered output benchmark families materialized as a tiered internal portfolio
+current_title: Wiki 003 candidate-specific static packet materialized with zero network requests
 human_entrypoint: docs/benchmarks/index.html
 portable_entrypoint: docs/benchmarks/index.html
 review_open_command: start docs\benchmarks\index.html
@@ -139,11 +139,11 @@ cover_review_status: null
 review_server_status: stopped_restart_command_available
 next_review_due: s1_human_review_remains_parked_per_existing_exact_gate
 next_review_type: candidate_specific_only_when_existing_ledger_upgrade_condition_calls_for_human_judgment
-next_action: upgrade_static_benchmark_slots_without_network_auth_or_existing_artifact_rerender
+next_action: wait_for_exact_source_bytes_or_existing_s1_human_verdict_without_network_retry
 active_artifact: clip-benchmark-portfolio-coverage-v1-001
 current_review_component: tiered_benchmark_portfolio_and_per_candidate_reverse_engineering_cards
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
-implementation_revision: 4ef801e54d85bc5bbb47655a8167397550d7b5a6
+implementation_revision: e7539e03b680d8a79ba7e4c389a69b45130ea0d0
 artifact_output_sha256: not_applicable_tracked_multi_artifact_portfolio
 artifact_output_byte_size: not_applicable
 artifact_package_tree_digest_sha256: not_used_tracked_regenerable_portfolio
@@ -202,6 +202,24 @@ wiki_second_artifact_status: not_created
 wiki_second_media_validation: not_run
 wiki_second_product_gate_status: NOT_MET
 wiki_second_external_state: BLOCKED_EXTERNAL
+wiki_third_artifact_id: clip-wiki-tensaku-longform-v1-003
+wiki_third_source_identity: youtube:Ocqg-RpQURY
+wiki_third_source_inventory_range_seconds: [0, 3522]
+wiki_third_source_caption_sha256: a383ad8a545fe9a24da142dace96fe19f05bf834a03e1e52616a5332db3c3992
+wiki_third_source_caption_event_count: 979
+wiki_third_topic_window_count: 12
+wiki_third_correction_anchor_count: 44
+wiki_third_chapter_input_count: 12
+wiki_third_creator_commentary_count: 12
+wiki_third_input_contract_validation: passed
+wiki_third_evidence_mode: retained_caption_inventory_topic_and_watch_snapshot_no_network
+wiki_third_retained_watch_receipt_sha256: 2375832271019ef06d6ac8b9124e35d200a6202d81c52e3de295ad1b607c5b84
+wiki_third_network_requests_performed: 0
+wiki_third_source_bytes_acquired: false
+wiki_third_artifact_status: candidate_specific_static_inputs_ready_no_network
+wiki_third_media_validation: not_run
+wiki_third_product_gate_status: NOT_MET
+wiki_third_external_state: WAITING_EXACT_SOURCE_BYTES
 wiki_state_code: PARKED_BLOCKED_EXTERNAL_NOT_PORTFOLIO_BOTTLENECK
 s1_lane_status: parked_human_review_pending
 s1_implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
@@ -633,7 +651,7 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — SH-05 Benchmark Portfolio Quick-Win Ready
+## Current Capsule — SH-05 Wiki 003 Static Packet Ready
 
 - active slice: `SH-05`
 - active artifact: `clip-benchmark-portfolio-coverage-v1-001`
@@ -657,8 +675,10 @@ instructions.
   creator commentary eventsのstatic input packetを持つ。source-byte取得のexternal stateは
   `BLOCKED_EXTERNAL`だが、portfolio全体のbottleneckではなくparked upgrade conditionである。
   cookies / OAuth / anonymous acquisition retryは行わない。
-- Wiki 003はretained caption payload、corpus inventory、family topic indexが存在するため
-  `static-reviewable`。candidate-specific 12章packetはまだなく、次のnetwork-free upgrade候補。
+- Wiki 003はretained caption payload、corpus inventory、family topic index、retained watch receiptだけを
+  使用し、network request 0でcandidate-specific 12章packetへ昇格した。979 caption events全域から
+  12 topic windows、44 correction anchors、12 chapters、12 creator commentary eventsを分離保存した。
+  source bytesとMP4は存在せず、media/Product Gateは未達のまま。
 - S1 `clip-s1-two-source-common-context-probe-v1-001`のS4 human review pending、OUT-13 M6 deny、
   既存accepted/parked判定、rights/publication gateはすべて元のexact scopeのまま保持する。
 - `episodes/`はignoredかつtracked 0。Gitへ追加したのはregistry、generator、ledger、HTML card、
@@ -666,13 +686,12 @@ instructions.
 
 ## Next Action
 
-- action: `upgrade_static_benchmark_slots_without_network_auth_or_existing_artifact_rerender`
-- authorization state: `internal_static_and_existing_local_evidence_processing_authorized`
-- owner: `ClipPipeGen shared-infra / benchmark readback lane`
-- condition: まずWiki 003を既存caption/inventoryだけでcandidate-specific 12章・topic/provenance packetへ
-  上げる。次にstatic/proxy tierを、exact local bytesが既に供給された時だけfully-viewableへ上げる。
-  Wiki 002の`LOGIN_REQUIRED`はparkしたままにし、cookie、OAuth、既存artifactのrerender、
-  rights/publication推定をupgrade条件へ混ぜない。
+- action: `wait_for_exact_source_bytes_or_existing_s1_human_verdict_without_network_retry`
+- authorization state: `no_claimable_media_upgrade_without_exact_bytes_or_human_decision`
+- owner: `ClipPipeGen shared-infra / user FB intake`
+- condition: Wiki 002または003のexact source bytesが明示的に供給された場合だけ、対応する300s / 12章 /
+  13-check media sliceへ進む。別laneのS1 exact probe verdictも既存identityへbindされた回答が届いた時だけ
+  更新する。cookie、OAuth、anonymous acquisition retry、既存artifact rerender、rights/publication推定は行わない。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 

@@ -167,12 +167,12 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 
 ## 現在のスライス
 
-現在のactive sliceは`ED-12`。OUT-13のdeny後にmaterially distinctなsuccessorとして、
-二つの実sourceを一つのcommon-context argumentへ組むbounded probeを実装した。
-tracked implementation revisionは`a3771bc59cd58b05c00a570e1074118ace3dc15a`、
-exact local artifactは`clip-s1-two-source-common-context-probe-v1-001`。
-code/docs/testsは別端末へ持ち運べるが、`episodes/`内のsource mediaとreview packageは
-Gitでは移動しない。
+現在のactive sliceは`SH-05` benchmark portfolio readback。15 family / 27 family-scoped slotを
+tracked review surfaceへ有限化し、20 fully-viewable / 2 playable-proxy / 5 static-reviewable /
+0 contract-onlyを観測している。ED-13 Wiki 003はtracked implementation
+`e7539e03b680d8a79ba7e4c389a69b45130ea0d0`で、retained evidenceだけからnetwork request 0の
+candidate-specific 12章static packetへ昇格した。Wiki 002/003のexact source bytesは未供給。
+ED-12/S1 exact probeのhuman reviewは別laneにparkしている。
 
 実装履歴として、**Slice 1 ソフト実装は done**（CR-01 / MS-01 / MS-02 /
 MS-03 / TH-01 / SH-01）。Slice 2 / Phase 1.5では、source audio / source video取得、
@@ -186,10 +186,11 @@ subtitles -> diagnostic render -> NLE CSV`まで通る。`review-transcript`は�
 transcriptを既存downstreamへ戻す入口であり、transcript approvalは
 edit / render / publish / production acceptanceではない。
 
-直近のnext actionは、exact S1 MP4をS4の四問で全編reviewし、
-`accept / bounded repair / reject`をidentityへbindすること。rights approval、
-production render/subtitle design/image quality、thumbnail、Publishing / OAuth、
-upload、public releaseは開始しておらず、独立した未承認gateのままである。
+直近のnext actionは、Wiki 002または003のexact source bytesが明示的に供給された場合だけ、
+対応する300s / 12章 / 13-check media sliceへ進むこと。S1はexact MP4への
+`accept / bounded repair / reject`をidentityへbindするhuman verdict待ち。rights approval、
+production render/subtitle design/image quality、thumbnail、Publishing / OAuth、upload、
+public releaseは開始しておらず、独立した未承認gateのままである。
 
 詳細: [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) / [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 

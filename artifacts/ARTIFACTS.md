@@ -8,8 +8,9 @@ follow that Runtime metadata.
 Normal open order is `.\open-dashboard.ps1` first, then use the Runtime-driven
 current focus. SH-05 is the active readback surface: a tracked benchmark
 portfolio spanning the 15 registered output-layer families and 27
-family-scoped candidate slots. ED-13 Wiki 002 source-byte acquisition is parked
-as one explicit upgrade condition instead of blocking the portfolio. ED-12 / S1
+family-scoped candidate slots. ED-13 Wiki 002 and 003 exact source bytes are parked
+as explicit upgrade conditions instead of blocking the portfolio. Wiki 003 already has a
+network-free candidate-specific static input packet. ED-12 / S1
 remains a parked exact review target with S4 human review pending. Local packages
 remain ignored same-machine evidence. Git carries implementation, tests,
 contracts, identities, benchmark cards, and handoff, not source media or final MP4.
@@ -50,7 +51,7 @@ opened by the root launcher.
 | coverage_ledger | `docs/benchmarks/COVERAGE_LEDGER.md` |
 | validation_command | `uv run --offline --no-project --python 3.13 python tools/benchmarks/build_benchmark_portfolio.py --hash-local-media --format json`; `uv run --offline --no-project --python 3.13 --with pytest pytest -q tests/test_benchmark_portfolio.py`; focused Wiki successor tests; `git diff --check`; `git ls-files episodes`. |
 | review_status | Internal portfolio review available. A tier is an availability/readback classification, not fresh human acceptance. Existing accepted and parked decisions retain their exact artifact/SHA scope. |
-| next_action | Upgrade static Wiki 003 to a candidate-specific indexed input packet without network acquisition, then upgrade media tiers only when exact existing/local source bytes are available. Keep Wiki 002 anonymous-login blocker parked and do not use cookies or OAuth. |
+| next_action | Wait for exact existing/local source bytes for Wiki 002 or 003 before any media-tier upgrade. Keep anonymous-login acquisition parked and do not use cookies or OAuth. |
 
 Boundary flags remain false or explicit:
 
@@ -63,6 +64,23 @@ Boundary flags remain false or explicit:
 - `human_review_required_for_portfolio_navigation=false`
 - `human_review_required_for_candidate_acceptance=per_existing_exact_gate`
 
+## `clip-wiki-tensaku-longform-v1-003`
+
+| Field | Value |
+|---|---|
+| title | ED-13 Wiki添削 Third-Source Network-Free Static Input Packet v1 |
+| purpose | Materialize the third inventory source as candidate-specific 12-chapter/topic/provenance inputs without performing network acquisition or claiming media completion. |
+| storage class | Tracked offline builder route, operator script, tests, and benchmark/docs metadata plus ignored same-machine packet under `episodes/`; no source or generated media is tracked. |
+| repo_relative_path | `src/integrations/asset_fetch/wiki_tensaku_corpus.mjs`; `scripts/operator/build_wiki_tensaku_third_static_packet.ps1`; `tests/test_wiki_tensaku_offline_slice.py`; `docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md` |
+| local_artifact_path | `episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-longform-v1-003/` |
+| source | `youtube:Ocqg-RpQURY`; inventory range `[0, 3522]`; source bytes absent. |
+| caption/index | Caption SHA `a383ad8a545fe9a24da142dace96fe19f05bf834a03e1e52616a5332db3c3992`; 979 timed events; 12 topic windows; 44 correction anchors. |
+| chapter/commentary | 12 chapters and 12 creator-authored commentary events; source caption remains separate. |
+| evidence | `retained_caption_inventory_topic_and_watch_snapshot_no_network`; retained watch receipt SHA `2375832271019ef06d6ac8b9124e35d200a6202d81c52e3de295ad1b607c5b84`; network requests 0. |
+| state | `candidate_specific_static_inputs_ready_no_network`; media validation not run; Product Gate `NOT_MET`; external state `WAITING_EXACT_SOURCE_BYTES`. |
+| implementation | `e7539e03b680d8a79ba7e4c389a69b45130ea0d0` |
+| next_action | Resume media construction only when exact source bytes are explicitly supplied. Do not use cookies, OAuth, or anonymous acquisition retry. |
+
 ## `clip-wiki-tensaku-longform-v1-001`
 
 | Field | Value |
@@ -72,7 +90,7 @@ Boundary flags remain false or explicit:
 | storage class | Tracked collector/render integration/tests/docs plus ignored same-machine corpus receipts, source media, captions, MP4, evidence, and review page. `episodes/` remains untracked. |
 | repo_relative_path | `src/integrations/asset_fetch/wiki_tensaku_corpus.mjs`; `src/integrations/render/real_video_pipeline.py`; `src/cli/build_real_video.py`; `scripts/operator/build_wiki_tensaku_first_slice.ps1`; `tests/test_real_video_pipeline.py`; `docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md` |
 | local_artifact_path | `episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-longform-v1-001/` |
-| state | `AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1`; family state remains `CONTINUE` until the other two inventory sources have equivalent validated slices. |
+| state | `AUTOMATED_REAL_VIDEO_PIPELINE_OPERATIONAL_V1`; both successor sources have static input packets, but family state remains `CONTINUE` until their exact source bytes and equivalent validated media slices exist. |
 | corpus | Authoritative channel `UC-hM6YJuNYVAmUWxeIr9FeA`; 69 stream pages / 2,033 unique / duplicate 0 / pagination exhausted; 48 playlists / dedicated match not observed; title-rule corpus 3 / available 3. Public-only completeness boundary is explicit. |
 | source | `youtube:1AcId5Yja10`; combined A/V source SHA `a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7`; 197,524,102 bytes; container duration 5,557.812245s. |
 | timeline | 12 chronological caption-dense 25s source ranges sampled across the complete stream; 300.000s output; omitted spans remain explicit and no causal inference is claimed. |
@@ -83,7 +101,7 @@ Boundary flags remain false or explicit:
 | preview_url | `http://127.0.0.1:8078/review/index.html` while the artifact launcher is running. |
 | open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-longform-v1-001\review\open_preview.ps1` |
 | decision_required | None for continued mechanical corpus processing. Optional human viewing cannot grant rights, production, publishing, monetization, or upload approval. |
-| next_action | Process full source range `[0.000, 6418.000)` of `youtube:82iRbxjvbww` to the same 300s / 12 chapter / 13-check contract, then `[0.000, 3522.000)` of `youtube:Ocqg-RpQURY`. |
+| next_action | Process either remaining full source range only after its exact source bytes are explicitly supplied; both candidate-specific 12-chapter input packets already exist. |
 
 Boundary flags:
 
