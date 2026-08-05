@@ -13,7 +13,7 @@ canonical_status: benchmark_portfolio_15_families_32_slots_wiki_family_turn_five
 active_branch: codex/wiki-tensaku-longform-family-v1
 source_branch: codex/wiki-tensaku-longform-family-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
-verified_implementation_head: 8dfaee8faa4db9bd815d1ef73118efaa8902911b
+verified_implementation_head: b997de8bc6754d104c115608290b648660a9062e
 accepted_feature_revision: 18641fe917b084259869263e8db05d78325aa2db
 integration_start_main_revision: 5d6f69a64d510508a1f78ab3111a7780913a019c
 integrated_main_revision: 18641fe917b084259869263e8db05d78325aa2db
@@ -143,7 +143,7 @@ next_action: supervisor_review_wiki_family_turn_five_exact_sha_composition_and_f
 active_artifact: clip-benchmark-portfolio-coverage-v1-001
 current_review_component: tiered_benchmark_portfolio_and_per_candidate_reverse_engineering_cards
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
-implementation_revision: 8dfaee8faa4db9bd815d1ef73118efaa8902911b
+implementation_revision: b997de8bc6754d104c115608290b648660a9062e
 artifact_output_sha256: not_applicable_tracked_multi_artifact_portfolio
 artifact_output_byte_size: not_applicable
 artifact_package_tree_digest_sha256: not_used_tracked_regenerable_portfolio
@@ -382,8 +382,8 @@ wiki_family_turn_five_production_acceptance: false
 wiki_family_turn_five_public_use: false
 wiki_family_turn_five_upload_attempted: false
 wiki_private_drive_folder_id: 1YPiWjsJLlK04GKbqj6gkgFz_iBaeW0ZB
-wiki_private_drive_member_count: 28
-wiki_private_drive_total_bytes: 288530755
+wiki_private_drive_member_count: 32
+wiki_private_drive_total_bytes: 309891716
 wiki_full_corpus_drive_member_count: 16
 wiki_full_corpus_drive_total_bytes: 224909222
 wiki_turn_two_delta_archive_sha256: 4710c08c15157773982ff0d9ce2aa53265352c4ecfacb5828b885b4bf625bba0
@@ -402,6 +402,13 @@ wiki_turn_four_delta_repo_head: 8dfaee8faa4db9bd815d1ef73118efaa8902911b
 wiki_turn_four_delta_drive_member_count: 4
 wiki_turn_four_delta_drive_total_bytes: 20301124
 wiki_turn_four_delta_drive_visibility: not_shared
+wiki_turn_five_delta_archive_sha256: 37d448484690bc539b17c337ff8f36aece6bc5aa992bfdd3b39b6e526cc39b17
+wiki_turn_five_delta_archive_byte_size: 21358873
+wiki_turn_five_delta_payload_file_count: 24
+wiki_turn_five_delta_repo_head: b997de8bc6754d104c115608290b648660a9062e
+wiki_turn_five_delta_drive_member_count: 4
+wiki_turn_five_delta_drive_total_bytes: 21360961
+wiki_turn_five_delta_drive_visibility: not_shared
 wiki_private_drive_recipient_delivery_completed: false
 wiki_state_code: PARKED_BLOCKED_EXTERNAL_NOT_PORTFOLIO_BOTTLENECK
 s1_lane_status: parked_human_review_pending
@@ -870,6 +877,9 @@ instructions.
   unique source-timeは1,475→1,775秒（26.54%→31.94%）。8 correction章と4 fallback章の
   `correction-prioritized-mixed`であり、第1章は未代表topic、第6・11・12章はcorrection候補0件後の
   時系列意味連続性を理由にする。12/12 correction-ledとは主張しない。
+- Turn 5 deltaはsourceを重複せず、archive SHA`37d44848...9b17`を2 parts + manifest + receiptとして
+  private Driveへ保存した。folder final listingは32 member / 309,891,716 bytes、shared 0、全件
+  `not_shared`。recipient download/restore完了は未証明。
 - 既存のWiki 001、S1、OUT-03〜OUT-06、OUT-08〜OUT-13等の完全再生可能packageは変更も
   再生成もせず参照した。OUT-07はexact Planner baseline不在を保ったままproxy、OUT-01/02は
   tracked static proof、OUT-13 001はhistorical receiptとして表示する。

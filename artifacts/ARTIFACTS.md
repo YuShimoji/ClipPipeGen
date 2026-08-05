@@ -80,7 +80,7 @@ Boundary flags remain false or explicit:
 | validation | 13/13 passed; built-in and independent full A/V decode passed; mapping 1.0; black/silence events 0; 96 caption cues; -15.25 LUFS / -4.42 dBTP. HTTP was not freshly observed and no success is claimed. |
 | resume | Four cache hits; `render_executed=false`; MP4 SHA, size, and UTC mtime unchanged. |
 | manifest | 17 payload rows; self-integrity SHA `819e4c049c21f186ef003101642ecd3f51192d41f4567869af4324e327bc7586`. |
-| private delivery | Turn 5 artifact-delta only; source bytes are not duplicated. Exact archive/parts/Drive listing is recorded in `docs/PRIVATE_ARTIFACT_TRANSFER.md`; `not_shared` proves private storage only, not recipient restore. |
+| private delivery | Artifact-delta archive 21,358,873 bytes / 24 payload files / SHA `37d448484690bc539b17c337ff8f36aece6bc5aa992bfdd3b39b6e526cc39b17`; two parts plus manifest and receipt are listed in private Drive storage as 4 members / 21,360,961 bytes, all `not_shared`. Source bytes are not duplicated and recipient restore is not evidenced. |
 | open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-family-turn-v5-001\review\open_preview.ps1` |
 | decision_required | Supervisor editorial review of the honest mixed composition and fallback chapters; human terminal review remains open. Rights, full production acceptance, public/monetized use, publishing, upload, and recipient restore remain closed. |
 

@@ -12,8 +12,8 @@ active_branch: codex/wiki-tensaku-longform-family-v1
 upstream_branch: origin/codex/wiki-tensaku-longform-family-v1
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
 latest_remote_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-implementation_revision: 8dfaee8faa4db9bd815d1ef73118efaa8902911b
-sync_observed_head: 7c3f43cd9d34be4089bbfc3a6e7b48244b44abaa
+implementation_revision: b997de8bc6754d104c115608290b648660a9062e
+sync_observed_head: b997de8bc6754d104c115608290b648660a9062e
 current_head_locator: refs/heads/codex/wiki-tensaku-longform-family-v1
 remote_handoff_status: pushed_and_remote_sha_readback_passed_for_current_head_locator
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
@@ -266,8 +266,8 @@ wiki_family_turn_five_production_acceptance: false
 wiki_family_turn_five_public_use: false
 wiki_family_turn_five_upload_attempted: false
 wiki_private_drive_folder_id: 1YPiWjsJLlK04GKbqj6gkgFz_iBaeW0ZB
-wiki_private_drive_member_count: 28
-wiki_private_drive_total_bytes: 288530755
+wiki_private_drive_member_count: 32
+wiki_private_drive_total_bytes: 309891716
 wiki_full_corpus_drive_member_count: 16
 wiki_full_corpus_drive_total_bytes: 224909222
 wiki_turn_two_delta_archive_sha256: 4710c08c15157773982ff0d9ce2aa53265352c4ecfacb5828b885b4bf625bba0
@@ -286,6 +286,13 @@ wiki_turn_four_delta_repo_head: 8dfaee8faa4db9bd815d1ef73118efaa8902911b
 wiki_turn_four_delta_drive_member_count: 4
 wiki_turn_four_delta_drive_total_bytes: 20301124
 wiki_turn_four_delta_drive_visibility: not_shared
+wiki_turn_five_delta_archive_sha256: 37d448484690bc539b17c337ff8f36aece6bc5aa992bfdd3b39b6e526cc39b17
+wiki_turn_five_delta_archive_byte_size: 21358873
+wiki_turn_five_delta_payload_file_count: 24
+wiki_turn_five_delta_repo_head: b997de8bc6754d104c115608290b648660a9062e
+wiki_turn_five_delta_drive_member_count: 4
+wiki_turn_five_delta_drive_total_bytes: 21360961
+wiki_turn_five_delta_drive_visibility: not_shared
 wiki_private_drive_recipient_delivery_completed: false
 wiki_state_code: PARKED_BLOCKED_EXTERNAL_NOT_PORTFOLIO_BOTTLENECK
 s1_lane_status: parked_human_review_pending
@@ -333,6 +340,11 @@ unique source-timeは1,475→1,775秒（+300秒、26.54%→31.94%、+5.40pt）�
 Turn 4はSupervisor review `b8a0a261-0dec-430c-9c71-cec271d0889f`のcontinue / bounded repair none / exact
 mixed acceptanceとして不変。Turn 5のhuman editorial・terminal、rights、production、publication、recipient
 restoreはopen。Wiki 002/003 exact-source gateとS1 gateはparkのまま。
+
+private deliveryはsourceを重複しないTurn 5 artifact-deltaだけを追加した。archive SHAは
+`37d448484690bc539b17c337ff8f36aece6bc5aa992bfdd3b39b6e526cc39b17`。Drive final listingは
+Turn 5分4 member / 21,360,961 bytes、folder全体32 member / 309,891,716 bytes、shared 0。
+全member `not_shared`でありrecipient download/restore完了は主張しない。
 
 ## 2026-08-06 Wiki添削 uncovered-range Family Turn 4
 
