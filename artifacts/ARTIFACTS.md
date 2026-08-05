@@ -80,6 +80,7 @@ Boundary flags remain false or explicit:
 | validation | 13/13 passed; independent full A/V decode passed; mapping 1.0; black/silence events 0; 86 caption cues; -15.47 LUFS / -3.63 dBTP. HTTP was not rerun and is not claimed fresh. |
 | resume | Four cache hits; `render_executed=false`; MP4 SHA and UTC mtime unchanged. |
 | manifest | 17 payload rows; self-integrity SHA `61badb088ef6adbe59e624a1290ae88adecd44cc5b9c320b2eef2be6863c5d83`. |
+| private delivery | Artifact-delta archive 20,299,036 bytes / 24 payload files / SHA `0298dac7963b5a0b510d5d402f52939945f5afb8749986c567de79b3b183c324`; two parts plus manifest and receipt are listed in private Drive storage as 4 members / 20,301,124 bytes, all `not_shared`. Recipient download/restore is not evidenced. |
 | open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-family-turn-v4-001\review\open_preview.ps1` |
 | decision_required | Supervisor editorial review of fallback chapters and human terminal review. Rights, full production acceptance, public/monetized use, publishing, and upload remain closed. |
 

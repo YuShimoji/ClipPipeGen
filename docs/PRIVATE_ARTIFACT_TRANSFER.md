@@ -127,3 +127,22 @@ repo head `49dd7bf1886bee0c275c01fb97297b91a4019c01`へbindする。
 parts manifest self SHAは`51c92590f187fbbef8495faeefcc234a5219b65ef7b598e072255c18ef00e8b4`。
 folder全体は24 member / 268,229,631 bytes（full-corpus 16 + Turn 2 delta 4 + Turn 3 delta 4）。
 `not_shared`はowner private storage状態を示すだけで、recipient download/restore完了の証拠ではない。
+
+## Wiki Turn 4 artifact delta
+
+Turn 4も`artifact-delta` modeで生成し、既存source bundleを重複させない。
+2026-08-06 final readbackは4 member / 20,301,124 bytes、全member `not_shared`。
+archiveは20,299,036 bytes、SHA
+`0298dac7963b5a0b510d5d402f52939945f5afb8749986c567de79b3b183c324`、24 payload files、
+repo head `8dfaee8faa4db9bd815d1ef73118efaa8902911b`へbindする。
+
+| member | bytes | SHA-256 | Drive file ID |
+|---|---:|---|---|
+| `part0001` | 16,777,216 | `dacfb2a55d90769333fae42cd6d40315ddd8aec2ccb0c7a98c762778ea1bb923` | `1Rf56N7NlArARGSXNI7ixlDqTOGECie5r` |
+| `part0002` | 3,521,820 | `535516337d2c7b1e4934313f86c1eb5da3b8ee60b004705d7419bacd83ba9784` | `1zD16w-kVzsBw5aMXDv8WMH0FK1RlhUIa` |
+| `parts.json` | 1,247 | `394594449c6aef64cfbe030eff27bcf15a6723daa99eaa1f1cd9130fcf1d8c07` | `110q29B8Zf4_wZDnE9S366jNw6EqyEEJ6` |
+| `receipt.json` | 841 | `de300247ccddda544febf916d2a857a274d464ab3cd03ddb62ba99fe05389c9b` | `1Ez-gqPLv_SjdxyNGJ-ZdMw4G1dYB2K1c` |
+
+parts manifest self SHAは`f74f528077050d4d6ed3ea1f389d07e6b5cc2180b4d26790f760ba71cb4beea4`。
+folder全体は28 member / 288,530,755 bytes（full-corpus 16 + Turn 2/3/4 delta各4）。
+shared memberは0。`not_shared`はprivate storage readbackであり、recipient delivery完了を示さない。
