@@ -66,6 +66,8 @@ Subcommands:
     build-non-repo-handoff   SH: local binary artifact -> handoff manifest/report.
     build-private-artifact-transfer SH-10: exact ignored inputs/artifact -> private ZIP.
     verify-private-artifact-transfer SH-10: verify/restore a private transfer ZIP.
+    split-private-artifact-transfer SH-10: split a verified ZIP into small hashed parts.
+    assemble-private-artifact-transfer SH-10: verify/reassemble transport parts.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
     fetch-source-audio       INT-02: create/register source_audio WAV material.
     fetch-source-video       INT-02f: create/register source_video material.
@@ -84,6 +86,7 @@ from typing import Callable
 
 from . import (
     add_cut_candidate,
+    assemble_private_artifact_transfer,
     apply_boundary_recommendation,
     audit_material_ledger,
     audit_thumbnail,
@@ -147,6 +150,7 @@ from . import (
     resolve_episode_seed_sources,
     review_transcript,
     set_compliance,
+    split_private_artifact_transfer,
     status_episode,
     transcribe_audio,
     validate_edit_pack,
@@ -218,6 +222,8 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-non-repo-handoff": build_non_repo_handoff.run,
     "build-private-artifact-transfer": build_private_artifact_transfer.run,
     "verify-private-artifact-transfer": verify_private_artifact_transfer.run,
+    "split-private-artifact-transfer": split_private_artifact_transfer.run,
+    "assemble-private-artifact-transfer": assemble_private_artifact_transfer.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,
     "fetch-source-video": fetch_source_video.run,

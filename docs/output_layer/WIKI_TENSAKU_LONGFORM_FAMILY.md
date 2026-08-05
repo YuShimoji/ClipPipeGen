@@ -6,8 +6,8 @@
 `static-reviewable` benchmarkである。003はretained evidenceだけからnetwork request 0で生成した。
 両者のexact source bytesは未供給で、media validationとProduct Gateは未達。cookies / OAuth /
 anonymous acquisition retryを行わない。一方、exact retained source bytesを持つ001から、既存成果を
-上書きせず訂正anchor主導の新turn`clip-wiki-tensaku-family-turn-v1-001`を完全視聴可能にした。
-15 family / 28 slotの現在の横断入口は
+上書きせず訂正anchor主導のTurn 1と、既存rangeを完全除外するTurn 2を完全視聴可能にした。
+15 family / 29 slotの現在の横断入口は
 [`../benchmarks/index.html`](../benchmarks/index.html)。002の完全動画条件と権利境界は下記の
 まま保持し、完成済みとは扱わない。
 
@@ -106,6 +106,31 @@ powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family
 machine validationはhuman editorial acceptanceではない。次のproduct actionはexact MP4 SHAへ
 `accept / bounded repair / reject`をbindすること。いずれの判断もrights、production subtitle/design、
 thumbnail、public/monetized use、publishing、uploadを開かない。
+
+Turn 1のtechnical / production-transition acceptanceは固定済みで、artifact自体は変更しない。
+human editorial reviewだけがopenであり、rightsやpublic useへの継承はない。
+
+## 未使用range主導のFamily Turn 2
+
+`clip-wiki-tensaku-family-turn-v2-001`は、baselineとTurn 1のexact `edit_pack.json`を入力として
+24 selected rangesを除外し、同じ`youtube:1AcId5Yja10`の未使用caption-backed rangeだけを選ぶ。
+binding SHAはbaseline `d2af54b14724774c27dae5322e263b206dd4bbd7b38d93daecd29dd74f5bbf86`、
+Turn 1 `61c3a9e90fa9fd6abf9a2d37c93e901398441a79cdeb2b3f3230edc0d219f406`。
+選択rangeとのoverlapは0秒で、12/12章にcorrection anchor、合計20 anchorsを持つ。
+network requestsは0、source SHAは`a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7`、
+caption SHAは`f58c248f23b29845a94ae01b789f122c8759687125375a2650cc7a8074107e4f`のまま。
+
+final MP4はH.264/AAC 640x360 / 300.000s / 19,951,636 bytes、SHA
+`2736f6ec5b4a779a70c978d7815639802dee2d294220fdbb592edb9d75fe2dca`。13/13、独立full decode、
+mapping 1.0、black/silence event 0をpassし、resumeは4 cache hits / `render_executed=false`で
+hashとmtimeを保持した。unique source-time unionは575秒から875秒へ増え、5,558秒inventoryに対し
+10.35%から15.74%となった。
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-family-turn-v2-001\review\open_preview.ps1
+```
+
+この増分はsource-timeの網羅性であり、意味的網羅性や人間の編集評価を自動的に示さない。
 
 ## 第三sourceのnetwork-free static packet
 

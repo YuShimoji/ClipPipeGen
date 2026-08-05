@@ -13,7 +13,7 @@
 import { createHash } from "node:crypto";
 import { createWriteStream, existsSync } from "node:fs";
 import { mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
-import { dirname, join, resolve } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 
@@ -34,7 +34,7 @@ const DEFAULT_MAX_PAGES = 120;
 const SLICE_TARGET_SECONDS = 300;
 const VIDEO_ID_PATTERN = /^[A-Za-z0-9_-]{11}$/u;
 const ARTIFACT_ID_PATTERN = /^clip-[a-z0-9][a-z0-9-]*$/u;
-const SELECTION_PROFILES = new Set(["caption-dense", "correction-led"]);
+const SELECTION_PROFILES = new Set(["caption-dense", "correction-led", "uncovered-correction-led"]);
 const ANDROID_CLIENT = {
   clientName: "ANDROID",
   clientVersion: "20.10.38",
@@ -88,6 +88,7 @@ function parseArgs(argv) {
     offlineExistingEvidence: false,
     reuseRetainedSourceMedia: false,
     selectionProfile: "caption-dense",
+    excludeEditPacks: [],
   };
   for (let index = 0; index < argv.length; index += 1) {
     const value = argv[index];
@@ -101,6 +102,7 @@ function parseArgs(argv) {
     else if (value === "--offline-existing-evidence") args.offlineExistingEvidence = true;
     else if (value === "--reuse-retained-source-media") args.reuseRetainedSourceMedia = true;
     else if (value === "--selection-profile") args.selectionProfile = argv[++index];
+    else if (value === "--exclude-edit-pack") args.excludeEditPacks.push(argv[++index]);
     else if (value === "--help" || value === "-h") args.help = true;
     else throw new Error(`unknown argument: ${value}`);
   }
@@ -125,7 +127,13 @@ function parseArgs(argv) {
     throw new Error("--offline-existing-evidence cannot download source bytes");
   }
   if (!SELECTION_PROFILES.has(args.selectionProfile)) {
-    throw new Error("--selection-profile must be caption-dense or correction-led");
+    throw new Error("--selection-profile must be caption-dense, correction-led, or uncovered-correction-led");
+  }
+  if (args.excludeEditPacks.some((value) => !value)) {
+    throw new Error("--exclude-edit-pack requires a path");
+  }
+  if (args.excludeEditPacks.length && args.selectionProfile !== "uncovered-correction-led") {
+    throw new Error("--exclude-edit-pack requires --selection-profile uncovered-correction-led");
   }
   if (args.reuseRetainedSourceMedia && !args.offlineExistingEvidence) {
     throw new Error("--reuse-retained-source-media requires --offline-existing-evidence");
@@ -142,8 +150,44 @@ function usage() {
     "Existing-corpus successor slice:",
     "  --reuse-inventory --slice-video-id <id> --artifact-id <clip-*> \\",
     "  [--offline-existing-evidence [--reuse-retained-source-media] | --download-selected-source] \\",
-    "  [--selection-profile caption-dense|correction-led]",
+    "  [--selection-profile caption-dense|correction-led|uncovered-correction-led] \\",
+    "  [--exclude-edit-pack <existing edit_pack.json>]...",
   ].join("\n");
+}
+
+async function loadExcludedEditPacks(paths, expectedSourceIdentity) {
+  const ranges = [];
+  const bindings = [];
+  for (const inputPath of paths) {
+    const absolutePath = resolve(inputPath);
+    const bytes = await readFile(absolutePath);
+    const payload = JSON.parse(bytes.toString("utf8"));
+    if (payload.source_identity !== expectedSourceIdentity) {
+      throw new Error(`excluded edit pack source_identity mismatch: ${inputPath}`);
+    }
+    if (!Array.isArray(payload.cut_candidates) || payload.cut_candidates.length === 0) {
+      throw new Error(`excluded edit pack has no cut_candidates: ${inputPath}`);
+    }
+    const selectedIds = new Set(payload.selected_cut_ids || []);
+    const selected = payload.cut_candidates.filter((cut) =>
+      selectedIds.size === 0 || selectedIds.has(cut.id)
+    );
+    for (const cut of selected) {
+      const start = Number(cut.source_start_seconds);
+      const end = Number(cut.source_end_seconds);
+      if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) {
+        throw new Error(`excluded edit pack contains invalid source range: ${inputPath}`);
+      }
+      ranges.push({ start: round6(start), end: round6(end) });
+    }
+    bindings.push({
+      artifact_id: basename(dirname(absolutePath)),
+      edit_pack_path: absolutePath,
+      edit_pack_sha256: createHash("sha256").update(bytes).digest("hex"),
+      selected_range_count: selected.length,
+    });
+  }
+  return { ranges, bindings };
 }
 
 async function fetchText(url, init = {}) {
@@ -518,6 +562,8 @@ function buildEditorialContext(
     artifactId = DEFAULT_ARTIFACT_ID,
     sourceDurationBasis = "provider_combined_format_approx_duration",
     selectionProfile = "caption-dense",
+    excludedSourceRanges = [],
+    exclusionBindings = [],
   } = {},
 ) {
   const events = captionEvents(captionPayload);
@@ -525,6 +571,10 @@ function buildEditorialContext(
   const slotSeconds = source.duration_seconds / uniformCuts.length;
   const segmentSeconds = SLICE_TARGET_SECONDS / uniformCuts.length;
   const successorStyle = artifactId !== DEFAULT_ARTIFACT_ID;
+  const uncoveredSelection = selectionProfile === "uncovered-correction-led";
+  const overlapsExcludedRange = (start, end) => excludedSourceRanges.some((range) =>
+    Math.min(range.end, end) - Math.max(range.start, start) > 0.02
+  );
   const cuts = uniformCuts.map((fallback, index) => {
     const slotStart = index * slotSeconds;
     const slotEnd = (index + 1) * slotSeconds;
@@ -533,8 +583,14 @@ function buildEditorialContext(
       .map((event) => Math.min(
         Math.max(slotStart, event.source_start_seconds - 5),
         slotEnd - segmentSeconds,
-      ));
-    if (!candidates.length) return fallback;
+      ))
+      .filter((start) => !uncoveredSelection || !overlapsExcludedRange(start, start + segmentSeconds));
+    if (!candidates.length) {
+      if (uncoveredSelection) {
+        throw new Error(`no uncovered caption-backed range remains in whole-source slot ${index + 1}`);
+      }
+      return fallback;
+    }
     let best = fallback;
     let bestScore = -1;
     for (const start of candidates) {
@@ -550,7 +606,7 @@ function buildEditorialContext(
       const uniqueTopicCount = new Set(evidence.flatMap((event) => Object.entries(scoreTopics(event.text))
         .filter(([, value]) => value > 0)
         .map(([topicId]) => topicId))).size;
-      const score = selectionProfile === "correction-led"
+      const score = selectionProfile === "correction-led" || uncoveredSelection
         ? correctionCount * 100 + uniqueTopicCount * 20 + topicScore * 2 + evidence.length
         : evidence.length * 10 + topicScore;
       if (score > bestScore || (score === bestScore && start < best.start)) {
@@ -605,9 +661,11 @@ function buildEditorialContext(
     artifact_id: artifactId,
     family_id: "miko_led_unofficial_wiki_review",
     source_identity: `youtube:${source.video_id}`,
-    expected_selection_mode: selectionProfile === "correction-led"
-      ? "editorial_context_correction_led_chronological_sampling"
-      : "editorial_context_caption_dense_chronological_sampling",
+    expected_selection_mode: selectionProfile === "uncovered-correction-led"
+      ? "editorial_context_uncovered_correction_led_chronological_sampling"
+      : selectionProfile === "correction-led"
+        ? "editorial_context_correction_led_chronological_sampling"
+        : "editorial_context_caption_dense_chronological_sampling",
     selection_profile: selectionProfile,
     selection_summary: {
       chronology_partition: "12_uniform_whole_source_slots",
@@ -618,8 +676,18 @@ function buildEditorialContext(
         0,
       ),
       selected_topic_ids: [...new Set(chapters.flatMap((chapter) => chapter.topic_tags))],
+      excluded_edit_pack_count: exclusionBindings.length,
+      excluded_source_range_count: excludedSourceRanges.length,
+      excluded_source_overlap_seconds: round6(chapters.reduce((total, chapter) =>
+        total + excludedSourceRanges.reduce((subtotal, range) => subtotal + Math.max(
+          0,
+          Math.min(range.end, chapter.source_end_seconds)
+            - Math.max(range.start, chapter.source_start_seconds),
+        ), 0),
+      0)),
       semantic_status: "machine_keyword_selection_requires_editorial_review",
     },
+    coverage_exclusions: exclusionBindings,
     expected_source_duration_seconds: source.duration_seconds,
     source_duration_basis: sourceDurationBasis,
     source_range_tolerance_seconds: 0.1,
@@ -880,12 +948,18 @@ async function runExistingCorpusSlice(args, outputDir, observedAt) {
     : observedAt;
   const captionById = new Map([[source.video_id, captionPayload]]);
   const topicIndex = buildTopicIndex([source], captionById);
+  const coverageExclusions = await loadExcludedEditPacks(
+    args.excludeEditPacks,
+    `youtube:${source.video_id}`,
+  );
   const editorialContext = buildEditorialContext(sourceForSlice, captionPayload, {
     artifactId: args.artifactId,
     sourceDurationBasis: acquiredDuration > 0
       ? "provider_combined_format_approx_duration"
       : "fixed_corpus_inventory_duration_seconds",
     selectionProfile: args.selectionProfile,
+    excludedSourceRanges: coverageExclusions.ranges,
+    exclusionBindings: coverageExclusions.bindings,
   });
   const rights = buildRightsManifest(sourceForSlice, evidenceTimestamp);
   const sourceTopicIndex = topicIndex.sources[0];
@@ -913,6 +987,7 @@ async function runExistingCorpusSlice(args, outputDir, observedAt) {
       source_byte_size: acquisition?.receipt?.source_byte_size || null,
       media_reuse_mode: acquisition?.retained ? "retained_exact_bytes_no_network" : null,
     },
+    coverage_exclusions: coverageExclusions.bindings,
     source_caption: {
       provenance_type: "source_caption",
       path: `captions/${source.video_id}.ja.json3`,
@@ -1131,10 +1206,19 @@ async function main() {
   const selectedForSlice = acquiredDuration > 0
     ? { ...selected, duration_seconds: acquiredDuration }
     : selected;
+  const coverageExclusions = await loadExcludedEditPacks(
+    args.excludeEditPacks,
+    `youtube:${selected.video_id}`,
+  );
   const editorialContext = buildEditorialContext(
     selectedForSlice,
     captionById.get(selected.video_id),
-    { artifactId: args.artifactId, selectionProfile: args.selectionProfile },
+    {
+      artifactId: args.artifactId,
+      selectionProfile: args.selectionProfile,
+      excludedSourceRanges: coverageExclusions.ranges,
+      exclusionBindings: coverageExclusions.bindings,
+    },
   );
   const rights = buildRightsManifest(selectedForSlice, observedAt);
   await writeJson(join(outputDir, "corpus_inventory.json"), corpusInventory);

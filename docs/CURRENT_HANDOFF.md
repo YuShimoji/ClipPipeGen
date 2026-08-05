@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: BENCHMARK_PORTFOLIO_WIKI_FAMILY_TURN_READY_MEDIA_GATES_PARKED_S1_PARKED
+health: BENCHMARK_PORTFOLIO_WIKI_FAMILY_TURN_TWO_READY_MEDIA_GATES_PARKED_S1_PARKED
 last_touched: 2026-08-05
 current_slice: SH-05
-phase: wiki_family_turn_correction_led_media_verified
-canonical_status: benchmark_portfolio_15_families_28_slots_wiki_family_turn_ready
+phase: wiki_family_turn_two_uncovered_media_verified
+canonical_status: benchmark_portfolio_15_families_29_slots_wiki_family_turn_two_ready
 active_branch: codex/wiki-tensaku-longform-family-v1
 upstream_branch: origin/codex/wiki-tensaku-longform-family-v1
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
@@ -19,14 +19,14 @@ remote_handoff_status: pushed_and_remote_sha_readback_passed_for_current_head_lo
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
 parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file
-current_title: Wiki correction-led family turn materialized from retained exact source bytes
+current_title: Wiki uncovered-range family Turn 2 materialized from retained exact source bytes
 human_entrypoint: docs/benchmarks/index.html
 portable_entrypoint: docs/benchmarks/index.html
 review_open_command: start docs\benchmarks\index.html
 review_server_restart_command: not_required_static_portfolio
 machine_readback: docs/benchmarks/benchmark_portfolio.json
-decision_required: wiki_family_turn_exact_sha_internal_editorial_verdict
-review_status: correction_led_family_turn_machine_validated_human_editorial_review_pending
+decision_required: wiki_family_turn_two_exact_sha_human_editorial_verdict
+review_status: turn_one_technical_transition_accepted_turn_two_machine_validated_human_editorial_open
 remote_code_complete: true
 local_artifact_available: true
 local_artifact_role: tracked_portfolio_with_links_to_preserved_same_machine_evidence
@@ -37,17 +37,17 @@ artifact_output_sha256: not_applicable_tracked_multi_artifact_portfolio
 artifact_output_byte_size: not_applicable
 artifact_package_tree_digest_sha256: not_used_tracked_regenerable_portfolio
 artifact_manifest_self_sha256: not_applicable
-artifact_file_count: 32
+artifact_file_count: 33
 artifact_duration_seconds: not_applicable
 artifact_source_count: 15
-artifact_cut_count: 28
+artifact_cut_count: 29
 artifact_source_switch_count: not_applicable
 artifact_caption_cue_count: inherited_per_candidate_not_aggregated
 artifact_commentary_count: inherited_per_candidate_not_aggregated
 benchmark_family_denominator: 15
-benchmark_candidate_slot_denominator: 28
-benchmark_materialized_card_count: 28
-benchmark_fully_viewable_count: 21
+benchmark_candidate_slot_denominator: 29
+benchmark_materialized_card_count: 29
+benchmark_fully_viewable_count: 22
 benchmark_playable_proxy_count: 2
 benchmark_static_reviewable_count: 5
 benchmark_contract_only_count: 0
@@ -57,8 +57,8 @@ benchmark_rights_publication_approval_inferred: false
 package_validation_status: passed
 s1_review_http_status: 200
 s1_review_range_status: 206
-focused_test_status: benchmark_portfolio_3_passed_plus_wiki_renderer_17_passed
-full_suite_status: passed_696
+focused_test_status: turn_two_private_transfer_wiki_benchmark_real_video_31_passed
+full_suite_status: not_run_this_turn_historical_passed_696
 human_review_pending: true
 rights_approval: readback_unresolved
 production_acceptance: false
@@ -131,7 +131,36 @@ wiki_family_turn_review_http_status: 200
 wiki_family_turn_review_range_status: 206
 wiki_family_turn_human_review_pending: true
 wiki_family_turn_editorial_acceptance_granted: false
+wiki_family_turn_technical_acceptance: true
+wiki_family_turn_production_transition_acceptance: true
 wiki_family_turn_rights_approval: not_granted
+wiki_family_turn_two_artifact_id: clip-wiki-tensaku-family-turn-v2-001
+wiki_family_turn_two_source_identity: youtube:1AcId5Yja10
+wiki_family_turn_two_source_sha256: a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7
+wiki_family_turn_two_caption_sha256: f58c248f23b29845a94ae01b789f122c8759687125375a2650cc7a8074107e4f
+wiki_family_turn_two_excluded_edit_pack_count: 2
+wiki_family_turn_two_excluded_source_range_count: 24
+wiki_family_turn_two_excluded_source_overlap_seconds: 0
+wiki_family_turn_two_selected_correction_anchor_count: 20
+wiki_family_turn_two_chapters_with_correction_anchor: 12
+wiki_family_turn_two_output_sha256: 2736f6ec5b4a779a70c978d7815639802dee2d294220fdbb592edb9d75fe2dca
+wiki_family_turn_two_output_byte_size: 19951636
+wiki_family_turn_two_output_duration_seconds: 300.0
+wiki_family_turn_two_manifest_self_sha256: fec947a424c168e0fa38162e062196935a8cd1974bdd7e726868f3a1f5b48fca
+wiki_family_turn_two_validation: passed_13_of_13
+wiki_family_turn_two_full_decode: passed
+wiki_family_turn_two_mapping_coverage: 1.0
+wiki_family_turn_two_black_event_count: 0
+wiki_family_turn_two_silence_event_count: 0
+wiki_family_turn_two_network_requests_performed: 0
+wiki_family_turn_two_resume_render_executed: false
+wiki_family_unique_source_seconds_before_turn_two: 575
+wiki_family_unique_source_seconds_after_turn_two: 875
+wiki_family_turn_two_human_editorial_review_pending: true
+wiki_family_turn_two_rights_approval: not_granted
+wiki_family_turn_two_production_acceptance: false
+wiki_family_turn_two_public_use: false
+wiki_family_turn_two_upload_attempted: false
 wiki_state_code: PARKED_BLOCKED_EXTERNAL_NOT_PORTFOLIO_BOTTLENECK
 s1_lane_status: parked_human_review_pending
 s1_artifact_id: clip-s1-two-source-common-context-probe-v1-001
@@ -147,8 +176,8 @@ out13_m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
 out13_m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 out13_public_use_verdict: deny
 out13_monetized_youtube_verdict: deny
-next_review_due: wiki_family_turn_exact_sha_internal_editorial_review_s1_remains_parked
-next_action: review_wiki_family_turn_exact_sha_then_wait_for_002_or_003_source_bytes_without_network_retry
+next_review_due: wiki_family_turn_two_exact_sha_editorial_review_s1_remains_parked
+next_action: review_wiki_family_turn_two_exact_sha_then_wait_for_002_or_003_source_bytes_without_network_retry
 current_handoff: docs/CURRENT_HANDOFF.md
 upstream_parity: 0 0 after normal push and remote SHA readback of current handoff revision
 current_slice_push_status: normal_push_and_remote_sha_readback_completed_for_current_head_locator
@@ -158,6 +187,24 @@ related: docs/RUNTIME_STATE.md, docs/benchmarks/benchmark_registry.json, docs/be
 ---
 
 # Current Handoff - ClipPipeGen
+
+## 2026-08-05 Wiki添削 uncovered-range Family Turn 2
+
+`clip-wiki-tensaku-family-turn-v2-001`は、baselineとaccepted technical Turn 1のexact
+edit-pack SHAをbindし、24 selected source rangesを除外して作った300秒の完全視聴可能candidate。
+同じretained `youtube:1AcId5Yja10` source SHA`a9942286...60e7`とcaption SHA
+`f58c248f...7e4f`をnetwork 0で再利用し、12/12章に20 correction anchorsを含む。
+既存rangeとのoverlapは0秒で、unique source-timeは575→875秒（+300秒、10.35%→15.74%）。
+
+final MP4はH.264/AAC 640x360 / 300.000s / 19,951,636 bytes、SHA
+`2736f6ec5b4a779a70c978d7815639802dee2d294220fdbb592edb9d75fe2dca`。13/13、独立full decode、
+mapping 1.0、black/silence 0をpass。resumeは4 cache hits / renderなしでhashとmtimeを保持した。
+視聴入口はignored artifact内`review\open_preview.ps1`。private artifact-delta transportを併設し、
+Git cloneだけでは欠ける実mediaを別端末へexact hashで渡す。
+
+これはsource-time coverageと機械検証の前進であり、人間のeditorial verdict、rights、full production、
+public/monetized use、publishing、uploadを開かない。Wiki 002/003のexact source bytes gateとS1 gateは
+変更せずparkする。
 
 ## 2026-08-05 Wiki添削 correction-led Family Turn 1
 

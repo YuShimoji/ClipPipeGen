@@ -7,9 +7,9 @@
 > states unless the Runtime capsule records a later reviewed transition.
 
 SH-05 benchmark portfolio note: the current finite output benchmark surface is
-15 families / 28 family-scoped candidate slots, materialized as 28 tracked
+15 families / 29 family-scoped candidate slots, materialized as 29 tracked
 review cards. Open [docs/benchmarks/index.html](docs/benchmarks/index.html).
-The current-host ledger reports 21 fully-viewable, 2 playable-proxy, 5
+The current-host ledger reports 22 fully-viewable, 2 playable-proxy, 5
 static-reviewable, and 0 contract-only slots. These tiers describe evidence
 availability only; existing acceptance, rights, production, publication,
 monetization, and upload gates remain exact-artifact decisions.
@@ -19,15 +19,18 @@ retained `youtube:1AcId5Yja10` source bytes with zero network requests and selec
 25-second correction-led chapter from each of 12 chronological whole-source slots. The
 300-second H.264/AAC MP4 SHA is `1f965e53...3284`; 12/12 chapters contain correction
 anchors, 13/13 media checks and full decode pass, localhost returns page 200 / Range 206,
-and deterministic resume skips render while preserving hash and mtime. This is a new
-internal review artifact, not human editorial acceptance or rights/production/public approval.
+and deterministic resume skips render while preserving hash and mtime. Its technical and
+production-transition acceptance is fixed; human editorial review and rights/public gates remain open.
+`clip-wiki-tensaku-family-turn-v2-001` excludes all 24 source ranges used by the baseline
+and Turn 1, adding 300 unique source seconds with network 0 and another 13/13-valid MP4.
 
 SH-10 private artifact transfer note: `build-private-artifact-transfer` creates an
 ignored, immutable ZIP plus exact-hash receipt from explicitly listed `episodes/` inputs.
 `verify-private-artifact-transfer` rejects unmanifested/path-unsafe members and restores
 only missing files, reusing exact existing bytes and failing closed on conflicts. The Wiki
-operator wrapper includes the retained Wiki 001 source, all three caption/static corpus
-packets, and the complete correction-led review artifact; see
+operator wrapper can emit the retained Wiki 001 full-corpus package or a new artifact-only
+delta, so Turn 2 is recoverable without duplicating the already-delivered source package. Large transports are split into
+independently hashed 16MiB parts and reassembled only after whole-archive SHA verification; see
 [PRIVATE_ARTIFACT_TRANSFER.md](docs/PRIVATE_ARTIFACT_TRANSFER.md). Private transport is
 not rights, production, public, monetized, publishing, or upload approval.
 

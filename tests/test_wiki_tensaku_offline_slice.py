@@ -217,6 +217,61 @@ def test_correction_led_slice_reuses_exact_retained_media_without_network(tmp_pa
     assert (slice_dir / "rights_manifest.json").read_bytes() == rights_before
     assert (slice_dir / "editorial_context.json").read_bytes() == context_before
 
+    exclusion_path = tmp_path / "artifacts" / artifact_id / "edit_pack.json"
+    _write_json(
+        exclusion_path,
+        {
+            "source_identity": f"youtube:{video_id}",
+            "selected_cut_ids": [chapter["cut_id"] for chapter in context["chapters"]],
+            "cut_candidates": [
+                {
+                    "id": chapter["cut_id"],
+                    "source_start_seconds": chapter["source_start_seconds"],
+                    "source_end_seconds": chapter["source_end_seconds"],
+                }
+                for chapter in context["chapters"]
+            ],
+        },
+    )
+    uncovered_artifact_id = "clip-wiki-tensaku-family-turn-v2-001"
+    uncovered_command = command.copy()
+    uncovered_command[uncovered_command.index(artifact_id)] = uncovered_artifact_id
+    uncovered_command[uncovered_command.index("correction-led")] = "uncovered-correction-led"
+    uncovered_command.extend(["--exclude-edit-pack", str(exclusion_path)])
+    uncovered_completed = subprocess.run(
+        uncovered_command,
+        cwd=REPO_ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    uncovered_result = json.loads(uncovered_completed.stdout)
+    assert uncovered_result["network_requests_performed"] == 0
+    uncovered_dir = tmp_path / "slice_inputs" / uncovered_artifact_id
+    uncovered_context = json.loads(
+        (uncovered_dir / "editorial_context.json").read_text(encoding="utf-8")
+    )
+    assert uncovered_context["expected_selection_mode"] == (
+        "editorial_context_uncovered_correction_led_chronological_sampling"
+    )
+    assert uncovered_context["selection_summary"]["excluded_edit_pack_count"] == 1
+    assert uncovered_context["selection_summary"]["excluded_source_range_count"] == 12
+    assert uncovered_context["selection_summary"]["excluded_source_overlap_seconds"] == 0
+    assert uncovered_context["coverage_exclusions"][0]["edit_pack_sha256"] == hashlib.sha256(
+        exclusion_path.read_bytes()
+    ).hexdigest()
+    excluded_ranges = [
+        (chapter["source_start_seconds"], chapter["source_end_seconds"])
+        for chapter in context["chapters"]
+    ]
+    for chapter in uncovered_context["chapters"]:
+        assert all(
+            min(chapter["source_end_seconds"], end)
+            - max(chapter["source_start_seconds"], start)
+            <= 0.02
+            for start, end in excluded_ranges
+        )
+
     bad_receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     bad_receipt["source_sha256"] = "0" * 64
     _write_json(receipt_path, bad_receipt)

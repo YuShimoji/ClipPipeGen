@@ -11,7 +11,9 @@ from src.pipeline.private_artifact_transfer import (
     MANIFEST_PATH,
     PrivateArtifactTransferError,
     build_private_artifact_transfer,
+    split_private_artifact_transfer,
     verify_private_artifact_transfer,
+    verify_private_artifact_parts,
 )
 
 
@@ -188,3 +190,50 @@ def test_cli_build_and_verify_json(tmp_path: Path, monkeypatch, capsys) -> None:
     ) == 0
     verify_payload = json.loads(capsys.readouterr().out)
     assert verify_payload["state"] == "PRIVATE_ARTIFACT_TRANSFER_VERIFIED"
+
+
+def test_split_verify_and_assemble_parts(tmp_path: Path) -> None:
+    source = tmp_path / "episodes/demo/corpus/source_video.mp4"
+    artifact = tmp_path / "episodes/demo/artifacts/clip-demo-001"
+    source.parent.mkdir(parents=True)
+    artifact.mkdir(parents=True)
+    source.write_bytes(b"A" * (2 * 1024 * 1024 + 17))
+    (artifact / "final_video.mp4").write_bytes(b"rendered")
+    result = build_private_artifact_transfer(
+        bundle_id="clip-demo-private-transfer-v1-003",
+        artifact_id="clip-demo-001",
+        source_identity="local:demo-source",
+        repo_head=REPO_HEAD,
+        includes=[Path("episodes/demo/corpus"), Path("episodes/demo/artifacts")],
+        output_path=Path("episodes/demo/transfers/parts.zip"),
+        base_dir=tmp_path,
+    )
+    split = split_private_artifact_transfer(
+        archive_path=result["archive"],
+        part_size_bytes=1024 * 1024,
+    )
+    assert split["part_count"] == 3
+
+    verified = verify_private_artifact_parts(
+        parts_manifest_path=split["parts_manifest"]
+    )
+    assert verified["archive_sha256"] == result["archive_sha256"]
+    assembled = tmp_path / "downloads" / "assembled.zip"
+    assembled_result = verify_private_artifact_parts(
+        parts_manifest_path=split["parts_manifest"],
+        output_path=assembled,
+    )
+    assert assembled_result["assembled_archive"] == assembled
+    assert assembled.read_bytes() == result["archive"].read_bytes()
+
+
+def test_parts_verification_rejects_corruption(tmp_path: Path) -> None:
+    archive, _receipt = _build(tmp_path)
+    split = split_private_artifact_transfer(
+        archive_path=archive,
+        part_size_bytes=1024 * 1024,
+    )
+    first_part = split["parts"][0]
+    first_part.write_bytes(first_part.read_bytes() + b"corrupt")
+    with pytest.raises(PrivateArtifactTransferError, match="size mismatch"):
+        verify_private_artifact_parts(parts_manifest_path=split["parts_manifest"])

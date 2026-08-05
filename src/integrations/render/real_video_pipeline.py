@@ -916,8 +916,8 @@ def plan_timeline_from_editorial_context(
                 "output_out_seconds": round(output_end, 6),
                 "duration_seconds": round(duration, 6),
                 "selection_reason": (
-                    "caption-dense source range selected inside a chronological "
-                    "whole-stream coverage slot"
+                    f"{context.get('selection_profile') or 'caption-dense'} source range "
+                    "selected inside a chronological whole-stream coverage slot"
                 ),
                 "continuity_context": (
                     "first chronological coverage slot"

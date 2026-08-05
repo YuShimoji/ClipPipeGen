@@ -7,9 +7,9 @@ follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, then use the Runtime-driven
 current focus. SH-05 is the active readback surface: a tracked benchmark
-portfolio spanning the 15 registered output-layer families and 28
+portfolio spanning the 15 registered output-layer families and 29
 family-scoped candidate slots. ED-13 now includes a correction-led fully-viewable
-successor turn from exact retained Wiki 001 source bytes. Wiki 002 and 003 exact source bytes are parked
+successor turn plus an uncovered-range fully-viewable Turn 2 from exact retained Wiki 001 source bytes. Wiki 002 and 003 exact source bytes are parked
 as explicit upgrade conditions instead of blocking the portfolio. Wiki 003 already has a
 network-free candidate-specific static input packet. ED-12 / S1
 remains a parked exact review target with S4 human review pending. Local packages
@@ -42,17 +42,17 @@ opened by the root launcher.
 |---|---|
 | title | ClipPipeGen Benchmark Portfolio Coverage v1 |
 | purpose | Materialize every currently registered output-layer family and family-scoped candidate slot as the thinnest honest reverse-engineering review surface, while preserving exact acceptance and external gates. |
-| storage class | Tracked registry, deterministic builder, JSON/Markdown/HTML ledgers, and 28 tracked static candidate cards. Existing playable packages and media remain ignored under `episodes/`; the new family-turn package is ignored same-machine evidence. |
+| storage class | Tracked registry, deterministic builder, JSON/Markdown/HTML ledgers, and 29 tracked static candidate cards. Existing playable packages and media remain ignored under `episodes/`; private exact-hash transfer packages preserve Wiki media across terminals. |
 | repo_relative_path | `docs/benchmarks/benchmark_registry.json`; `tools/benchmarks/build_benchmark_portfolio.py`; `docs/benchmarks/benchmark_portfolio.json`; `docs/benchmarks/COVERAGE_LEDGER.md`; `docs/benchmarks/index.html`; `docs/benchmarks/candidates/*.html`; `tests/test_benchmark_portfolio.py` |
 | artifact_id | `clip-benchmark-portfolio-coverage-v1-001` |
-| denominator | 15 registered families / 28 family-scoped candidate slots. Reused media remains a separate comparison slot and is marked through `reuse_of`; this is not a unique-media count. |
-| current coverage | 21 `fully-viewable`; 2 `playable-proxy`; 5 `static-reviewable`; 0 `contract-only`; 28/28 materialized cards. |
+| denominator | 15 registered families / 29 family-scoped candidate slots. Reused media remains a separate comparison slot and is marked through `reuse_of`; this is not a unique-media count. |
+| current coverage | 22 `fully-viewable`; 2 `playable-proxy`; 5 `static-reviewable`; 0 `contract-only`; 29/29 materialized cards. |
 | open_command | `start docs\benchmarks\index.html` |
 | machine_output | `docs/benchmarks/benchmark_portfolio.json` |
 | coverage_ledger | `docs/benchmarks/COVERAGE_LEDGER.md` |
 | validation_command | `uv run --offline --no-project --python 3.13 python tools/benchmarks/build_benchmark_portfolio.py --hash-local-media --format json`; `uv run --offline --no-project --python 3.13 --with pytest pytest -q tests/test_benchmark_portfolio.py`; focused Wiki successor tests; `git diff --check`; `git ls-files episodes`. |
 | review_status | Internal portfolio review available. A tier is an availability/readback classification, not fresh human acceptance. Existing accepted and parked decisions retain their exact artifact/SHA scope. |
-| next_action | Review the exact correction-led Wiki family-turn MP4 for internal editorial acceptance. Keep Wiki 002/003 media upgrades parked until exact source bytes arrive; do not use cookies, OAuth, or anonymous retry. |
+| next_action | Review the exact uncovered-range Turn 2 MP4 for editorial usefulness. Keep Wiki 002/003 media upgrades parked until exact source bytes arrive; do not use cookies, OAuth, or anonymous retry. |
 
 Boundary flags remain false or explicit:
 
@@ -82,8 +82,26 @@ Boundary flags remain false or explicit:
 | manifest | 17 payload rows; self-integrity SHA `84e9c788c0840a35148755ba3ac6975eade7c80f4f6fd4c85f8bbd9ad1ada971`. |
 | preview_url | `http://127.0.0.1:8080/review/index.html` while the artifact launcher is running. |
 | open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-family-turn-v1-001\review\open_preview.ps1` |
-| decision_required | Human `accept / bounded repair / reject` bound to the exact MP4 SHA for internal editorial direction only. |
-| next_action | Review chapter coherence, correction-focus usefulness, context sufficiency, and caption/commentary separation. Do not infer rights, production, public, monetized, publishing, or upload approval. |
+| decision_required | Technical and production-transition acceptance are fixed. Human editorial review remains open and is not inferred from machine validation. |
+| next_action | Preserve this exact artifact and review its editorial coherence only if needed. Do not infer rights, public, monetized, publishing, or upload approval. |
+
+## `clip-wiki-tensaku-family-turn-v2-001`
+
+| Field | Value |
+|---|---|
+| title | ED-13 Wiki添削 Uncovered Correction-Led Family Turn 2 |
+| purpose | Increase whole-source coverage using exact retained Wiki 001 bytes while excluding every selected range in the baseline and accepted technical Turn 1. |
+| storage class | Tracked collector mode, operator scripts, tests, benchmark card, and contracts plus ignored media/static evidence. A private artifact-delta bundle provides cross-terminal delivery. |
+| repo_relative_path | `src/integrations/asset_fetch/wiki_tensaku_corpus.mjs`; `src/integrations/render/real_video_pipeline.py`; `scripts/operator/build_wiki_tensaku_family_turn_two.ps1`; `scripts/operator/build_wiki_tensaku_cross_device_bundle.ps1`; `tests/test_wiki_tensaku_offline_slice.py`; `docs/benchmarks/candidates/wiki-turn-002.html` |
+| source | `youtube:1AcId5Yja10`; source SHA `a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7`; caption SHA `f58c248f23b29845a94ae01b789f122c8759687125375a2650cc7a8074107e4f`; network requests 0. |
+| plan | 12 chronological 25-second chapters; 12/12 contain correction anchors, 20 anchors total. Baseline edit pack SHA `d2af54b14724774c27dae5322e263b206dd4bbd7b38d93daecd29dd74f5bbf86` and Turn 1 edit pack SHA `61c3a9e90fa9fd6abf9a2d37c93e901398441a79cdeb2b3f3230edc0d219f406` exclude 24 ranges; selected overlap is 0 seconds. |
+| coverage | Unique source-time union rises from 575 to 875 seconds: +300 seconds, 10.35% to 15.74% of the 5,558-second inventory range. |
+| final_video | H.264/AAC 640x360, 300.000s, 19,951,636 bytes, SHA `2736f6ec5b4a779a70c978d7815639802dee2d294220fdbb592edb9d75fe2dca`. |
+| validation | 13/13 passed; independent full decode passed; mapping 1.0; black/silence events 0; 97 caption cues; input-focused tests passed. |
+| resume | Four cache hits; `render_executed=false`; MP4 SHA and UTC mtime unchanged. |
+| manifest | 17 payload rows; self-integrity SHA `fec947a424c168e0fa38162e062196935a8cd1974bdd7e726868f3a1f5b48fca`. |
+| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-family-turn-v2-001\review\open_preview.ps1` |
+| decision_required | Human editorial review only. Rights, full production acceptance, public/monetized use, publishing, and upload remain closed. |
 
 ## `clip-wiki-tensaku-longform-v1-003`
 

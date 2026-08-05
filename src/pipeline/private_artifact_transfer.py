@@ -465,3 +465,200 @@ def verify_private_artifact_transfer(
         "existing_exact_file_count": existing,
         "restore_root": root,
     }
+
+
+def split_private_artifact_transfer(
+    *,
+    archive_path: Path,
+    part_size_bytes: int,
+) -> dict[str, Any]:
+    """Split one verified archive into small, independently hashed transport parts."""
+
+    archive_path = archive_path.resolve(strict=True)
+    if part_size_bytes < 1024 * 1024:
+        raise PrivateArtifactTransferError(
+            "parts_preflight", "part_size_bytes must be at least 1 MiB"
+        )
+    manifest_path = archive_path.with_suffix(archive_path.suffix + ".parts.json")
+    if manifest_path.exists():
+        raise PrivateArtifactTransferError(
+            "parts_preflight", "immutable parts manifest already exists"
+        )
+
+    part_entries: list[dict[str, Any]] = []
+    created_parts: list[Path] = []
+    try:
+        with archive_path.open("rb") as source:
+            index = 1
+            while chunk := source.read(part_size_bytes):
+                part_path = archive_path.with_name(
+                    f"{archive_path.name}.part{index:04d}"
+                )
+                if part_path.exists():
+                    raise PrivateArtifactTransferError(
+                        "parts_preflight", f"immutable part already exists: {part_path.name}"
+                    )
+                temporary = part_path.with_name(f".{part_path.name}.{uuid4().hex}.tmp")
+                temporary.write_bytes(chunk)
+                os.replace(temporary, part_path)
+                created_parts.append(part_path)
+                part_entries.append(
+                    {
+                        "index": index,
+                        "name": part_path.name,
+                        "byte_size": len(chunk),
+                        "sha256": hashlib.sha256(chunk).hexdigest(),
+                    }
+                )
+                index += 1
+    except Exception:
+        for path in created_parts:
+            path.unlink(missing_ok=True)
+        raise
+
+    payload = {
+        "schema_version": SCHEMA_VERSION,
+        "kind": "private_artifact_transfer_parts",
+        "archive_name": archive_path.name,
+        "archive_byte_size": archive_path.stat().st_size,
+        "archive_sha256": _sha256_file(archive_path),
+        "part_size_bytes": part_size_bytes,
+        "part_count": len(part_entries),
+        "parts": part_entries,
+        "assembly": {
+            "order": "index_ascending",
+            "existing_output": "fail_closed_without_overwrite",
+            "post_assembly": "verify_archive_sha_then_run_verify_private_artifact_transfer",
+        },
+        "manifest_self_integrity": {
+            "algorithm": "sha256-canonical-json-self-null",
+            "sha256": None,
+        },
+    }
+    payload["manifest_self_integrity"]["sha256"] = _manifest_self_digest(payload)
+    manifest_path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    return {
+        "state": "PRIVATE_ARTIFACT_TRANSFER_SPLIT",
+        "parts_manifest": manifest_path,
+        "archive": archive_path,
+        **{key: value for key, value in payload.items() if key != "parts"},
+        "parts": created_parts,
+    }
+
+
+def verify_private_artifact_parts(
+    *,
+    parts_manifest_path: Path,
+    output_path: Path | None = None,
+) -> dict[str, Any]:
+    """Verify transport parts and optionally assemble the original archive."""
+
+    parts_manifest_path = parts_manifest_path.resolve(strict=True)
+    manifest = json.loads(parts_manifest_path.read_text(encoding="utf-8"))
+    if (
+        manifest.get("schema_version") != SCHEMA_VERSION
+        or manifest.get("kind") != "private_artifact_transfer_parts"
+    ):
+        raise PrivateArtifactTransferError(
+            "parts_validation", "unsupported parts manifest"
+        )
+    if manifest.get("manifest_self_integrity", {}).get("sha256") != _manifest_self_digest(
+        manifest
+    ):
+        raise PrivateArtifactTransferError(
+            "parts_validation", "parts manifest self-integrity mismatch"
+        )
+    parts = manifest.get("parts")
+    if not isinstance(parts, list) or not parts:
+        raise PrivateArtifactTransferError(
+            "parts_validation", "parts manifest contains no parts"
+        )
+    if manifest.get("part_count") != len(parts):
+        raise PrivateArtifactTransferError(
+            "parts_validation", "part count mismatch"
+        )
+
+    expected_indexes = list(range(1, len(parts) + 1))
+    if [entry.get("index") for entry in parts] != expected_indexes:
+        raise PrivateArtifactTransferError(
+            "parts_validation", "parts are not indexed contiguously"
+        )
+    names = [str(entry.get("name", "")) for entry in parts]
+    if len(names) != len(set(name.casefold() for name in names)):
+        raise PrivateArtifactTransferError(
+            "parts_validation", "duplicate or case-colliding part name"
+        )
+    for name in names:
+        if PurePosixPath(name).name != name or "\\" in name or "\x00" in name:
+            raise PrivateArtifactTransferError(
+                "parts_validation", f"unsafe part name: {name}"
+            )
+
+    combined_digest = hashlib.sha256()
+    total_bytes = 0
+    part_paths: list[Path] = []
+    for entry, name in zip(parts, names, strict=True):
+        part_path = parts_manifest_path.parent / name
+        if not part_path.is_file():
+            raise PrivateArtifactTransferError(
+                "parts_validation", f"transfer part is missing: {name}"
+            )
+        if part_path.stat().st_size != entry.get("byte_size"):
+            raise PrivateArtifactTransferError(
+                "parts_validation", f"transfer part size mismatch: {name}"
+            )
+        part_digest = hashlib.sha256()
+        with part_path.open("rb") as handle:
+            while chunk := handle.read(COPY_CHUNK_BYTES):
+                part_digest.update(chunk)
+                combined_digest.update(chunk)
+                total_bytes += len(chunk)
+        if part_digest.hexdigest() != entry.get("sha256"):
+            raise PrivateArtifactTransferError(
+                "parts_validation", f"transfer part SHA mismatch: {name}"
+            )
+        part_paths.append(part_path)
+    if total_bytes != manifest.get("archive_byte_size"):
+        raise PrivateArtifactTransferError(
+            "parts_validation", "assembled archive size mismatch"
+        )
+    if combined_digest.hexdigest() != manifest.get("archive_sha256"):
+        raise PrivateArtifactTransferError(
+            "parts_validation", "assembled archive SHA mismatch"
+        )
+
+    assembled: Path | None = None
+    if output_path is not None:
+        output_path = output_path.resolve(strict=False)
+        if output_path.exists():
+            raise PrivateArtifactTransferError(
+                "parts_assembly", "assembly output already exists"
+            )
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = output_path.with_name(f".{output_path.name}.{uuid4().hex}.tmp")
+        try:
+            with temporary.open("wb") as output:
+                for part_path in part_paths:
+                    with part_path.open("rb") as source:
+                        shutil.copyfileobj(source, output, length=COPY_CHUNK_BYTES)
+            if _sha256_file(temporary) != manifest["archive_sha256"]:
+                raise PrivateArtifactTransferError(
+                    "parts_assembly", "assembled temporary archive SHA mismatch"
+                )
+            os.replace(temporary, output_path)
+            assembled = output_path
+        except Exception:
+            temporary.unlink(missing_ok=True)
+            raise
+
+    return {
+        "state": "PRIVATE_ARTIFACT_TRANSFER_PARTS_VERIFIED",
+        "parts_manifest": parts_manifest_path,
+        "archive_name": manifest["archive_name"],
+        "archive_byte_size": manifest["archive_byte_size"],
+        "archive_sha256": manifest["archive_sha256"],
+        "part_count": len(parts),
+        "assembled_archive": assembled,
+    }

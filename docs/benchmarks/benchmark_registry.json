@@ -57,6 +57,29 @@
           "boundary": "This successor reuses exact retained Wiki 001 source bytes without network requests. Machine keyword selection still requires editorial judgment; rights, production, public, monetized, and upload approval remain closed."
         },
         {
+          "candidate_id": "wiki-turn-002",
+          "artifact_identity": "clip-wiki-tensaku-family-turn-v2-001",
+          "role": "Uncovered correction-led successor excluding all source ranges used by the baseline and accepted technical turn",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-family-turn-v2-001/slice_receipt.json",
+          "local_entrypoint": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v2-001/review/index.html",
+          "local_evidence": [
+            "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-family-turn-v2-001/editorial_context.json",
+            "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v2-001/validation_readback.json",
+            "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v2-001/resume_readback.json"
+          ],
+          "local_media": [
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v2-001/final_video.mp4",
+              "expected_sha256": "2736f6ec5b4a779a70c978d7815639802dee2d294220fdbb592edb9d75fe2dca"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\wiki_tensaku_family_20260804\\artifacts\\clip-wiki-tensaku-family-turn-v2-001\\review\\open_preview.ps1",
+          "state": "verified_13_of_13_uncovered_correction_led_internal",
+          "missing_upgrade_condition": "Human editorial review bound to the exact MP4 SHA; no rerender is required.",
+          "boundary": "The two exact predecessor edit packs exclude 24 selected ranges with zero overlap. This increases unique source-time coverage but does not establish editorial, rights, production, public, monetized, publishing, or upload acceptance."
+        },
+        {
           "candidate_id": "wiki-002",
           "artifact_identity": "clip-wiki-tensaku-longform-v1-002",
           "role": "Second full-corpus-indexed source; media build parked",
