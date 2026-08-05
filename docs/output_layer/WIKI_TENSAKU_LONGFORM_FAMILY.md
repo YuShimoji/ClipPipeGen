@@ -7,7 +7,7 @@
 両者のexact source bytesは未供給で、media validationとProduct Gateは未達。cookies / OAuth /
 anonymous acquisition retryを行わない。一方、exact retained source bytesを持つ001から、既存成果を
 上書きせず訂正anchor主導のTurn 1と、既存rangeを完全除外するTurn 2/3/4を完全視聴可能にした。
-15 family / 31 slotの現在の横断入口は
+15 family / 32 slotの現在の横断入口は
 [`../benchmarks/index.html`](../benchmarks/index.html)。002の完全動画条件と権利境界は下記の
 まま保持し、完成済みとは扱わない。
 
@@ -183,6 +183,34 @@ powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family
 publishing、upload acceptanceを開かない。Turn 3 artifact、Drive identity、Feedback provenance、
 Wiki 002/003 exact-source gate、S1 gateは変更しない。
 
+## 五世代range除外のscarcity-aware Family Turn 5
+
+`clip-wiki-tensaku-family-turn-v5-001`はbaselineとTurn 1〜4のedit packsを実ファイルから再集計し、
+5 packs / 60 selected rangesをexact SHAでbindして除外した。追加bindingとなるTurn 4 edit-pack SHAは
+`cc07d91f385e48f6325ad4030552ac4be19f5bb1da0c237fbfceb452c8b65020`。Turn 5の12章はすべて
+prior rangeとoverlap 0秒で、retained source/caption以外を使わずnetwork request 0で生成した。
+
+実測構成は`correction-prioritized-mixed`。第2・3・4・5・7・8・9・10章の8章に各1 correction anchorを
+持つ。fallbackは4章あり、第1章は未代表topic `before_after_change`を追加するため、第6・11・12章は
+各slotの未使用correction-bearing 25秒候補が0件になった後に時系列の意味連続性を維持するため選択した。
+各章のcaption候補数、除外数、未使用correction/fallback候補数は`editorial_context.json`へ個別記録した。
+12/12 correction-ledとは主張しない。
+
+final MP4はH.264/AAC 640x360 / 300.000s / 19,964,780 bytes、SHA
+`e192fcd6746d396c0c92b5952c274cf5afd07f47c0f5d3a17deecd33b658012c`。13/13、built-inと独立full A/V
+decode、mapping 1.0、black/silence 0、96 caption cuesをpass。manifest self-integrity SHAは
+`819e4c049c21f186ef003101642ecd3f51192d41f4567869af4324e327bc7586`。resumeは4 cache hits、
+`render_executed=false`でMP4 SHA・size・mtimeを保持した。unique source-timeは1,475→1,775秒、
+coverageは26.54%→31.94%（+300秒 / +5.40pt）。HTTPはfresh検証しておらず成功を主張しない。
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-family-turn-v5-001\review\open_preview.ps1
+```
+
+Turn 4はexact MP4 SHAへboundした`continue / bounded repair none / correction-prioritized mixed`判定として
+不変。Turn 5のhuman editorial/terminal、rights、production、publication、recipient restoreはopenのまま。
+Wiki 002/003 exact-source gateとS1 gateも変更しない。
+
 ## 第三sourceのnetwork-free static packet
 
 `clip-wiki-tensaku-longform-v1-003`は`youtube:Ocqg-RpQURY`のretained caption payload、
@@ -205,7 +233,8 @@ external stateは`WAITING_EXACT_SOURCE_BYTES`。static input contractのpassを�
 
 ## CONTINUEする次slice
 
-1. correction-led Family Turn 1をexact MP4 SHAへbindしてinternal editorial reviewする。
+1. Family Turn 5のexact MP4 SHA、8 correction章、4 fallback章とchapter別scarcity evidenceを
+   Supervisor editorial reviewへ渡す。
 2. `youtube:82iRbxjvbww`または`youtube:Ocqg-RpQURY`のexact source bytesが明示的に供給された時だけ、
    該当full source rangeをhash固定して既存12章inputから300s / 12 chapters / 13 checksを通す。
 3. 3本のvalidated source sliceが揃った後、topic/事件/訂正の重複と前後関係を人間が確認し、

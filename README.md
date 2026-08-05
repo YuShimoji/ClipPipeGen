@@ -7,9 +7,9 @@
 > states unless the Runtime capsule records a later reviewed transition.
 
 SH-05 benchmark portfolio note: the current finite output benchmark surface is
-15 families / 31 family-scoped candidate slots, materialized as 31 tracked
+15 families / 32 family-scoped candidate slots, materialized as 32 tracked
 review cards. Open [docs/benchmarks/index.html](docs/benchmarks/index.html).
-The current-host ledger reports 24 fully-viewable, 2 playable-proxy, 5
+The current-host ledger reports 25 fully-viewable, 2 playable-proxy, 5
 static-reviewable, and 0 contract-only slots. These tiers describe evidence
 availability only; existing acceptance, rights, production, publication,
 monetization, and upload gates remain exact-artifact decisions.
@@ -28,6 +28,10 @@ another non-overlap 300 seconds. `clip-wiki-tensaku-family-turn-v4-001` excludes
 ranges used through Turn 3 and adds a further 300 seconds, taking cumulative unique
 source-time to 1,475 seconds. Its correction-led selection falls back to caption-backed
 ranges in slots 1, 6, and 12 because no unused correction-bearing 25-second windows remain there.
+`clip-wiki-tensaku-family-turn-v5-001` recomputes 60 prior ranges from five exact
+edit packs, adds another non-overlap 300 seconds, and takes unique source-time to
+1,775 seconds (31.94%). Its measured composition is correction-prioritized mixed:
+8 correction chapters and 4 explicit caption-backed fallbacks, not 12/12 correction-led.
 
 SH-10 private artifact transfer note: `build-private-artifact-transfer` creates an
 ignored, immutable ZIP plus exact-hash receipt from explicitly listed `episodes/` inputs.
@@ -192,12 +196,13 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 
 ## 現在のスライス
 
-現在のactive sliceは`SH-05` benchmark portfolio readback。15 family / 31 family-scoped slotを
-tracked review surfaceへ有限化し、24 fully-viewable / 2 playable-proxy / 5 static-reviewable /
+現在のactive sliceは`SH-05` benchmark portfolio readback。15 family / 32 family-scoped slotを
+tracked review surfaceへ有限化し、25 fully-viewable / 2 playable-proxy / 5 static-reviewable /
 0 contract-onlyを観測している。ED-13 Wiki 003はretained evidenceだけからnetwork request 0の
 candidate-specific 12章static packetへ昇格済み。さらに既存Wiki 001 source bytesをSHA再照合して、
-Turn 1からTurn 4まで、既使用rangeを順次除外する300秒artifactを生成し、unique source-timeを
-1,475秒まで拡張した。Turn 4のcaption-backed fallback第1・6・12章はSupervisor watch itemである。
+Turn 1からTurn 5まで、既使用rangeを順次除外する300秒artifactを生成し、unique source-timeを
+1,775秒まで拡張した。Turn 5はcorrection 8章 / fallback 4章のcorrection-prioritized mixedで、
+fallback第1・6・11・12章を章別scarcity evidenceとともにSupervisorへ渡す。
 Wiki 002/003のexact source bytesは未供給のままで、そのmedia gateは変更していない。
 ED-12/S1 exact probeのhuman reviewは別laneにparkしている。
 

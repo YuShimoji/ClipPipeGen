@@ -3,13 +3,13 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: BENCHMARK_PORTFOLIO_WIKI_FAMILY_TURN_FOUR_READY_FALLBACK_WATCH_MEDIA_GATES_PARKED_S1_PARKED
+health: BENCHMARK_PORTFOLIO_WIKI_FAMILY_TURN_FIVE_READY_SCARCITY_WATCH_MEDIA_GATES_PARKED_S1_PARKED
 last_touched: 2026-08-06
-state_revision: wiki-family-turn-four-uncovered-media-2026-08-06
+state_revision: wiki-family-turn-five-scarcity-aware-media-2026-08-06
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: SH-05
-phase: wiki_family_turn_four_uncovered_media_verified
-canonical_status: benchmark_portfolio_15_families_31_slots_wiki_family_turn_four_ready
+phase: wiki_family_turn_five_scarcity_aware_media_verified
+canonical_status: benchmark_portfolio_15_families_32_slots_wiki_family_turn_five_ready
 active_branch: codex/wiki-tensaku-longform-family-v1
 source_branch: codex/wiki-tensaku-longform-family-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
@@ -42,16 +42,16 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: Wiki uncovered-range family Turn 4 materialized with explicit correction fallback watch
+current_title: Wiki scarcity-aware family Turn 5 materialized as honest correction-prioritized mixed composition
 human_entrypoint: docs/benchmarks/index.html
 portable_entrypoint: docs/benchmarks/index.html
 review_open_command: start docs\benchmarks\index.html
 review_server_restart_command: not_required_static_portfolio
 machine_readback: docs/benchmarks/benchmark_portfolio.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: wiki_family_turn_four_exact_sha_supervisor_editorial_fallback_and_terminal_verdict
-review_status: turn_three_immutable_turn_four_machine_validated_fallback_watch_human_editorial_terminal_open
-review_scope: 15_registered_output_families_31_family_scoped_candidate_slots
+decision_required: wiki_family_turn_five_exact_sha_supervisor_editorial_mixed_composition_and_terminal_verdict
+review_status: turn_four_accepted_exact_mixed_turn_five_machine_validated_scarcity_watch_human_editorial_terminal_open
+review_scope: 15_registered_output_families_32_family_scoped_candidate_slots
 reviewed_at: null
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
 m2_review_scope: internal_full_view_editorial_visual_review
@@ -137,9 +137,9 @@ winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: stopped_restart_command_available
-next_review_due: wiki_family_turn_four_exact_sha_and_fallback_chapters_supervisor_review_s1_remains_parked
-next_review_type: continue_bounded_repair_or_stop_exact_wiki_family_turn_four_sha
-next_action: supervisor_review_wiki_family_turn_four_exact_sha_and_fallback_chapters_then_decide_next_coverage_turn
+next_review_due: wiki_family_turn_five_exact_sha_and_scarcity_aware_fallback_chapters_supervisor_review_s1_remains_parked
+next_review_type: continue_bounded_repair_or_stop_exact_wiki_family_turn_five_sha
+next_action: supervisor_review_wiki_family_turn_five_exact_sha_composition_and_fallback_scarcity_then_decide_next_coverage_turn
 active_artifact: clip-benchmark-portfolio-coverage-v1-001
 current_review_component: tiered_benchmark_portfolio_and_per_candidate_reverse_engineering_cards
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
@@ -148,17 +148,17 @@ artifact_output_sha256: not_applicable_tracked_multi_artifact_portfolio
 artifact_output_byte_size: not_applicable
 artifact_package_tree_digest_sha256: not_used_tracked_regenerable_portfolio
 artifact_manifest_self_sha256: not_applicable
-artifact_file_count: 35
+artifact_file_count: 36
 artifact_duration_seconds: not_applicable
 artifact_source_count: 15
-artifact_cut_count: 31
+artifact_cut_count: 32
 artifact_source_switch_count: not_applicable
 artifact_caption_cue_count: inherited_per_candidate_not_aggregated
 artifact_commentary_count: inherited_per_candidate_not_aggregated
 benchmark_family_denominator: 15
-benchmark_candidate_slot_denominator: 31
-benchmark_materialized_card_count: 31
-benchmark_fully_viewable_count: 24
+benchmark_candidate_slot_denominator: 32
+benchmark_materialized_card_count: 32
+benchmark_fully_viewable_count: 25
 benchmark_playable_proxy_count: 2
 benchmark_static_reviewable_count: 5
 benchmark_contract_only_count: 0
@@ -336,12 +336,51 @@ wiki_family_turn_four_network_requests_performed: 0
 wiki_family_turn_four_resume_render_executed: false
 wiki_family_unique_source_seconds_before_turn_four: 1175
 wiki_family_unique_source_seconds_after_turn_four: 1475
+wiki_family_turn_four_supervisor_review_turn: b8a0a261-0dec-430c-9c71-cec271d0889f
+wiki_family_turn_four_supervisor_verdict: continue
+wiki_family_turn_four_bounded_repair: none
+wiki_family_turn_four_accepted_composition: correction-prioritized-mixed_not_12_of_12_correction_led
 wiki_family_turn_four_human_editorial_review_pending: true
 wiki_family_turn_four_human_terminal_review_pending: true
 wiki_family_turn_four_rights_approval: not_granted
 wiki_family_turn_four_production_acceptance: false
 wiki_family_turn_four_public_use: false
 wiki_family_turn_four_upload_attempted: false
+wiki_family_turn_five_artifact_id: clip-wiki-tensaku-family-turn-v5-001
+wiki_family_turn_five_source_identity: youtube:1AcId5Yja10
+wiki_family_turn_five_source_sha256: a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7
+wiki_family_turn_five_caption_sha256: f58c248f23b29845a94ae01b789f122c8759687125375a2650cc7a8074107e4f
+wiki_family_turn_five_excluded_edit_pack_count: 5
+wiki_family_turn_five_actual_prior_range_count: 60
+wiki_family_turn_five_excluded_source_overlap_seconds: 0
+wiki_family_turn_five_composition_label: correction-prioritized-mixed
+wiki_family_turn_five_correction_chapters: [2, 3, 4, 5, 7, 8, 9, 10]
+wiki_family_turn_five_correction_chapter_count: 8
+wiki_family_turn_five_selected_correction_anchor_count: 8
+wiki_family_turn_five_fallback_chapters: [1, 6, 11, 12]
+wiki_family_turn_five_fallback_count: 4
+wiki_family_turn_five_topic_coverage_fallback_chapters: [1]
+wiki_family_turn_five_semantic_continuity_fallback_chapters: [6, 11, 12]
+wiki_family_turn_five_output_sha256: e192fcd6746d396c0c92b5952c274cf5afd07f47c0f5d3a17deecd33b658012c
+wiki_family_turn_five_output_byte_size: 19964780
+wiki_family_turn_five_output_duration_seconds: 300.0
+wiki_family_turn_five_manifest_self_sha256: 819e4c049c21f186ef003101642ecd3f51192d41f4567869af4324e327bc7586
+wiki_family_turn_five_validation: passed_13_of_13
+wiki_family_turn_five_full_decode: passed_builtin_and_independent_av
+wiki_family_turn_five_mapping_coverage: 1.0
+wiki_family_turn_five_black_event_count: 0
+wiki_family_turn_five_silence_event_count: 0
+wiki_family_turn_five_caption_cue_count: 96
+wiki_family_turn_five_network_requests_performed: 0
+wiki_family_turn_five_resume_render_executed: false
+wiki_family_unique_source_seconds_before_turn_five: 1475
+wiki_family_unique_source_seconds_after_turn_five: 1775
+wiki_family_turn_five_human_editorial_review_pending: true
+wiki_family_turn_five_human_terminal_review_pending: true
+wiki_family_turn_five_rights_approval: not_granted
+wiki_family_turn_five_production_acceptance: false
+wiki_family_turn_five_public_use: false
+wiki_family_turn_five_upload_attempted: false
 wiki_private_drive_folder_id: 1YPiWjsJLlK04GKbqj6gkgFz_iBaeW0ZB
 wiki_private_drive_member_count: 28
 wiki_private_drive_total_bytes: 288530755
@@ -391,7 +430,7 @@ s1_upload_attempted: false
 package_validation_status: passed
 s1_review_http_status: 200
 s1_review_range_status: 206
-focused_test_status: turn_four_private_transfer_wiki_benchmark_real_video_31_passed
+focused_test_status: turn_five_private_transfer_wiki_benchmark_real_video_31_passed
 full_suite_status: not_run_this_turn_historical_passed_696
 out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive
 out13_human_review_pending: false
@@ -796,25 +835,25 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — SH-05 Wiki Uncovered-Range Family Turn 4 Ready
+## Current Capsule — SH-05 Wiki Scarcity-Aware Family Turn 5 Ready
 
 - active slice: `SH-05`
 - active artifact: `clip-benchmark-portfolio-coverage-v1-001`
 - portfolio entrypoint: `docs/benchmarks/index.html`
 - machine ledger: `docs/benchmarks/benchmark_portfolio.json`
-- registered denominator: `15 families / 31 family-scoped candidate slots`
-- observed tiers: `24 fully-viewable / 2 playable-proxy / 5 static-reviewable / 0 contract-only`
-- materialization: `31/31 tracked candidate cards`
+- registered denominator: `15 families / 32 family-scoped candidate slots`
+- observed tiers: `25 fully-viewable / 2 playable-proxy / 5 static-reviewable / 0 contract-only`
+- materialization: `32/32 tracked candidate cards`
 - human decision required now: `false` for portfolio navigation
 - acceptance rule: each existing exact artifact/SHA gate remains unchanged
-- review status: `turn_three_immutable_turn_four_machine_validated_fallback_watch_human_editorial_terminal_open`
+- review status: `turn_four_accepted_exact_mixed_turn_five_machine_validated_scarcity_watch_human_editorial_terminal_open`
 - portable receipt: `docs/benchmarks/index.html`
 - local artifact role: `tracked_portfolio_with_links_to_preserved_same_machine_evidence`
 - human review pending: `true`
 
 - 母数は`docs/output_layer`のWiki、S1、OUT-01〜OUT-13に有限化した。同一候補がOUT-11の
   比較枠にも現れる場合はfamily-scoped slotとして数え、`reuse_of`で重複を明示するため、
-  30はunique media byte数ではない。
+  32はunique media byte数ではない。
 - builderはcontract、static evidence、local entrypoint、登録mediaの現物を確認し、既知SHAを
   照合してtierを決める。現物が欠けるhostでは自動的に低いtierへ降格し、生成済みと捏造しない。
 - Wiki Turn 2はbaselineとaccepted technical Turn 1の24 rangesをexact edit-pack SHAで除外し、
@@ -827,6 +866,10 @@ instructions.
   unique source-timeは1,175→1,475秒（21.14%→26.54%）。9/12章に9 correction anchorsを持つ。
   第1・6・12章は未使用caption候補が残る一方、correctionを含む未使用25秒windowが0件なので
   caption-backed fallbackを採用した。fallbackがTurn 3の1件から3件へ増えた点はSupervisor watch item。
+- Wiki Turn 5は実packから60 prior rangesを再集計し、5 exact SHAで除外した。Turn 5 overlap 0秒で
+  unique source-timeは1,475→1,775秒（26.54%→31.94%）。8 correction章と4 fallback章の
+  `correction-prioritized-mixed`であり、第1章は未代表topic、第6・11・12章はcorrection候補0件後の
+  時系列意味連続性を理由にする。12/12 correction-ledとは主張しない。
 - 既存のWiki 001、S1、OUT-03〜OUT-06、OUT-08〜OUT-13等の完全再生可能packageは変更も
   再生成もせず参照した。OUT-07はexact Planner baseline不在を保ったままproxy、OUT-01/02は
   tracked static proof、OUT-13 001はhistorical receiptとして表示する。
@@ -850,10 +893,10 @@ instructions.
 
 ## Next Action
 
-- action: `supervisor_review_wiki_family_turn_four_exact_sha_and_fallback_chapters_then_decide_next_coverage_turn`
-- authorization state: `turn_four_machine_evidence_complete_fallback_editorial_fit_open_media_upgrades_remain_exact_bytes_only`
+- action: `supervisor_review_wiki_family_turn_five_exact_sha_composition_and_fallback_scarcity_then_decide_next_coverage_turn`
+- authorization state: `turn_five_machine_evidence_complete_mixed_composition_editorial_fit_open_media_upgrades_remain_exact_bytes_only`
 - owner: `ClipPipeGen Supervisor / editing`
-- condition: Turn 4 exact MP4 SHAとfallback第1・6・12章を編集適合として審査する。機械passから
+- condition: Turn 5 exact MP4 SHA、8 correction章、fallback第1・6・11・12章とscarcity値を編集適合として審査する。機械passから
   human editorial/terminal、rights、production、publicationを推論しない。Wiki 002/003はexact source bytesが
   明示された場合だけ再開し、S1はpark、cookie、OAuth、anonymous acquisition retryは行わない。
 

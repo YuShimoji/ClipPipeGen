@@ -34,7 +34,12 @@ const DEFAULT_MAX_PAGES = 120;
 const SLICE_TARGET_SECONDS = 300;
 const VIDEO_ID_PATTERN = /^[A-Za-z0-9_-]{11}$/u;
 const ARTIFACT_ID_PATTERN = /^clip-[a-z0-9][a-z0-9-]*$/u;
-const SELECTION_PROFILES = new Set(["caption-dense", "correction-led", "uncovered-correction-led"]);
+const SELECTION_PROFILES = new Set([
+  "caption-dense",
+  "correction-led",
+  "uncovered-correction-led",
+  "scarcity-aware-mixed",
+]);
 const ANDROID_CLIENT = {
   clientName: "ANDROID",
   clientVersion: "20.10.38",
@@ -127,13 +132,14 @@ function parseArgs(argv) {
     throw new Error("--offline-existing-evidence cannot download source bytes");
   }
   if (!SELECTION_PROFILES.has(args.selectionProfile)) {
-    throw new Error("--selection-profile must be caption-dense, correction-led, or uncovered-correction-led");
+    throw new Error("--selection-profile must be caption-dense, correction-led, uncovered-correction-led, or scarcity-aware-mixed");
   }
   if (args.excludeEditPacks.some((value) => !value)) {
     throw new Error("--exclude-edit-pack requires a path");
   }
-  if (args.excludeEditPacks.length && args.selectionProfile !== "uncovered-correction-led") {
-    throw new Error("--exclude-edit-pack requires --selection-profile uncovered-correction-led");
+  if (args.excludeEditPacks.length
+      && !new Set(["uncovered-correction-led", "scarcity-aware-mixed"]).has(args.selectionProfile)) {
+    throw new Error("--exclude-edit-pack requires an exclusion-aware selection profile");
   }
   if (args.reuseRetainedSourceMedia && !args.offlineExistingEvidence) {
     throw new Error("--reuse-retained-source-media requires --offline-existing-evidence");
@@ -150,7 +156,7 @@ function usage() {
     "Existing-corpus successor slice:",
     "  --reuse-inventory --slice-video-id <id> --artifact-id <clip-*> \\",
     "  [--offline-existing-evidence [--reuse-retained-source-media] | --download-selected-source] \\",
-    "  [--selection-profile caption-dense|correction-led|uncovered-correction-led] \\",
+    "  [--selection-profile caption-dense|correction-led|uncovered-correction-led|scarcity-aware-mixed] \\",
     "  [--exclude-edit-pack <existing edit_pack.json>]...",
   ].join("\n");
 }
@@ -572,50 +578,118 @@ function buildEditorialContext(
   const segmentSeconds = SLICE_TARGET_SECONDS / uniformCuts.length;
   const successorStyle = artifactId !== DEFAULT_ARTIFACT_ID;
   const uncoveredSelection = selectionProfile === "uncovered-correction-led";
+  const scarcityAwareSelection = selectionProfile === "scarcity-aware-mixed";
+  const exclusionAwareSelection = uncoveredSelection || scarcityAwareSelection;
   const overlapsExcludedRange = (start, end) => excludedSourceRanges.some((range) =>
     Math.min(range.end, end) - Math.max(range.start, start) > 0.02
   );
-  const cuts = uniformCuts.map((fallback, index) => {
+  const selectedTopicIds = new Set();
+  const selectionReadbacks = [];
+  const cuts = [];
+  for (let index = 0; index < uniformCuts.length; index += 1) {
+    const fallback = uniformCuts[index];
     const slotStart = index * slotSeconds;
     const slotEnd = (index + 1) * slotSeconds;
-    const candidates = events
+    const rawCandidateStarts = events
       .filter((event) => event.source_start_seconds >= slotStart && event.source_start_seconds < slotEnd)
-      .map((event) => Math.min(
+      .map((event) => round6(Math.min(
         Math.max(slotStart, event.source_start_seconds - 5),
         slotEnd - segmentSeconds,
-      ))
-      .filter((start) => !uncoveredSelection || !overlapsExcludedRange(start, start + segmentSeconds));
+      )));
+    const uniqueCandidateStarts = [...new Set(rawCandidateStarts)];
+    const candidates = uniqueCandidateStarts
+      .filter((start) => !exclusionAwareSelection || !overlapsExcludedRange(start, start + segmentSeconds));
     if (!candidates.length) {
-      if (uncoveredSelection) {
+      if (exclusionAwareSelection) {
         throw new Error(`no uncovered caption-backed range remains in whole-source slot ${index + 1}`);
       }
-      return fallback;
+      cuts.push(fallback);
+      selectionReadbacks.push(null);
+      continue;
     }
-    let best = fallback;
-    let bestScore = -1;
-    for (const start of candidates) {
+    const analyzed = candidates.map((start) => {
       const end = start + segmentSeconds;
       const evidence = events.filter((event) =>
         Math.min(event.source_end_seconds, end) - Math.max(event.source_start_seconds, start) > 0.02
       );
-      const topicScore = evidence.reduce(
-        (total, event) => total + Object.values(scoreTopics(event.text)).reduce((sum, value) => sum + value, 0),
-        0,
-      );
-      const correctionCount = evidence.filter((event) => CORRECTION_PATTERN.test(event.text)).length;
-      const uniqueTopicCount = new Set(evidence.flatMap((event) => Object.entries(scoreTopics(event.text))
-        .filter(([, value]) => value > 0)
-        .map(([topicId]) => topicId))).size;
-      const score = selectionProfile === "correction-led" || uncoveredSelection
-        ? correctionCount * 100 + uniqueTopicCount * 20 + topicScore * 2 + evidence.length
-        : evidence.length * 10 + topicScore;
-      if (score > bestScore || (score === bestScore && start < best.start)) {
-        best = { start: round6(start), end: round6(end) };
+      const topicScores = Object.fromEntries(TOPICS.map((topic) => [topic.id, 0]));
+      for (const event of evidence) {
+        for (const [topicId, score] of Object.entries(scoreTopics(event.text))) topicScores[topicId] += score;
+      }
+      const topicIds = Object.entries(topicScores)
+        .filter(([, score]) => score > 0)
+        .map(([topicId]) => topicId);
+      return {
+        start,
+        end,
+        evidence,
+        topicIds,
+        topicScore: Object.values(topicScores).reduce((sum, value) => sum + value, 0),
+        correctionCount: evidence.filter((event) => CORRECTION_PATTERN.test(event.text)).length,
+        novelTopicIds: topicIds.filter((topicId) => !selectedTopicIds.has(topicId)),
+      };
+    });
+    let pool = analyzed;
+    let compositionRole = null;
+    let selectionReason = null;
+    if (scarcityAwareSelection) {
+      const correctionCandidates = analyzed.filter((candidate) => candidate.correctionCount > 0);
+      if (correctionCandidates.length) {
+        pool = correctionCandidates;
+        compositionRole = "correction_prioritized";
+        selectionReason = "highest_scoring_uncovered_correction_bearing_window";
+      } else {
+        const novelTopicCandidates = analyzed.filter((candidate) => candidate.novelTopicIds.length > 0);
+        if (novelTopicCandidates.length) {
+          pool = novelTopicCandidates;
+          selectionReason = "caption_backed_fallback_unrepresented_topic_coverage";
+        } else {
+          pool = analyzed;
+          selectionReason = "caption_backed_fallback_chronological_semantic_continuity";
+        }
+        compositionRole = "caption_backed_fallback";
+      }
+    }
+    let best = null;
+    let bestScore = -1;
+    for (const candidate of pool) {
+      const score = scarcityAwareSelection
+        ? candidate.correctionCount * 1000
+          + candidate.novelTopicIds.length * 100
+          + candidate.topicIds.length * 20
+          + candidate.topicScore * 2
+          + candidate.evidence.length
+        : selectionProfile === "correction-led" || uncoveredSelection
+          ? candidate.correctionCount * 100
+            + candidate.topicIds.length * 20
+            + candidate.topicScore * 2
+            + candidate.evidence.length
+          : candidate.evidence.length * 10 + candidate.topicScore;
+      if (score > bestScore || (score === bestScore && candidate.start < best.start)) {
+        best = candidate;
         bestScore = score;
       }
     }
-    return best;
-  });
+    cuts.push({ start: round6(best.start), end: round6(best.end) });
+    for (const topicId of best.topicIds) selectedTopicIds.add(topicId);
+    selectionReadbacks.push(scarcityAwareSelection ? {
+      composition_role: compositionRole,
+      selection_reason: selectionReason,
+      candidate_scarcity: {
+        caption_event_count_in_slot: rawCandidateStarts.length,
+        unique_caption_backed_candidate_count: uniqueCandidateStarts.length,
+        excluded_candidate_count: uniqueCandidateStarts.length - candidates.length,
+        uncovered_caption_backed_candidate_count: analyzed.length,
+        uncovered_correction_bearing_candidate_count: analyzed.filter(
+          (candidate) => candidate.correctionCount > 0
+        ).length,
+        uncovered_fallback_candidate_count: analyzed.filter(
+          (candidate) => candidate.correctionCount === 0
+        ).length,
+      },
+      selected_unrepresented_topic_ids: best.novelTopicIds,
+    } : null);
+  }
   const chapters = cuts.map((range, index) => {
     const evidence = events.filter((event) =>
       Math.min(event.source_end_seconds, range.end) - Math.max(event.source_start_seconds, range.start) > 0.02
@@ -652,6 +726,7 @@ function buildEditorialContext(
       topic_tags: topics.slice(0, 3).map(([id]) => id),
       correction_anchor_event_ids: correctionAnchorEventIds,
       correction_anchor_count: correctionAnchorEventIds.length,
+      ...(scarcityAwareSelection ? selectionReadbacks[index] : {}),
       provenance_type: "source_range_index",
       semantic_status: "machine_indexed_requires_editorial_review",
     };
@@ -661,8 +736,10 @@ function buildEditorialContext(
     artifact_id: artifactId,
     family_id: "miko_led_unofficial_wiki_review",
     source_identity: `youtube:${source.video_id}`,
-    expected_selection_mode: selectionProfile === "uncovered-correction-led"
-      ? "editorial_context_uncovered_correction_led_chronological_sampling"
+    expected_selection_mode: selectionProfile === "scarcity-aware-mixed"
+      ? "editorial_context_scarcity_aware_correction_prioritized_mixed_sampling"
+      : selectionProfile === "uncovered-correction-led"
+        ? "editorial_context_uncovered_correction_led_chronological_sampling"
       : selectionProfile === "correction-led"
         ? "editorial_context_correction_led_chronological_sampling"
         : "editorial_context_caption_dense_chronological_sampling",
@@ -676,6 +753,18 @@ function buildEditorialContext(
         0,
       ),
       selected_topic_ids: [...new Set(chapters.flatMap((chapter) => chapter.topic_tags))],
+      ...(scarcityAwareSelection ? {
+        composition_label: chapters.every((chapter) => chapter.correction_anchor_count > 0)
+          ? "correction-prioritized"
+          : "correction-prioritized-mixed",
+        correction_chapter_numbers: chapters
+          .map((chapter, index) => chapter.correction_anchor_count > 0 ? index + 1 : null)
+          .filter(Boolean),
+        fallback_chapter_numbers: chapters
+          .map((chapter, index) => chapter.correction_anchor_count === 0 ? index + 1 : null)
+          .filter(Boolean),
+        fallback_chapter_count: chapters.filter((chapter) => chapter.correction_anchor_count === 0).length,
+      } : {}),
       excluded_edit_pack_count: exclusionBindings.length,
       excluded_source_range_count: excludedSourceRanges.length,
       excluded_source_overlap_seconds: round6(chapters.reduce((total, chapter) =>

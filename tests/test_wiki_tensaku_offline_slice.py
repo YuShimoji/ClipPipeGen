@@ -272,6 +272,57 @@ def test_correction_led_slice_reuses_exact_retained_media_without_network(tmp_pa
             for start, end in excluded_ranges
         )
 
+    mixed_artifact_id = "clip-wiki-tensaku-family-turn-v5-mixed"
+    mixed_command = uncovered_command.copy()
+    mixed_command[mixed_command.index(uncovered_artifact_id)] = mixed_artifact_id
+    mixed_command[mixed_command.index("uncovered-correction-led")] = "scarcity-aware-mixed"
+    mixed_completed = subprocess.run(
+        mixed_command,
+        cwd=REPO_ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    mixed_result = json.loads(mixed_completed.stdout)
+    assert mixed_result["network_requests_performed"] == 0
+    mixed_context = json.loads(
+        (tmp_path / "slice_inputs" / mixed_artifact_id / "editorial_context.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    mixed_summary = mixed_context["selection_summary"]
+    assert mixed_context["expected_selection_mode"] == (
+        "editorial_context_scarcity_aware_correction_prioritized_mixed_sampling"
+    )
+    assert mixed_summary["composition_label"] in {
+        "correction-prioritized",
+        "correction-prioritized-mixed",
+    }
+    correction_chapters = set(mixed_summary["correction_chapter_numbers"])
+    fallback_chapters = set(mixed_summary["fallback_chapter_numbers"])
+    assert correction_chapters.isdisjoint(fallback_chapters)
+    assert correction_chapters | fallback_chapters == set(range(1, 13))
+    assert mixed_summary["fallback_chapter_count"] == len(fallback_chapters)
+    for chapter_number, chapter in enumerate(mixed_context["chapters"], start=1):
+        scarcity = chapter["candidate_scarcity"]
+        assert scarcity["uncovered_caption_backed_candidate_count"] > 0
+        assert scarcity["excluded_candidate_count"] >= 0
+        assert (
+            scarcity["uncovered_correction_bearing_candidate_count"]
+            + scarcity["uncovered_fallback_candidate_count"]
+            == scarcity["uncovered_caption_backed_candidate_count"]
+        )
+        if chapter_number in correction_chapters:
+            assert chapter["composition_role"] == "correction_prioritized"
+            assert chapter["correction_anchor_count"] > 0
+        else:
+            assert chapter["composition_role"] == "caption_backed_fallback"
+            assert chapter["correction_anchor_count"] == 0
+            assert chapter["selection_reason"] in {
+                "caption_backed_fallback_unrepresented_topic_coverage",
+                "caption_backed_fallback_chronological_semantic_continuity",
+            }
+
     second_exclusion_path = tmp_path / "artifacts" / uncovered_artifact_id / "edit_pack.json"
     _write_json(
         second_exclusion_path,

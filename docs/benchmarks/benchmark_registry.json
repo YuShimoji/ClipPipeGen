@@ -126,6 +126,29 @@
           "boundary": "Four exact predecessor edit packs exclude 48 selected ranges with zero overlap. Nine of twelve chapters contain correction anchors. Slots 1, 6, and 12 have no remaining non-overlap 25-second caption window containing a correction anchor, so caption-backed fallbacks are explicit watch items. Rights, production, public, monetized, publishing, and upload acceptance remain closed."
         },
         {
+          "candidate_id": "wiki-turn-005",
+          "artifact_identity": "clip-wiki-tensaku-family-turn-v5-001",
+          "role": "Scarcity-aware fifth uncovered successor excluding every range used by the baseline and Turns 1 through 4",
+          "target_tier": "fully-viewable",
+          "static_entrypoint": "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-family-turn-v5-001/slice_receipt.json",
+          "local_entrypoint": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v5-001/review/index.html",
+          "local_evidence": [
+            "episodes/wiki_tensaku_family_20260804/corpus/slice_inputs/clip-wiki-tensaku-family-turn-v5-001/editorial_context.json",
+            "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v5-001/validation_readback.json",
+            "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v5-001/resume_readback.json"
+          ],
+          "local_media": [
+            {
+              "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v5-001/final_video.mp4",
+              "expected_sha256": "e192fcd6746d396c0c92b5952c274cf5afd07f47c0f5d3a17deecd33b658012c"
+            }
+          ],
+          "open_command": "powershell -NoProfile -ExecutionPolicy Bypass -File episodes\\wiki_tensaku_family_20260804\\artifacts\\clip-wiki-tensaku-family-turn-v5-001\\review\\open_preview.ps1",
+          "state": "verified_13_of_13_scarcity_aware_correction_prioritized_mixed_internal",
+          "missing_upgrade_condition": "Supervisor editorial review of the exact mixed composition, especially fallback chapters 1, 6, 11, and 12; no rerender is required for machine evidence.",
+          "boundary": "Five exact predecessor edit packs contain 60 selected ranges and are bound before selection; Turn 5 overlaps them by zero seconds. Eight chapters contain correction anchors. Chapter 1 adds an unrepresented topic; chapters 6, 11, and 12 preserve chronological semantic continuity only after correction-bearing candidates are exhausted. This is correction-prioritized mixed, not 12-of-12 correction-led. Rights, production, public, monetized, publishing, and upload acceptance remain closed."
+        },
+        {
           "candidate_id": "wiki-002",
           "artifact_identity": "clip-wiki-tensaku-longform-v1-002",
           "role": "Second full-corpus-indexed source; media build parked",

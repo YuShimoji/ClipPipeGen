@@ -42,17 +42,17 @@ opened by the root launcher.
 |---|---|
 | title | ClipPipeGen Benchmark Portfolio Coverage v1 |
 | purpose | Materialize every currently registered output-layer family and family-scoped candidate slot as the thinnest honest reverse-engineering review surface, while preserving exact acceptance and external gates. |
-| storage class | Tracked registry, deterministic builder, JSON/Markdown/HTML ledgers, and 31 tracked static candidate cards. Existing playable packages and media remain ignored under `episodes/`; private exact-hash transfer packages preserve Wiki media across terminals. |
+| storage class | Tracked registry, deterministic builder, JSON/Markdown/HTML ledgers, and 32 tracked static candidate cards. Existing playable packages and media remain ignored under `episodes/`; private exact-hash transfer packages preserve Wiki media across terminals. |
 | repo_relative_path | `docs/benchmarks/benchmark_registry.json`; `tools/benchmarks/build_benchmark_portfolio.py`; `docs/benchmarks/benchmark_portfolio.json`; `docs/benchmarks/COVERAGE_LEDGER.md`; `docs/benchmarks/index.html`; `docs/benchmarks/candidates/*.html`; `tests/test_benchmark_portfolio.py` |
 | artifact_id | `clip-benchmark-portfolio-coverage-v1-001` |
-| denominator | 15 registered families / 31 family-scoped candidate slots. Reused media remains a separate comparison slot and is marked through `reuse_of`; this is not a unique-media count. |
-| current coverage | 24 `fully-viewable`; 2 `playable-proxy`; 5 `static-reviewable`; 0 `contract-only`; 31/31 materialized cards. |
+| denominator | 15 registered families / 32 family-scoped candidate slots. Reused media remains a separate comparison slot and is marked through `reuse_of`; this is not a unique-media count. |
+| current coverage | 25 `fully-viewable`; 2 `playable-proxy`; 5 `static-reviewable`; 0 `contract-only`; 32/32 materialized cards. |
 | open_command | `start docs\benchmarks\index.html` |
 | machine_output | `docs/benchmarks/benchmark_portfolio.json` |
 | coverage_ledger | `docs/benchmarks/COVERAGE_LEDGER.md` |
 | validation_command | `uv run --offline --no-project --python 3.13 python tools/benchmarks/build_benchmark_portfolio.py --hash-local-media --format json`; `uv run --offline --no-project --python 3.13 --with pytest pytest -q tests/test_benchmark_portfolio.py`; focused Wiki successor tests; `git diff --check`; `git ls-files episodes`. |
 | review_status | Internal portfolio review available. A tier is an availability/readback classification, not fresh human acceptance. Existing accepted and parked decisions retain their exact artifact/SHA scope. |
-| next_action | Supervisor reviews the exact Turn 4 MP4 and the explicit fallback chapters 1, 6, and 12 for editorial usefulness. Keep Wiki 002/003 media upgrades parked until exact source bytes arrive; do not use cookies, OAuth, or anonymous retry. |
+| next_action | Supervisor reviews the exact Turn 5 correction-prioritized mixed MP4 and fallback chapters 1, 6, 11, and 12 using the recorded scarcity evidence. Keep Wiki 002/003 media upgrades parked until exact source bytes arrive; do not use cookies, OAuth, or anonymous retry. |
 
 Boundary flags remain false or explicit:
 
@@ -64,6 +64,25 @@ Boundary flags remain false or explicit:
 - `existing_artifacts_rerendered=false`
 - `human_review_required_for_portfolio_navigation=false`
 - `human_review_required_for_candidate_acceptance=per_existing_exact_gate`
+
+## `clip-wiki-tensaku-family-turn-v5-001`
+
+| Field | Value |
+|---|---|
+| title | ED-13 Wiki添削 Scarcity-Aware Family Turn 5 |
+| purpose | Add 300 unique source seconds while binding and excluding the actual 60 ranges recomputed from the baseline and Turns 1 through 4, then expose correction-candidate scarcity without inventing correction evidence. |
+| storage class | Tracked selector, operator, tests, benchmark card, and contracts plus ignored media/static evidence. Cross-terminal recovery uses a source-deduplicated private artifact-delta bundle. |
+| repo_relative_path | `scripts/operator/build_wiki_tensaku_family_turn_five.ps1`; `src/integrations/asset_fetch/wiki_tensaku_corpus.mjs`; `tests/test_wiki_tensaku_offline_slice.py`; `docs/benchmarks/candidates/wiki-turn-005.html` |
+| source identity | `youtube:1AcId5Yja10`; exact retained source SHA `a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7`; caption SHA `f58c248f23b29845a94ae01b789f122c8759687125375a2650cc7a8074107e4f`; network requests 0. |
+| range exclusion | Five exact edit-pack bindings / actual prior range count 60 / Turn 5 selected overlap 0 seconds. Adds 300 seconds; cumulative unique source-time 1,775 seconds or 31.94% of the 5,558-second inventory. |
+| composition | `correction-prioritized-mixed`: correction chapters 2, 3, 4, 5, 7, 8, 9, 10; fallback chapters 1, 6, 11, 12. Chapter 1 covers the unrepresented `before_after_change` topic. Chapters 6, 11, 12 use chronological semantic continuity because their uncovered correction-bearing candidate counts are 0. |
+| media | H.264/AAC 640x360 / 300.000s / 19,964,780 bytes / SHA `e192fcd6746d396c0c92b5952c274cf5afd07f47c0f5d3a17deecd33b658012c`. |
+| validation | 13/13 passed; built-in and independent full A/V decode passed; mapping 1.0; black/silence events 0; 96 caption cues; -15.25 LUFS / -4.42 dBTP. HTTP was not freshly observed and no success is claimed. |
+| resume | Four cache hits; `render_executed=false`; MP4 SHA, size, and UTC mtime unchanged. |
+| manifest | 17 payload rows; self-integrity SHA `819e4c049c21f186ef003101642ecd3f51192d41f4567869af4324e327bc7586`. |
+| private delivery | Turn 5 artifact-delta only; source bytes are not duplicated. Exact archive/parts/Drive listing is recorded in `docs/PRIVATE_ARTIFACT_TRANSFER.md`; `not_shared` proves private storage only, not recipient restore. |
+| open_command | `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-family-turn-v5-001\review\open_preview.ps1` |
+| decision_required | Supervisor editorial review of the honest mixed composition and fallback chapters; human terminal review remains open. Rights, full production acceptance, public/monetized use, publishing, upload, and recipient restore remain closed. |
 
 ## `clip-wiki-tensaku-family-turn-v4-001`
 
