@@ -6,8 +6,8 @@
 `static-reviewable` benchmarkである。003はretained evidenceだけからnetwork request 0で生成した。
 両者のexact source bytesは未供給で、media validationとProduct Gateは未達。cookies / OAuth /
 anonymous acquisition retryを行わない。一方、exact retained source bytesを持つ001から、既存成果を
-上書きせず訂正anchor主導のTurn 1と、既存rangeを完全除外するTurn 2/3を完全視聴可能にした。
-15 family / 30 slotの現在の横断入口は
+上書きせず訂正anchor主導のTurn 1と、既存rangeを完全除外するTurn 2/3/4を完全視聴可能にした。
+15 family / 31 slotの現在の横断入口は
 [`../benchmarks/index.html`](../benchmarks/index.html)。002の完全動画条件と権利境界は下記の
 まま保持し、完成済みとは扱わない。
 
@@ -155,6 +155,33 @@ powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family
 
 Turn 2までのhuman editorial/terminal/rights/publication gateは待機状態のまま継承せず、Turn 3も
 同じopen gateへparkする。Wiki 002/003とS1のgateは変更しない。
+
+## 四世代range除外のFamily Turn 4
+
+`clip-wiki-tensaku-family-turn-v4-001`はbaselineとTurn 1〜3の4 edit packs / 48 rangesを
+exact SHAで除外した。追加bindingとなるTurn 3 edit-pack SHAは
+`8928d7378fb27759d73dea5c9ce72c22a37c7fd2e33db61b0ca375a56da292bb`。
+12章はすべて未使用rangeでoverlap 0秒、network requestも0。9/12章に各1件、合計9件の
+correction anchorを持つ。
+
+caption-backed fallbackは第1・6・12章の3件。各slotには未使用caption候補が残るが、既使用rangeを
+除外した後にcorrection anchorを含む25秒windowは3 slotとも0件だった。Turn 3の1件から増加したため、
+意味的な編集適合はSupervisor watch itemとして渡し、12/12 correctionを捏造しない。
+
+final MP4はH.264/AAC 640x360 / 300.000s / 18,884,819 bytes、SHA
+`5fea3d14e476871f239d1ab42283fedd83546daf98e8c5a27f625506ba69ca40`。13/13、独立full A/V decode、
+mapping 1.0、black/silence 0、86 caption cuesをpass。manifest self-integrity SHAは
+`61badb088ef6adbe59e624a1290ae88adecd44cc5b9c320b2eef2be6863c5d83`。resumeは4 cache hits、
+`render_executed=false`でMP4 SHAとmtimeを保持した。unique source-timeは1,175→1,475秒、
+coverageは21.14%→26.54%。HTTPはfresh検証しておらず成功を主張しない。
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-family-turn-v4-001\review\open_preview.ps1
+```
+
+このmachine evidenceはhuman editorial/terminal、rights、full production、public/monetized use、
+publishing、upload acceptanceを開かない。Turn 3 artifact、Drive identity、Feedback provenance、
+Wiki 002/003 exact-source gate、S1 gateは変更しない。
 
 ## 第三sourceのnetwork-free static packet
 
