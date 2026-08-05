@@ -11,9 +11,9 @@ def test_registry_denominator_and_output_family_coverage() -> None:
     registry = json.loads((REPO_ROOT / "docs/benchmarks/benchmark_registry.json").read_text(encoding="utf-8"))
     candidates = [candidate for family in registry["families"] for candidate in family["candidates"]]
     assert len(registry["families"]) == 15
-    assert len(candidates) == 29
+    assert len(candidates) == 30
     assert len({family["family_id"] for family in registry["families"]}) == 15
-    assert len({candidate["candidate_id"] for candidate in candidates}) == 29
+    assert len({candidate["candidate_id"] for candidate in candidates}) == 30
     assert set(registry["tiers"]) == set(TIERS)
     actual_contracts = {family["contract_path"] for family in registry["families"]}
     assert "docs/output_layer/WIKI_TENSAKU_LONGFORM_FAMILY.md" in actual_contracts
@@ -33,23 +33,23 @@ def test_builder_materializes_every_candidate_card(tmp_path: Path) -> None:
         hash_local_media=False,
     )
     assert portfolio["family_denominator"] == 15
-    assert portfolio["candidate_denominator"] == 29
-    assert portfolio["materialized_candidate_cards"] == 29
+    assert portfolio["candidate_denominator"] == 30
+    assert portfolio["materialized_candidate_cards"] == 30
     assert portfolio["all_registered_candidates_materialized"] is True
-    assert sum(portfolio["coverage_by_tier"].values()) == 29
+    assert sum(portfolio["coverage_by_tier"].values()) == 30
     assert portfolio["coverage_by_tier"] == {
         "contract-only": 0,
         "static-reviewable": 5,
         "playable-proxy": 2,
-        "fully-viewable": 22,
+        "fully-viewable": 23,
     }
     cards = list((tmp_path / "candidates").glob("*.html"))
-    assert len(cards) == 29
+    assert len(cards) == 30
     assert (tmp_path / "index.html").is_file()
     assert (tmp_path / "benchmark_portfolio.json").is_file()
     assert (tmp_path / "COVERAGE_LEDGER.md").is_file()
     index = (tmp_path / "index.html").read_text(encoding="utf-8")
-    assert "15 family / 29" in index
+    assert "15 family / 30" in index
     assert "権利・production・公開・収益化・upload 承認は推定しません" in index
     wiki_002 = (tmp_path / "candidates/wiki-002.html").read_text(encoding="utf-8")
     assert "static-reviewable" in wiki_002
@@ -65,16 +65,19 @@ def test_builder_materializes_every_candidate_card(tmp_path: Path) -> None:
     wiki_turn_2 = (tmp_path / "candidates/wiki-turn-002.html").read_text(encoding="utf-8")
     assert "verified_13_of_13_uncovered_correction_led_internal" in wiki_turn_2
     assert "zero overlap" in wiki_turn_2
+    wiki_turn_3 = (tmp_path / "candidates/wiki-turn-003.html").read_text(encoding="utf-8")
+    assert "verified_13_of_13_third_uncovered_correction_led_internal" in wiki_turn_3
+    assert "slot 6" in wiki_turn_3
 
 
 def test_checked_in_portfolio_matches_registry_and_keeps_episodes_untracked() -> None:
     portfolio = json.loads((REPO_ROOT / "docs/benchmarks/benchmark_portfolio.json").read_text(encoding="utf-8"))
     assert portfolio["family_denominator"] == 15
-    assert portfolio["candidate_denominator"] == 29
+    assert portfolio["candidate_denominator"] == 30
     assert portfolio["all_registered_candidates_materialized"] is True
     assert portfolio["rights_publication_approval_inferred"] is False
     assert portfolio["episodes_paths_tracked_by_this_artifact"] is False
-    assert len(list((REPO_ROOT / "docs/benchmarks/candidates").glob("*.html"))) == 29
+    assert len(list((REPO_ROOT / "docs/benchmarks/candidates").glob("*.html"))) == 30
 
 
 def test_runtime_and_handoff_route_to_the_portfolio_without_erasing_parked_gates() -> None:
@@ -84,8 +87,8 @@ def test_runtime_and_handoff_route_to_the_portfolio_without_erasing_parked_gates
         assert "current_slice: SH-05" in document
         assert "active_artifact: clip-benchmark-portfolio-coverage-v1-001" in document
         assert "benchmark_family_denominator: 15" in document
-        assert "benchmark_candidate_slot_denominator: 29" in document
-        assert "benchmark_fully_viewable_count: 22" in document
+        assert "benchmark_candidate_slot_denominator: 30" in document
+        assert "benchmark_fully_viewable_count: 23" in document
         assert "benchmark_playable_proxy_count: 2" in document
         assert "benchmark_static_reviewable_count: 5" in document
         assert "wiki_second_external_state: BLOCKED_EXTERNAL" in document
@@ -98,4 +101,6 @@ def test_runtime_and_handoff_route_to_the_portfolio_without_erasing_parked_gates
         assert "wiki_family_turn_network_requests_performed: 0" in document
         assert "wiki_family_turn_two_artifact_id: clip-wiki-tensaku-family-turn-v2-001" in document
         assert "wiki_family_turn_two_excluded_source_overlap_seconds: 0" in document
+        assert "wiki_family_turn_three_artifact_id: clip-wiki-tensaku-family-turn-v3-001" in document
+        assert "wiki_family_turn_three_excluded_source_overlap_seconds: 0" in document
         assert "s1_lane_status: parked_human_review_pending" in document

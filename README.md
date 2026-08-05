@@ -7,9 +7,9 @@
 > states unless the Runtime capsule records a later reviewed transition.
 
 SH-05 benchmark portfolio note: the current finite output benchmark surface is
-15 families / 29 family-scoped candidate slots, materialized as 29 tracked
+15 families / 30 family-scoped candidate slots, materialized as 30 tracked
 review cards. Open [docs/benchmarks/index.html](docs/benchmarks/index.html).
-The current-host ledger reports 22 fully-viewable, 2 playable-proxy, 5
+The current-host ledger reports 23 fully-viewable, 2 playable-proxy, 5
 static-reviewable, and 0 contract-only slots. These tiers describe evidence
 availability only; existing acceptance, rights, production, publication,
 monetization, and upload gates remain exact-artifact decisions.
@@ -23,13 +23,15 @@ and deterministic resume skips render while preserving hash and mtime. Its techn
 production-transition acceptance is fixed; human editorial review and rights/public gates remain open.
 `clip-wiki-tensaku-family-turn-v2-001` excludes all 24 source ranges used by the baseline
 and Turn 1, adding 300 unique source seconds with network 0 and another 13/13-valid MP4.
+`clip-wiki-tensaku-family-turn-v3-001` excludes all 36 ranges used through Turn 2 and adds
+another non-overlap 300 seconds; the cumulative unique source-time is now 1,175 seconds.
 
 SH-10 private artifact transfer note: `build-private-artifact-transfer` creates an
 ignored, immutable ZIP plus exact-hash receipt from explicitly listed `episodes/` inputs.
 `verify-private-artifact-transfer` rejects unmanifested/path-unsafe members and restores
 only missing files, reusing exact existing bytes and failing closed on conflicts. The Wiki
 operator wrapper can emit the retained Wiki 001 full-corpus package or a new artifact-only
-delta, so Turn 2 is recoverable without duplicating the already-delivered source package. Large transports are split into
+delta, so Turn 2 and later turns are recoverable without duplicating the already-delivered source package. Large transports are split into
 independently hashed 16MiB parts and reassembled only after whole-archive SHA verification; see
 [PRIVATE_ARTIFACT_TRANSFER.md](docs/PRIVATE_ARTIFACT_TRANSFER.md). Private transport is
 not rights, production, public, monetized, publishing, or upload approval.
@@ -187,11 +189,12 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 
 ## 現在のスライス
 
-現在のactive sliceは`SH-05` benchmark portfolio readback。15 family / 28 family-scoped slotを
-tracked review surfaceへ有限化し、21 fully-viewable / 2 playable-proxy / 5 static-reviewable /
+現在のactive sliceは`SH-05` benchmark portfolio readback。15 family / 30 family-scoped slotを
+tracked review surfaceへ有限化し、23 fully-viewable / 2 playable-proxy / 5 static-reviewable /
 0 contract-onlyを観測している。ED-13 Wiki 003はretained evidenceだけからnetwork request 0の
 candidate-specific 12章static packetへ昇格済み。さらに既存Wiki 001 source bytesをSHA再照合して、
-12/12章に訂正anchorを含む300秒の`clip-wiki-tensaku-family-turn-v1-001`を新規生成した。
+Turn 1からTurn 3まで、既使用rangeを順次除外する300秒artifactを生成し、unique source-timeを
+1,175秒まで拡張した。
 Wiki 002/003のexact source bytesは未供給のままで、そのmedia gateは変更していない。
 ED-12/S1 exact probeのhuman reviewは別laneにparkしている。
 

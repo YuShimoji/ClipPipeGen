@@ -6,8 +6,8 @@
 `static-reviewable` benchmarkである。003はretained evidenceだけからnetwork request 0で生成した。
 両者のexact source bytesは未供給で、media validationとProduct Gateは未達。cookies / OAuth /
 anonymous acquisition retryを行わない。一方、exact retained source bytesを持つ001から、既存成果を
-上書きせず訂正anchor主導のTurn 1と、既存rangeを完全除外するTurn 2を完全視聴可能にした。
-15 family / 29 slotの現在の横断入口は
+上書きせず訂正anchor主導のTurn 1と、既存rangeを完全除外するTurn 2/3を完全視聴可能にした。
+15 family / 30 slotの現在の横断入口は
 [`../benchmarks/index.html`](../benchmarks/index.html)。002の完全動画条件と権利境界は下記の
 まま保持し、完成済みとは扱わない。
 
@@ -131,6 +131,30 @@ powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family
 ```
 
 この増分はsource-timeの網羅性であり、意味的網羅性や人間の編集評価を自動的に示さない。
+
+## 三世代range除外のFamily Turn 3
+
+`clip-wiki-tensaku-family-turn-v3-001`はbaseline、Turn 1、technical-accepted Turn 2の
+3 edit packs / 36 rangesを除外する。binding SHAは順に
+`d2af54b14724774c27dae5322e263b206dd4bbd7b38d93daecd29dd74f5bbf86`、
+`61c3a9e90fa9fd6abf9a2d37c93e901398441a79cdeb2b3f3230edc0d219f406`、
+`b50e1c01becf415ed2a1247f20c24a398abdb744709f5f4b7a58f4fd18f64906`。
+12章はすべて未使用rangeで、overlap 0秒。11/12章にcorrection anchor、合計12 anchorsを持つ。
+slot 6の唯一のcorrection event `2595.04–2601.64s`はTurn 1/2のrangeと交差するため、重複せず
+含めることはできない。選択器は非correction caption-backed rangeへ降格し、既使用rangeへは戻らない。
+
+final MP4はH.264/AAC 640x360 / 300.000s / 20,605,376 bytes、SHA
+`5abfd8e940bd8a2709e79aced38ab2e0e56b7f052f3d205512e082d2a8f8733b`。13/13、独立full decode、
+mapping 1.0、black/silence 0、93 caption cuesをpass。resumeは4 cache hits / renderなしで
+hashとmtimeを保持した。unique source-time unionは875→1,175秒（+300秒）、coverageは
+15.74%→21.14%。HTTPはfresh検証しておらず、page/Range成功を今回の証拠として主張しない。
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File episodes\wiki_tensaku_family_20260804\artifacts\clip-wiki-tensaku-family-turn-v3-001\review\open_preview.ps1
+```
+
+Turn 2までのhuman editorial/terminal/rights/publication gateは待機状態のまま継承せず、Turn 3も
+同じopen gateへparkする。Wiki 002/003とS1のgateは変更しない。
 
 ## 第三sourceのnetwork-free static packet
 

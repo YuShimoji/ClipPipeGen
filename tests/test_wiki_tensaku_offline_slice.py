@@ -272,6 +272,37 @@ def test_correction_led_slice_reuses_exact_retained_media_without_network(tmp_pa
             for start, end in excluded_ranges
         )
 
+    second_exclusion_path = tmp_path / "artifacts" / uncovered_artifact_id / "edit_pack.json"
+    _write_json(
+        second_exclusion_path,
+        {
+            "source_identity": f"youtube:{video_id}",
+            "selected_cut_ids": [chapter["cut_id"] for chapter in uncovered_context["chapters"]],
+            "cut_candidates": [
+                {
+                    "id": chapter["cut_id"],
+                    "source_start_seconds": chapter["source_start_seconds"],
+                    "source_end_seconds": chapter["source_end_seconds"],
+                }
+                for chapter in uncovered_context["chapters"]
+            ],
+        },
+    )
+    exhausted_artifact_id = "clip-wiki-tensaku-family-turn-v3-exhausted"
+    exhausted_command = uncovered_command.copy()
+    exhausted_command[exhausted_command.index(uncovered_artifact_id)] = exhausted_artifact_id
+    exhausted_command.extend(["--exclude-edit-pack", str(second_exclusion_path)])
+    exhausted = subprocess.run(
+        exhausted_command,
+        cwd=REPO_ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert exhausted.returncode == 2
+    assert "no uncovered caption-backed range remains" in exhausted.stderr
+    assert not (tmp_path / "slice_inputs" / exhausted_artifact_id).exists()
+
     bad_receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     bad_receipt["source_sha256"] = "0" * 64
     _write_json(receipt_path, bad_receipt)
