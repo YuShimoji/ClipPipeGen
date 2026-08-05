@@ -93,3 +93,18 @@ powershell -NoProfile -ExecutionPolicy Bypass -File `
 
 delta単体で最終MP4とreview pageは視聴できる。sourceから再renderする場合は、先に上記full-corpus
 bundleをrestoreする。どちらも既存fileのconflict overwrite、共有設定変更、publicationを行わない。
+
+Turn 2 deltaの2026-08-06 final readbackは4 member / 21,334,932 bytes、全member `not_shared`。
+archiveは21,332,844 bytes、SHA
+`4710c08c15157773982ff0d9ce2aa53265352c4ecfacb5828b885b4bf625bba0`、24 payload files、
+repo head `dd758bd007868b73cd21f66820be5a6403b87200`へbindする。memberは次の通り。
+
+| member | bytes | SHA-256 | Drive file ID |
+|---|---:|---|---|
+| `part0001` | 16,777,216 | `f3b31f86b2525e3bf621f5d74906d40c78a50530beb2f75b07d2d423214f6157` | `1YJj0njYKPmJJ7s-58WjAH5izlDLcIgW9` |
+| `part0002` | 4,555,628 | `9958417a0d829a67260215c3a4801f3303222ce5da9cc5739225984f29c49a46` | `15Dki5jk9qTBeyAf0ww5STEmbRSMdrTaj` |
+| `parts.json` | 1,247 | `532f952ec20770086f2679ceb1ab55971ba50acd5bad596ad032e59d65890f42` | `1gx2Z8QfmRR2wezbEasdsQkncYZ9tO5Qc` |
+| `receipt.json` | 841 | `0b03ad44c5103bfb9f29fc25bdf5cc69e66a83b794ed1cbc07555cca7e4aaf65` | `1Kxdj9SWHogae1xehFLvo-XK1fuzsqpgW` |
+
+parts manifest self SHAは`b9333b8f24d68eea4c70e5b13487cab9b42dc4c152ac6cb6e35850b4aa18f48c`。
+folder全体は20 member / 246,244,154 bytes（full-corpus 16 + Turn 2 delta 4）。
