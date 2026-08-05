@@ -22,6 +22,15 @@ anchors, 13/13 media checks and full decode pass, localhost returns page 200 / R
 and deterministic resume skips render while preserving hash and mtime. This is a new
 internal review artifact, not human editorial acceptance or rights/production/public approval.
 
+SH-10 private artifact transfer note: `build-private-artifact-transfer` creates an
+ignored, immutable ZIP plus exact-hash receipt from explicitly listed `episodes/` inputs.
+`verify-private-artifact-transfer` rejects unmanifested/path-unsafe members and restores
+only missing files, reusing exact existing bytes and failing closed on conflicts. The Wiki
+operator wrapper includes the retained Wiki 001 source, all three caption/static corpus
+packets, and the complete correction-led review artifact; see
+[PRIVATE_ARTIFACT_TRANSFER.md](docs/PRIVATE_ARTIFACT_TRANSFER.md). Private transport is
+not rights, production, public, monetized, publishing, or upload approval.
+
 ED-12 / S1 note: `build-common-context-probe`は、取得済み実source二本だけをexact
 media/caption/transcript/rights hashへbindし、source captionとcreator-authored commentaryを
 別provenance trackとして一つのargumentative timelineへ運ぶ。current artifactは
