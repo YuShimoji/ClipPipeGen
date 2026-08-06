@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: WIKI_CONTENT_REFRAME_REVIEW_READY_MEDIA_GATES_PARKED_S1_PARKED
+health: WIKI_EP1_INTEGRATED_PREFLIGHT_BLOCKED_SOURCE3_MEDIA_S1_PARKED
 last_touched: 2026-08-06
 current_slice: ED-13
-phase: wiki_content_reframe_pre_render_review_ready
-canonical_status: wiki_four_episode_family_design_ready_s_content_review_pending
+phase: wiki_ep1_integrated_preflight_blocked_exact_source_media
+canonical_status: s_content_continue_score_82_ep1_render_blocked_cu02_media
 active_branch: codex/wiki-tensaku-longform-family-v1
 upstream_branch: origin/codex/wiki-tensaku-longform-family-v1
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
@@ -19,20 +19,20 @@ remote_handoff_status: pushed_and_remote_sha_readback_passed_for_current_head_lo
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
 parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file
-current_title: Wiki content-first thematic Episode family pre-render design ready
-human_entrypoint: docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.html
-portable_entrypoint: docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.html
-review_open_command: start docs\content_planning\wiki_tensaku_content_reframe_v1\wiki_tensaku_content_reframe_v1.html
+current_title: Wiki Episode 1 integrated rough-cut preflight blocked on CU-02 exact media
+human_entrypoint: docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_report.md
+portable_entrypoint: docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_report.md
+review_open_command: start docs\content_planning\wiki_tensaku_ep1_integrated_rough_cut_v1\preflight_report.md
 review_server_restart_command: not_required_static_file
-machine_readback: docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.json
-decision_required: s_content_review_of_audience_promise_four_episode_map_and_thirteen_context_complete_clipunits
-review_status: human_artistic_revise_recorded_pre_render_content_packet_ready_s_verdict_pending
+machine_readback: docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_receipt.json
+decision_required: exact_source_bytes_and_binding_receipt_for_youtube_Ocqg_RpQURY
+review_status: s_content_continue_production_entry_only_ep1_preflight_fail_closed_no_mp4
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: tracked_portable_pre_render_content_design_with_preserved_ignored_probe_evidence
+local_artifact_role: tracked_portable_ep1_fail_closed_preflight_with_preserved_ignored_probe_evidence
 portable_local_artifact_available: true
-cross_machine_resume_class: tracked_reframe_html_markdown_json_and_receipt_are_portable_ignored_media_remains_private
-active_artifact: wiki-tensaku-content-reframe-v1-001
+cross_machine_resume_class: tracked_ep1_blocker_and_resume_map_are_portable_required_source_media_remains_ignored_private
+active_artifact: clip-wiki-tensaku-ep1-integrated-rough-cut-preflight-v1-001
 wiki_content_reframe_work_order_id: CPG-WIKI-CONTENT-REFRAME-001
 wiki_content_reframe_topology: thematic_episode_family
 wiki_content_reframe_episode_count: 4
@@ -48,18 +48,32 @@ wiki_content_reframe_acceptance_score: 74
 wiki_content_reframe_acceptance_weight_total: 100
 wiki_content_reframe_generated_mp4_count: 0
 wiki_content_reframe_human_artistic_acceptance: revise
-wiki_content_reframe_s_review_status: pending
+wiki_content_reframe_s_review_status: content_continue_production_entry_only
 wiki_content_reframe_integrated_render_status: not_started
 wiki_content_reframe_final_content_acceptance: not_granted
-artifact_output_sha256: bound_in_content_reframe_receipt
-artifact_output_byte_size: bound_in_content_reframe_receipt
+wiki_ep1_planned_artifact_id: clip-wiki-tensaku-ep1-integrated-rough-cut-v1-001
+wiki_ep1_preflight_status: BLOCKED_EXACT_SOURCE_MEDIA_REQUIRED
+wiki_ep1_clipunit_count: 3
+wiki_ep1_ready_clipunits: [CU-01, CU-03]
+wiki_ep1_blocked_clipunits: [CU-02]
+wiki_ep1_missing_source_identity: youtube:Ocqg-RpQURY
+wiki_ep1_missing_source_range_seconds: [390, 585]
+wiki_ep1_missing_source_caption_sha256: a383ad8a545fe9a24da142dace96fe19f05bf834a03e1e52616a5332db3c3992
+wiki_ep1_planned_source_seconds: 690
+wiki_ep1_generated_mp4_count: 0
+wiki_ep1_integrated_product_iteration_count: 0
+wiki_ep1_acceptance_score: 82
+wiki_ep1_human_artistic_acceptance: pending_revise
+wiki_ep1_next_s_event: not_routable_until_integrated_mp4_and_technical_qa_exist
+artifact_output_sha256: bound_in_ep1_preflight_package_receipt
+artifact_output_byte_size: bound_in_ep1_preflight_package_receipt
 artifact_package_tree_digest_sha256: not_used_tracked_regenerable_portfolio
 artifact_manifest_self_sha256: not_applicable
-artifact_file_count: 5
+artifact_file_count: 4
 artifact_duration_seconds: not_applicable_pre_render
-artifact_source_count: 3
-artifact_cut_count: 13_context_complete_clipunits
-artifact_source_switch_count: planned_in_continuous_rough_cut
+artifact_source_count: 2
+artifact_cut_count: 3_context_complete_clipunits
+artifact_source_switch_count: planned_but_not_rendered
 artifact_caption_cue_count: caption_readback_bound_per_clipunit
 artifact_commentary_count: not_applicable_pre_render
 benchmark_family_denominator: 15
@@ -72,10 +86,10 @@ benchmark_contract_only_count: 0
 benchmark_all_registered_materialized: true
 benchmark_portfolio_gate_status: MET_QUICKWIN_INTERNAL_PORTFOLIO
 benchmark_rights_publication_approval_inferred: false
-package_validation_status: passed_pre_render_schema_identity_and_receipt
+package_validation_status: passed_ep1_preflight_blocker_receipt_exact
 s1_review_http_status: 200
 s1_review_range_status: 206
-focused_test_status: wiki_content_reframe_4_passed
+focused_test_status: ep1_preflight_4_passed
 full_suite_status: not_run_this_turn_historical_passed_696
 human_review_pending: true
 rights_approval: readback_unresolved
@@ -312,7 +326,7 @@ wiki_turn_five_delta_drive_member_count: 4
 wiki_turn_five_delta_drive_total_bytes: 21360961
 wiki_turn_five_delta_drive_visibility: not_shared
 wiki_private_drive_recipient_delivery_completed: false
-wiki_state_code: PARKED_BLOCKED_EXTERNAL_NOT_PORTFOLIO_BOTTLENECK
+wiki_state_code: EP1_RENDER_BLOCKED_EXACT_SOURCE_MEDIA
 s1_lane_status: parked_human_review_pending
 s1_artifact_id: clip-s1-two-source-common-context-probe-v1-001
 out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive
@@ -327,17 +341,46 @@ out13_m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
 out13_m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 out13_public_use_verdict: deny
 out13_monetized_youtube_verdict: deny
-next_review_due: wiki_content_reframe_exact_packet_s_content_verdict_s1_remains_parked
-next_action: coordinator_routes_wiki_content_reframe_packet_to_s_then_waits_for_content_verdict_before_any_mp4
+next_review_due: exact_source_delivery_then_ep1_preflight_rerun_no_s_event_before_integrated_mp4
+next_action: explicitly_supply_Ocqg_RpQURY_source_video_and_receipt_then_rerun_ep1_preflight
 current_handoff: docs/CURRENT_HANDOFF.md
 upstream_parity: 0 0 after normal push and remote SHA readback of current handoff revision
 current_slice_push_status: normal_push_and_remote_sha_readback_completed_for_current_head_locator
 source_of_truth: true
-owner_lane: editing_content_reframe
-related: docs/RUNTIME_STATE.md, docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.html, docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.json, artifacts/ARTIFACTS.md
+owner_lane: editing_ep1_integrated_preflight
+related: docs/RUNTIME_STATE.md, docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_receipt.json, docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/coordinator_resume_packet.json, artifacts/ARTIFACTS.md
 ---
 
 # Current Handoff - ClipPipeGen
+
+## 2026-08-06 Wiki添削 Episode 1 integrated rough-cut preflight blocker
+
+Sはcanonical content reframeへ`content_continue`を返した。これはproduction entryだけの許可で、
+human artistic acceptance、final delivery acceptance、rights、publicationを付与しない。固定scoreは
+74→82/100。integrated render、technical QA、final content acceptanceは0のままである。
+
+Work Order `CPG-WIKI-EP1-INTEGRATED-ROUGH-CUT-001`は、canonical IR SHA
+`af502873b54786c5225236e1e47a4e0d38873da0ec4566ed7156ee5a8361288f`のEpisode 1
+「Wikiが作る人物像」だけを対象にexact-media preflightを実行した。章順はCU-01→CU-02→CU-03、
+planned source range合計690秒で、任意の300秒probeへ縮める契約ではない。
+
+CU-01 `youtube:1AcId5Yja10` 390–510秒とCU-03同source 1530–1905秒はretained exact media
+197,524,102 bytes / SHA`a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7`
+へ解決した。CU-02は`youtube:Ocqg-RpQURY` 390–585秒を要求するが、caption 452,217 bytes /
+SHA`a383ad8a545fe9a24da142dace96fe19f05bf834a03e1e52616a5332db3c3992`だけが存在し、
+`corpus/materials/Ocqg-RpQURY/source_video.mp4`と`acquisition_receipt.json`は欠落している。
+
+したがってstatusは`BLOCKED_EXACT_SOURCE_MEDIA_REQUIRED`。caption-only video、旧Turn1–5の25秒cut、
+無関係fragment、推測取得で代替せず、renderを呼ばなかった。planned artifact
+`clip-wiki-tensaku-ep1-integrated-rough-cut-v1-001`は未作成、MP4 0、integrated product iterationは0。
+Turn1–5のexact bytes/hash/mtimeは不変で、Drive upload・external fetch・cookies/OAuthは0である。
+
+portable receiptは
+`docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_receipt.json`、
+人間向けreadbackは`preflight_report.md`、Coordinator用の復帰packetは
+`coordinator_resume_packet.json`。明示提供されたsource bytesと、source identity・size・SHAをbindする
+receiptが揃った後にpreflightを再実行する。`READY_TO_RENDER`になった場合だけ一続きのEpisode 1をrenderする。
+MP4とtechnical QAが存在するまではSへartifact review packetをrouteしない。
 
 ## 2026-08-06 Wiki添削 content-first reframe
 

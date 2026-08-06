@@ -59,6 +59,23 @@ The Turn 1–5 registry entries below retain their historical technical identiti
 receipts. Their earlier technical/production wording does not override this artifact's
 current product authority or the explicit human `revise` verdict.
 
+## `clip-wiki-tensaku-ep1-integrated-rough-cut-preflight-v1-001`
+
+| Field | Value |
+|---|---|
+| title | Wiki添削 Episode 1 Integrated Rough-Cut Exact-Media Preflight v1 |
+| purpose | Resolve every Episode 1 ClipUnit to exact local media before the first integrated render, and fail closed instead of substituting old 25-second cuts or unrelated fragments. |
+| Work Order | `CPG-WIKI-EP1-INTEGRATED-ROUGH-CUT-001` |
+| canonical IR | `docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.json`; SHA-256 `af502873b54786c5225236e1e47a4e0d38873da0ec4566ed7156ee5a8361288f`. |
+| S verdict | `content_continue` for production entry only. Score 82/100; human artistic acceptance remains `pending_revise`; final delivery acceptance is not granted. |
+| mapping | CU-01 `youtube:1AcId5Yja10` 390–510s ready; CU-02 `youtube:Ocqg-RpQURY` 390–585s blocked; CU-03 `youtube:1AcId5Yja10` 1530–1905s ready. |
+| blocker | Exact `youtube:Ocqg-RpQURY` source video and acquisition receipt are absent. Its caption SHA `a383ad8a545fe9a24da142dace96fe19f05bf834a03e1e52616a5332db3c3992` cannot substitute for video bytes. |
+| result | `BLOCKED_EXACT_SOURCE_MEDIA_REQUIRED`; render not performed; generated MP4 0; integrated product iteration remains 0. |
+| tracked receipt | `docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_receipt.json`; `coordinator_resume_packet.json`; `package_receipt.json`. |
+| review path | `docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_report.md` |
+| implementation | `scripts/preflight_wiki_tensaku_ep1_integrated_rough_cut.py`; `tests/test_wiki_tensaku_ep1_integrated_rough_cut_preflight.py`. |
+| next action | Explicitly supply `episodes/wiki_tensaku_family_20260804/corpus/materials/Ocqg-RpQURY/source_video.mp4` and an adjacent `acquisition_receipt.json` binding source identity, size, and SHA-256; rerun preflight. Do not route S an MP4 review packet until one continuous Episode 1 render and technical QA exist. |
+
 ## `clip-benchmark-portfolio-coverage-v1-001`
 
 | Field | Value |

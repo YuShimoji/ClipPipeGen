@@ -1,0 +1,265 @@
+{
+  "schema_version": "clippipegen.wiki_tensaku_ep1_integrated_preflight.v1",
+  "work_order_id": "CPG-WIKI-EP1-INTEGRATED-ROUGH-CUT-001",
+  "preflight_id": "clip-wiki-tensaku-ep1-integrated-rough-cut-preflight-v1-001",
+  "planned_artifact_id": "clip-wiki-tensaku-ep1-integrated-rough-cut-v1-001",
+  "status": "BLOCKED_EXACT_SOURCE_MEDIA_REQUIRED",
+  "s_verdict": {
+    "verdict": "content_continue",
+    "scope": "approved_for_production_entry_only",
+    "human_artistic_acceptance": "pending_revise",
+    "final_delivery_acceptance": "not_granted"
+  },
+  "acceptance_score": {
+    "current_points": 82,
+    "fixed_weight_total": 100,
+    "s_content_review_points": 8,
+    "integrated_render_points": 0,
+    "technical_qa_points": 0,
+    "final_content_acceptance_points": 0
+  },
+  "canonical_ir": {
+    "path": "docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.json",
+    "sha256": "af502873b54786c5225236e1e47a4e0d38873da0ec4566ed7156ee5a8361288f",
+    "artifact_id": "wiki-tensaku-content-reframe-v1-001"
+  },
+  "episode": {
+    "episode_id": "E1",
+    "title": "Wikiが作る人物像",
+    "thesis": "非公式Wikiは事実一覧ではなく、ファンの注目と本人の訂正が往復する人物像である。",
+    "viewer_question": "ページを読むと、公式プロフィールだけでは見えない何が分かるのか。",
+    "clip_ids": [
+      "CU-01",
+      "CU-02",
+      "CU-03"
+    ],
+    "planned_source_seconds": 690,
+    "runtime_rule": "continuous setup-through-payoff runtime determined by context-complete ranges and actual transitions; no arbitrary 300-second target"
+  },
+  "clipunit_source_map": [
+    {
+      "chapter_number": 1,
+      "clip_id": "CU-01",
+      "chapter_title": "非公式Wikiは何を記録しているのか",
+      "source_id": "youtube:1AcId5Yja10",
+      "source_timestamp": {
+        "requested_start_seconds": 390,
+        "requested_end_seconds": 510,
+        "caption_aligned_start_seconds": 390.199,
+        "caption_aligned_end_seconds": 513.44,
+        "requested_duration_seconds": 120
+      },
+      "media_resolution": {
+        "state": "exact_media_ready",
+        "media_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/1AcId5Yja10/source_video.mp4",
+        "media_present": true,
+        "receipt_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/1AcId5Yja10/acquisition_receipt.json",
+        "receipt_present": true,
+        "bytes": 197524102,
+        "sha256": "a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7"
+      },
+      "caption_identity": {
+        "path": "episodes/wiki_tensaku_family_20260804/corpus/captions/1AcId5Yja10.ja.json3",
+        "bytes": 1751869,
+        "sha256": "f58c248f23b29845a94ae01b789f122c8759687125375a2650cc7a8074107e4f",
+        "mtime_utc": 1785779989.3199596
+      },
+      "setup": "二人が非公式Wikiを開き、Wikipediaや公式プロフィールとは違う読み物だと確認する。",
+      "core_statement": "ファンが選んだ出来事や言葉の熱量によって、同じ人物でもページの像が変わる。",
+      "payoff_or_conclusion": "Wiki添削は誤字探しではなく、ファンが作った人物像を本人が読み返す企画だと定義する。",
+      "transition_in": "完成品の先頭。題材と見方を最初に固定する。",
+      "transition_out": "同じWikiでも人物ごとに記録のされ方が違う、という比較へ進む。",
+      "old_probe_reuse_policy": "support-only; never concatenate the old fixed cut; use only inside this context-complete source range"
+    },
+    {
+      "chapter_number": 2,
+      "clip_id": "CU-02",
+      "chapter_title": "情報量が示す桃鈴ねね像",
+      "source_id": "youtube:Ocqg-RpQURY",
+      "source_timestamp": {
+        "requested_start_seconds": 390,
+        "requested_end_seconds": 585,
+        "caption_aligned_start_seconds": 394.969,
+        "caption_aligned_end_seconds": 585.72,
+        "requested_duration_seconds": 195
+      },
+      "media_resolution": {
+        "state": "missing_exact_media_and_or_binding_receipt",
+        "media_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/Ocqg-RpQURY/source_video.mp4",
+        "media_present": false,
+        "receipt_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/Ocqg-RpQURY/acquisition_receipt.json",
+        "receipt_present": false,
+        "sha256": null,
+        "bytes": null
+      },
+      "caption_identity": {
+        "path": "episodes/wiki_tensaku_family_20260804/corpus/captions/Ocqg-RpQURY.ja.json3",
+        "bytes": 452217,
+        "sha256": "a383ad8a545fe9a24da142dace96fe19f05bf834a03e1e52616a5332db3c3992",
+        "mtime_utc": 1785779989.3394053
+      },
+      "setup": "桃鈴ねねの非公式Wikiを上から確認し、衣装・来歴・好みの項目量を見る。",
+      "core_statement": "ページの厚い箇所から、ファンが追ってきた変化やキャラクター像が見える。",
+      "payoff_or_conclusion": "網羅量そのものではなく、何に記述が集まるかがその人の見え方を作る。",
+      "transition_in": "抽象的な定義から、実際のページ構造の違いへ移る。",
+      "transition_out": "ページの強調点を、本人の訂正が最も多いプロフィール項目へ接続する。",
+      "old_probe_reuse_policy": "support-only; never concatenate the old fixed cut; use only inside this context-complete source range"
+    },
+    {
+      "chapter_number": 3,
+      "clip_id": "CU-03",
+      "chapter_title": "プロフィール訂正で像が動く",
+      "source_id": "youtube:1AcId5Yja10",
+      "source_timestamp": {
+        "requested_start_seconds": 1530,
+        "requested_end_seconds": 1905,
+        "caption_aligned_start_seconds": 1534.72,
+        "caption_aligned_end_seconds": 1905.559,
+        "requested_duration_seconds": 375
+      },
+      "media_resolution": {
+        "state": "exact_media_ready",
+        "media_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/1AcId5Yja10/source_video.mp4",
+        "media_present": true,
+        "receipt_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/1AcId5Yja10/acquisition_receipt.json",
+        "receipt_present": true,
+        "bytes": 197524102,
+        "sha256": "a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7"
+      },
+      "caption_identity": {
+        "path": "episodes/wiki_tensaku_family_20260804/corpus/captions/1AcId5Yja10.ja.json3",
+        "bytes": 1751869,
+        "sha256": "f58c248f23b29845a94ae01b789f122c8759687125375a2650cc7a8074107e4f",
+        "mtime_utc": 1785779989.3199596
+      },
+      "setup": "大空スバルの非公式プロフィールを開き、過去タグや身長などを本人が読み直す。",
+      "core_statement": "本人が忘れた情報、現在は違う情報、ファンに定着したアヒル像が同じページに共存する。",
+      "payoff_or_conclusion": "訂正してもファンの記憶は消えず、公式と非公式の間に現在の人物像ができる。",
+      "transition_in": "ページの情報量から、情報の正しさと定着の仕方へ焦点を移す。",
+      "transition_out": "訂正で終わらず、ページが忘れた出来事をどう呼び戻すかへ進む。",
+      "old_probe_reuse_policy": "support-only; never concatenate the old fixed cut; use only inside this context-complete source range"
+    }
+  ],
+  "missing_dependency_count": 1,
+  "missing_dependencies": [
+    {
+      "dependency_id": "CU-02-exact-source-media",
+      "clip_id": "CU-02",
+      "source_id": "youtube:Ocqg-RpQURY",
+      "required_range": {
+        "requested_start_seconds": 390,
+        "requested_end_seconds": 585,
+        "caption_aligned_start_seconds": 394.969,
+        "caption_aligned_end_seconds": 585.72,
+        "requested_duration_seconds": 195
+      },
+      "expected_media_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/Ocqg-RpQURY/source_video.mp4",
+      "expected_receipt_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/Ocqg-RpQURY/acquisition_receipt.json",
+      "caption_only_evidence": {
+        "path": "episodes/wiki_tensaku_family_20260804/corpus/captions/Ocqg-RpQURY.ja.json3",
+        "bytes": 452217,
+        "sha256": "a383ad8a545fe9a24da142dace96fe19f05bf834a03e1e52616a5332db3c3992",
+        "mtime_utc": 1785779989.3394053
+      },
+      "reason": "canonical ClipUnit requires source video, but only exact automatic caption bytes are locally present",
+      "prohibited_substitutions": [
+        "unrelated source fragment",
+        "old Turn 1-5 fixed 25-second cut",
+        "caption-only synthetic video",
+        "guessed or externally fetched media"
+      ]
+    }
+  ],
+  "render": {
+    "performed": false,
+    "output_path": null,
+    "output_sha256": null,
+    "output_bytes": null,
+    "output_duration_seconds": null,
+    "reason": "mandatory exact-media preflight is blocked"
+  },
+  "product_iteration": {
+    "integrated_product_iteration_before": 0,
+    "integrated_product_iteration_after": 0,
+    "counts_as_integrated_product_iteration": false,
+    "reason": "no continuous integrated MP4 exists"
+  },
+  "probe_preservation_readback": [
+    {
+      "artifact_id": "clip-wiki-tensaku-family-turn-v1-001",
+      "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v1-001/final_video.mp4",
+      "bytes": 21800858,
+      "sha256": "1f965e537d5a767d8cfe5c456ed0481ea88a119743f207ada9764bbc0ebe3284",
+      "mtime_epoch_seconds": 1785870499.8504853,
+      "preservation_status": "unchanged_exact_probe_evidence"
+    },
+    {
+      "artifact_id": "clip-wiki-tensaku-family-turn-v2-001",
+      "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v2-001/final_video.mp4",
+      "bytes": 19951636,
+      "sha256": "2736f6ec5b4a779a70c978d7815639802dee2d294220fdbb592edb9d75fe2dca",
+      "mtime_epoch_seconds": 1785942494.9790096,
+      "preservation_status": "unchanged_exact_probe_evidence"
+    },
+    {
+      "artifact_id": "clip-wiki-tensaku-family-turn-v3-001",
+      "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v3-001/final_video.mp4",
+      "bytes": 20605376,
+      "sha256": "5abfd8e940bd8a2709e79aced38ab2e0e56b7f052f3d205512e082d2a8f8733b",
+      "mtime_epoch_seconds": 1785943752.148038,
+      "preservation_status": "unchanged_exact_probe_evidence"
+    },
+    {
+      "artifact_id": "clip-wiki-tensaku-family-turn-v4-001",
+      "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v4-001/final_video.mp4",
+      "bytes": 18884819,
+      "sha256": "5fea3d14e476871f239d1ab42283fedd83546daf98e8c5a27f625506ba69ca40",
+      "mtime_epoch_seconds": 1785945806.538343,
+      "preservation_status": "unchanged_exact_probe_evidence"
+    },
+    {
+      "artifact_id": "clip-wiki-tensaku-family-turn-v5-001",
+      "path": "episodes/wiki_tensaku_family_20260804/artifacts/clip-wiki-tensaku-family-turn-v5-001/final_video.mp4",
+      "bytes": 19964780,
+      "sha256": "e192fcd6746d396c0c92b5952c274cf5afd07f47c0f5d3a17deecd33b658012c",
+      "mtime_epoch_seconds": 1785947294.4265108,
+      "preservation_status": "unchanged_exact_probe_evidence"
+    }
+  ],
+  "resume_contract": {
+    "required_dependency": "exact locally supplied source bytes and exact acquisition receipt for youtube:Ocqg-RpQURY",
+    "required_media_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/Ocqg-RpQURY/source_video.mp4",
+    "required_receipt_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/Ocqg-RpQURY/acquisition_receipt.json",
+    "receipt_requirements": [
+      "source_identity equals youtube:Ocqg-RpQURY",
+      "source_byte_size equals the supplied file size",
+      "source_sha256 equals the supplied file SHA-256"
+    ],
+    "resume_command": "uv run --no-project python scripts/preflight_wiki_tensaku_ep1_integrated_rough_cut.py",
+    "ready_condition": "status becomes READY_TO_RENDER with all three ClipUnits exact-media-ready",
+    "external_acquisition_authorized": false
+  },
+  "next_s_event": {
+    "current_state": "NOT_ROUTABLE_NO_INTEGRATED_MP4",
+    "event": "after exact source delivery, READY_TO_RENDER preflight, one continuous Episode 1 render, and technical QA, Coordinator routes the exact MP4 review packet to S",
+    "required_packet_fields": [
+      "artifact_id/path/SHA-256/bytes/duration/streams",
+      "canonical IR SHA-256",
+      "chapter/ClipUnit/source-time/transition/deviation map",
+      "full A/V decode and continuity/black/silence evidence",
+      "human_artistic_acceptance=pending_revise"
+    ],
+    "verdicts": [
+      "content_accept",
+      "content_bounded_repair",
+      "content_reframe"
+    ]
+  },
+  "boundaries": {
+    "mp4_generated": false,
+    "old_probe_modified": false,
+    "external_fetch_attempted": false,
+    "drive_upload_attempted": false,
+    "rights_or_publication_inferred": false
+  }
+}

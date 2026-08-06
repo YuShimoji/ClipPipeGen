@@ -87,18 +87,28 @@ def test_checked_in_portfolio_matches_registry_and_keeps_episodes_untracked() ->
     assert len(list((REPO_ROOT / "docs/benchmarks/candidates").glob("*.html"))) == 32
 
 
-def test_runtime_and_handoff_route_to_content_reframe_without_erasing_portfolio_or_parked_gates() -> None:
+def test_runtime_and_handoff_route_to_ep1_preflight_without_erasing_reframe_portfolio_or_gates() -> None:
     runtime = (REPO_ROOT / "docs/RUNTIME_STATE.md").read_text(encoding="utf-8")
     handoff = (REPO_ROOT / "docs/CURRENT_HANDOFF.md").read_text(encoding="utf-8")
     for document in (runtime, handoff):
         assert "current_slice: ED-13" in document
-        assert "active_artifact: wiki-tensaku-content-reframe-v1-001" in document
+        assert (
+            "active_artifact: clip-wiki-tensaku-ep1-integrated-rough-cut-preflight-v1-001"
+            in document
+        )
         assert "wiki_content_reframe_topology: thematic_episode_family" in document
         assert "wiki_content_reframe_episode_count: 4" in document
         assert "wiki_content_reframe_clipunit_count: 13" in document
         assert "wiki_content_reframe_acceptance_score: 74" in document
         assert "wiki_content_reframe_generated_mp4_count: 0" in document
         assert "wiki_content_reframe_human_artistic_acceptance: revise" in document
+        assert "wiki_content_reframe_s_review_status: content_continue_production_entry_only" in document
+        assert "wiki_ep1_preflight_status: BLOCKED_EXACT_SOURCE_MEDIA_REQUIRED" in document
+        assert "wiki_ep1_ready_clipunits: [CU-01, CU-03]" in document
+        assert "wiki_ep1_blocked_clipunits: [CU-02]" in document
+        assert "wiki_ep1_acceptance_score: 82" in document
+        assert "wiki_ep1_generated_mp4_count: 0" in document
+        assert "wiki_ep1_integrated_product_iteration_count: 0" in document
         assert "benchmark_family_denominator: 15" in document
         assert "benchmark_candidate_slot_denominator: 32" in document
         assert "benchmark_fully_viewable_count: 25" in document

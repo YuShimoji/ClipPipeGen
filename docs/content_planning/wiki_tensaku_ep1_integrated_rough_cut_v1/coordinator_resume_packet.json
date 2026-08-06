@@ -1,0 +1,107 @@
+{
+  "schema_version": "clippipegen.wiki_tensaku_ep1_coordinator_resume.v1",
+  "work_order_id": "CPG-WIKI-EP1-INTEGRATED-ROUGH-CUT-001",
+  "preflight_id": "clip-wiki-tensaku-ep1-integrated-rough-cut-preflight-v1-001",
+  "planned_artifact_id": "clip-wiki-tensaku-ep1-integrated-rough-cut-v1-001",
+  "status": "BLOCKED_EXACT_SOURCE_MEDIA_REQUIRED",
+  "canonical_ir": {
+    "path": "docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.json",
+    "sha256": "af502873b54786c5225236e1e47a4e0d38873da0ec4566ed7156ee5a8361288f",
+    "artifact_id": "wiki-tensaku-content-reframe-v1-001"
+  },
+  "episode": {
+    "episode_id": "E1",
+    "title": "Wikiが作る人物像",
+    "thesis": "非公式Wikiは事実一覧ではなく、ファンの注目と本人の訂正が往復する人物像である。",
+    "viewer_question": "ページを読むと、公式プロフィールだけでは見えない何が分かるのか。",
+    "clip_ids": [
+      "CU-01",
+      "CU-02",
+      "CU-03"
+    ],
+    "planned_source_seconds": 690,
+    "runtime_rule": "continuous setup-through-payoff runtime determined by context-complete ranges and actual transitions; no arbitrary 300-second target"
+  },
+  "missing_dependencies": [
+    {
+      "dependency_id": "CU-02-exact-source-media",
+      "clip_id": "CU-02",
+      "source_id": "youtube:Ocqg-RpQURY",
+      "required_range": {
+        "requested_start_seconds": 390,
+        "requested_end_seconds": 585,
+        "caption_aligned_start_seconds": 394.969,
+        "caption_aligned_end_seconds": 585.72,
+        "requested_duration_seconds": 195
+      },
+      "expected_media_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/Ocqg-RpQURY/source_video.mp4",
+      "expected_receipt_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/Ocqg-RpQURY/acquisition_receipt.json",
+      "caption_only_evidence": {
+        "path": "episodes/wiki_tensaku_family_20260804/corpus/captions/Ocqg-RpQURY.ja.json3",
+        "bytes": 452217,
+        "sha256": "a383ad8a545fe9a24da142dace96fe19f05bf834a03e1e52616a5332db3c3992",
+        "mtime_utc": 1785779989.3394053
+      },
+      "reason": "canonical ClipUnit requires source video, but only exact automatic caption bytes are locally present",
+      "prohibited_substitutions": [
+        "unrelated source fragment",
+        "old Turn 1-5 fixed 25-second cut",
+        "caption-only synthetic video",
+        "guessed or externally fetched media"
+      ]
+    }
+  ],
+  "render": {
+    "performed": false,
+    "output_path": null,
+    "output_sha256": null,
+    "output_bytes": null,
+    "output_duration_seconds": null,
+    "reason": "mandatory exact-media preflight is blocked"
+  },
+  "product_iteration": {
+    "integrated_product_iteration_before": 0,
+    "integrated_product_iteration_after": 0,
+    "counts_as_integrated_product_iteration": false,
+    "reason": "no continuous integrated MP4 exists"
+  },
+  "acceptance_score": {
+    "current_points": 82,
+    "fixed_weight_total": 100,
+    "s_content_review_points": 8,
+    "integrated_render_points": 0,
+    "technical_qa_points": 0,
+    "final_content_acceptance_points": 0
+  },
+  "resume_contract": {
+    "required_dependency": "exact locally supplied source bytes and exact acquisition receipt for youtube:Ocqg-RpQURY",
+    "required_media_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/Ocqg-RpQURY/source_video.mp4",
+    "required_receipt_path": "episodes/wiki_tensaku_family_20260804/corpus/materials/Ocqg-RpQURY/acquisition_receipt.json",
+    "receipt_requirements": [
+      "source_identity equals youtube:Ocqg-RpQURY",
+      "source_byte_size equals the supplied file size",
+      "source_sha256 equals the supplied file SHA-256"
+    ],
+    "resume_command": "uv run --no-project python scripts/preflight_wiki_tensaku_ep1_integrated_rough_cut.py",
+    "ready_condition": "status becomes READY_TO_RENDER with all three ClipUnits exact-media-ready",
+    "external_acquisition_authorized": false
+  },
+  "next_s_event": {
+    "current_state": "NOT_ROUTABLE_NO_INTEGRATED_MP4",
+    "event": "after exact source delivery, READY_TO_RENDER preflight, one continuous Episode 1 render, and technical QA, Coordinator routes the exact MP4 review packet to S",
+    "required_packet_fields": [
+      "artifact_id/path/SHA-256/bytes/duration/streams",
+      "canonical IR SHA-256",
+      "chapter/ClipUnit/source-time/transition/deviation map",
+      "full A/V decode and continuity/black/silence evidence",
+      "human_artistic_acceptance=pending_revise"
+    ],
+    "verdicts": [
+      "content_accept",
+      "content_bounded_repair",
+      "content_reframe"
+    ]
+  },
+  "content_status": "S_CONTENT_CONTINUE_BUT_RENDER_DEPENDENCY_BLOCKED",
+  "technical_status": "PREFLIGHT_FAIL_CLOSED_NO_OUTPUT"
+}

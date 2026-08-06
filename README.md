@@ -29,6 +29,16 @@ final media QA, and explicit human content acceptance remain zero/open. Exact so
 for `youtube:82iRbxjvbww` and `youtube:Ocqg-RpQURY` remain unavailable and parked without
 guessed retrieval, cookies, OAuth, or anonymous retry.
 
+ED-13 Episode 1 production-entry note: S returned `content_continue`, raising the fixed
+score to 82/100 without granting human artistic or final delivery acceptance. Mandatory
+exact-media preflight resolved CU-01 and CU-03 to retained `youtube:1AcId5Yja10` bytes,
+but CU-02 requires `youtube:Ocqg-RpQURY` 390–585s and only its exact automatic caption
+bytes are present. The integrated renderer therefore did not run: MP4 count and integrated
+product iterations remain 0. The portable blocker and resume map are in
+[`preflight_report.md`](docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_report.md).
+Resume only after exact source bytes plus a receipt binding source identity, byte size, and
+SHA-256 are explicitly supplied; this path performs no fetch, credential use, or Drive upload.
+
 SH-10 private artifact transfer note: `build-private-artifact-transfer` creates an
 ignored, immutable ZIP plus exact-hash receipt from explicitly listed `episodes/` inputs.
 `verify-private-artifact-transfer` rejects unmanifested/path-unsafe members and restores
