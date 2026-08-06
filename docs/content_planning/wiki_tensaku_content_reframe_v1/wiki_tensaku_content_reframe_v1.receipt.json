@@ -1,0 +1,31 @@
+{
+  "schema_version": "clippipegen.wiki_tensaku_content_reframe_receipt.v1",
+  "work_order_id": "CPG-WIKI-CONTENT-REFRAME-001",
+  "artifact_id": "wiki-tensaku-content-reframe-v1-001",
+  "artifact_class": "diagnostic_pre_render_content_design",
+  "members": [
+    {
+      "path": "docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.json",
+      "bytes": 136904,
+      "sha256": "af502873b54786c5225236e1e47a4e0d38873da0ec4566ed7156ee5a8361288f"
+    },
+    {
+      "path": "docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.md",
+      "bytes": 11567,
+      "sha256": "c6f5e22c96ce618fe02cc9113d17af99c04cbce13b209c1a8b609a1ea4233558"
+    },
+    {
+      "path": "docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.html",
+      "bytes": 8595,
+      "sha256": "7ad24d90e2ac3eedd250d0596c20c6dea03fbe1ded774d5597f0da7369da79e8"
+    },
+    {
+      "path": "docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.s_review_packet.json",
+      "bytes": 21383,
+      "sha256": "3c1ee1d1ada88bedbb1c4bcc1bc5915ded7fea0437621a0c4849ec6a96ccfcc5"
+    }
+  ],
+  "generated_mp4_count": 0,
+  "immutable_probe_count_verified": 5,
+  "source_identity_count_verified": 3
+}

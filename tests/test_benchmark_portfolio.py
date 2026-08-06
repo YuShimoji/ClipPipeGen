@@ -87,12 +87,18 @@ def test_checked_in_portfolio_matches_registry_and_keeps_episodes_untracked() ->
     assert len(list((REPO_ROOT / "docs/benchmarks/candidates").glob("*.html"))) == 32
 
 
-def test_runtime_and_handoff_route_to_the_portfolio_without_erasing_parked_gates() -> None:
+def test_runtime_and_handoff_route_to_content_reframe_without_erasing_portfolio_or_parked_gates() -> None:
     runtime = (REPO_ROOT / "docs/RUNTIME_STATE.md").read_text(encoding="utf-8")
     handoff = (REPO_ROOT / "docs/CURRENT_HANDOFF.md").read_text(encoding="utf-8")
     for document in (runtime, handoff):
-        assert "current_slice: SH-05" in document
-        assert "active_artifact: clip-benchmark-portfolio-coverage-v1-001" in document
+        assert "current_slice: ED-13" in document
+        assert "active_artifact: wiki-tensaku-content-reframe-v1-001" in document
+        assert "wiki_content_reframe_topology: thematic_episode_family" in document
+        assert "wiki_content_reframe_episode_count: 4" in document
+        assert "wiki_content_reframe_clipunit_count: 13" in document
+        assert "wiki_content_reframe_acceptance_score: 74" in document
+        assert "wiki_content_reframe_generated_mp4_count: 0" in document
+        assert "wiki_content_reframe_human_artistic_acceptance: revise" in document
         assert "benchmark_family_denominator: 15" in document
         assert "benchmark_candidate_slot_denominator: 32" in document
         assert "benchmark_fully_viewable_count: 25" in document

@@ -1,0 +1,375 @@
+{
+  "schema_version": "clippipegen.wiki_tensaku_s_content_review_packet.v1",
+  "work_order_id": "CPG-WIKI-CONTENT-REFRAME-001",
+  "artifact_id": "wiki-tensaku-content-reframe-v1-001",
+  "human_artistic_acceptance": "revise",
+  "audience_promise": "配信を知らない視聴者でも、本人たちが非公式Wikiを読み、訂正し、忘れていた出来事や語録を再解釈する過程から、ファンの記録が本人像をどう作り直すかを4本で理解できる。",
+  "selected_topology": {
+    "selected_topology": "thematic_episode_family",
+    "planned_final_artifact_count": 4,
+    "family_index_is_final_mp4": false,
+    "rationale": "三配信に反復する編集構造を4つの問いで横断でき、2本のsource-byte gateを隠さずに理解可能な視聴順を保てる。1本masterは欠損laneで構成が歪み、旧300秒turn方式は隣接関係と全体像を失うため採用しない。",
+    "prohibited_topology": "per-turn disconnected 300-second outputs",
+    "deferred_alternative": "全source bytesが揃いS review後、4 Episodeを連続再生するmaster indexは検討可能。"
+  },
+  "episode_chapter_map": [
+    {
+      "episode_id": "E1",
+      "title": "Wikiが作る人物像",
+      "thesis": "非公式Wikiは事実一覧ではなく、ファンの注目と本人の訂正が往復する人物像である。",
+      "viewer_question": "ページを読むと、公式プロフィールだけでは見えない何が分かるのか。",
+      "setup": "非公式Wikiの作成主体と公式情報との差を説明する。",
+      "evidence": "ページ構造の比較と大空スバルのプロフィール訂正を並べる。",
+      "interpretation": "記述の量とずれが、ファンの人物理解を可視化する。",
+      "conclusion": "人物像は公式と非公式のどちらか一方ではなく、往復で更新される。",
+      "transition_to_next": "静的プロフィールから、忘れていた出来事の時間軸へ進む。",
+      "clip_ids": [
+        "CU-01",
+        "CU-02",
+        "CU-03"
+      ],
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "非公式Wikiは何を記録しているのか",
+          "clip_id": "CU-01",
+          "thesis": "シリーズ全体の観察レンズを提示する。",
+          "viewer_question": "非公式Wikiを見ると本人の何が分かるのか。",
+          "setup": "二人が非公式Wikiを開き、Wikipediaや公式プロフィールとは違う読み物だと確認する。",
+          "evidence": "二人がページの作成主体と公式情報との差を会話で確認する。",
+          "interpretation": "ページは事実の羅列ではなく、ファンが残したい記憶の編集物である。",
+          "conclusion": "以後の訂正・回想・語録を、人物像の更新として見る。",
+          "transition_to_next": "同じWikiでも人物ごとに記録のされ方が違う、という比較へ進む。"
+        },
+        {
+          "chapter_number": 2,
+          "title": "情報量が示す桃鈴ねね像",
+          "clip_id": "CU-02",
+          "thesis": "人物ごとに異なるページ構造を比較可能にする。",
+          "viewer_question": "ページの情報量は人物の何を強調するのか。",
+          "setup": "桃鈴ねねの非公式Wikiを上から確認し、衣装・来歴・好みの項目量を見る。",
+          "evidence": "衣装、活動履歴、好きなものの項目を順に読み、記述量へ反応する。",
+          "interpretation": "ファンの注目が集まった変化ほど、ページ上の人物像を強くする。",
+          "conclusion": "次はページの記述と本人の認識がずれる箇所を確かめる。",
+          "transition_to_next": "ページの強調点を、本人の訂正が最も多いプロフィール項目へ接続する。"
+        },
+        {
+          "chapter_number": 3,
+          "title": "プロフィール訂正で像が動く",
+          "clip_id": "CU-03",
+          "thesis": "シリーズの主題である『記録と本人認識の往復』を具体化する。",
+          "viewer_question": "本人が訂正すると、ファンが作った人物像はどう変わるのか。",
+          "setup": "大空スバルの非公式プロフィールを開き、過去タグや身長などを本人が読み直す。",
+          "evidence": "忘れたタグ、身長の訂正、アヒル像の由来を本人たちが順に検証する。",
+          "interpretation": "訂正は記録の否定ではなく、現在の本人像を重ねる更新である。",
+          "conclusion": "人物像は公式説明とファンの記憶の往復で更新される。",
+          "transition_to_next": "訂正で終わらず、ページが忘れた出来事をどう呼び戻すかへ進む。"
+        }
+      ]
+    },
+    {
+      "episode_id": "E2",
+      "title": "記録が呼び戻す出来事と記憶",
+      "thesis": "Wikiに残った出来事は、現在の達成・家族の記憶・時代背景を添えて初めて意味を持つ。",
+      "viewer_question": "本人も忘れた過去は、今の本人に何を返すのか。",
+      "setup": "古い投稿を現在の達成と接続する。",
+      "evidence": "活動目標、家族由来の言葉、過去衣装と制度差を比較する。",
+      "interpretation": "記録は過去を固定せず、現在から再解釈する材料になる。",
+      "conclusion": "事実訂正だけでなく、時間と環境の文脈を戻すことが添削になる。",
+      "transition_to_next": "出来事の履歴から、反復される言葉の履歴へ進む。",
+      "clip_ids": [
+        "CU-04",
+        "CU-05",
+        "CU-06"
+      ],
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "古い挑戦が現在の達成へつながる",
+          "clip_id": "CU-04",
+          "thesis": "記録の時間軸が現在の解釈を変える例を示す。",
+          "viewer_question": "忘れた過去の記録は、今の本人に何を返すのか。",
+          "setup": "プロフィールからエピソード欄へ移り、本人も忘れた初期の投稿と企画を読む。",
+          "evidence": "初期投稿の目標と、後年のアルバム・ソロライブを会話で結び直す。",
+          "interpretation": "Wikiは過去と現在を比較できる時間軸として機能する。",
+          "conclusion": "古い記録の価値は、現在との接続で初めて生まれる。",
+          "transition_to_next": "本人が忘れていても他者が覚えている記憶へ広げる。"
+        },
+        {
+          "chapter_number": 2,
+          "title": "家族が覚えていた挨拶",
+          "clip_id": "CU-05",
+          "thesis": "個人の記憶から関係性の記憶へ視野を広げる。",
+          "viewer_question": "本人が忘れた言葉を、誰の記憶が残しているのか。",
+          "setup": "語録欄で『いらっしゃいニングビーム』を見つけ、由来を本人にたずねる。",
+          "evidence": "Wikiの語句から家族との使用場面を思い出し、また使いたいと話す。",
+          "interpretation": "ファンの記録は本人の外側にある記憶も保存している。",
+          "conclusion": "人物の来歴は、周囲との言葉の交換からも作られる。",
+          "transition_to_next": "個人的な記憶の復元から、時代背景を伴う記録の再解釈へ進む。"
+        },
+        {
+          "chapter_number": 3,
+          "title": "昔の衣装を今の基準で読み直す",
+          "clip_id": "CU-06",
+          "thesis": "記録の解釈に時代背景が必要だと示す。",
+          "viewer_question": "過去の出来事を今の基準だけで評価してよいのか。",
+          "setup": "過去の衣装や露出についてのWiki記述から、当時の配信上の扱いを確認する。",
+          "evidence": "衣装、収益化、当時と現在の運用差を三人が順に結びつける。",
+          "interpretation": "記録は出来事と同時に、その時代の制度も残す。",
+          "conclusion": "Wiki添削には事実訂正だけでなく文脈の補足が必要になる。",
+          "transition_to_next": "出来事をどう解釈するかから、言葉がどう残るかへ転じる。"
+        }
+      ]
+    },
+    {
+      "episode_id": "E3",
+      "title": "語録・言い間違いが共有言語になる",
+      "thesis": "語録は失言集ではなく、場面・反復・複数人の照合で共同記憶になった言葉である。",
+      "viewer_question": "一度の発話は、どうしてファンと仲間の共有言語になるのか。",
+      "setup": "語録欄の量と読み方を定義する。",
+      "evidence": "読み間違いの元場面、複数人の反復、三人による由来検証をつなぐ。",
+      "interpretation": "言葉の価値は誤りではなく、誰がどう応答し共有したかにある。",
+      "conclusion": "Wiki添削は語録の正解発表ではなく、共同記憶の再編集である。",
+      "transition_to_next": "共有言語から、それを生む人間関係と自己認識へ進む。",
+      "clip_ids": [
+        "CU-07",
+        "CU-08",
+        "CU-09",
+        "CU-10"
+      ],
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "語録欄はなぜ増殖するのか",
+          "clip_id": "CU-07",
+          "thesis": "語録を単発の面白発言ではなく蓄積として定義する。",
+          "viewer_question": "なぜ言い間違いや口癖が大量に保存されるのか。",
+          "setup": "出来事欄を読み終え、警告されるほど大量の語録欄へ進む。",
+          "evidence": "語録欄の量と注意書きを見て、二人が記憶の蓄積として反応する。",
+          "interpretation": "反復と共有が、普通の発話を共同体の言葉へ変える。",
+          "conclusion": "次章から語録化の具体的な仕組みを読む。",
+          "transition_to_next": "大量の語録の中から、意味が変わった具体例へ入る。"
+        },
+        {
+          "chapter_number": 2,
+          "title": "読み間違いに文脈を戻す",
+          "clip_id": "CU-08",
+          "thesis": "語録にsetupとpayoffが不可欠だと実例で示す。",
+          "viewer_question": "語録を面白くしたのは言葉自体か、その場面か。",
+          "setup": "Wikiに並んだ読み間違いを一つずつ読み、元の場面を思い出す。",
+          "evidence": "二人が語句を読み、当時の状況と反応を補って意味を再構成する。",
+          "interpretation": "発話の価値は誤りではなく、共有された場面にある。",
+          "conclusion": "文脈を戻すことで、語録は人物攻撃ではなく共同記憶になる。",
+          "transition_to_next": "個人の言い間違いから、参加者間で共有される言葉へ進む。"
+        },
+        {
+          "chapter_number": 3,
+          "title": "同じ間違いが共有言語になる",
+          "clip_id": "CU-09",
+          "thesis": "語録が個人から共同体へ移る過程を示す。",
+          "viewer_question": "一人の言い間違いは、いつみんなの言葉になるのか。",
+          "setup": "大量の言い間違いを読み、本人が覚えているかを確かめる。",
+          "evidence": "複数の語句を読み、本人と周囲が同じ間違いを使った記憶を確認する。",
+          "interpretation": "反復の主体が増えるほど、語句は共同体の識別子になる。",
+          "conclusion": "語録の作者は一人ではなく、使い続けた参加者と視聴者でもある。",
+          "transition_to_next": "共有された言葉の由来を、別の参加者も含めて検証する。"
+        },
+        {
+          "chapter_number": 4,
+          "title": "由来を本人たちが再検証する",
+          "clip_id": "CU-10",
+          "thesis": "Wiki添削を共同検証のプロセスとして結論づける。",
+          "viewer_question": "本人が複数いれば、Wikiの由来は正確になるのか。",
+          "setup": "宝鐘マリンの語録を読み、誰がいつ使った言葉かを三人で確かめる。",
+          "evidence": "三人が語録の使用者と由来を相互に確認し、記述の境界を修正する。",
+          "interpretation": "複数視点の不一致こそ、記録を更新するための材料になる。",
+          "conclusion": "Wiki添削は共同記憶を再編集する会話である。",
+          "transition_to_next": "言葉の由来を超え、他者の証言が本人像をどう変えるかへ移る。"
+        }
+      ]
+    },
+    {
+      "episode_id": "E4",
+      "title": "他者の証言が本人像を更新する",
+      "thesis": "人物像は本人の説明だけでなく、友人が拾った言葉・支えた行動・横断する記録から作られる。",
+      "viewer_question": "他者との関係は、Wiki上の本人像をどう変えるのか。",
+      "setup": "友人が語録を拾う場面から始める。",
+      "evidence": "友人による回復と、複数ページを横断する語録を接続する。",
+      "interpretation": "関係性は人物の属性ではなく、相互に自己像を変える履歴である。",
+      "conclusion": "Wiki添削familyは、本人・仲間・ファンが更新し続ける人物史を読む。",
+      "transition_to_next": "family終幕。未取得ソースを解消した後に統合rough cutへ進む。",
+      "clip_ids": [
+        "CU-11",
+        "CU-12",
+        "CU-13"
+      ],
+      "chapters": [
+        {
+          "chapter_number": 1,
+          "title": "友人が使うことで言葉が関係性になる",
+          "clip_id": "CU-11",
+          "thesis": "共有言語を関係性の証拠として読み替える。",
+          "viewer_question": "共有された言葉から、誰と誰の関係が見えるのか。",
+          "setup": "二人の間で共有される語録を読み、別の友人がその表現を後押しした場面を思い出す。",
+          "evidence": "二人が語録を読み、宝鐘マリンがその表現を受け止めた場面へ接続する。",
+          "interpretation": "語録は話者の所有物ではなく、応答した関係者との共同成果である。",
+          "conclusion": "関係性は呼び名や語録だけでなく、相手の自己像を変える力を持つ。",
+          "transition_to_next": "言葉の応答から、行動による支えと自己認識へ進む。"
+        },
+        {
+          "chapter_number": 2,
+          "title": "友人の反応が自己評価を変える",
+          "clip_id": "CU-12",
+          "thesis": "他者の証言と行動が本人像を更新する核心例になる。",
+          "viewer_question": "他者の証言は本人の自己認識をどう変えるのか。",
+          "setup": "Wikiの『虚無』という記述を読み、限界時の過ごし方と友人の訪問を話す。",
+          "evidence": "Wikiの用語から、友人の訪問と笑いが本人を回復させた話へ進む。",
+          "interpretation": "関係性は人物紹介の属性ではなく、自己評価を更新する出来事として記録される。",
+          "conclusion": "Wikiに残る他者との場面が、本人像の一部を説明する。",
+          "transition_to_next": "一つの支援関係から、三人のページにまたがる相互記録へ広げる。"
+        },
+        {
+          "chapter_number": 3,
+          "title": "ページをまたぐ言葉がfamilyを結ぶ",
+          "clip_id": "CU-13",
+          "thesis": "個別ページを横断し、Episode family全体を一つの結論に統合する。",
+          "viewer_question": "別々の人物ページは、どこで一つの関係史になるのか。",
+          "setup": "桃鈴ねねの語録欄で、さくらみこや大空スバルのページにも現れる言葉を見つける。",
+          "evidence": "複数ページに現れる同じ語句と反復を確認し、まだ多く残ると話す。",
+          "interpretation": "人物ごとの記録は、共有された言葉を介して関係性のアーカイブになる。",
+          "conclusion": "Wiki添削familyは、本人・仲間・ファンが更新し続ける人物史を読むシリーズである。",
+          "transition_to_next": "完成品では、4 Episodeの問いを回収し、記録は今後も更新されると閉じる。"
+        }
+      ]
+    }
+  ],
+  "clipunit_completeness": {
+    "clip_unit_count": 13,
+    "setup_complete_count": 13,
+    "core_complete_count": 13,
+    "payoff_complete_count": 13,
+    "transition_in_complete_count": 13,
+    "transition_out_complete_count": 13
+  },
+  "clipunit_ids": [
+    "CU-01",
+    "CU-02",
+    "CU-03",
+    "CU-04",
+    "CU-05",
+    "CU-06",
+    "CU-07",
+    "CU-08",
+    "CU-09",
+    "CU-10",
+    "CU-11",
+    "CU-12",
+    "CU-13"
+  ],
+  "probe_reuse_review": {
+    "probe_cut_count": 60,
+    "proposed_for_contextual_reuse_count": 20,
+    "excluded_from_current_assembly_count": 40,
+    "reuse_rule": "旧25秒窓をstandalone採用せず、拡張ClipUnit内部でのみ再編集する。"
+  },
+  "acceptance_score": {
+    "fixed_weight_total": 100,
+    "earned_points": 74.0,
+    "units": [
+      {
+        "unit": "final deliverable topology",
+        "weight": 8,
+        "score": 1.0,
+        "weighted_points": 8.0,
+        "evidence": "4本のテーマ別Episode familyと視聴順を固定"
+      },
+      {
+        "unit": "source corpus inventory",
+        "weight": 10,
+        "score": 1.0,
+        "weighted_points": 10.0,
+        "evidence": "既知3配信のexact/ unavailable laneと処理範囲を固定"
+      },
+      {
+        "unit": "thematic clustering",
+        "weight": 12,
+        "score": 1.0,
+        "weighted_points": 12.0,
+        "evidence": "配信内容から導出した4クラスタをsource横断で固定"
+      },
+      {
+        "unit": "Episode/Chapter map",
+        "weight": 12,
+        "score": 1.0,
+        "weighted_points": 12.0,
+        "evidence": "4 Episode・13 chapterの論旨と遷移を固定"
+      },
+      {
+        "unit": "context-complete ClipUnits",
+        "weight": 18,
+        "score": 1.0,
+        "weighted_points": 18.0,
+        "evidence": "13/13でsetup/core/payoff/前後文脈/遷移を固定"
+      },
+      {
+        "unit": "continuous rough-cut/edit script",
+        "weight": 14,
+        "score": 1.0,
+        "weighted_points": 14.0,
+        "evidence": "13 ClipUnitを連続する編集台本へ接続"
+      },
+      {
+        "unit": "S content review",
+        "weight": 8,
+        "score": 0.0,
+        "weighted_points": 0.0,
+        "evidence": "Coordinator経由のcontent verdict待ち"
+      },
+      {
+        "unit": "integrated render",
+        "weight": 8,
+        "score": 0.0,
+        "weighted_points": 0.0,
+        "evidence": "本Work OrderではMP4生成禁止"
+      },
+      {
+        "unit": "technical QA",
+        "weight": 4,
+        "score": 0.0,
+        "weighted_points": 0.0,
+        "evidence": "統合render前のためfinal media QAは未開始"
+      },
+      {
+        "unit": "final content acceptance",
+        "weight": 6,
+        "score": 0.0,
+        "weighted_points": 0.0,
+        "evidence": "明示的human content acceptanceなし"
+      }
+    ],
+    "interpretation": "pre-render units 1–6のみ。S review、integrated render、final media QA、human acceptanceは未加点。"
+  },
+  "review_packet": {
+    "route": "return_to_Coordinator; do_not_contact_S_directly",
+    "requested_verdicts": [
+      "content_continue",
+      "content_bounded_repair",
+      "content_reframe"
+    ],
+    "review_questions": [
+      "audience promiseは初見視聴者にWiki添削の趣旨を一文で伝えるか",
+      "4 Episodeのテーマ順は、人物像→記憶→共有言語→関係性の論理を保つか",
+      "13 ClipUnitは各々setup/core/payoffと前後接続を満たすか",
+      "Turn1–5の20 reuse候補は拡張文脈内だけで使う方針が妥当か",
+      "source bytes未提供2 laneを残したままrenderへ進まず、取得gateを維持すべきか"
+    ],
+    "decision_boundary": "content_continueのみ次のintegrated rough-cut実装へ進む。bounded repair/reframeは指定範囲だけ設計を修正し、MP4は作らない。",
+    "non_inferences": [
+      "technical decode/test/coverage/overlapからcontent acceptanceを推論しない",
+      "rights/production/publication/monetization/deliveryを推論しない",
+      "unavailable source bytesをcaptionだけでrender-readyと扱わない"
+    ]
+  },
+  "canonical_ir_path": "docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.json",
+  "human_entrypoint": "docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.html"
+}

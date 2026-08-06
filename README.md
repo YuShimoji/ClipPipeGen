@@ -14,24 +14,20 @@ static-reviewable, and 0 contract-only slots. These tiers describe evidence
 availability only; existing acceptance, rights, production, publication,
 monetization, and upload gates remain exact-artifact decisions.
 
-ED-13 Wiki family-turn note: `clip-wiki-tensaku-family-turn-v1-001` reuses the exact
-retained `youtube:1AcId5Yja10` source bytes with zero network requests and selects one
-25-second correction-led chapter from each of 12 chronological whole-source slots. The
-300-second H.264/AAC MP4 SHA is `1f965e53...3284`; 12/12 chapters contain correction
-anchors, 13/13 media checks and full decode pass, localhost returns page 200 / Range 206,
-and deterministic resume skips render while preserving hash and mtime. Its technical and
-production-transition acceptance is fixed; human editorial review and rights/public gates remain open.
-`clip-wiki-tensaku-family-turn-v2-001` excludes all 24 source ranges used by the baseline
-and Turn 1, adding 300 unique source seconds with network 0 and another 13/13-valid MP4.
-`clip-wiki-tensaku-family-turn-v3-001` excludes all 36 ranges used through Turn 2 and adds
-another non-overlap 300 seconds. `clip-wiki-tensaku-family-turn-v4-001` excludes all 48
-ranges used through Turn 3 and adds a further 300 seconds, taking cumulative unique
-source-time to 1,475 seconds. Its correction-led selection falls back to caption-backed
-ranges in slots 1, 6, and 12 because no unused correction-bearing 25-second windows remain there.
-`clip-wiki-tensaku-family-turn-v5-001` recomputes 60 prior ranges from five exact
-edit packs, adds another non-overlap 300 seconds, and takes unique source-time to
-1,775 seconds (31.94%). Its measured composition is correction-prioritized mixed:
-8 correction chapters and 4 explicit caption-backed fallbacks, not 12/12 correction-led.
+ED-13 Wiki content-reframe note: human content feedback is `revise`. Turns 1–5 are
+preserved byte-for-byte as `SOURCE_SELECTION_AND_RENDER_PROBE`, with non-final product
+authority and technical evidence only; MP4 count, decode, coverage, and overlap do not
+represent integrated product progress or content acceptance. The tracked pre-render packet
+[`wiki_tensaku_content_reframe_v1.html`](docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.html)
+reconstructs all three known streams as a four-Episode thematic family: 人物像 → 記憶 →
+共有言語 → 関係性. Its canonical JSON contains 13 context-expanded ClipUnits with
+setup/core/payoff, prior/following context, source timestamps, caption readback, chapter
+contribution, and transitions. Twenty of the 60 probe cuts are candidates only inside those
+expanded units; 40 are excluded from the current assembly. No new MP4 was created.
+The fixed pre-render acceptance score is 74/100; S content review, integrated render,
+final media QA, and explicit human content acceptance remain zero/open. Exact source bytes
+for `youtube:82iRbxjvbww` and `youtube:Ocqg-RpQURY` remain unavailable and parked without
+guessed retrieval, cookies, OAuth, or anonymous retry.
 
 SH-10 private artifact transfer note: `build-private-artifact-transfer` creates an
 ignored, immutable ZIP plus exact-hash receipt from explicitly listed `episodes/` inputs.

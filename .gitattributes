@@ -1,0 +1,2 @@
+# Exact-hash portable review artifacts must retain deterministic LF bytes on Windows.
+docs/content_planning/wiki_tensaku_content_reframe_v1/* text eol=lf

@@ -3,13 +3,13 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: BENCHMARK_PORTFOLIO_WIKI_FAMILY_TURN_FIVE_READY_SCARCITY_WATCH_MEDIA_GATES_PARKED_S1_PARKED
+health: WIKI_CONTENT_REFRAME_REVIEW_READY_MEDIA_GATES_PARKED_S1_PARKED
 last_touched: 2026-08-06
-state_revision: wiki-family-turn-five-scarcity-aware-media-2026-08-06
+state_revision: wiki-content-first-thematic-family-reframe-2026-08-06
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
-current_slice: SH-05
-phase: wiki_family_turn_five_scarcity_aware_media_verified
-canonical_status: benchmark_portfolio_15_families_32_slots_wiki_family_turn_five_ready
+current_slice: ED-13
+phase: wiki_content_reframe_pre_render_review_ready
+canonical_status: wiki_four_episode_family_design_ready_s_content_review_pending
 active_branch: codex/wiki-tensaku-longform-family-v1
 source_branch: codex/wiki-tensaku-longform-family-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
@@ -42,15 +42,15 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: Wiki scarcity-aware family Turn 5 materialized as honest correction-prioritized mixed composition
-human_entrypoint: docs/benchmarks/index.html
-portable_entrypoint: docs/benchmarks/index.html
-review_open_command: start docs\benchmarks\index.html
-review_server_restart_command: not_required_static_portfolio
-machine_readback: docs/benchmarks/benchmark_portfolio.json
+current_title: Wiki content-first thematic Episode family pre-render design ready
+human_entrypoint: docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.html
+portable_entrypoint: docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.html
+review_open_command: start docs\content_planning\wiki_tensaku_content_reframe_v1\wiki_tensaku_content_reframe_v1.html
+review_server_restart_command: not_required_static_file
+machine_readback: docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: wiki_family_turn_five_exact_sha_supervisor_editorial_mixed_composition_and_terminal_verdict
-review_status: turn_four_accepted_exact_mixed_turn_five_machine_validated_scarcity_watch_human_editorial_terminal_open
+decision_required: s_content_review_of_audience_promise_four_episode_map_and_thirteen_context_complete_clipunits
+review_status: human_artistic_revise_recorded_pre_render_content_packet_ready_s_verdict_pending
 review_scope: 15_registered_output_families_32_family_scoped_candidate_slots
 reviewed_at: null
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
@@ -60,9 +60,9 @@ remote_decision_binding_available: false
 local_decision_binding_committed: false
 remote_mutation_authorized: false
 local_artifact_available: true
-local_artifact_role: tracked_portfolio_with_links_to_preserved_same_machine_evidence
+local_artifact_role: tracked_portable_pre_render_content_design_with_preserved_ignored_probe_evidence
 portable_local_artifact_available: true
-cross_machine_resume_class: tracked_portfolio_cards_and_contracts_are_portable_local_media_tiers_must_be_reobserved_per_host
+cross_machine_resume_class: tracked_reframe_html_markdown_json_and_receipt_are_portable_ignored_media_remains_private
 cross_host_resume_status: exact_s1_package_present_on_verified_host_not_portable_through_git
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
@@ -103,8 +103,8 @@ accepted_baseline_recovery_status: null
 cover_direction_review_available: null
 historical_cover_direction_evidence_available: true
 cover_direction_acceptance: null
-human_review_decision: not_required_for_portfolio_navigation_existing_candidate_specific_gates_unchanged
-user_feedback_overall: pending_s4_exact_probe_review
+human_review_decision: revise_wiki_probes_not_comprehensible_or_integrated
+user_feedback_overall: wiki_topic_correct_but_purpose_context_and_whole_corpus_integration_require_reframe
 content_selection_status: jp_pilot01_provider_caption_evidence_explicit_seven_cut_plan_rendered
 subtitle_presentation_timing_status: provider_json3_102_cues_keifont_two_line_safe_area_pass
 endpoint_status: final_complete_victory_cue_closes_before_post_resolution_tail
@@ -137,24 +137,43 @@ winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: stopped_restart_command_available
-next_review_due: wiki_family_turn_five_exact_sha_and_scarcity_aware_fallback_chapters_supervisor_review_s1_remains_parked
-next_review_type: continue_bounded_repair_or_stop_exact_wiki_family_turn_five_sha
-next_action: supervisor_review_wiki_family_turn_five_exact_sha_composition_and_fallback_scarcity_then_decide_next_coverage_turn
-active_artifact: clip-benchmark-portfolio-coverage-v1-001
-current_review_component: tiered_benchmark_portfolio_and_per_candidate_reverse_engineering_cards
+next_review_due: wiki_content_reframe_exact_packet_s_content_verdict_s1_remains_parked
+next_review_type: content_continue_content_bounded_repair_or_content_reframe
+next_action: coordinator_routes_wiki_content_reframe_packet_to_s_then_waits_for_content_verdict_before_any_mp4
+wiki_content_reframe_work_order_id: CPG-WIKI-CONTENT-REFRAME-001
+wiki_content_reframe_artifact_id: wiki-tensaku-content-reframe-v1-001
+wiki_content_reframe_topology: thematic_episode_family
+wiki_content_reframe_episode_count: 4
+wiki_content_reframe_chapter_count: 13
+wiki_content_reframe_planned_final_mp4_count: 4
+wiki_content_reframe_clipunit_count: 13
+wiki_content_reframe_setup_core_payoff_complete_count: 13
+wiki_content_reframe_transition_in_out_complete_count: 13
+wiki_content_reframe_probe_cut_count: 60
+wiki_content_reframe_contextual_reuse_candidate_count: 20
+wiki_content_reframe_excluded_probe_cut_count: 40
+wiki_content_reframe_acceptance_score: 74
+wiki_content_reframe_acceptance_weight_total: 100
+wiki_content_reframe_generated_mp4_count: 0
+wiki_content_reframe_human_artistic_acceptance: revise
+wiki_content_reframe_s_review_status: pending
+wiki_content_reframe_integrated_render_status: not_started
+wiki_content_reframe_final_content_acceptance: not_granted
+active_artifact: wiki-tensaku-content-reframe-v1-001
+current_review_component: audience_promise_episode_map_context_complete_clipunits_and_continuous_rough_cut
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
 implementation_revision: b997de8bc6754d104c115608290b648660a9062e
-artifact_output_sha256: not_applicable_tracked_multi_artifact_portfolio
-artifact_output_byte_size: not_applicable
+artifact_output_sha256: bound_in_content_reframe_receipt
+artifact_output_byte_size: bound_in_content_reframe_receipt
 artifact_package_tree_digest_sha256: not_used_tracked_regenerable_portfolio
 artifact_manifest_self_sha256: not_applicable
-artifact_file_count: 36
-artifact_duration_seconds: not_applicable
-artifact_source_count: 15
-artifact_cut_count: 32
-artifact_source_switch_count: not_applicable
-artifact_caption_cue_count: inherited_per_candidate_not_aggregated
-artifact_commentary_count: inherited_per_candidate_not_aggregated
+artifact_file_count: 5
+artifact_duration_seconds: not_applicable_pre_render
+artifact_source_count: 3
+artifact_cut_count: 13_context_complete_clipunits
+artifact_source_switch_count: planned_in_continuous_rough_cut
+artifact_caption_cue_count: caption_readback_bound_per_clipunit
+artifact_commentary_count: not_applicable_pre_render
 benchmark_family_denominator: 15
 benchmark_candidate_slot_denominator: 32
 benchmark_materialized_card_count: 32
@@ -842,73 +861,55 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — SH-05 Wiki Scarcity-Aware Family Turn 5 Ready
+## Current Capsule — ED-13 Wiki Content-First Reframe Ready
 
-- active slice: `SH-05`
-- active artifact: `clip-benchmark-portfolio-coverage-v1-001`
-- portfolio entrypoint: `docs/benchmarks/index.html`
-- machine ledger: `docs/benchmarks/benchmark_portfolio.json`
-- registered denominator: `15 families / 32 family-scoped candidate slots`
-- observed tiers: `25 fully-viewable / 2 playable-proxy / 5 static-reviewable / 0 contract-only`
-- materialization: `32/32 tracked candidate cards`
-- human decision required now: `false` for portfolio navigation
-- acceptance rule: each existing exact artifact/SHA gate remains unchanged
-- review status: `turn_four_accepted_exact_mixed_turn_five_machine_validated_scarcity_watch_human_editorial_terminal_open`
-- portable receipt: `docs/benchmarks/index.html`
-- local artifact role: `tracked_portfolio_with_links_to_preserved_same_machine_evidence`
-- human review pending: `true`
+- active slice: `ED-13`
+- active artifact: `wiki-tensaku-content-reframe-v1-001`
+- review entrypoint: `docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.html`
+- canonical IR: `docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.json`
+- artifact class: `diagnostic_pre_render_content_design`
+- human content verdict: `revise`
+- selected topology: `4-Episode thematic family`
+- viewing order: `人物像 → 記憶 → 共有言語 → 関係性`
+- content map: `4 Episodes / 13 chapters / 13 context-complete ClipUnits`
+- planned final MP4 count: `4`
+- generated in this Work Order: `0 MP4`
+- fixed-weight progress: `74/100`; S review and later units remain `0`
+- next human decision: S content verdict routed by Coordinator
 
-- 母数は`docs/output_layer`のWiki、S1、OUT-01〜OUT-13に有限化した。同一候補がOUT-11の
-  比較枠にも現れる場合はfamily-scoped slotとして数え、`reuse_of`で重複を明示するため、
-  32はunique media byte数ではない。
-- builderはcontract、static evidence、local entrypoint、登録mediaの現物を確認し、既知SHAを
-  照合してtierを決める。現物が欠けるhostでは自動的に低いtierへ降格し、生成済みと捏造しない。
-- Wiki Turn 2はbaselineとaccepted technical Turn 1の24 rangesをexact edit-pack SHAで除外し、
-  overlap 0秒の12章を生成した。unique source-timeは575→875秒、MP4 SHAは
-  `2736f6ec...dca`、13/13・full decode・mapping 1.0・black/silence 0・resume非renderをpass。
-- Wiki Turn 3はさらにTurn 2を含む36 rangesを除外し、overlap 0秒の300秒を追加した。
-  unique source-timeは875→1,175秒。11/12章にcorrection anchorを持ち、slot 6の唯一の
-  correction eventは既存rangeと交差するため非correction caption-backed rangeへfail-closed降格した。
-- Wiki Turn 4はTurn 3を含む48 rangesを4 exact edit-pack SHAで除外し、overlap 0秒の300秒を追加した。
-  unique source-timeは1,175→1,475秒（21.14%→26.54%）。9/12章に9 correction anchorsを持つ。
-  第1・6・12章は未使用caption候補が残る一方、correctionを含む未使用25秒windowが0件なので
-  caption-backed fallbackを採用した。fallbackがTurn 3の1件から3件へ増えた点はSupervisor watch item。
-- Wiki Turn 5は実packから60 prior rangesを再集計し、5 exact SHAで除外した。Turn 5 overlap 0秒で
-  unique source-timeは1,475→1,775秒（26.54%→31.94%）。8 correction章と4 fallback章の
-  `correction-prioritized-mixed`であり、第1章は未代表topic、第6・11・12章はcorrection候補0件後の
-  時系列意味連続性を理由にする。12/12 correction-ledとは主張しない。
-- Turn 5 deltaはsourceを重複せず、archive SHA`37d44848...9b17`を2 parts + manifest + receiptとして
-  private Driveへ保存した。folder final listingは32 member / 309,891,716 bytes、shared 0、全件
-  `not_shared`。recipient download/restore完了は未証明。
-- 既存のWiki 001、S1、OUT-03〜OUT-06、OUT-08〜OUT-13等の完全再生可能packageは変更も
-  再生成もせず参照した。OUT-07はexact Planner baseline不在を保ったままproxy、OUT-01/02は
-  tracked static proof、OUT-13 001はhistorical receiptとして表示する。
-- Wiki 002は2,145 caption events、22 topic windows、55 correction anchors、12 chapters、12
-  creator commentary eventsのstatic input packetを持つ。source-byte取得のexternal stateは
-  `BLOCKED_EXTERNAL`だが、portfolio全体のbottleneckではなくparked upgrade conditionである。
-  cookies / OAuth / anonymous acquisition retryは行わない。
-- Wiki 003はretained caption payload、corpus inventory、family topic index、retained watch receiptだけを
-  使用し、network request 0でcandidate-specific 12章packetへ昇格した。979 caption events全域から
-  12 topic windows、44 correction anchors、12 chapters、12 creator commentary eventsを分離保存した。
-  source bytesとMP4は存在せず、media/Product Gateは未達のまま。
-- Wiki 001のexact retained source bytesをidentity/SHA/size/duration/no-cookie/no-OAuth receiptへ再bindし、
-  network request 0で訂正anchor主導の新artifact`clip-wiki-tensaku-family-turn-v1-001`を生成した。
-  12時系列slotすべてに訂正anchorを含む300秒 / 12章 / 106 caption cue / 12 commentary eventで、
-  MP4 SHA`1f965e53...3284`、13/13、full decode、mapping 1.0、resume非render、page 200 / Range 206をpass。
-  technical / production-transition acceptanceは固定済みでartifactは不変。human editorial reviewだけがopen。
-- S1 `clip-s1-two-source-common-context-probe-v1-001`のS4 human review pending、OUT-13 M6 deny、
-  既存accepted/parked判定、rights/publication gateはすべて元のexact scopeのまま保持する。
-- `episodes/`はignoredかつtracked 0。Gitへ追加したのはregistry、generator、ledger、HTML card、
-  tests、runtime/handoffだけで、source mediaやreview packageはtrackしない。
+- 視聴者への約束は「配信を知らない視聴者でも、本人たちが非公式Wikiを読み、訂正し、
+  忘れていた出来事や語録を再解釈する過程から、ファンの記録が本人像をどう作り直すかを
+  4本で理解できる」。旧turnごとの300秒出力は最終topologyとして廃止した。
+- authoritative title-rule corpusは既知3配信。caption identityは3/3 exact、media identityは
+  `youtube:1AcId5Yja10`だけexact bytesあり。`youtube:82iRbxjvbww`と
+  `youtube:Ocqg-RpQURY`はexact source bytes未提供で、推測取得、cookies、OAuth、anonymous retryをしない。
+- taxonomyは配信内で反復する「ページが作る人物像」「記録が戻す記憶」「語録が共有言語に
+  なる過程」「他者の証言が本人像を更新する過程」から導出した。time coverageではなく、
+  source/topic representationを編集coverageとして扱う。
+- 13 ClipUnitsは固定25秒窓ではない。各unitにspeaker、topic target、setup、core、payoff、
+  prior/following context、chapter contribution、transition in/out、selection reason、exclusion risk、
+  exact source timestamp、短いcaption readbackを持たせた。setup/core/payoffとtransitionは13/13 complete。
+- Turn1–5のMP4 bytes、mtime、SHA、既存receiptは変更していない。新authority artifactで全5本を
+  `SOURCE_SELECTION_AND_RENDER_PROBE` / non-final / technical evidence preserved /
+  `human_artistic_acceptance=revise` / final product not acceptedへ分類した。
+- 旧60カットのうち20件は拡張ClipUnit内部だけで再編集候補、40件は現assemblyのthesis-bearing
+  unit外として理由付き除外。25秒窓をstandaloneで再採用しない。文脈保持のsource overlapは許容し、
+  harmful redundancyとは区別する。
+- Work Orderのpre-render validationはbuilder fail-closed、source/caption/probe identity、schema、
+  ClipUnit completeness、receipt hash、MP4 0、tracked `episodes/` 0を対象にする。technical media QAは
+  integrated render後の別unitなので、今回のacceptance scoreでは0のまま。
+- S1 `clip-s1-two-source-common-context-probe-v1-001`、rights、production、publication、monetization、
+  delivery gateは元のexact scopeでpark。Coreへproject runtime/receipt/cursorは書き込まない。
 
 ## Next Action
 
-- action: `supervisor_review_wiki_family_turn_five_exact_sha_composition_and_fallback_scarcity_then_decide_next_coverage_turn`
-- authorization state: `turn_five_machine_evidence_complete_mixed_composition_editorial_fit_open_media_upgrades_remain_exact_bytes_only`
-- owner: `ClipPipeGen Supervisor / editing`
-- condition: Turn 5 exact MP4 SHA、8 correction章、fallback第1・6・11・12章とscarcity値を編集適合として審査する。機械passから
-  human editorial/terminal、rights、production、publicationを推論しない。Wiki 002/003はexact source bytesが
-  明示された場合だけ再開し、S1はpark、cookie、OAuth、anonymous acquisition retryは行わない。
+- action: `coordinator_routes_wiki_content_reframe_packet_to_s_then_waits_for_content_verdict_before_any_mp4`
+- authorization state: `pre_render_content_design_complete_no_render_authority_until_s_verdict`
+- owner: `Coordinator-routed ClipPipeGen Supervisor / content editing`
+- condition: audience promise、4 Episode/13 chapter、13 ClipUnits、continuous rough-cut、20 reuse候補と
+  40 exclusionsをcontentとして審査する。`content_continue`の場合だけ次のintegrated rough-cut実装へ進む。
+  `content_bounded_repair` / `content_reframe`では指定範囲を直し、MP4を作らない。機械passからhuman acceptance、
+  rights、production、publicationを推論しない。Wiki 002/003はexact source bytesが明示された場合だけmedia laneを再開する。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 

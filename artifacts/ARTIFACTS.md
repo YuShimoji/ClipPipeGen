@@ -6,12 +6,11 @@ current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
 Normal open order is `.\open-dashboard.ps1` first, then use the Runtime-driven
-current focus. SH-05 is the active readback surface: a tracked benchmark
-portfolio spanning the 15 registered output-layer families and 30
-family-scoped candidate slots. ED-13 now includes a correction-led fully-viewable
-successor turn plus two uncovered-range fully-viewable turns from exact retained Wiki 001 source bytes. Wiki 002 and 003 exact source bytes are parked
-as explicit upgrade conditions instead of blocking the portfolio. Wiki 003 already has a
-network-free candidate-specific static input packet. ED-12 / S1
+current focus. ED-13 is now content-first: the active tracked entrypoint is the
+Wiki添削 pre-render thematic Episode-family proposal. The five historical 300-second
+turn MP4s remain immutable technical probes, not accepted final products or five
+integrated iterations. Wiki 002 and 003 exact source bytes are parked as explicit
+render conditions; their exact captions support content design only. ED-12 / S1
 remains a parked exact review target with S4 human review pending. Local packages
 remain ignored same-machine evidence. Git carries implementation, tests,
 contracts, identities, benchmark cards, and handoff, not source media or final MP4.
@@ -36,6 +35,30 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `wiki-tensaku-content-reframe-v1-001`
+
+| Field | Value |
+|---|---|
+| title | Wiki添削 Content-First Thematic Episode Family v1 |
+| purpose | Replace disconnected 300-second selection probes with one audience promise, a whole-corpus source map, a content-derived taxonomy, and a continuous four-Episode editorial design before any new render. |
+| artifact class | `diagnostic_pre_render_content_design`; not a finished video. |
+| audience promise | 配信を知らない視聴者でも、本人たちが非公式Wikiを読み、訂正し、忘れていた出来事や語録を再解釈する過程から、ファンの記録が本人像をどう作り直すかを4本で理解できる。 |
+| topology | Four thematic Episodes in viewing order: 人物像 → 記憶 → 共有言語 → 関係性. Planned final MP4 count 4; the tracked family index is not a final MP4. |
+| corpus | Three known authoritative-stream identities; exact captions 3/3, exact media 1/3. `youtube:82iRbxjvbww` and `youtube:Ocqg-RpQURY` remain explicit exact-source-byte gates. |
+| Narrative Assembly IR | 13 ClipUnits; setup/core/payoff and transition in/out complete 13/13. Every ClipUnit binds source timestamp, speaker/topic, prior/following context, thesis contribution, selection reason, exclusion risk, and short caption readback. |
+| probe treatment | Turns 1–5 are reclassified without receipt rewrite as non-final `SOURCE_SELECTION_AND_RENDER_PROBE`, technical evidence preserved, `human_artistic_acceptance=revise`, final product not accepted. Of 60 old cuts, 20 are contextual reuse candidates and 40 are excluded from this assembly; no fixed 25-second window is accepted standalone. |
+| acceptance | Fixed pre-render score 74/100. S content review, integrated render, final media QA, and explicit human content acceptance remain 0/open. |
+| entrypoint | `docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.html` |
+| canonical IR | `docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.json` |
+| S review packet | `docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.s_review_packet.json` |
+| receipt | `docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.receipt.json` |
+| builder / validation | `scripts/build_wiki_tensaku_content_reframe.py`; `tests/test_wiki_tensaku_content_reframe.py` |
+| next action | Coordinator routes the exact content packet to S. Only `content_continue` authorizes the next integrated rough-cut implementation; bounded repair or reframe modifies the design before MP4 work. |
+
+The Turn 1–5 registry entries below retain their historical technical identities and
+receipts. Their earlier technical/production wording does not override this artifact's
+current product authority or the explicit human `revise` verdict.
+
 ## `clip-benchmark-portfolio-coverage-v1-001`
 
 | Field | Value |
@@ -52,7 +75,7 @@ opened by the root launcher.
 | coverage_ledger | `docs/benchmarks/COVERAGE_LEDGER.md` |
 | validation_command | `uv run --offline --no-project --python 3.13 python tools/benchmarks/build_benchmark_portfolio.py --hash-local-media --format json`; `uv run --offline --no-project --python 3.13 --with pytest pytest -q tests/test_benchmark_portfolio.py`; focused Wiki successor tests; `git diff --check`; `git ls-files episodes`. |
 | review_status | Internal portfolio review available. A tier is an availability/readback classification, not fresh human acceptance. Existing accepted and parked decisions retain their exact artifact/SHA scope. |
-| next_action | Supervisor reviews the exact Turn 5 correction-prioritized mixed MP4 and fallback chapters 1, 6, 11, and 12 using the recorded scarcity evidence. Keep Wiki 002/003 media upgrades parked until exact source bytes arrive; do not use cookies, OAuth, or anonymous retry. |
+| next_action | Treat the five Wiki turns as preserved probes and review `wiki-tensaku-content-reframe-v1-001` for content coherence. Keep Wiki 002/003 media upgrades parked until exact source bytes arrive; do not use cookies, OAuth, or anonymous retry. |
 
 Boundary flags remain false or explicit:
 
