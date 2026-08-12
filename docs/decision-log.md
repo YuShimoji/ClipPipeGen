@@ -3,10 +3,37 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-07-27
+last_touched: 2026-08-12
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-08-12 — Wiki CU-04 proofをportable handoffへ固定し、semantic winnerを保留する
+
+retained exact source `youtube:1AcId5Yja10`から作成した
+`clip-wiki-integrated-subtitle-cut-proof-v1-001`は、opening差分、causal core、
+event_001639完結、topic-pure endpointの4本を実字幕付きで比較できるmaterial evidenceである。
+既存Reviewer verdictは`PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED`。したがってproofの
+有用性だけを受け取り、opening/endpointのsemantic winner、human artistic acceptance、
+production candidate採用は記録しない。
+
+fresh live readbackではpackageは69 payload members＋manifestの70 physical files。current manifest
+SHAは`534882f9be1e36ed773a7b59b418ea1e6e203d64b7f4f690def0674c67bace52`、
+review HTML SHAは`a5d0db6bca005b95aeae51155b52325d64a30e9be1d16608a096411a4b26d26f`。
+dispatch時のexpected manifest `3d98c204...9a544`との差は、MP4とreview HTMLを保持したまま
+`review/open_review.ps1`と`review/serve_review.cjs`を追加したaccess-only changeである。
+current closed setを正本とし、古いmanifestへ戻さない。
+
+4 MP4 SHAは順に`b2dbc8aa...48aedb`、`cc31dedc...af882`、
+`1c3f6a00...eb10a1`、`2cafe893...70f52`で不変。Gitへ載らないpackageは、
+許可されたproject別external ZIPとZIP外manifestへだけ複製する。source 197MB、親338秒、
+旧artifactはtransport対象にしない。commit / push / uploadは親Coordinatorへ留保する。
+
+別端末の最短actionは、tracked`README.md`、`docs/RUNTIME_STATE.md`、
+`docs/CURRENT_HANDOFF.md`を読み、外部manifestとZIP closureを確認してloopback reviewを開くこと。
+その後、openingとendpointの意味判断だけをexact MP4 SHAへbindする。親338秒full-1x queueは
+再pollせず、Episode 1の`youtube:Ocqg-RpQURY` exact-source blocker、rights、production、
+publication、deliveryも独立gateのまま維持する。
 
 ## 2026-07-27 — S1 tracking parityを再確認し、parallel OUT-14 v3を統合しない
 

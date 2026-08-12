@@ -3,41 +3,34 @@ id: idea-ledger
 title: Idea Ledger - ClipPipeGen
 type: durable_idea_ledger
 status: current
-last_touched: 2026-07-26
+last_touched: 2026-08-12
 ---
 
 # Idea Ledger - ClipPipeGen
 
-ED-12 / S1のtwo-source common-context probeはtracked implementationとsame-machine exact
-packageまで到達した。現在はS4 human review pending。以下は違うbottleneckを解く候補であり、
-人間判断、rights、production、public acceptanceへ自動昇格しない。
+現在のWiki添削familyは、probe数やcoverageを増やす段階ではなく、同じsource/cut/subtitle/test
+identity上で意味を選び、Episodeへ統合する段階である。以下の候補は別gateを混ぜない。
 
-| 段階 | 目的 / 効果 | 必要条件 | 現在状態 | owner / 次の動き |
+| 入口 | 解くbottleneck | 必要条件 | 現在状態 | 次の動き |
 |---|---|---|---|---|
-| G0 OUT-13 archive保持 | deny済みexact artifactを再混入させない | Candidate 005 identity不変 | 完了 | Agent: negative boundary維持 |
-| G1 S1 identity / strategy | materially distinct successorを明示する | new identity、二source、new thesis | 完了 | Agent: contract維持 |
-| G2 evidence-bound plan | cut/commentaryをdirect evidenceへ戻す | media/caption/rights hash | 完了 | Agent: provenance維持 |
-| G3 reviewable package | exact MP4とvideo-first pageを作る | FFmpeg、immutable empty output | 完了 | Agent: package hash維持 |
-| G4 human common-context review | 二sourceが一つの論として成立するか判断 | exact SHA、全編視聴 | pending | User/Supervisor: accept / bounded repair / reject |
-| G5 bounded closure | verdictをidentityへbindする | G4回答 | proposed | Agent: receipt、必要ならnew identity |
-| G6 second-pair repeatability | 一例の偶然成功を減らす | G5 accept、別pair | proposed | User:実施価値判断、Agent:thin slice |
-| G7 fresh rights inventory | 実際に使う二source/rangeだけ棚卸し | G5 acceptまたは対象確定 | closed | Rights owner: material/range packet |
-| G8 production subtitle design | caption/commentary/attributionをdelivery仕様へ上げる | rights条件、design owner | closed | Human designer: exact visual receipt |
-| G9 production render | codec/audio/device/QCをdelivery profileへ上げる | G7/G8 | closed | Supervisor/User: profile acceptance |
-| G10 episode acceptance pack | lineageと判断receiptを一束にする | G5/G7/G8/G9 | proposed | Agent: no-scope-widening manifest |
-| G11 thumbnail / metadata | rights-cleared素材で非公開delivery準備 | G10 | parked | Human/Agent:比較・draft |
-| G12 external-state dry-run | upload前にidempotency/rollbackを検証 | G10/G11、no credentials | future | Agent: read-only plan |
-| G13 private delivery | public化せず限定導通 | credential/visibility明示承認 | future gate | Human owner |
-| G14 public release | 最終公開判断を監査可能にする | 全receipt、release owner | future gate | Human owner |
-| G15 operations | queue/retry/retention/quality trend | 複数episode evidence | long-range | Agent: failure isolationから提案 |
+| Review proof set | openingとendpointの意味判断 | portable packet、loopback review、exact MP4 SHA | ready | human/editorがsemantic routeを選ぶかbounded repairを返す |
+| Subtitle bounded repair | timing・改行・可読性の局所問題 | 選択routeと具体的な観察 | conditional | material/cutを変えずnew identityで修復 |
+| Causal successor | source/cut/subtitle/testを一つの編集単位へ上げる | semantic route verdict | blocked on verdict | 採用された次元だけrender-ready inputへ反映 |
+| Parent full-1x | 338.166016秒全体の知覚評価 | queued human review | queued | short proofで代替せず別gateのまま実施 |
+| Episode 1 integrated cut | CU-01→CU-02→CU-03を一続きにする | `Ocqg-RpQURY` 390–585秒exact media + receipt | exact-source blocked | bytes供給後preflightを再実行 |
+| Rights / production | 利用・delivery品質を決める | selected material、owner verdict | closed | semantic/technical結果から開かない |
+
+## 採らない方向
+
+- 4本のproofをsemantic winnerやfinished Episodeとして数えない。
+- fixed 25秒probe、coverage 0 overlap、decode PASSだけをcontent progressに変換しない。
+- CU-02の代わりにretained sourceやcaption-only映像を差し込まない。
+- `file://`不調を繰り返さず、同梱loopback serverのHTTP Range routeを使う。
+- Gitにignored mediaを追加せず、許可された外部packetでだけtransportする。
 
 ## 次の取っ掛かり
 
-- **Advance**: exact S1 MP4をS4の四問だけでreviewし、意味判断のbottleneckを閉じる。
-- **Verify**: remote branch parity、package hash、manifest closed setを再確認し、別端末handoffを強くする。
-- **Audit**: two sourceの使用rangeとrights unknownをread-only棚卸しし、S4とpermission判断を分離する。
-- **Explore**: S4後のsecond-pair候補を比較する。取得・render・generic framework化はまだ行わない。
-
-保留debtは、OUT-12 long-form routeのsecond-source repeatability、S1のsecond-pair
-repeatability、caption/commentaryのproduction design、二source各rangeのrights observation。
-優先順位はS4 verdict後に再評価する。
+- **Review**: portable proofをtimestamp jumpで比較し、openingとendpointの二判断を返す。
+- **Advance**: verdict後、選択次元だけをnon-overwriting causal successorへ反映する。
+- **Verify**: 別端末でZIP外manifest、ZIP member closure、HTTP 200 / Range 206を再確認する。
+- **Unblock**: Episode 1用CU-02 exact source bytesとreceiptを明示供給する。

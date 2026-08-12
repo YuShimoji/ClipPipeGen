@@ -3,15 +3,13 @@ id: project-context
 title: Project Context - ClipPipeGen
 type: durable_context
 status: current
-last_touched: 2026-07-27
-current_slice: ED-12
-phase: s1_s3_probe_built_s4_human_review_pending
-active_branch: codex/s1-two-source-common-context-probe-v1
-base_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-implementation_revision: a3771bc59cd58b05c00a570e1074118ace3dc15a
-sync_observed_head: 9656f58e55136c4d4a32f758d65484f9610c6feb
+last_touched: 2026-08-12
+current_slice: ED-13
+phase: wiki_cu04_proof_portable_handoff_semantic_route_unresolved
+active_branch: codex/wiki-tensaku-longform-family-v1
+sync_observed_head: c307089a592bb73b6539f801ff32b461dc4a424d
 upstream_parity: 0 0
-health: S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW
+health: WIKI_CU04_PROOF_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED_EP1_SOURCE_GATE_PARKED
 ---
 
 # Project Context - ClipPipeGen
@@ -19,77 +17,51 @@ health: S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW
 ## 現在の軸
 
 ClipPipeGenは、source acquisition、rights readback、編集authority、render、review、
-publishing準備をepisode単位で接続する制作補助ツールである。OUT-12で一source長尺route、
-OUT-13でcaption-evidence付き非連続editorial routeを成立させた。OUT-13 Candidate 005は
-内部editorial受領後、public / monetized pathをdenyしてread-only archive evidenceになった。
+publishing準備をepisode単位で接続する制作補助ツールである。現在のWiki添削familyは、
+全配信規模を理解可能なEpisodeへ再構成するED-13にいる。
 
-現在のED-12 / S1は、OUT-13を公開候補へ戻す作業ではない。別identity
-`clip-s1-two-source-common-context-probe-v1-001`へ、取得済み実source二本、direct caption
-evidence、creator-authored thesis/commentary、range rights readbackを結び、一つの論として
-レビューできるbounded successor probeを作る。
+Episode 1「Wikiが作る人物像」のcanonical integrated cutは、CU-02
+`youtube:Ocqg-RpQURY` 390–585秒のexact mediaと隣接receiptがないためfail-closedでpark中。
+その代替として別素材を採用していない。一方、retained exact source
+`youtube:1AcId5Yja10`から、cut・字幕・testを同じcandidate identityで比較できる
+`clip-wiki-integrated-subtitle-cut-proof-v1-001`を作成済みである。
 
-## 到達済みの停止点
+## 最新のmaterial result
 
-| 項目 | 状態 | 何が可能になったか |
+| 項目 | exact state | 意味 |
 |---|---|---|
-| remote baseline | `main` / `origin/main` = `edb782a` | 最新canonical deny状態を継承 |
-| repository / implementation | `9656f58` / `a3771bc`、branchはmainより2 commit先、upstream parity 0 0 | CLI、renderer、tests、handoffを再開可能 |
-| exact package | MP4 SHA `dc621bfe...f95be`、19 files | 同一マシンでS4全編review可能 |
-| machine validation | 16/16 checks、focused 12、full 689 | code/packageの技術基線はgreen |
-| human decision | pending | 二source共通文脈の意味判断が現在のbottleneck |
-| rights / production / public | closed | 技術greenから許諾・公開を推定しない |
+| proof package | `episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-integrated-subtitle-cut-proof-continuation-v1/package/` | Git外のreview material |
+| current manifest | 69 payload members + manifest / SHA `534882f9be1e36ed773a7b59b418ea1e6e203d64b7f4f690def0674c67bace52` | loopback launcher/serverを含むclosed set |
+| review surface | `review/index.html` / SHA `a5d0db6bca005b95aeae51155b52325d64a30e9be1d16608a096411a4b26d26f` | timestamp-jumpable comparison |
+| four MP4s | `b2dbc8aa...48aedb`, `cc31dedc...af882`, `1c3f6a00...eb10a1`, `2cafe893...70f52` | opening、causal core、二つのendpointを実字幕で比較 |
+| Reviewer result | `PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED` | proofは有用、semantic winnerは未決 |
 
-timelineは6 cut、各source 3 cut、5 source switches、98.896秒。caption 60 cueとcreator
-commentary 3 eventを別provenance trackに置く。source内時系列、continuous output clock、
-cut-to-source mappingを保持する。
+dispatch時のpre-access manifest `3d98c204...9a544`は、MP4やreview HTMLを変えず
+loopback launcher/serverを追加したaccess-only successorに置き換わった。live closed identityは
+上表の`534882f9...ace52`であり、古いmanifestへ巻き戻さない。
 
-## 最終成果物像
+## 現在のgapと境界
 
-短期の完成像は、S4 verdictがexact MP4 SHAへbindされ、acceptなら内部two-source
-argumentative-editing patternとして一例が閉じること。repairなら変えた次元だけをnew identityで
-再確認すること。rejectなら、このpair/thesis/directionを再利用しないこと。
+- openingの2523.480開始と2530.319開始のどちらが理解を助けるかは人間判断。
+- event_001639完結とevent_001641侵入回避のどちらを採るかも人間判断。
+- 字幕timing、改行、幅、burn-in、full decodeはtechnical evidenceであり、semantic winnerや
+  human artistic acceptanceではない。
+- 親338.166016秒のfull-1x review queueは別gateで、短尺proofでは代替・再pollしない。
+- rights、production subtitle/design/render、delivery、publication、monetization、uploadは未承認。
+- Episode 1のCU-02 exact-source gateは、このindependent proofによって解消した扱いにしない。
 
-中長期の完成像は、複数sourceの意味的関係を証拠へ戻せる編集計画、明示rights判断、
-production subtitle/render、episode acceptance、private delivery、明示public releaseまでを、
-各ownerのreceiptを混ぜずに接続する制作系である。generic frameworkは二つ目の成功例と
-一つの失敗例が揃うまで先に作らない。
+## 別端末での最短再開
 
-## 現在の最大gap
-
-machine validationは「正しく二本をrenderした」ことを示す。現在まだ示していないのは
-「二本を交互に置くことで中心問いが深まり、commentaryが過剰説明になっていない」こと。
-この意味判断がS4であり、コード追加より先に人間がexact artifactを評価する。
-
-## 再開順
-
-1. `AGENTS.md`
-2. `README.md`
-3. `docs/RUNTIME_STATE.md`
-4. `docs/INVARIANTS.md`
-5. `docs/AUTOMATION_BOUNDARY.md`
-6. `docs/CURRENT_HANDOFF.md`
-7. `docs/SUPERVISOR_STATUS_REPORT.md`
-8. `docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md`
-
-同一マシンではS1 package、manifest、MP4 SHAをlive照合する。別端末ではGitに含まれない
-`episodes/`を利用可能と推定しない。
-
-## 守る境界
-
-- `episodes/`はignoredかつtracked 0件を維持する。
-- protected R3 `human_preview_session`をcleanupしない。
-- OUT-13 Candidate 003–005とS1 successful packageを上書きしない。
-- NLMYTGenを含む他repositoryのfileを読まない・書かない。
-- human S4 verdictをagentのsample frame観察やmachine validationで代替しない。
-- rights、production subtitle/design/render、thumbnail、publishing、upload、public releaseを
-  S4 editorial verdictから推定しない。
-- credentials / OAuth / visibility変更は別sliceと明示承認なしに実行しない。
+1. `README.md` → `docs/RUNTIME_STATE.md` → `docs/CURRENT_HANDOFF.md`を読む。
+2. Gitのbranch / HEAD / upstream parityと`git ls-files episodes`が0件であることを確認する。
+3. 親CoordinatorからClipPipeGen portable ZIPと外部manifestを受け取り、manifest記載のSHA、
+   member count、relative pathsを検証する。Git cloneだけではreview mediaは得られない。
+4. ZIP内`package/review/open_review.ps1`を使いloopback HTTPでreviewを開く。
+5. openingとendpoint policyへのhuman semantic verdictをexact MP4 SHAへbindする。
 
 ## 次の依存順
 
-`S4 human common-context review -> S5 bounded closure -> S6 fresh rights inventory ->
-S7 rights/publication decision -> S8 production design -> S9 delivery render ->
-S10 episode acceptance`が近接critical path。second-pair repeatabilityとexternal deliveryは、
-最初のS4/S5結果を踏まえて独立gateとして起票する。
-
-長期exit evidenceと条件分岐は`docs/SUPERVISOR_STATUS_REPORT.md`を正本とする。
+`portable packet readback -> human semantic route decision -> selected routeだけをnew identityで
+materialize -> separate full-1x/content review`がproof laneの最短経路である。
+Episode 1本線は独立して`Ocqg-RpQURY exact bytes + receipt -> preflight rerun -> integrated render`。
+どちらからもrights、production、publicationを推定しない。

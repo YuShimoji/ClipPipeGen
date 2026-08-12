@@ -3,17 +3,17 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: WIKI_EP1_INTEGRATED_PREFLIGHT_BLOCKED_SOURCE3_MEDIA_S1_PARKED
-last_touched: 2026-08-06
-state_revision: wiki-ep1-integrated-preflight-blocked-source3-media-2026-08-06
+health: WIKI_CU04_PROOF_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED_EP1_SOURCE_GATE_PARKED
+last_touched: 2026-08-12
+state_revision: wiki-cu04-proof-portable-handoff-semantic-route-unresolved-2026-08-12
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: ED-13
-phase: wiki_ep1_integrated_preflight_blocked_exact_source_media
-canonical_status: s_content_continue_score_82_ep1_render_blocked_cu02_media
+phase: wiki_cu04_proof_portable_handoff_semantic_route_unresolved
+canonical_status: proof_set_review_useful_semantic_route_unresolved_ep1_exact_source_gate_parked
 active_branch: codex/wiki-tensaku-longform-family-v1
 source_branch: codex/wiki-tensaku-longform-family-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
-verified_implementation_head: b997de8bc6754d104c115608290b648660a9062e
+verified_implementation_head: c307089a592bb73b6539f801ff32b461dc4a424d
 accepted_feature_revision: 18641fe917b084259869263e8db05d78325aa2db
 integration_start_main_revision: 5d6f69a64d510508a1f78ab3111a7780913a019c
 integrated_main_revision: 18641fe917b084259869263e8db05d78325aa2db
@@ -28,11 +28,11 @@ m6_decision_binding_remote_ref: refs/heads/main
 m5_verification_tree_locator: refs/heads/main^{tree}
 closure_branch: null
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_current_handoff
-upstream_parity: 0 0 after normal push and remote SHA readback of current handoff revision
-current_slice_push_status: normal_push_and_remote_sha_readback_completed_for_current_head_locator
-sync_audit_head: 4ef801e54d85bc5bbb47655a8167397550d7b5a6
+upstream_parity: 0 0 for existing head; current handoff docs are prepared but uncommitted
+current_slice_push_status: parent_coordinator_commit_push_pending
+sync_audit_head: c307089a592bb73b6539f801ff32b461dc4a424d
 latest_remote_sync_head: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
-sync_observed_tracking_head: 4ef801e54d85bc5bbb47655a8167397550d7b5a6
+sync_observed_tracking_head: c307089a592bb73b6539f801ff32b461dc4a424d
 sync_audit_status: portfolio_implementation_pushed_remote_sha_matches_parity_zero
 remote_handoff_status: pushed_and_remote_sha_readback_passed_for_current_head_locator
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
@@ -42,16 +42,16 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: Wiki Episode 1 integrated rough-cut preflight blocked on CU-02 exact media
-human_entrypoint: docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_report.md
-portable_entrypoint: docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_report.md
-review_open_command: start docs\content_planning\wiki_tensaku_ep1_integrated_rough_cut_v1\preflight_report.md
-review_server_restart_command: not_required_static_file
-machine_readback: docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_receipt.json
+current_title: Wiki CU-04 integrated subtitle-cut proof portable handoff; semantic route unresolved
+human_entrypoint: package/review/index.html inside external ClipPipeGen portable ZIP
+portable_entrypoint: package/review/index.html
+review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File .\package\review\open_review.ps1
+review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File .\package\review\open_review.ps1 -NoOpen
+machine_readback: package/proof_set_receipt.json inside external ClipPipeGen portable ZIP
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: exact_source_bytes_and_binding_receipt_for_youtube_Ocqg_RpQURY
-review_status: s_content_continue_production_entry_only_ep1_preflight_fail_closed_no_mp4
-review_scope: episode_1_three_clipunits_two_source_identities
+decision_required: human_semantic_choice_for_opening_entry_and_endpoint_policy
+review_status: PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED
+review_scope: four_non_adopted_retained_source_subtitle_cut_comparison_mp4s
 reviewed_at: null
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
 m2_review_scope: internal_full_view_editorial_visual_review
@@ -60,22 +60,22 @@ remote_decision_binding_available: false
 local_decision_binding_committed: false
 remote_mutation_authorized: false
 local_artifact_available: true
-local_artifact_role: tracked_portable_ep1_fail_closed_preflight_with_preserved_ignored_probe_evidence
+local_artifact_role: ignored_non_adopted_four_mp4_subtitle_cut_comparison_with_loopback_review
 portable_local_artifact_available: true
-cross_machine_resume_class: tracked_ep1_blocker_and_resume_map_are_portable_required_source_media_remains_ignored_private
-cross_host_resume_status: exact_s1_package_present_on_verified_host_not_portable_through_git
+cross_machine_resume_class: tracked_context_plus_separate_project_zip_required_for_review_media
+cross_host_resume_status: external_project_zip_and_outer_manifest_prepared_parent_transfer_pending
 active_rebuild_contract: null
 parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json
 optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: s1-two-source-common-context-probe-v1-exact-package
+evidence_revision: clip-wiki-integrated-subtitle-cut-proof-v1-001-live-access-package
 last_verified_host: DESKTOP-U9P4LKJ
 last_verified_host_label: DESKTOP-U9P4LKJ
 local_verified_host: DESKTOP-U9P4LKJ
-local_artifact_evidence_receipt: episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/run_manifest.json
-local_package_requirement: satisfied_exact_two_source_plan_design_basis_manifest_and_output_hashes_match
+local_artifact_evidence_receipt: episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-integrated-subtitle-cut-proof-continuation-v1/package/proof_set_receipt.json
+local_package_requirement: satisfied_69_payload_member_manifest_review_html_and_four_mp4_hashes_match
 historical_fixed_input_packages: private_only_not_required_for_out08_human_review
 local_reference_cache_status: tracked_corpus_examples_only_not_canonical_design_rules
 rights_approval: readback_unresolved
@@ -136,10 +136,10 @@ accepted_candidate_ids: [out10_candidate_01, source04_candidate_01, source05_can
 winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
-review_server_status: stopped_restart_command_available
-next_review_due: exact_source_delivery_then_ep1_preflight_rerun_no_s_event_before_integrated_mp4
-next_review_type: source_identity_and_byte_binding_preflight
-next_action: explicitly_supply_Ocqg_RpQURY_source_video_and_receipt_then_rerun_ep1_preflight
+review_server_status: stopped_portable_loopback_launcher_available
+next_review_due: human_semantic_comparison_of_opening_and_endpoint_on_exact_four_mp4_proof_set
+next_review_type: timestamp_jumpable_semantic_route_comparison
+next_action: verify_portable_packet_then_bind_human_semantic_route_without_promoting_technical_checks
 wiki_content_reframe_work_order_id: CPG-WIKI-CONTENT-REFRAME-001
 wiki_content_reframe_artifact_id: wiki-tensaku-content-reframe-v1-001
 wiki_content_reframe_topology: thematic_episode_family
@@ -174,10 +174,19 @@ wiki_ep1_integrated_product_iteration_count: 0
 wiki_ep1_acceptance_score: 82
 wiki_ep1_human_artistic_acceptance: pending_revise
 wiki_ep1_next_s_event: not_routable_until_integrated_mp4_and_technical_qa_exist
-active_artifact: clip-wiki-tensaku-ep1-integrated-rough-cut-preflight-v1-001
-current_review_component: exact_media_dependency_and_resumable_clipunit_mapping
+active_artifact: clip-wiki-integrated-subtitle-cut-proof-v1-001
+active_artifact_state: NON_ADOPTED_REVIEW_PROOF
+active_artifact_repo_relative_path: episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-integrated-subtitle-cut-proof-continuation-v1/package
+active_artifact_manifest_sha256: 534882f9be1e36ed773a7b59b418ea1e6e203d64b7f4f690def0674c67bace52
+active_artifact_manifest_payload_count: 69
+active_artifact_physical_file_count: 70
+active_artifact_review_sha256: a5d0db6bca005b95aeae51155b52325d64a30e9be1d16608a096411a4b26d26f
+active_artifact_mp4_sha256: [b2dbc8aa1870941ad0251b0f995133d76a9247308a67eb979cf6da3b7448aedb, cc31dedc912307105700e941d4779f2529393dea68da317be5d04a84642af882, 1c3f6a002031ff3c0cc61771f58b2f2e46dfaab56c0fd40431df9b3296eb10a1, 2cafe8930dba3e163286310bb6a1d03c8776b1285600314c904caf467ff70f52]
+dispatch_expected_manifest_sha256_superseded_by_access_only_launcher_addition: 3d98c204410a67a29aee24bd20c71c2ac1ac01ae543e0205d7efce7448d9a544
+cu04_proof_reviewer_verdict: PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED
+current_review_component: opening_entry_endpoint_policy_and_subtitle_surface_semantic_comparison
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
-implementation_revision: b997de8bc6754d104c115608290b648660a9062e
+implementation_revision: c307089a592bb73b6539f801ff32b461dc4a424d
 artifact_output_sha256: bound_in_ep1_preflight_package_receipt
 artifact_output_byte_size: bound_in_ep1_preflight_package_receipt
 artifact_package_tree_digest_sha256: not_used_tracked_regenerable_portfolio
@@ -876,44 +885,48 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — ED-13 Episode 1 Exact-Media Preflight Blocked
+## Current Capsule — ED-13 CU-04 Subtitle/Cut Proof Portable Handoff
 
-- active slice: `ED-13`
-- active preflight: `clip-wiki-tensaku-ep1-integrated-rough-cut-preflight-v1-001`
-- planned artifact: `clip-wiki-tensaku-ep1-integrated-rough-cut-v1-001` (not created)
-- review entrypoint: `docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_report.md`
-- canonical IR: `docs/content_planning/wiki_tensaku_content_reframe_v1/wiki_tensaku_content_reframe_v1.json`
-- canonical IR SHA-256: `af502873b54786c5225236e1e47a4e0d38873da0ec4566ed7156ee5a8361288f`
-- S verdict: `content_continue` for production entry only
-- fixed-weight progress: `82/100`
-- human artistic acceptance: `pending_revise`
-- integrated render / technical QA / final acceptance: `0 / 0 / 0`
-- preflight status: `BLOCKED_EXACT_SOURCE_MEDIA_REQUIRED`
-- generated MP4: `0`
-- integrated product iteration count: `0`
+- active artifact: `clip-wiki-integrated-subtitle-cut-proof-v1-001`
+- state: `NON_ADOPTED_REVIEW_PROOF`
+- Reviewer verdict: `PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED`
+- repo-relative package: `episodes/integrated_checklist_reverse_test_20260811/artifacts/
+  cpg-integrated-checklist-reverse-test-v1/successors/
+  cpg-integrated-subtitle-cut-proof-continuation-v1/package/`
+- live package: 69 payload members + manifest、SHA
+  `534882f9be1e36ed773a7b59b418ea1e6e203d64b7f4f690def0674c67bace52`
+- review HTML: `review/index.html`、SHA
+  `a5d0db6bca005b95aeae51155b52325d64a30e9be1d16608a096411a4b26d26f`
+- four MP4 SHA:
+  `b2dbc8aa...48aedb`、`cc31dedc...af882`、`1c3f6a00...eb10a1`、
+  `2cafe893...70f52`
+- source: retained exact `youtube:1AcId5Yja10`; no network acquisition in this slice
+- transport: project ZIP + ZIP外manifestをGit外に準備。commit / push / uploadは親Coordinator担当。
 
-- Episode 1「Wikiが作る人物像」はCU-01→CU-02→CU-03の3章、planned source rangesは合計690秒。
-  任意の300秒targetへ短縮せず、setupからpayoffまで一続きにする契約である。
-- CU-01 `youtube:1AcId5Yja10` 390–510秒とCU-03同source 1530–1905秒は、retained media
-  SHA `a9942286...60e7`へ解決している。
-- CU-02は`youtube:Ocqg-RpQURY` 390–585秒を要求する。caption 452,217 bytes / SHA
-  `a383ad8a...3992`は存在するが、`corpus/materials/Ocqg-RpQURY/source_video.mp4`と
-  `acquisition_receipt.json`は存在しない。caption-only synthetic video、旧Turn固定25秒cut、
-  無関係fragment、推測取得を代替にしない。
-- preflight validatorはcanonical IR、CU順序、caption/media identity、Turn1–5 exact probe SHA/sizeを
-  fail-closedで照合し、blockerとresume contractをtracked JSON/Markdownへ固定した。renderは呼ばない。
-- Turn1–5 MP4はbytes/hash/mtime不変。Drive upload、cookies、OAuth、anonymous retry、external fetchは0。
-- S1、rights、production、publication、monetization、delivery gateは元のexact scopeでpark。
-  `content_continue`からhuman acceptanceやfinal deliveryを推論しない。
+4本はopeningの2523.480開始対2530.319開始、causal core、event_001639完結対
+event_001641開始前cutを、同じsource/caption/subtitle measurement routeで比較できる。
+subtitle timing、Keifont実幅、最大2行、burn-in、full decode、black/silenceはtechnical evidence。
+それらからsemantic winner、human artistic acceptance、production acceptanceを推定しない。
+
+dispatch時のmanifest `3d98c204...9a544`は、loopback launcher/server追加前のidentity。
+MP4とreview HTMLを変えないaccess-only addition後のlive closed manifestは`534882f9...ace52`。
+他者の追加を戻さず、current closed setをportable packetへ含める。
+
+Episode 1「Wikiが作る人物像」は別laneのまま、CU-02 `youtube:Ocqg-RpQURY`
+390–585秒exact mediaとadjacent receiptを待つ。proof setはCU-02代替ではない。
+親338.166016秒full-1x queueは再pollせず、rights、production、delivery、publication、
+monetization、uploadも閉じたまま維持する。
 
 ## Next Action
 
-- action: `explicitly_supply_Ocqg_RpQURY_source_video_and_receipt_then_rerun_ep1_preflight`
-- authorization state: `content_continue_received_render_blocked_until_all_clipunits_exact_media_ready`
-- owner: `authorized source provider/user, then ClipPipeGen D`
-- condition: exact `youtube:Ocqg-RpQURY` bytesを記録済みpathへ置き、adjacent receiptで
-  source identity、byte size、SHA-256をbindする。その後preflightを再実行し、`READY_TO_RENDER`の場合だけ
-  continuous Episode 1 rendererへ進む。MP4とtechnical QAが存在するまではS review packetをrouteしない。
+- action: `verify_portable_packet_then_bind_human_semantic_route`
+- first files: `README.md` → `docs/RUNTIME_STATE.md` → `docs/CURRENT_HANDOFF.md`
+- first checks: Git branch/HEAD/upstream parity、`git ls-files episodes`が0、ZIP外manifest、
+  ZIP member closure、package manifest、HTTP review 200、MP4 Range 206
+- human decision: opening entryとendpoint policyのどちらが文脈理解に寄与するかを、
+  exact MP4 SHAへbindする。technical checkをcreative acceptanceへ昇格させない。
+- conditional implementation: verdict後、選ばれた次元だけをnew identityのcausal successorへ反映する。
+- independent EP1 unblock: `youtube:Ocqg-RpQURY` exact bytes + receipt供給後にpreflightを再実行する。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 
