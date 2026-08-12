@@ -93,6 +93,17 @@ def _is_lower_sha256(value: object) -> bool:
     )
 
 
+def _strict_equal(actual: object, expected: object) -> bool:
+    return type(actual) is type(expected) and actual == expected
+
+
+def _strict_mapping_equal(actual: object, expected: dict[str, object]) -> bool:
+    return isinstance(actual, dict) and actual.keys() == expected.keys() and all(
+        _strict_equal(actual[key], expected_value)
+        for key, expected_value in expected.items()
+    )
+
+
 def _is_reparse_point(path: Path) -> bool:
     if path.is_symlink():
         return True
@@ -229,26 +240,34 @@ def _validate_manifest_contract(manifest: object) -> dict[str, Any]:
         raise PrivateArtifactTransferError(
             "archive_validation", "manifest repo_head is invalid"
         )
-    transport = manifest.get("transport")
-    if not isinstance(transport, dict) or transport != {
+    expected_transport: dict[str, object] = {
         "class": "private_authenticated_or_offline_transfer_only",
         "public_sharing": False,
         "git_tracking": False,
         "upload_is_publication": False,
-    }:
+    }
+    if not _strict_mapping_equal(manifest.get("transport"), expected_transport):
         raise PrivateArtifactTransferError(
             "archive_validation", "manifest transport boundary is invalid"
         )
-    closed_gates = manifest.get("closed_gates")
-    expected_gates = {
+    expected_gates: dict[str, object] = {
         "rights_approval": False,
         "production_acceptance": False,
         "public_or_publishing_acceptance": False,
         "monetized_use": False,
     }
-    if not isinstance(closed_gates, dict) or closed_gates != expected_gates:
+    if not _strict_mapping_equal(manifest.get("closed_gates"), expected_gates):
         raise PrivateArtifactTransferError(
             "archive_validation", "manifest acceptance gates must remain closed"
+        )
+    expected_restore: dict[str, object] = {
+        "existing_exact_files": "reuse",
+        "existing_mismatched_files": "fail_closed_without_overwrite",
+        "missing_files": "restore_after_full_archive_verification",
+    }
+    if not _strict_mapping_equal(manifest.get("restore_contract"), expected_restore):
+        raise PrivateArtifactTransferError(
+            "archive_validation", "manifest restore contract is invalid"
         )
     integrity = manifest.get("manifest_self_integrity")
     if not isinstance(integrity, dict) or integrity.get("algorithm") != (
@@ -360,7 +379,9 @@ def _validate_archive_payload(
         )
     file_count = payload.get("file_count")
     payload_byte_size = payload.get("byte_size")
-    if file_count != len(entries) or payload_byte_size != total_bytes:
+    if not _strict_equal(file_count, len(entries)) or not _strict_equal(
+        payload_byte_size, total_bytes
+    ):
         raise PrivateArtifactTransferError(
             "archive_validation", "payload aggregate counts do not match"
         )
@@ -395,7 +416,7 @@ def _validate_receipt(
         "storage_class": "ignored_private_transfer_ready_not_publication",
     }
     for key, expected_value in expected.items():
-        if receipt.get(key) != expected_value:
+        if not _strict_equal(receipt.get(key), expected_value):
             raise PrivateArtifactTransferError(
                 "receipt_validation", f"receipt {key} does not match the archive"
             )
@@ -603,6 +624,10 @@ def verify_private_artifact_transfer(
         restored = 0
         existing = 0
         restore_targets: list[tuple[dict[str, Any], Path]] = []
+        if restore_root is not None and _is_reparse_point(restore_root):
+            raise PrivateArtifactTransferError(
+                "restore_preflight", "restore root must not be a reparse point"
+            )
         root = restore_root.resolve() if restore_root is not None else None
         entries: list[dict[str, Any]] = manifest["payload"]["entries"]
         if root is not None:

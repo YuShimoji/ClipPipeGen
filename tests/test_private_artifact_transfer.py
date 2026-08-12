@@ -12,6 +12,8 @@ from src.pipeline import private_artifact_transfer as transfer_module
 from src.pipeline.private_artifact_transfer import (
     MANIFEST_PATH,
     PrivateArtifactTransferError,
+    _canonical_json_bytes,
+    _manifest_self_digest,
     build_private_artifact_transfer,
     verify_private_artifact_transfer,
 )
@@ -44,6 +46,24 @@ def _build(root: Path) -> tuple[Path, Path]:
         base_dir=root,
     )
     return result["archive"], result["receipt"]
+
+
+def _rewrite_manifest(archive_path: Path, mutate) -> None:
+    replacement = archive_path.with_suffix(".replacement.zip")
+    with zipfile.ZipFile(archive_path, mode="r") as source:
+        members = {
+            info.filename: source.read(info.filename)
+            for info in source.infolist()
+            if info.filename != MANIFEST_PATH
+        }
+        manifest = json.loads(source.read(MANIFEST_PATH))
+    mutate(manifest)
+    manifest["manifest_self_integrity"]["sha256"] = _manifest_self_digest(manifest)
+    with zipfile.ZipFile(replacement, mode="w") as target:
+        for name, payload in members.items():
+            target.writestr(name, payload)
+        target.writestr(MANIFEST_PATH, _canonical_json_bytes(manifest))
+    os.replace(replacement, archive_path)
 
 
 def test_build_verify_restore_and_reuse_exact_files(tmp_path: Path) -> None:
@@ -110,6 +130,7 @@ def test_manifest_and_receipt_bind_the_exact_archive(tmp_path: Path) -> None:
         ("repo_head", "b" * 40),
         ("manifest_self_sha256", "0" * 64),
         ("payload_file_count", 99),
+        ("payload_file_count", True),
         ("payload_byte_size", 1),
         ("storage_class", "public"),
     ],
@@ -230,6 +251,58 @@ def test_verify_rejects_unmanifested_archive_members(tmp_path: Path) -> None:
             archive_path=archive,
             receipt_path=None,
         )
+
+
+@pytest.mark.parametrize(
+    ("mutate", "message"),
+    [
+        (
+            lambda manifest: manifest["transport"].__setitem__("public_sharing", 0),
+            "transport boundary",
+        ),
+        (
+            lambda manifest: manifest["closed_gates"].__setitem__(
+                "rights_approval", 0
+            ),
+            "acceptance gates",
+        ),
+        (
+            lambda manifest: manifest["restore_contract"].__setitem__(
+                "existing_mismatched_files", "overwrite"
+            ),
+            "restore contract",
+        ),
+    ],
+)
+def test_verify_rejects_weakened_manifest_boundaries(
+    tmp_path: Path, mutate, message: str
+) -> None:
+    archive, _receipt = _build(tmp_path)
+    _rewrite_manifest(archive, mutate)
+
+    with pytest.raises(PrivateArtifactTransferError, match=message):
+        verify_private_artifact_transfer(archive_path=archive)
+
+
+def test_verify_rejects_reparse_restore_root_before_writes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    archive, receipt = _build(tmp_path)
+    restore_root = tmp_path / "receiving-checkout"
+    real_is_reparse = transfer_module._is_reparse_point
+
+    monkeypatch.setattr(
+        transfer_module,
+        "_is_reparse_point",
+        lambda path: path == restore_root or real_is_reparse(path),
+    )
+    with pytest.raises(PrivateArtifactTransferError, match="restore root"):
+        verify_private_artifact_transfer(
+            archive_path=archive,
+            receipt_path=receipt,
+            restore_root=restore_root,
+        )
+    assert not restore_root.exists()
 
 
 def test_cli_build_and_verify_json(tmp_path: Path, monkeypatch, capsys) -> None:
