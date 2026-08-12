@@ -59,6 +59,8 @@ Subcommands:
     build-real-video          OUT-12: one real source -> long-form MP4 + validation/review.
     build-editorial-video-candidate OUT-13: explicit evidence plan -> editorial MP4/review.
     build-common-context-probe S1: two real sources -> evidence-bound argumentative probe.
+    build-private-artifact-transfer SH-10: ignored episodes payload -> immutable ZIP + receipt.
+    verify-private-artifact-transfer SH-10: verify and optionally restore without overwrite.
     record-evidence-linked-comparison-decision S2: bind exact human verdict.
     build-persona-led-stream-digest S1: fixed Subaru stream pair -> concept-first digest.
     build-operator-delivery-pack OUT-07: accepted OUT-06 video + thumbnail/metadata operator pack.
@@ -123,6 +125,7 @@ from . import (
     build_docs_dashboard,
     build_local_preview_pack,
     build_non_repo_handoff,
+    build_private_artifact_transfer,
     build_operator_proxy_decision_handoff,
     build_subtitle_overlay_visual_proof,
     build_subtitle_typography_decoration_comparison,
@@ -154,6 +157,7 @@ from . import (
     validate_edit_pack,
     validate_rights,
     validate_transcript,
+    verify_private_artifact_transfer,
 )
 
 SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
@@ -222,6 +226,8 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "reconstitute-out07-review": reconstitute_out07_review.run,
     "build-out07-direction-proxy": build_out07_direction_proxy.run,
     "build-non-repo-handoff": build_non_repo_handoff.run,
+    "build-private-artifact-transfer": build_private_artifact_transfer.run,
+    "verify-private-artifact-transfer": verify_private_artifact_transfer.run,
     "transcribe-audio": transcribe_audio.run,
     "fetch-source-audio": fetch_source_audio.run,
     "fetch-source-video": fetch_source_video.run,

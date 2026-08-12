@@ -8,6 +8,14 @@
 
 ED-13 / S2 note: `build-evidence-linked-comparison`は、取得済み通常配信二本をexact media / caption / receipt / ledger / rights snapshotへbindし、primary quoteとpaired evidenceを同じframeで比較する。current artifactは`clip-s2-subaru-evidence-linked-comparison-v1-002`、3 comparison beats / 63.466667s、MP4 SHA `a959dc50...72d00f`。各beatのforeground audio ownerは一つで、参照側はmute。manifest/full decode/focused regressions/wide-narrow browser/全transitionとbeatの実frame inspectionはpassし、human editorial reviewはpending。S1 persona-led digestは未受理のまま保存し、S2から変更・再受理・acceptance継承をしていない。rights、production、public/monetized use、uploadは閉じたまま。詳細は[S2_EVIDENCE_LINKED_COMPARISON.md](docs/output_layer/S2_EVIDENCE_LINKED_COMPARISON.md)。
 
+SH-10 private artifact transfer note: `build-private-artifact-transfer`は、明示した
+`episodes/` payloadだけからimmutable ZIPとSHA-256 receiptを作る。作成時にもarchive内を
+再検証し、`verify-private-artifact-transfer`はreceipt/manifest/payload identity、path safety、
+case collision、secret-like pathを照合してから、missing fileだけを復元する。既存fileが同一
+SHAなら再利用し、異なる場合は上書きせず停止する。このprivate transportはrights、production、
+public/monetized use、publishing、uploadの承認ではなく、Drive書込みや共有設定変更も行わない。
+詳細は[PRIVATE_ARTIFACT_TRANSFER.md](docs/PRIVATE_ARTIFACT_TRANSFER.md)。
+
 OUT-13 note: `build-editorial-video-candidate` は、必須 `--artifact-id` ごとに成功済み
 outputをローカルpipeline経路から上書きせず、取得済みの実 source、receipt / material ledger、明示 editorial plan、
 transcript / source audio、provider JSON3 sidecar、rights snapshot、resolved font bytesを
