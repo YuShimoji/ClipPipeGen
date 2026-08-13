@@ -60,6 +60,7 @@ Subcommands:
     build-editorial-video-candidate OUT-13: explicit evidence plan -> editorial MP4/review.
     build-common-context-probe S1: two real sources -> evidence-bound argumentative probe.
     record-evidence-linked-comparison-decision S2: bind exact human verdict.
+    select-editorial-form    Select a family variant; normalize activity_chronology IR.
     build-persona-led-stream-digest S1: fixed Subaru stream pair -> concept-first digest.
     build-operator-delivery-pack OUT-07: accepted OUT-06 video + thumbnail/metadata operator pack.
     build-shorts-poster-frame-proof OUT-07: reference-derived 9:16 poster directions + end-cap proofs.
@@ -148,6 +149,7 @@ from . import (
     repair_second_source_review_access,
     resolve_episode_seed_sources,
     review_transcript,
+    select_editorial_form,
     set_compliance,
     status_episode,
     transcribe_audio,
@@ -215,6 +217,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "record-evidence-linked-comparison-decision": (
         record_evidence_linked_comparison_decision.run
     ),
+    "select-editorial-form": select_editorial_form.run,
     "build-persona-led-stream-digest": build_persona_led_stream_digest.run,
     "repair-second-source-review-access": repair_second_source_review_access.run,
     "build-operator-delivery-pack": build_operator_delivery_pack.run,
