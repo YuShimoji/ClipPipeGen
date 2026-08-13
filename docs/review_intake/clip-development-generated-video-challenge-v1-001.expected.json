@@ -1,0 +1,75 @@
+{
+  "schema_version": "clippipegen.generated_video_challenge.expectation.v1",
+  "artifact_id": "clip-development-generated-video-challenge-v1-001",
+  "state": "DEVELOPMENT_GENERATED_VIDEO_CHALLENGE_REVIEW_READY",
+  "source_identity": {
+    "provider": "youtube",
+    "provider_id": "7J5aS_pcBj4",
+    "media_revision_id": "planner007-e2206cef-20260525",
+    "source_video_sha256": "e2206cef93855e6005e4cc099bedc29d291eda6f2e1c66039c961e93621f1889",
+    "source_audio_sha256": "7cd566dc62683651b05b10b1b4397c44699807249f90af784b88ba0f572cae5d"
+  },
+  "local_package": {
+    "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001",
+    "git_tracked": false,
+    "local_only": true,
+    "file_count_excluding_manifest": 11,
+    "manifest_self_integrity_sha256": "e62429bfc704f1118478a2f43aee738c29e02054563239bb026a71cdd624eb69",
+    "review_entrypoint": "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/review/index.html",
+    "serve_command": "python -m src.cli.serve_review --root \"episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001\" --port 8077"
+  },
+  "video": {
+    "repo_relative_path": "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/assets/challenge.mp4",
+    "byte_size": 21602438,
+    "sha256": "eff74435a27a61d49815709895592540fc14e5b725f675e7c4cf606133ba9e63",
+    "semantic_duration_seconds": 38.638,
+    "media_duration_seconds": 38.633333,
+    "width": 1080,
+    "height": 1920,
+    "video_codec": "h264",
+    "audio_codec": "aac"
+  },
+  "subtitle_mechanics": {
+    "count": 29,
+    "maximum_lines": 2,
+    "minimum_actual_display_seconds": 0.467,
+    "one_character_final_line_count": 0,
+    "text_changed": false,
+    "timing_changed": false
+  },
+  "transport_reentry": {
+    "portable_media_in_git": false,
+    "archive_created": false,
+    "archive_identity": null,
+    "required_on_another_host": [
+      "the exact package directory or an explicitly authorized private archive containing it",
+      "manifest.json with the recorded self-integrity hash",
+      "all 11 manifest payload files with exact byte size and SHA-256"
+    ],
+    "verification_order": [
+      "manifest self-integrity",
+      "closed payload inventory",
+      "payload byte sizes and SHA-256",
+      "MP4 stream and decode validation",
+      "localhost page 200 and MP4 range 206"
+    ],
+    "do_not_regenerate_as_same_identity": true
+  },
+  "not_replacements": [
+    "clip-wiki-integrated-subtitle-cut-proof-v1-001",
+    "clip-s2-subaru-evidence-linked-comparison-v1-002",
+    "clip-out13-editorial-video-candidate-v1-001",
+    "clip-out13-editorial-video-candidate-v1-003",
+    "clip-out13-editorial-video-candidate-v1-005"
+  ],
+  "gates": {
+    "human_editorial_acceptance": false,
+    "historical_acceptance_inherited": false,
+    "rights_status": "pending",
+    "production_candidate": false,
+    "production_acceptance": false,
+    "public_ready": false,
+    "publishing": false,
+    "upload_attempted": false
+  }
+}

@@ -56,6 +56,7 @@ Subcommands:
     bind-source-adaptive-candidate-plan Hash/hydrate/bind an OUT-11 candidate plan.
     build-source-adaptive-short-candidate Build one endpoint-bound real-source OUT-11 candidate.
     build-five-source-short-portfolio Build the OUT-11 combined review and 5-source scorecard.
+    build-generated-video-challenge Build one distinct source-bound internal review challenge.
     build-real-video          OUT-12: one real source -> long-form MP4 + validation/review.
     build-editorial-video-candidate OUT-13: explicit evidence plan -> editorial MP4/review.
     build-common-context-probe S1: two real sources -> evidence-bound argumentative probe.
@@ -101,6 +102,7 @@ from . import (
     bind_source_adaptive_candidate_plan,
     build_source_adaptive_short_candidate,
     build_five_source_short_portfolio,
+    build_generated_video_challenge,
     build_real_video,
     build_editorial_video_candidate,
     build_common_context_probe,
@@ -213,6 +215,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "bind-source-adaptive-candidate-plan": bind_source_adaptive_candidate_plan.run,
     "build-source-adaptive-short-candidate": build_source_adaptive_short_candidate.run,
     "build-five-source-short-portfolio": build_five_source_short_portfolio.run,
+    "build-generated-video-challenge": build_generated_video_challenge.run,
     "build-real-video": build_real_video.run,
     "build-editorial-video-candidate": build_editorial_video_candidate.run,
     "build-common-context-probe": build_common_context_probe.run,

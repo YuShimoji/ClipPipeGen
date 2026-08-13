@@ -492,7 +492,15 @@ def _build_subtitle_presentation(
     application_key: str = "out05_application",
     dimension_source: str = "out05_vertical_canvas_width_clamped_safe_envelope",
     line_break_hints: dict[str, dict[str, Any]] | None = None,
+    font_size_override: int | None = None,
+    maximum_lines: int = 3,
 ) -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
+    if maximum_lines not in (1, 2, 3):
+        raise VerticalShortCandidateError("maximum_lines must be between 1 and 3")
+    if font_size_override is not None and not 48 <= font_size_override <= 92:
+        raise VerticalShortCandidateError(
+            "font_size_override must be between 48 and 92 pixels"
+        )
     base_style = _diagnostic_ass_style_for_candidate(ED10L_KEIFONT_CANDIDATE_ID)
     base_layout = _subtitle_layout_contract(
         frame_width=FRAME_WIDTH,
@@ -528,6 +536,15 @@ def _build_subtitle_presentation(
             "dialogue_wrap_eaw": 20,
         }
     )
+    if font_size_override is not None:
+        values.update(
+            {
+                "font_size": font_size_override,
+                "outline": max(2, round(font_size_override * 0.096)),
+                "shadow": max(1, round(font_size_override * 0.019)),
+                "line_height": round(font_size_override * (106 / 92)),
+            }
+        )
     layout["formulas"].update(
         {
             "font_size": "min(round(frame_height * 0.125), round(frame_width * 0.0852))",
@@ -571,6 +588,7 @@ def _build_subtitle_presentation(
         presentation,
         layout=layout,
         line_break_hints=line_break_hints,
+        maximum_lines=maximum_lines,
     )
     selector = select_subtitle_preset(
         {
@@ -590,6 +608,8 @@ def _build_subtitle_presentation(
         "speaker_identity_layer_omitted": True,
         "visible_placeholder_badge_omitted": True,
         "body_text_color_policy": "stable_default_body_text",
+        "mechanical_font_size_override": font_size_override,
+        "mechanical_maximum_lines": maximum_lines,
     }
     return layout, presentation, selector
 
@@ -600,6 +620,8 @@ def build_vertical_subtitle_presentation(
     application_key: str,
     dimension_source: str,
     line_break_hints: dict[str, dict[str, Any]] | None = None,
+    font_size_override: int | None = None,
+    maximum_lines: int = 3,
 ) -> tuple[dict[str, Any], list[dict[str, Any]], dict[str, Any]]:
     """Shared measured subtitle-layout boundary for vertical review candidates."""
 
@@ -608,6 +630,8 @@ def build_vertical_subtitle_presentation(
         application_key=application_key,
         dimension_source=dimension_source,
         line_break_hints=line_break_hints,
+        font_size_override=font_size_override,
+        maximum_lines=maximum_lines,
     )
 
 
@@ -616,6 +640,7 @@ def _apply_vertical_balanced_wrap(
     *,
     layout: dict[str, Any],
     line_break_hints: dict[str, dict[str, Any]] | None = None,
+    maximum_lines: int = 3,
 ) -> list[dict[str, Any]]:
     """Rebalance measured-valid lines for the narrower vertical canvas.
 
@@ -637,6 +662,7 @@ def _apply_vertical_balanced_wrap(
                 item,
                 line_break_hints=line_break_hints,
             ),
+            maximum_lines=maximum_lines,
         )
         lines = balance["lines"] if balance["status"] == "applied" else original_lines
         wrapped_text = "\n".join(lines)
@@ -674,6 +700,7 @@ def _balanced_vertical_lines(
     layout: dict[str, Any],
     font_bbox_readback: dict[str, Any],
     line_break_hint: dict[str, Any] | None = None,
+    maximum_lines: int = 3,
 ) -> dict[str, Any]:
     source = text.strip()
     if not source:
@@ -745,8 +772,8 @@ def _balanced_vertical_lines(
 
     total_content = _content_character_count(source)
     best: tuple[float, list[str], list[float], tuple[int, ...]] | None = None
-    maximum_lines = min(3, max(1, len(source)))
-    for line_count in range(1, maximum_lines + 1):
+    bounded_maximum_lines = min(maximum_lines, max(1, len(source)))
+    for line_count in range(1, bounded_maximum_lines + 1):
         for breaks in itertools.combinations(range(1, len(source)), line_count - 1):
             boundaries = (0, *breaks, len(source))
             lines = [
@@ -781,7 +808,7 @@ def _balanced_vertical_lines(
             break
     if best is None:
         return {
-            "status": "not_applied_no_three_line_measured_valid_partition",
+            "status": f"not_applied_no_{maximum_lines}_line_measured_valid_partition",
             "lines": list(font_bbox_readback.get("selected_wrapped_lines") or [source]),
             "measurement_mode": measure_mode,
             "max_width": max_width,
