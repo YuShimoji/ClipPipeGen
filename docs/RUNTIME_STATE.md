@@ -28,7 +28,7 @@ m6_decision_binding_remote_ref: refs/heads/main
 m5_verification_tree_locator: refs/heads/main^{tree}
 closure_branch: null
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_current_handoff
-upstream_parity: 0 0 for existing head; current handoff docs are prepared but uncommitted
+upstream_parity: 0 0 after normal push and remote SHA readback of current handoff revision
 current_slice_push_status: parent_coordinator_commit_push_pending
 sync_audit_head: c307089a592bb73b6539f801ff32b461dc4a424d
 latest_remote_sync_head: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
@@ -43,11 +43,11 @@ sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_has
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
 current_title: Wiki CU-04 integrated subtitle-cut proof portable handoff; semantic route unresolved
-human_entrypoint: package/review/index.html inside external ClipPipeGen portable ZIP
+human_entrypoint: package/review/index.html inside the external ClipPipeGen portable ZIP
 portable_entrypoint: package/review/index.html
 review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File .\package\review\open_review.ps1
 review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File .\package\review\open_review.ps1 -NoOpen
-machine_readback: package/proof_set_receipt.json inside external ClipPipeGen portable ZIP
+machine_readback: package/proof_set_receipt.json inside the external ClipPipeGen portable ZIP
 current_handoff: docs/CURRENT_HANDOFF.md
 decision_required: human_semantic_choice_for_opening_entry_and_endpoint_policy
 review_status: PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED
@@ -187,17 +187,17 @@ cu04_proof_reviewer_verdict: PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED
 current_review_component: opening_entry_endpoint_policy_and_subtitle_surface_semantic_comparison
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
 implementation_revision: c307089a592bb73b6539f801ff32b461dc4a424d
-artifact_output_sha256: bound_in_ep1_preflight_package_receipt
-artifact_output_byte_size: bound_in_ep1_preflight_package_receipt
-artifact_package_tree_digest_sha256: not_used_tracked_regenerable_portfolio
-artifact_manifest_self_sha256: not_applicable
-artifact_file_count: 4
-artifact_duration_seconds: not_applicable_pre_render
-artifact_source_count: 2
-artifact_cut_count: 3_context_complete_clipunits
-artifact_source_switch_count: planned_but_not_rendered
-artifact_caption_cue_count: caption_readback_bound_per_clipunit
-artifact_commentary_count: not_applicable_pre_render
+artifact_output_sha256: four_mp4_sha256_bound_in_active_artifact_mp4_sha256
+artifact_output_byte_size: [2262600, 4846884, 933592, 700415]
+artifact_package_tree_digest_sha256: bound_by_active_artifact_manifest_sha256
+artifact_manifest_self_sha256: 534882f9be1e36ed773a7b59b418ea1e6e203d64b7f4f690def0674c67bace52
+artifact_file_count: 70
+artifact_duration_seconds: [21.466667, 86.433333, 15.966016, 13.1]
+artifact_source_count: 1
+artifact_cut_count: 4_continuous_non_adopted_comparison_proofs
+artifact_source_switch_count: 0
+artifact_caption_cue_count: 42
+artifact_commentary_count: 0
 benchmark_family_denominator: 15
 benchmark_candidate_slot_denominator: 32
 benchmark_materialized_card_count: 32
@@ -477,11 +477,11 @@ s1_production_acceptance: false
 s1_public_use: false
 s1_monetized_use: false
 s1_upload_attempted: false
-package_validation_status: passed_ep1_preflight_blocker_receipt_exact
+package_validation_status: passed_69_payload_manifest_closed_review_http_200_mp4_range_206
 s1_review_http_status: 200
 s1_review_range_status: 206
 focused_test_status: ep1_preflight_4_passed
-full_suite_status: not_run_this_turn_historical_passed_696
+full_suite_status: passed_712
 out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive
 out13_human_review_pending: false
 out13_editorial_acceptance_granted: true
@@ -887,7 +887,12 @@ instructions.
 
 ## Current Capsule — ED-13 CU-04 Subtitle/Cut Proof Portable Handoff
 
+- active slice: `ED-13`
 - active artifact: `clip-wiki-integrated-subtitle-cut-proof-v1-001`
+- review status: `PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED`
+- portable receipt: `package/review/index.html`
+- local artifact role: `ignored_non_adopted_four_mp4_subtitle_cut_comparison_with_loopback_review`
+- human review pending: `true`
 - state: `NON_ADOPTED_REVIEW_PROOF`
 - Reviewer verdict: `PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED`
 - repo-relative package: `episodes/integrated_checklist_reverse_test_20260811/artifacts/
@@ -919,7 +924,7 @@ monetization、uploadも閉じたまま維持する。
 
 ## Next Action
 
-- action: `verify_portable_packet_then_bind_human_semantic_route`
+- action: `verify_portable_packet_then_bind_human_semantic_route_without_promoting_technical_checks`
 - first files: `README.md` → `docs/RUNTIME_STATE.md` → `docs/CURRENT_HANDOFF.md`
 - first checks: Git branch/HEAD/upstream parity、`git ls-files episodes`が0、ZIP外manifest、
   ZIP member closure、package manifest、HTTP review 200、MP4 Range 206

@@ -287,7 +287,7 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
 
 
 def test_current_resume_surfaces_point_to_s1_and_historical_sources_remain_linked():
-    current_portfolio_artifact = "clip-benchmark-portfolio-coverage-v1-001"
+    current_proof_artifact = "clip-wiki-integrated-subtitle-cut-proof-v1-001"
     current_s1_artifact = "clip-s1-two-source-common-context-probe-v1-001"
     current_out06_artifact = (
         "clip-out06-complete-narrative-short-delivery-candidate-v0-001"
@@ -348,16 +348,16 @@ def test_current_resume_surfaces_point_to_s1_and_historical_sources_remain_linke
         text = path.read_text(encoding="utf-8")
 
         if path.name == "CURRENT_HANDOFF.md":
-            assert f"active_artifact: {current_portfolio_artifact}" in text
+            assert f"active_artifact: {current_proof_artifact}" in text
             assert "local_artifact_available: true" in text
-            assert "human_entrypoint: docs/benchmarks/index.html" in text
+            assert "portable_entrypoint: package/review/index.html" in text
             assert f"s1_artifact_id: {current_s1_artifact}" in text
             assert "s1_lane_status: parked_human_review_pending" in text
             assert "latest_out06_complete_narrative_short" not in text
             continue
 
         if path.name in {"CURRENT_HANDOFF.md", "RUNTIME_STATE.md"}:
-            assert f"active_artifact: {current_portfolio_artifact}" in text
+            assert f"active_artifact: {current_proof_artifact}" in text
             assert f"s1_artifact_id: {current_s1_artifact}" in text
             assert (
                 "historical_source_host_out06_artifact: "
@@ -1628,30 +1628,33 @@ def test_artifact_registry_records_wiki_turn_current_focus_and_historical_source
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "benchmark_portfolio_15_families_28_slots_wiki_family_turn_ready"
+        "proof_set_review_useful_semantic_route_unresolved_ep1_exact_source_gate_parked"
     )
     assert status["current_focus"]["review_status"] == (
-        "correction_led_family_turn_machine_validated_human_editorial_review_pending"
+        "PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED"
     )
     assert status["current_focus"]["decision_required"] == (
-        "wiki_family_turn_exact_sha_internal_editorial_verdict"
+        "human_semantic_choice_for_opening_entry_and_endpoint_policy"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "wiki_family_turn_exact_sha_internal_editorial_review_s1_remains_parked"
+        "human_semantic_comparison_of_opening_and_endpoint_on_exact_four_mp4_proof_set"
     )
     assert status["current_focus"]["human_entrypoint"] == (
-        "docs/benchmarks/index.html"
+        "package/review/index.html inside the external ClipPipeGen portable ZIP"
     )
-    assert status["current_focus"]["review_open_command"] == "start docs\\benchmarks\\index.html"
+    assert status["current_focus"]["review_open_command"] == (
+        "powershell -NoProfile -ExecutionPolicy Bypass -File "
+        ".\\package\\review\\open_review.ps1"
+    )
     assert status["current_focus"]["machine_readback"] == (
-        "docs/benchmarks/benchmark_portfolio.json"
+        "package/proof_set_receipt.json inside the external ClipPipeGen portable ZIP"
     )
     assert status["current_focus"]["remote_code_complete"] == "true"
     assert status["current_focus"]["remote_decision_binding_available"] == "false"
     assert status["current_focus"]["local_artifact_available"] == "true"
     assert status["current_focus"]["portable_local_artifact_available"] == "true"
     assert status["current_focus"]["portable_entrypoint"] == (
-        "docs/benchmarks/index.html"
+        "package/review/index.html"
     )
     assert status["current_focus"]["exact_baseline_available"] == ""
     assert status["current_focus"]["accepted_baseline_status"] == ""
@@ -1660,7 +1663,7 @@ def test_artifact_registry_records_wiki_turn_current_focus_and_historical_source
     assert status["current_focus"]["proxy_classification"] == ""
     assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
     assert status["current_focus"]["review_server_status"] == (
-        "stopped_restart_command_available"
+        "stopped_portable_loopback_launcher_available"
     )
     assert (
         status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
@@ -1676,15 +1679,14 @@ def test_artifact_registry_records_wiki_turn_current_focus_and_historical_source
     current_surfaces = [
         item
         for item in status["open_surfaces"]
-        if item["label"] == "SH-05 Current Focus"
+        if item["label"] == "ED-13 Current Focus"
     ]
     assert len(current_surfaces) == 1
     assert current_surfaces[0]["target"].endswith(
-        "docs/benchmarks/index.html"
+        "package/review/index.html inside the external ClipPipeGen portable ZIP"
     )
     assert status["current_focus"]["cross_machine_resume_class"] == (
-        "tracked_portfolio_cards_and_contracts_are_portable_local_media_tiers_"
-        "must_be_reobserved_per_host"
+        "tracked_context_plus_separate_project_zip_required_for_review_media"
     )
     assert status["current_focus"]["active_rebuild_contract"] == ""
     assert status["current_focus"]["accepted_baseline_sha256"] == (
@@ -1695,7 +1697,7 @@ def test_artifact_registry_records_wiki_turn_current_focus_and_historical_source
     assert status["current_focus"]["recommended_cover_timestamp_seconds"] == ""
     assert status["current_focus"]["recommended_cover_selection_status"] == ""
     assert status["current_focus"]["artifact_id"] == (
-        "clip-benchmark-portfolio-coverage-v1-001"
+        "clip-wiki-integrated-subtitle-cut-proof-v1-001"
     )
     assert "clip-wiki-tensaku-family-turn-v1-001" in artifact_ids
     assert "clip-s1-two-source-common-context-probe-v1-001" in artifact_ids
@@ -1768,7 +1770,7 @@ def test_artifact_registry_records_wiki_turn_current_focus_and_historical_source
         "clip-ed10aq-production-limitation-lift-stage-5-user-decision-ready-001"
         in artifact_ids
     )
-    assert status["artifact_coverage"]["current_focus_artifact_registered"] is True
+    assert status["artifact_coverage"]["current_focus_artifact_registered"] is False
 
     artifact_by_id = {item["artifact_id"]: item for item in status["active_artifacts"]}
     cpd12 = artifact_by_id["clip-cpd12-minimal-review-console-v0-001"]

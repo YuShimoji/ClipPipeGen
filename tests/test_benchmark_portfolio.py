@@ -87,15 +87,16 @@ def test_checked_in_portfolio_matches_registry_and_keeps_episodes_untracked() ->
     assert len(list((REPO_ROOT / "docs/benchmarks/candidates").glob("*.html"))) == 32
 
 
-def test_runtime_and_handoff_route_to_ep1_preflight_without_erasing_reframe_portfolio_or_gates() -> None:
+def test_runtime_and_handoff_route_to_current_proof_without_erasing_reframe_portfolio_or_gates() -> None:
     runtime = (REPO_ROOT / "docs/RUNTIME_STATE.md").read_text(encoding="utf-8")
     handoff = (REPO_ROOT / "docs/CURRENT_HANDOFF.md").read_text(encoding="utf-8")
     for document in (runtime, handoff):
         assert "current_slice: ED-13" in document
         assert (
-            "active_artifact: clip-wiki-tensaku-ep1-integrated-rough-cut-preflight-v1-001"
+            "active_artifact: clip-wiki-integrated-subtitle-cut-proof-v1-001"
             in document
         )
+        assert "review_status: PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED" in document
         assert "wiki_content_reframe_topology: thematic_episode_family" in document
         assert "wiki_content_reframe_episode_count: 4" in document
         assert "wiki_content_reframe_clipunit_count: 13" in document

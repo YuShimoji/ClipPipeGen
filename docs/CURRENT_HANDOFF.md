@@ -99,7 +99,7 @@ package_validation_status: passed_69_payload_manifest_closed_review_http_200_mp4
 s1_review_http_status: 200
 s1_review_range_status: 206
 focused_test_status: current_package_manifest_and_portable_handoff_validation_passed
-full_suite_status: not_run_this_turn_historical_passed_696
+full_suite_status: passed_712
 human_review_pending: true
 rights_approval: readback_unresolved
 production_acceptance: false

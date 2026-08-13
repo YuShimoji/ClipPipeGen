@@ -248,27 +248,30 @@ def test_runtime_points_to_wiki_turn_and_keeps_s1_out13_and_out07_parked() -> (
     )
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: true" in runtime
-    assert "human_entrypoint: docs/benchmarks/index.html" in runtime
-    assert "portable_entrypoint: docs/benchmarks/index.html" in runtime
+    assert (
+        "human_entrypoint: package/review/index.html inside the external "
+        "ClipPipeGen portable ZIP" in runtime
+    )
+    assert "portable_entrypoint: package/review/index.html" in runtime
     assert (
         "cross_machine_resume_class: "
-        "tracked_portfolio_cards_and_contracts_are_portable_local_media_tiers_"
-        "must_be_reobserved_per_host"
+        "tracked_context_plus_separate_project_zip_required_for_review_media"
         in runtime
     )
     assert (
         "health: "
-        "BENCHMARK_PORTFOLIO_WIKI_FAMILY_TURN_READY_MEDIA_GATES_PARKED_S1_PARKED"
+        "WIKI_CU04_PROOF_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED_EP1_SOURCE_GATE_PARKED"
         in runtime
     )
-    assert "current_slice: SH-05" in runtime
+    assert "current_slice: ED-13" in runtime
     assert (
-        "canonical_status: benchmark_portfolio_15_families_28_slots_wiki_family_turn_ready"
+        "canonical_status: proof_set_review_useful_semantic_route_unresolved_"
+        "ep1_exact_source_gate_parked"
         in runtime
     )
-    assert "active_artifact: clip-benchmark-portfolio-coverage-v1-001" in runtime
+    assert "active_artifact: clip-wiki-integrated-subtitle-cut-proof-v1-001" in runtime
     assert (
-        "review_status: correction_led_family_turn_machine_validated_human_editorial_review_pending"
+        "review_status: PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED"
         in runtime
     )
     assert "wiki_family_turn_validation: passed_13_of_13" in runtime
