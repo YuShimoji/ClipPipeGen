@@ -49,6 +49,12 @@ independently hashed 16MiB parts and reassembled only after whole-archive SHA ve
 [PRIVATE_ARTIFACT_TRANSFER.md](docs/PRIVATE_ARTIFACT_TRANSFER.md). Private transport is
 not rights, production, public, monetized, publishing, or upload approval.
 
+Exact portable proof intake note: `verify-portable-review-proof` verifies an externally
+transported project ZIP and its outer manifest against a tracked review identity, then may
+extract only the exact `package/` files into a new directory. It returns the existing review
+entrypoint without opening a player or selecting an editorial route; see
+[PORTABLE_REVIEW_PROOF_INTAKE.md](docs/PORTABLE_REVIEW_PROOF_INTAKE.md).
+
 ED-12 / S1 note: `build-common-context-probe`は、取得済み実source二本だけをexact
 media/caption/transcript/rights hashへbindし、source captionとcreator-authored commentaryを
 別provenance trackとして一つのargumentative timelineへ運ぶ。current artifactは

@@ -66,6 +66,7 @@ Subcommands:
     build-non-repo-handoff   SH: local binary artifact -> handoff manifest/report.
     build-private-artifact-transfer SH-10: exact ignored inputs/artifact -> private ZIP.
     verify-private-artifact-transfer SH-10: verify/restore a private transfer ZIP.
+    verify-portable-review-proof Verify/extract one exact non-adopted review proof package.
     split-private-artifact-transfer SH-10: split a verified ZIP into small hashed parts.
     assemble-private-artifact-transfer SH-10: verify/reassemble transport parts.
     transcribe-audio         ED-07: local audio -> transcript.json (fake or optional Vosk).
@@ -157,6 +158,7 @@ from . import (
     validate_rights,
     validate_transcript,
     verify_private_artifact_transfer,
+    verify_portable_review_proof,
 )
 
 SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
@@ -222,6 +224,7 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "build-non-repo-handoff": build_non_repo_handoff.run,
     "build-private-artifact-transfer": build_private_artifact_transfer.run,
     "verify-private-artifact-transfer": verify_private_artifact_transfer.run,
+    "verify-portable-review-proof": verify_portable_review_proof.run,
     "split-private-artifact-transfer": split_private_artifact_transfer.run,
     "assemble-private-artifact-transfer": assemble_private_artifact_transfer.run,
     "transcribe-audio": transcribe_audio.run,

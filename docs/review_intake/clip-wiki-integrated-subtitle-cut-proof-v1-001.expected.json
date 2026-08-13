@@ -1,0 +1,49 @@
+{
+  "schema_version": "clippipegen.portable_review_proof_expectation.v1",
+  "artifact_id": "clip-wiki-integrated-subtitle-cut-proof-v1-001",
+  "artifact_state": "NON_ADOPTED_REVIEW_PROOF",
+  "package_root": "package",
+  "physical_file_count": 70,
+  "manifest": {
+    "payload_file_count": 69,
+    "self_sha256": "534882f9be1e36ed773a7b59b418ea1e6e203d64b7f4f690def0674c67bace52"
+  },
+  "review_entrypoint": {
+    "path": "package/review/index.html",
+    "sha256": "a5d0db6bca005b95aeae51155b52325d64a30e9be1d16608a096411a4b26d26f"
+  },
+  "required_members": [
+    "package/review/index.html",
+    "package/review/open_review.ps1",
+    "package/review/serve_review.cjs",
+    "package/proof_set_receipt.json"
+  ],
+  "media": [
+    {
+      "ordinal": 1,
+      "byte_size": 2262600,
+      "sha256": "b2dbc8aa1870941ad0251b0f995133d76a9247308a67eb979cf6da3b7448aedb"
+    },
+    {
+      "ordinal": 2,
+      "byte_size": 4846884,
+      "sha256": "cc31dedc912307105700e941d4779f2529393dea68da317be5d04a84642af882"
+    },
+    {
+      "ordinal": 3,
+      "byte_size": 933592,
+      "sha256": "1c3f6a002031ff3c0cc61771f58b2f2e46dfaab56c0fd40431df9b3296eb10a1"
+    },
+    {
+      "ordinal": 4,
+      "byte_size": 700415,
+      "sha256": "2cafe8930dba3e163286310bb6a1d03c8776b1285600314c904caf467ff70f52"
+    }
+  ],
+  "closed_gates": {
+    "semantic_winner_selected": false,
+    "human_creative_acceptance": false,
+    "production_acceptance": false,
+    "public_or_publishing_acceptance": false
+  }
+}
