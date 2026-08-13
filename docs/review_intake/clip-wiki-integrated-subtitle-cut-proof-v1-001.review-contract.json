@@ -1,0 +1,47 @@
+{
+  "schema_version": "clippipegen.portable_review_handoff_contract.v1",
+  "artifact_id": "clip-wiki-integrated-subtitle-cut-proof-v1-001",
+  "artifact_state": "NON_ADOPTED_REVIEW_PROOF",
+  "estimated_review_minutes": 12,
+  "comparison_dimensions": {
+    "opening": {
+      "question": "2523.480秒開始と2530.319秒開始のどちらが、前提を欠かず本題へ入れるか。",
+      "checks": [
+        "最初の8秒だけを再比較し、人物・話題・因果の入り口が理解できるかを見る。",
+        "短い開始が説明不足ならREPAIR、長い開始が冗長でも意味保持ならwinner判断として記録する。"
+      ]
+    },
+    "endpoint": {
+      "question": "event_001639の完結まで残す終端とevent_001641開始前で閉じる終端のどちらが、余韻とtopic purityを両立するか。",
+      "checks": [
+        "各proofの最後の6秒を再比較し、文・反応・因果が途中で切れていないかを見る。",
+        "次の話題が侵入する場合と、締めを失う場合を分けて記録する。"
+      ]
+    },
+    "subtitle_behavior": {
+      "question": "同じ内容を追うとき、字幕が意味理解を助け、画面比較を妨げていないか。",
+      "checks": [
+        "最大2行、文字のcrop/overflowなし、一文字だけの不自然な末尾行なしを確認する。",
+        "発話との同期、短すぎる表示、改行位置、openingとendpoint付近の読み切りを確認する。",
+        "機械的な幅・改行不良はREPAIR対象とし、opening/endpointの意味選択とは分離する。"
+      ]
+    },
+    "overall_winner": {
+      "question": "四本のうち、opening、causal core、endpoint、字幕を合わせて次のsuccessorにする一案はどれか。",
+      "checks": [
+        "Proof 1から4をexact SHAのordinalで指定する。",
+        "winnerを選べない場合はREPAIRまたはREJECTとし、近い案と問題dimensionを指定する。"
+      ]
+    }
+  },
+  "reply_contract": {
+    "ACCEPT": "ACCEPT proof=<1|2|3|4> opening=<2523.480|2530.319> endpoint=<event_001639|before_event_001641> note=<optional>",
+    "REPAIR": "REPAIR proof=<1|2|3|4|all> issue=<opening|endpoint|subtitle|other> at=<timestamp|n/a> note=<required>",
+    "REJECT": "REJECT reason=<required> closest_proof=<1|2|3|4|none>"
+  },
+  "after_reply": {
+    "ACCEPT": "選ばれたordinalとopening/endpointをexact SHAへbindし、新しいsuccessor identityを起票する。現proofをfinished Episodeへ昇格しない。",
+    "REPAIR": "指定dimensionだけをbounded repairする。media bytesが変わる場合は新しいidentityとmanifestを発行し、影響dimensionだけを再reviewする。",
+    "REJECT": "四本をNON_ADOPTED_REVIEW_PROOFのlineageとして保持し、別候補への無断置換やproduction昇格を行わない。"
+  }
+}

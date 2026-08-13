@@ -11,6 +11,7 @@ from pathlib import Path
 from src.pipeline.portable_review_proof import (
     PortableReviewProofError,
     verify_portable_review_proof,
+    write_portable_review_handoff,
 )
 
 
@@ -30,15 +31,47 @@ def run(argv: list[str]) -> int:
     parser.add_argument("--outer-manifest", required=True, type=Path)
     parser.add_argument("--expected", required=True, type=Path)
     parser.add_argument("--extract-to", type=Path)
+    parser.add_argument("--review-contract", type=Path)
+    parser.add_argument("--handoff-dir", type=Path)
+    parser.add_argument("--reply-destination")
     parser.add_argument("--format", choices=("text", "json"), default="text")
     args = parser.parse_args(argv)
     try:
+        handoff_requested = any(
+            value is not None
+            for value in (
+                args.review_contract,
+                args.handoff_dir,
+                args.reply_destination,
+            )
+        )
+        if handoff_requested and not all(
+            value is not None
+            for value in (
+                args.extract_to,
+                args.review_contract,
+                args.handoff_dir,
+                args.reply_destination,
+            )
+        ):
+            raise PortableReviewProofError(
+                "handoff_preflight",
+                "--extract-to, --review-contract, --handoff-dir, and "
+                "--reply-destination are required together",
+            )
         result = verify_portable_review_proof(
             archive_path=args.archive,
             outer_manifest_path=args.outer_manifest,
             expectation_path=args.expected,
             extract_to=args.extract_to,
         )
+        if handoff_requested:
+            result["handoff"] = write_portable_review_handoff(
+                verification=result,
+                contract_path=args.review_contract,
+                output_dir=args.handoff_dir,
+                reply_destination=args.reply_destination,
+            )
     except (PortableReviewProofError, OSError, zipfile.BadZipFile) as exc:
         stage = getattr(exc, "stage", "verification")
         print(

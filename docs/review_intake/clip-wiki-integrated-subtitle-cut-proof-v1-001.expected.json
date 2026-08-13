@@ -1,6 +1,7 @@
 {
   "schema_version": "clippipegen.portable_review_proof_expectation.v1",
   "artifact_id": "clip-wiki-integrated-subtitle-cut-proof-v1-001",
+  "source_identity": "youtube:1AcId5Yja10",
   "artifact_state": "NON_ADOPTED_REVIEW_PROOF",
   "package_root": "package",
   "physical_file_count": 70,
@@ -22,21 +23,25 @@
     {
       "ordinal": 1,
       "byte_size": 2262600,
+      "duration_seconds": 21.466667,
       "sha256": "b2dbc8aa1870941ad0251b0f995133d76a9247308a67eb979cf6da3b7448aedb"
     },
     {
       "ordinal": 2,
       "byte_size": 4846884,
+      "duration_seconds": 86.433333,
       "sha256": "cc31dedc912307105700e941d4779f2529393dea68da317be5d04a84642af882"
     },
     {
       "ordinal": 3,
       "byte_size": 933592,
+      "duration_seconds": 15.966016,
       "sha256": "1c3f6a002031ff3c0cc61771f58b2f2e46dfaab56c0fd40431df9b3296eb10a1"
     },
     {
       "ordinal": 4,
       "byte_size": 700415,
+      "duration_seconds": 13.1,
       "sha256": "2cafe8930dba3e163286310bb6a1d03c8776b1285600314c904caf467ff70f52"
     }
   ],

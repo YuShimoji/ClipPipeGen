@@ -10,9 +10,11 @@ import pytest
 from src.cli.main import main
 from src.pipeline.portable_review_proof import (
     EXPECTATION_SCHEMA,
+    HANDOFF_CONTRACT_SCHEMA,
     OUTER_MANIFEST_SCHEMA,
     PortableReviewProofError,
     verify_portable_review_proof,
+    write_portable_review_handoff,
 )
 
 
@@ -89,6 +91,7 @@ def _write_fixture(
             {
                 "schema_version": EXPECTATION_SCHEMA,
                 "artifact_id": ARTIFACT_ID,
+                "source_identity": "local:fixture-source",
                 "artifact_state": "NON_ADOPTED_REVIEW_PROOF",
                 "package_root": "package",
                 "physical_file_count": 70,
@@ -110,6 +113,7 @@ def _write_fixture(
                     {
                         "ordinal": index,
                         "byte_size": len(payload),
+                        "duration_seconds": float(index),
                         "sha256": _sha(payload),
                     }
                     for index, payload in enumerate(media, start=1)
@@ -144,6 +148,41 @@ def _write_fixture(
     return archive, outer, expectation
 
 
+def _write_handoff_contract(root: Path, *, artifact_id: str = ARTIFACT_ID) -> Path:
+    contract = root / "review-contract.json"
+    dimensions = {
+        key: {
+            "question": f"Review {key}?",
+            "checks": [f"Check {key} without selecting it mechanically."],
+        }
+        for key in ("opening", "endpoint", "subtitle_behavior", "overall_winner")
+    }
+    contract.write_text(
+        json.dumps(
+            {
+                "schema_version": HANDOFF_CONTRACT_SCHEMA,
+                "artifact_id": artifact_id,
+                "artifact_state": "NON_ADOPTED_REVIEW_PROOF",
+                "estimated_review_minutes": 12,
+                "comparison_dimensions": dimensions,
+                "reply_contract": {
+                    "ACCEPT": "ACCEPT proof=<1|2|3|4>",
+                    "REPAIR": "REPAIR proof=<1|2|3|4|all> issue=<required>",
+                    "REJECT": "REJECT reason=<required>",
+                },
+                "after_reply": {
+                    "ACCEPT": "Bind the human choice to exact identity.",
+                    "REPAIR": "Repair only the named dimension.",
+                    "REJECT": "Retain all four as non-adopted lineage.",
+                },
+            },
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    return contract
+
+
 def test_verify_and_extract_exact_package_only(tmp_path: Path) -> None:
     archive, outer, expectation = _write_fixture(
         tmp_path, extra_members={"project/README.md": b"project snapshot"}
@@ -157,9 +196,11 @@ def test_verify_and_extract_exact_package_only(tmp_path: Path) -> None:
     )
     assert result["state"] == "PORTABLE_REVIEW_PROOF_VERIFIED"
     assert result["artifact_state"] == "NON_ADOPTED_REVIEW_PROOF"
+    assert result["source_identity"] == "local:fixture-source"
     assert result["package_file_count"] == 70
     assert result["semantic_winner_selected"] is False
     assert len(result["retained_media"]) == 4
+    assert result["retained_media"][0]["recorded_duration_seconds"] == 1.0
     assert result["review_entrypoint"] == target.resolve() / "package/review/index.html"
     assert result["review_entrypoint"].is_file()
     assert not (target / "project/README.md").exists()
@@ -308,3 +349,166 @@ def test_cli_returns_direct_review_route_without_opening_it(
     assert payload["state"] == "PORTABLE_REVIEW_PROOF_VERIFIED"
     assert payload["review_entrypoint"].endswith("package\\review\\index.html")
     assert "open_review.ps1" in payload["review_open_command"]
+
+
+def test_verified_extraction_writes_atomic_coordinator_packet(tmp_path: Path) -> None:
+    archive, outer, expectation = _write_fixture(tmp_path)
+    extraction = tmp_path / "verified-review"
+    verification = verify_portable_review_proof(
+        archive_path=archive,
+        outer_manifest_path=outer,
+        expectation_path=expectation,
+        extract_to=extraction,
+    )
+    output = tmp_path / "handoff"
+    result = write_portable_review_handoff(
+        verification=verification,
+        contract_path=_write_handoff_contract(tmp_path),
+        output_dir=output,
+        reply_destination="video-coordinator:test-thread",
+    )
+    assert result["state"] == "PORTABLE_REVIEW_HANDOFF_WRITTEN"
+    assert result["acceptance_ready"] is True
+    packet = json.loads(
+        (output / "coordinator_review_packet.json").read_text(encoding="utf-8")
+    )
+    assert packet["state"] == "ACCEPTANCE_PACKET_READY"
+    assert packet["reply_destination"] == "video-coordinator:test-thread"
+    assert packet["semantic_winner_selected"] is False
+    assert len(packet["retained_media"]) == 4
+    assert all(Path(item["local_path"]).is_file() for item in packet["retained_media"])
+    markdown = (output / "coordinator_review_packet.md").read_text(encoding="utf-8")
+    assert "## Open and compare" in markdown
+    assert "### opening" in markdown
+    assert "### endpoint" in markdown
+    assert "### subtitle_behavior" in markdown
+    assert "### overall_winner" in markdown
+    assert "ACCEPT proof=" in markdown
+    assert "REPAIR proof=" in markdown
+    assert "REJECT reason=" in markdown
+
+
+def test_handoff_requires_verified_extraction_and_writes_nothing(
+    tmp_path: Path,
+) -> None:
+    output = tmp_path / "must-not-exist"
+    with pytest.raises(PortableReviewProofError) as failure:
+        write_portable_review_handoff(
+            verification={
+                "state": "PORTABLE_REVIEW_PROOF_VERIFIED",
+                "artifact_id": ARTIFACT_ID,
+            },
+            contract_path=_write_handoff_contract(tmp_path),
+            output_dir=output,
+            reply_destination="video-coordinator:test-thread",
+        )
+    assert failure.value.stage == "handoff_preflight"
+    assert not output.exists()
+
+
+def test_handoff_rejects_contract_for_another_artifact(tmp_path: Path) -> None:
+    archive, outer, expectation = _write_fixture(tmp_path)
+    verification = verify_portable_review_proof(
+        archive_path=archive,
+        outer_manifest_path=outer,
+        expectation_path=expectation,
+        extract_to=tmp_path / "verified-review",
+    )
+    output = tmp_path / "must-not-exist"
+    with pytest.raises(PortableReviewProofError) as failure:
+        write_portable_review_handoff(
+            verification=verification,
+            contract_path=_write_handoff_contract(
+                tmp_path, artifact_id="clip-another-proof-001"
+            ),
+            output_dir=output,
+            reply_destination="video-coordinator:test-thread",
+        )
+    assert failure.value.stage == "handoff_contract_validation"
+    assert not output.exists()
+
+
+def test_cli_writes_coordinator_packet_only_after_exact_verification(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    archive, outer, expectation = _write_fixture(tmp_path)
+    extraction = tmp_path / "cli-review"
+    output = tmp_path / "cli-handoff"
+    assert main(
+        [
+            "verify-portable-review-proof",
+            "--archive",
+            str(archive),
+            "--outer-manifest",
+            str(outer),
+            "--expected",
+            str(expectation),
+            "--extract-to",
+            str(extraction),
+            "--review-contract",
+            str(_write_handoff_contract(tmp_path)),
+            "--handoff-dir",
+            str(output),
+            "--reply-destination",
+            "video-coordinator:test-thread",
+            "--format",
+            "json",
+        ]
+    ) == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["handoff"]["state"] == "PORTABLE_REVIEW_HANDOFF_WRITTEN"
+    assert payload["handoff"]["acceptance_ready"] is True
+    assert (output / "verification_receipt.json").is_file()
+    assert (output / "coordinator_review_packet.json").is_file()
+    assert (output / "coordinator_review_packet.md").is_file()
+
+
+def test_cli_missing_archive_never_creates_handoff_output(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    output = tmp_path / "must-not-exist"
+    assert main(
+        [
+            "verify-portable-review-proof",
+            "--archive",
+            str(tmp_path / "missing.zip"),
+            "--outer-manifest",
+            str(tmp_path / "missing.outer.json"),
+            "--expected",
+            str(tmp_path / "missing.expected.json"),
+            "--extract-to",
+            str(tmp_path / "must-not-extract"),
+            "--review-contract",
+            str(tmp_path / "missing.contract.json"),
+            "--handoff-dir",
+            str(output),
+            "--reply-destination",
+            "video-coordinator:test-thread",
+        ]
+    ) == 2
+    assert "input_preflight" in capsys.readouterr().err
+    assert not output.exists()
+
+
+def test_cli_incomplete_handoff_args_fail_before_verification_or_extraction(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    archive, outer, expectation = _write_fixture(tmp_path)
+    extraction = tmp_path / "must-not-extract"
+    assert main(
+        [
+            "verify-portable-review-proof",
+            "--archive",
+            str(archive),
+            "--outer-manifest",
+            str(outer),
+            "--expected",
+            str(expectation),
+            "--extract-to",
+            str(extraction),
+            "--handoff-dir",
+            str(tmp_path / "incomplete-handoff"),
+        ]
+    ) == 2
+    assert "handoff_preflight" in capsys.readouterr().err
+    assert not extraction.exists()

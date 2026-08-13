@@ -21,6 +21,7 @@ from typing import Any
 
 EXPECTATION_SCHEMA = "clippipegen.portable_review_proof_expectation.v1"
 OUTER_MANIFEST_SCHEMA = "clippipegen.portable_review_outer_manifest.v1"
+HANDOFF_CONTRACT_SCHEMA = "clippipegen.portable_review_handoff_contract.v1"
 COPY_CHUNK_BYTES = 1024 * 1024
 
 
@@ -95,6 +96,9 @@ def _validate_expectation(payload: dict[str, Any]) -> dict[str, Any]:
     artifact_id = payload.get("artifact_id")
     if not isinstance(artifact_id, str) or not artifact_id.startswith("clip-"):
         raise PortableReviewProofError(stage, "artifact_id must be a clip-* identity")
+    source_identity = payload.get("source_identity")
+    if not isinstance(source_identity, str) or ":" not in source_identity:
+        raise PortableReviewProofError(stage, "source_identity must be an explicit identity")
     if payload.get("artifact_state") != "NON_ADOPTED_REVIEW_PROOF":
         raise PortableReviewProofError(
             stage, "artifact_state must remain NON_ADOPTED_REVIEW_PROOF"
@@ -153,10 +157,17 @@ def _validate_expectation(payload: dict[str, Any]) -> dict[str, Any]:
             raise PortableReviewProofError(stage, "media entries must be objects")
         ordinal = item.get("ordinal")
         byte_size = item.get("byte_size")
+        duration_seconds = item.get("duration_seconds")
         if not _is_int(ordinal) or ordinal not in (1, 2, 3, 4):
             raise PortableReviewProofError(stage, "media ordinal must be 1 through 4")
         if not _is_int(byte_size) or byte_size <= 0:
             raise PortableReviewProofError(stage, "media byte_size must be positive")
+        if (
+            not isinstance(duration_seconds, (int, float))
+            or isinstance(duration_seconds, bool)
+            or duration_seconds <= 0
+        ):
+            raise PortableReviewProofError(stage, "media duration_seconds must be positive")
         sha = _validate_sha(item.get("sha256"), field="media.sha256", stage=stage)
         ordinals.add(ordinal)
         media_shas.add(sha)
@@ -472,6 +483,7 @@ def verify_portable_review_proof(
                     "path": name,
                     "byte_size": sizes[name],
                     "sha256": hashes[name],
+                    "recorded_duration_seconds": item["duration_seconds"],
                 }
             )
         if {item["sha256"] for item in located_media} != set(media_by_sha):
@@ -518,6 +530,7 @@ def verify_portable_review_proof(
         "state": "PORTABLE_REVIEW_PROOF_VERIFIED",
         "artifact_id": expectation["artifact_id"],
         "artifact_state": expectation["artifact_state"],
+        "source_identity": expectation["source_identity"],
         "archive": archive_path,
         "archive_byte_size": archive_path.stat().st_size,
         "archive_sha256": outer["archive_sha256"],
@@ -544,4 +557,238 @@ def verify_portable_review_proof(
         "human_creative_acceptance": False,
         "production_acceptance": False,
         "public_or_publishing_acceptance": False,
+    }
+
+
+def _validate_handoff_contract(
+    payload: dict[str, Any], *, artifact_id: str
+) -> dict[str, Any]:
+    stage = "handoff_contract_validation"
+    if payload.get("schema_version") != HANDOFF_CONTRACT_SCHEMA:
+        raise PortableReviewProofError(stage, "unsupported handoff contract schema")
+    if payload.get("artifact_id") != artifact_id:
+        raise PortableReviewProofError(stage, "handoff contract artifact_id mismatch")
+    if payload.get("artifact_state") != "NON_ADOPTED_REVIEW_PROOF":
+        raise PortableReviewProofError(
+            stage, "handoff contract must retain NON_ADOPTED_REVIEW_PROOF"
+        )
+    minutes = payload.get("estimated_review_minutes")
+    if not _is_int(minutes) or minutes <= 0 or minutes > 30:
+        raise PortableReviewProofError(
+            stage, "estimated_review_minutes must be between 1 and 30"
+        )
+    dimensions = payload.get("comparison_dimensions")
+    required_dimensions = ("opening", "endpoint", "subtitle_behavior", "overall_winner")
+    if not isinstance(dimensions, dict) or set(dimensions) != set(required_dimensions):
+        raise PortableReviewProofError(
+            stage, "opening, endpoint, subtitle_behavior, and overall_winner are required"
+        )
+    for key in required_dimensions:
+        dimension = dimensions[key]
+        if (
+            not isinstance(dimension, dict)
+            or not isinstance(dimension.get("question"), str)
+            or not dimension["question"].strip()
+            or not isinstance(dimension.get("checks"), list)
+            or not dimension["checks"]
+            or not all(
+                isinstance(item, str) and item.strip() for item in dimension["checks"]
+            )
+        ):
+            raise PortableReviewProofError(
+                stage, f"comparison dimension is incomplete: {key}"
+            )
+    reply = payload.get("reply_contract")
+    if not isinstance(reply, dict) or set(reply) != {"ACCEPT", "REPAIR", "REJECT"}:
+        raise PortableReviewProofError(
+            stage, "reply_contract must define ACCEPT, REPAIR, and REJECT"
+        )
+    if not all(isinstance(value, str) and value.strip() for value in reply.values()):
+        raise PortableReviewProofError(stage, "reply_contract entries must be non-empty")
+    transitions = payload.get("after_reply")
+    if (
+        not isinstance(transitions, dict)
+        or set(transitions) != {"ACCEPT", "REPAIR", "REJECT"}
+        or not all(
+            isinstance(value, str) and value.strip() for value in transitions.values()
+        )
+    ):
+        raise PortableReviewProofError(
+            stage, "after_reply must define all three bounded transitions"
+        )
+    return payload
+
+
+def _write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+
+
+def _review_packet_markdown(packet: dict[str, Any]) -> str:
+    lines = [
+        "# ClipPipeGen exact four-way review packet",
+        "",
+        f"- artifact: `{packet['artifact_id']}`",
+        f"- source: `{packet['source_identity']}`",
+        f"- state: `{packet['artifact_state']}`",
+        f"- estimated review time: {packet['estimated_review_minutes']} minutes",
+        f"- reply destination: `{packet['reply_destination']}`",
+        "- boundary: four exact proofs are verified but remain non-adopted; "
+        "opening, endpoint, and winner are human-owned.",
+        "",
+        "## Open and compare",
+        "",
+        f"1. Run `{packet['review_open_command']}`.",
+        "2. Play all four proofs once without selecting a winner.",
+        "3. Recheck only the opening, the final endpoint, and subtitle behavior.",
+        "4. Return one of the three reply forms below to the named Coordinator.",
+        "",
+        "## Exact retained proofs",
+        "",
+        "| Proof | Duration | Exact local path | SHA-256 |",
+        "|---:|---:|---|---|",
+    ]
+    for item in packet["retained_media"]:
+        lines.append(
+            f"| {item['ordinal']} | {item['recorded_duration_seconds']:.3f}s | "
+            f"`{item['local_path']}` | `{item['sha256']}` |"
+        )
+    lines.extend(["", "## Focused checks", ""])
+    for key, dimension in packet["comparison_dimensions"].items():
+        lines.append(f"### {key}")
+        lines.append("")
+        lines.append(dimension["question"])
+        lines.append("")
+        for check in dimension["checks"]:
+            lines.append(f"- {check}")
+        lines.append("")
+    lines.extend(["## Minimal reply", ""])
+    for disposition in ("ACCEPT", "REPAIR", "REJECT"):
+        lines.append(f"- `{packet['reply_contract'][disposition]}`")
+    lines.extend(["", "## After the reply", ""])
+    for disposition in ("ACCEPT", "REPAIR", "REJECT"):
+        lines.append(f"- **{disposition}:** {packet['after_reply'][disposition]}")
+    lines.extend(
+        [
+            "",
+            "Hashes, tests, and this packet establish identity and integrity "
+            "only; they do not replace the viewing decision.",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def write_portable_review_handoff(
+    *,
+    verification: dict[str, Any],
+    contract_path: Path,
+    output_dir: Path,
+    reply_destination: str,
+) -> dict[str, Any]:
+    """Atomically write a Coordinator packet only after exact proof verification."""
+
+    stage = "handoff_preflight"
+    if verification.get("state") != "PORTABLE_REVIEW_PROOF_VERIFIED":
+        raise PortableReviewProofError(stage, "exact proof verification is required")
+    review_entrypoint = verification.get("review_entrypoint")
+    open_command = verification.get("review_open_command")
+    extracted_root = verification.get("extracted_root")
+    if (
+        not isinstance(review_entrypoint, Path)
+        or not review_entrypoint.is_file()
+        or not isinstance(extracted_root, Path)
+        or not isinstance(open_command, str)
+        or not open_command
+    ):
+        raise PortableReviewProofError(
+            stage, "verified extraction and a direct review route are required"
+        )
+    if not isinstance(reply_destination, str) or not reply_destination.strip():
+        raise PortableReviewProofError(stage, "reply_destination is required")
+    contract = _validate_handoff_contract(
+        _read_json(contract_path, stage="handoff_contract_validation"),
+        artifact_id=verification["artifact_id"],
+    )
+    output_dir = output_dir.resolve(strict=False)
+    if output_dir.exists():
+        raise PortableReviewProofError(stage, "handoff output already exists")
+    parent = output_dir.parent
+    parent.mkdir(parents=True, exist_ok=True)
+    for candidate in (parent, *parent.parents):
+        if candidate.exists() and _is_reparse_point(candidate):
+            raise PortableReviewProofError(
+                stage, f"handoff output parent is a reparse point: {candidate}"
+            )
+
+    retained_media: list[dict[str, Any]] = []
+    for item in verification["retained_media"]:
+        local_path = extracted_root.joinpath(*PurePosixPath(item["path"]).parts)
+        if not local_path.is_file() or _sha256_file(local_path) != item["sha256"]:
+            raise PortableReviewProofError(
+                stage, f"verified retained proof is unavailable: {item['path']}"
+            )
+        retained_media.append({**item, "local_path": str(local_path)})
+    packet = {
+        "schema_version": HANDOFF_CONTRACT_SCHEMA,
+        "state": "ACCEPTANCE_PACKET_READY",
+        "acceptance_ready": True,
+        "artifact_id": verification["artifact_id"],
+        "artifact_state": verification["artifact_state"],
+        "source_identity": verification["source_identity"],
+        "review_entrypoint": str(review_entrypoint),
+        "review_open_command": open_command,
+        "review_server_restart_command": verification[
+            "review_server_restart_command"
+        ],
+        "estimated_review_minutes": contract["estimated_review_minutes"],
+        "retained_media": retained_media,
+        "comparison_dimensions": contract["comparison_dimensions"],
+        "reply_destination": reply_destination.strip(),
+        "reply_contract": contract["reply_contract"],
+        "after_reply": contract["after_reply"],
+        "semantic_winner_selected": False,
+        "human_creative_acceptance": False,
+        "production_acceptance": False,
+        "public_or_publishing_acceptance": False,
+    }
+    receipt = {
+        "schema_version": "clippipegen.portable_review_verification_receipt.v1",
+        "state": verification["state"],
+        "artifact_id": verification["artifact_id"],
+        "source_identity": verification["source_identity"],
+        "archive_sha256": verification["archive_sha256"],
+        "archive_byte_size": verification["archive_byte_size"],
+        "package_file_count": verification["package_file_count"],
+        "package_manifest_self_sha256": verification[
+            "package_manifest_self_sha256"
+        ],
+        "review_html_sha256": verification["review_html_sha256"],
+        "retained_media": retained_media,
+        "acceptance_ready": True,
+        "creative_acceptance_recorded": False,
+    }
+
+    temporary = Path(tempfile.mkdtemp(prefix=f".{output_dir.name}.", dir=parent))
+    try:
+        _write_json(temporary / "verification_receipt.json", receipt)
+        _write_json(temporary / "coordinator_review_packet.json", packet)
+        (temporary / "coordinator_review_packet.md").write_text(
+            _review_packet_markdown(packet), encoding="utf-8"
+        )
+        os.replace(temporary, output_dir)
+    except Exception:
+        shutil.rmtree(temporary, ignore_errors=True)
+        raise
+    return {
+        "state": "PORTABLE_REVIEW_HANDOFF_WRITTEN",
+        "output_dir": output_dir,
+        "verification_receipt": output_dir / "verification_receipt.json",
+        "coordinator_review_packet_json": output_dir
+        / "coordinator_review_packet.json",
+        "coordinator_review_packet_markdown": output_dir
+        / "coordinator_review_packet.md",
+        "reply_destination": reply_destination.strip(),
+        "acceptance_ready": True,
     }

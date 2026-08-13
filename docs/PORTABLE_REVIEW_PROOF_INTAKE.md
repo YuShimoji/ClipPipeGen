@@ -38,6 +38,9 @@ python -m src.cli.main verify-portable-review-proof `
   --outer-manifest C:\path\to\ClipPipeGen-portable.outer-manifest.json `
   --expected docs\review_intake\clip-wiki-integrated-subtitle-cut-proof-v1-001.expected.json `
   --extract-to C:\path\to\clip-wiki-proof-review `
+  --review-contract docs\review_intake\clip-wiki-integrated-subtitle-cut-proof-v1-001.review-contract.json `
+  --handoff-dir C:\path\to\clip-wiki-proof-handoff `
+  --reply-destination video-coordinator:CURRENT_TASK `
   --format json
 ```
 
@@ -46,3 +49,14 @@ python -m src.cli.main verify-portable-review-proof `
 受入だけであり、実見、creative acceptance、production/public/publishing acceptance
 を代替しない。ZIP または外側 manifest が未着なら再生成や Drive 探索へ逸れず、
 transfer source boundary としてその二点の受領を待つ。
+
+`--review-contract`、`--handoff-dir`、`--reply-destination` は
+`--extract-to` と同時に指定する。exact verification と新規directoryへの展開が両方
+成功した場合だけ、handoff directoryへ `verification_receipt.json`、
+`coordinator_review_packet.json`、`coordinator_review_packet.md` をatomicに出力する。
+packetはopening、endpoint、subtitle behavior、overall winnerを別dimensionとして示し、
+`ACCEPT` / `REPAIR` / `REJECT` の一回答だけをCoordinatorへ返す形にする。未着、hash不一致、
+既存出力先、別artifact contractではpacketを作らない。
+`video-coordinator:CURRENT_TASK` はportable sourceへ固定する実IDではなく、callerが
+実行時のCoordinator destinationへ置換するplaceholderである。実destinationは
+task-owned ignored/generated handoff packetにだけ記録する。
