@@ -34,10 +34,12 @@ lane ownershipを改名しない。
 
 ## Exact generated-video challenge requirement records
 
-対象は `clip-development-generated-video-challenge-v1-001`。これは
-`DEVELOPMENT_GENERATED_VIDEO_CHALLENGE_REVIEW_READY` のlocal internal review artifactで、
-production candidateでもaccepted artifactでもない。次のJSON objectをこのartifactに対する
-formal requirement recordの正本とし、直後の表はそのreadable projectionとする。
+対象は `clip-development-generated-video-challenge-v1-001`。exact package manifestのstateは
+`DEVELOPMENT_GENERATED_VIDEO_CHALLENGE_REVIEW_READY` のまま変更しないが、current product
+authorityでは `TECHNICAL_DIAGNOSTIC_ONLY / SOURCE_CLASS_INADMISSIBLE_FOR_CURRENT_TARGET` である。
+production candidateでもaccepted artifactでもなく、従来の`USER_DECISION_REQUIRED` packetは
+withdrawnで、creative / perceptual human reviewを要求しない。次のJSON objectをこのartifactに
+対するformal requirement recordの正本とし、直後の表はそのreadable projectionとする。
 
 `order`はstableかつuniqueなintegerである。first-failedは、非空の`required`が適用され、
 `status=UNSATISFIED`で、`depends_on`の全recordが`SATISFIED`であるeligible recordのうち、
@@ -83,6 +85,24 @@ formal requirement recordの正本とし、直後の表はそのreadable project
       "status": "SATISFIED"
     },
     {
+      "requirement_id": "CPG-CHALLENGE-C-SOURCE-CLASS-ADMISSIBILITY",
+      "lane": "C_AUTHORED_CONTENT_AND_STRUCTURE",
+      "order": 250,
+      "unit": "current_target_source_class_admissibility",
+      "required": "The current target source must be ordinary-stream and actual-clipping-like, identify a named member and explicit date or topic, support a concept-first chronological or sectioned digest, and remain legible for low-attention viewing. Official animation is excluded unless a later explicit human exception changes this authority.",
+      "observed": "youtube:7J5aS_pcBj4 is the official hololive short anime documented in README.md. It was selected for this challenge only as the shortest exact local render route, not as an admissible production-direction source. It therefore fails the current source class with decision_effect=BLOCK_CURRENT.",
+      "owner": "human_owned",
+      "depends_on": [
+        "CPG-CHALLENGE-B-EXACT-SOURCE-PROVENANCE"
+      ],
+      "evidence": [
+        "README.md",
+        "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/challenge_plan.json"
+      ],
+      "authority_effect": "Classifies the immutable challenge as technical diagnostic evidence only and blocks editorial, perceptual, adoption, and production-direction review without rejecting or relabeling its exact bytes.",
+      "status": "UNSATISFIED"
+    },
+    {
       "requirement_id": "CPG-CHALLENGE-C-AUTHORED-INTENT-DEFINITION",
       "lane": "C_AUTHORED_CONTENT_AND_STRUCTURE",
       "order": 300,
@@ -98,7 +118,7 @@ formal requirement recordの正本とし、直後の表はそのreadable project
         "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/challenge_plan.json",
         "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/review/index.html"
       ],
-      "authority_effect": "Defines what the challenge asks a human to judge; definition alone does not accept the premise, opening, endpoint, or composition.",
+      "authority_effect": "Preserves the authored-intent definition as technical diagnostic evidence; source-class inadmissibility prevents it from becoming a current human review request or production-direction proposal.",
       "status": "SATISFIED"
     },
     {
@@ -106,18 +126,19 @@ formal requirement recordの正本とし、直後の表はそのreadable project
       "lane": "C_AUTHORED_CONTENT_AND_STRUCTURE",
       "order": 400,
       "unit": "premise_opening_endpoint_coherence_verdict",
-      "required": "A human must return an exact-identity verdict on premise, opening, endpoint, selected beats, and coherence.",
-      "observed": "No human ACCEPT, REPAIR, or REJECT verdict is bound to the exact challenge for authored premise, opening, endpoint, selected beats, and coherence.",
+      "required": "Only after current-target source-class admissibility is satisfied, a human must return an exact-identity verdict on premise, opening, endpoint, selected beats, and coherence.",
+      "observed": "The source class is inadmissible for the current target, so an editorial verdict is neither eligible nor requested. The prior USER_DECISION_REQUIRED packet is withdrawn.",
       "owner": "human_owned",
       "depends_on": [
+        "CPG-CHALLENGE-C-SOURCE-CLASS-ADMISSIBILITY",
         "CPG-CHALLENGE-C-AUTHORED-INTENT-DEFINITION"
       ],
       "evidence": [
         "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/manifest.json",
         "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/review/index.html"
       ],
-      "authority_effect": "This is the first eligible failed requirement for VALID_PRODUCTION_PREMISE_RECOVERY; machine evidence cannot satisfy it.",
-      "status": "UNSATISFIED"
+      "authority_effect": "Blocks creative review behind source-class admissibility and prevents the exact technical diagnostic from returning to the human review frontier.",
+      "status": "BLOCKED_BY_DEPENDENCY"
     },
     {
       "requirement_id": "CPG-CHALLENGE-D-TECHNICAL-REALIZATION",
@@ -135,7 +156,7 @@ formal requirement recordの正本とし、直後の表はそのreadable project
         "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/assets/challenge.mp4",
         "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/validation_readback.json"
       ],
-      "authority_effect": "Establishes technical realization only; it does not establish perceptual readability, audio clarity, visual rhythm, or editorial adoption.",
+      "authority_effect": "Establishes immutable technical-diagnostic realization only; it does not revive perceptual review, establish production direction, or grant editorial adoption.",
       "status": "SATISFIED"
     },
     {
@@ -143,25 +164,26 @@ formal requirement recordの正本とし、直後の表はそのreadable project
       "lane": "D_PRESENTATION_AND_REALIZATION",
       "order": 600,
       "unit": "subtitle_audio_visual_rhythm_verdict",
-      "required": "A human must judge subtitle readability and duration, foreground-audio clarity, actual visual crop or overflow, and visual rhythm on the exact media.",
-      "observed": "No human verdict is bound to the exact challenge for subtitle readability and duration, foreground-audio clarity, crop or overflow in actual viewing, and visual rhythm.",
+      "required": "Only after current-target source-class admissibility is satisfied, a human must judge subtitle readability and duration, foreground-audio clarity, actual visual crop or overflow, and visual rhythm on the exact media.",
+      "observed": "The source class is inadmissible for the current target, so perceptual review is neither eligible nor requested; technical subtitle, audio, frame, and decode results remain diagnostic evidence only.",
       "owner": "human_owned",
       "depends_on": [
+        "CPG-CHALLENGE-C-SOURCE-CLASS-ADMISSIBILITY",
         "CPG-CHALLENGE-D-TECHNICAL-REALIZATION"
       ],
       "evidence": [
         "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/review/index.html",
         "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/assets/frame_qa_contact_sheet.jpg"
       ],
-      "authority_effect": "Keeps static, decode, and subtitle metrics from being promoted to perceptual acceptance.",
-      "status": "UNSATISFIED"
+      "authority_effect": "Keeps static, decode, and subtitle metrics from being promoted to perceptual acceptance and blocks a human review request for this inadmissible source class.",
+      "status": "BLOCKED_BY_DEPENDENCY"
     },
     {
       "requirement_id": "CPG-CHALLENGE-E-CURRENT-HOST-REVIEW-PACKAGE",
       "lane": "E_INTEGRATION_EXPERIENCE_AND_RELEASE",
       "order": 700,
       "unit": "current_host_package_decode_review_route",
-      "required": "The exact current-host package, manifest inventory, self-integrity, full decode, and muted local review route must be present and revalidated.",
+      "required": "The exact current-host package, manifest inventory, self-integrity, full decode, and muted local diagnostic route must be present and revalidated.",
       "observed": "On the current host, the exact package contains 11 manifest payloads plus manifest.json, manifest self-integrity SHA-256 e62429bfc704f1118478a2f43aee738c29e02054563239bb026a71cdd624eb69, a full-decodable MP4, and a muted no-autoplay local review route whose HTML and byte-range requests pass.",
       "owner": "agent_owned",
       "depends_on": [
@@ -172,7 +194,7 @@ formal requirement recordの正本とし、直後の表はそのreadable project
         "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/validation_readback.json",
         "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/review/index.html"
       ],
-      "authority_effect": "Establishes exact same-host review readiness only; it does not prove archive, transport, other-host availability, human acceptance, or public readiness.",
+      "authority_effect": "Establishes exact same-host technical-diagnostic availability only; it does not revive human review, establish source-class admissibility, grant human acceptance, or imply public readiness.",
       "status": "SATISFIED"
     },
     {
@@ -181,17 +203,18 @@ formal requirement recordの正本とし、直後の表はそのreadable project
       "order": 750,
       "unit": "archive_transport_other_host_availability",
       "required": "Archive, transport, or another-host availability must be supported by an exact package receipt and destination readback rather than inferred from current-host bytes.",
-      "observed": "No exact archive, transport receipt, or other-host package readback is established. The current-host ignored package must not be treated as cross-device availability.",
+      "observed": "Owner-only Drive object 1jrcOCETYoMIBTo7KjKmSDmThgoLRs0NU is recorded as shared=false/not_shared. Its raw re-download is 22647612 bytes with SHA-256 044b95d92895f22146f07ebf5c159408e6d29634c2da0c632a42fde886499d16 and closes a source package of 12 files / 22639762 bytes whose MP4 remains SHA-256 eff74435a27a61d49815709895592540fc14e5b725f675e7c4cf606133ba9e63.",
       "owner": "external_evidence_owned",
       "depends_on": [
         "CPG-CHALLENGE-E-CURRENT-HOST-REVIEW-PACKAGE"
       ],
       "evidence": [
         "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/manifest.json",
-        "docs/WORKTREE_CLEANUP_POLICY.md"
+        "docs/PRIVATE_ARTIFACT_TRANSFER.md",
+        "direct owner readback authority dated 2026-08-14"
       ],
-      "authority_effect": "Prevents local ignored bytes from becoming an unsupported archive, Drive, transport, or other-host availability claim.",
-      "status": "UNSATISFIED"
+      "authority_effect": "Establishes exact owner-only transport/readback evidence for the immutable technical diagnostic only; it does not revive review, satisfy source-class admissibility, or grant rights, adoption, production, upload, or publication authority.",
+      "status": "SATISFIED"
     },
     {
       "requirement_id": "CPG-CHALLENGE-E-RIGHTS-CLEARANCE",
@@ -215,10 +238,11 @@ formal requirement recordの正本とし、直後の表はそのreadable project
       "lane": "E_INTEGRATION_EXPERIENCE_AND_RELEASE",
       "order": 900,
       "unit": "artifact_adoption",
-      "required": "Artifact adoption requires satisfied C editorial and D perceptual human verdicts bound to this exact challenge identity.",
-      "observed": "Adoption is not eligible for decision until the C editorial verdict and D perceptual verdict are both satisfied.",
+      "required": "Artifact adoption requires current-target source-class admissibility plus satisfied C editorial and D perceptual human verdicts bound to this exact challenge identity.",
+      "observed": "Adoption is blocked by source-class inadmissibility; the downstream C editorial and D perceptual verdicts are therefore also blocked and no review request is active.",
       "owner": "human_owned",
       "depends_on": [
+        "CPG-CHALLENGE-C-SOURCE-CLASS-ADMISSIBILITY",
         "CPG-CHALLENGE-C-HUMAN-EDITORIAL-VERDICT",
         "CPG-CHALLENGE-D-HUMAN-PERCEPTUAL-VERDICT"
       ],
@@ -255,14 +279,15 @@ formal requirement recordの正本とし、直後の表はそのreadable project
 |---|---:|---:|---|---|---|
 | `CPG-CHALLENGE-A-EXACT-INPUT-BINDING` | `A_REPLACEABLE_ASSETS_AND_METADATA` | 100 | `SATISFIED` | `agent_owned` | none |
 | `CPG-CHALLENGE-B-EXACT-SOURCE-PROVENANCE` | `B_EVIDENCE_AND_REFERENCE` | 200 | `SATISFIED` | `agent_owned` | none |
+| `CPG-CHALLENGE-C-SOURCE-CLASS-ADMISSIBILITY` | `C_AUTHORED_CONTENT_AND_STRUCTURE` | 250 | `UNSATISFIED` | `human_owned` | `CPG-CHALLENGE-B-EXACT-SOURCE-PROVENANCE` |
 | `CPG-CHALLENGE-C-AUTHORED-INTENT-DEFINITION` | `C_AUTHORED_CONTENT_AND_STRUCTURE` | 300 | `SATISFIED` | `human_owned` | `CPG-CHALLENGE-A-EXACT-INPUT-BINDING`; `CPG-CHALLENGE-B-EXACT-SOURCE-PROVENANCE` |
-| `CPG-CHALLENGE-C-HUMAN-EDITORIAL-VERDICT` | `C_AUTHORED_CONTENT_AND_STRUCTURE` | 400 | `UNSATISFIED` | `human_owned` | `CPG-CHALLENGE-C-AUTHORED-INTENT-DEFINITION` |
+| `CPG-CHALLENGE-C-HUMAN-EDITORIAL-VERDICT` | `C_AUTHORED_CONTENT_AND_STRUCTURE` | 400 | `BLOCKED_BY_DEPENDENCY` | `human_owned` | `CPG-CHALLENGE-C-SOURCE-CLASS-ADMISSIBILITY`; `CPG-CHALLENGE-C-AUTHORED-INTENT-DEFINITION` |
 | `CPG-CHALLENGE-D-TECHNICAL-REALIZATION` | `D_PRESENTATION_AND_REALIZATION` | 500 | `SATISFIED` | `agent_owned` | `CPG-CHALLENGE-A-EXACT-INPUT-BINDING`; `CPG-CHALLENGE-C-AUTHORED-INTENT-DEFINITION` |
-| `CPG-CHALLENGE-D-HUMAN-PERCEPTUAL-VERDICT` | `D_PRESENTATION_AND_REALIZATION` | 600 | `UNSATISFIED` | `human_owned` | `CPG-CHALLENGE-D-TECHNICAL-REALIZATION` |
+| `CPG-CHALLENGE-D-HUMAN-PERCEPTUAL-VERDICT` | `D_PRESENTATION_AND_REALIZATION` | 600 | `BLOCKED_BY_DEPENDENCY` | `human_owned` | `CPG-CHALLENGE-C-SOURCE-CLASS-ADMISSIBILITY`; `CPG-CHALLENGE-D-TECHNICAL-REALIZATION` |
 | `CPG-CHALLENGE-E-CURRENT-HOST-REVIEW-PACKAGE` | `E_INTEGRATION_EXPERIENCE_AND_RELEASE` | 700 | `SATISFIED` | `agent_owned` | `CPG-CHALLENGE-D-TECHNICAL-REALIZATION` |
-| `CPG-CHALLENGE-E-ARCHIVE-TRANSPORT-OTHER-HOST` | `E_INTEGRATION_EXPERIENCE_AND_RELEASE` | 750 | `UNSATISFIED` | `external_evidence_owned` | `CPG-CHALLENGE-E-CURRENT-HOST-REVIEW-PACKAGE` |
+| `CPG-CHALLENGE-E-ARCHIVE-TRANSPORT-OTHER-HOST` | `E_INTEGRATION_EXPERIENCE_AND_RELEASE` | 750 | `SATISFIED` | `external_evidence_owned` | `CPG-CHALLENGE-E-CURRENT-HOST-REVIEW-PACKAGE` |
 | `CPG-CHALLENGE-E-RIGHTS-CLEARANCE` | `E_INTEGRATION_EXPERIENCE_AND_RELEASE` | 800 | `UNSATISFIED` | `external_evidence_owned` | `CPG-CHALLENGE-B-EXACT-SOURCE-PROVENANCE` |
-| `CPG-CHALLENGE-E-ADOPTION` | `E_INTEGRATION_EXPERIENCE_AND_RELEASE` | 900 | `BLOCKED_BY_DEPENDENCY` | `human_owned` | `CPG-CHALLENGE-C-HUMAN-EDITORIAL-VERDICT`; `CPG-CHALLENGE-D-HUMAN-PERCEPTUAL-VERDICT` |
+| `CPG-CHALLENGE-E-ADOPTION` | `E_INTEGRATION_EXPERIENCE_AND_RELEASE` | 900 | `BLOCKED_BY_DEPENDENCY` | `human_owned` | `CPG-CHALLENGE-C-SOURCE-CLASS-ADMISSIBILITY`; `CPG-CHALLENGE-C-HUMAN-EDITORIAL-VERDICT`; `CPG-CHALLENGE-D-HUMAN-PERCEPTUAL-VERDICT` |
 | `CPG-CHALLENGE-E-PRODUCTION-PUBLIC-USE` | `E_INTEGRATION_EXPERIENCE_AND_RELEASE` | 1000 | `BLOCKED_BY_DEPENDENCY` | `human_owned` | `CPG-CHALLENGE-E-ADOPTION`; `CPG-CHALLENGE-E-RIGHTS-CLEARANCE` |
 
 全recordでAからEの責務が存在するため、current stateに`N/A`はない。将来`N/A`を使う場合は、
@@ -270,12 +295,13 @@ formal requirement recordの正本とし、直後の表はそのreadable project
 `na_dependency_effect`は、そのrecordを適用外にした時にdownstream dependencyとfirst-failed
 導出がどう変わるかを明記しなければならない。
 
-このschemaから導出されるfirst-failedは、order 400の
-`CPG-CHALLENGE-C-HUMAN-EDITORIAL-VERDICT`である。Cのauthored-intent definitionは
-SATISFIEDだが、opening、endpoint、coherence、premiseのhuman verdictはUNSATISFIEDである。
-D/Eのmachine greenはこのrequirementを飛び越えない。一方、current hostのexact package、
-decode、review routeはSATISFIEDなので、Coordinatorがcurrent human actionとして選べる
-acceptance-ready candidateではある。current actionへの昇格自体はこの文書では行わない。
+このschemaから導出されるfirst-failedは、order 250の
+`CPG-CHALLENGE-C-SOURCE-CLASS-ADMISSIBILITY`である。Bのexact provenanceとCの
+authored-intent definitionはSATISFIEDだが、official short animeはcurrent targetに必要な
+ordinary-stream / actual-clipping-like source classを満たさない。Cのeditorial verdictとDの
+perceptual verdictはこの依存でBLOCKEDであり、D/Eのtechnical greenやowner-only transportは
+このrequirementを飛び越えない。このchallengeはacceptance-ready candidateでもcurrent human
+actionでもなく、immutable technical diagnosticとしてparkする。
 
 ## Identity separation
 
@@ -291,16 +317,25 @@ S2はcurrent authorityどおりhuman-review-pending / exact-package-missingで�
 変更しない。physically present four-MP4 semantic comparisonはNON_ADOPTED queueとして保持し、
 このchallengeのreview readinessから再poll、winner選択、acceptance継承を行わない。
 
-## Portable review and re-entry boundary
+## Technical diagnostic transport and re-entry boundary
 
-repo-relative review entryは
+repo-relative HTML entryは
 `episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001/review/index.html`。
-localhost routeは次で提供できる。
+これはpackage integrityを調べるtechnical diagnostic routeとしてのみ保持し、human review requestや
+content acceptance surfaceとして提示しない。必要なmachine inspection routeは次で提供できる。
 
 ```powershell
 python -m src.cli.serve_review --root "episodes/jp_pilot01_hololive_bancho_20260525/review/development_generated_video_challenge_v1_001" --port 8077
 ```
 
-別hostではtracked expectationだけでmedia availabilityを推論しない。exact package directory、
-manifest self-integrity、全11 payloadのbyte size/SHAが揃った時だけ同identityとして再入する。
-archive、Drive、publication、access変更は別authorityを必要とする。
+owner-only transportはDrive object `1jrcOCETYoMIBTo7KjKmSDmThgoLRs0NU`、
+`shared=false/not_shared`としてreadback済みである。ZIPは22647612 bytes、raw re-download SHA-256は
+`044b95d92895f22146f07ebf5c159408e6d29634c2da0c632a42fde886499d16`。source packageは
+12 files / 22639762 bytesで、内部MP4 SHA-256は
+`eff74435a27a61d49815709895592540fc14e5b725f675e7c4cf606133ba9e63`のまま閉じている。
+再生成、再upload、共有変更は行わない。
+
+別hostではtracked expectationやDrive metadataだけでmedia identityを推論しない。上記raw ZIP
+identityを再照合したうえで、exact package directory、manifest self-integrity、全11 payloadの
+byte size/SHAが揃った時だけ同じtechnical diagnostic identityとして再入する。このtransport
+closureはsource-class admissibility、human review、rights、production、publicationを再開しない。
