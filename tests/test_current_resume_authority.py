@@ -168,17 +168,17 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
 
     if runtime.get("current_slice") != "ED-13":
         errors.append(f"runtime_current_slice={runtime.get('current_slice', '')}")
-    if runtime.get("active_artifact") != "clip-wiki-integrated-subtitle-cut-proof-v1-001":
+    if runtime.get("active_artifact") != "clip-wiki-selected-opening-current-basis-v1-001":
         errors.append(f"runtime_active_artifact={runtime.get('active_artifact', '')}")
 
     expected_runtime_values = {
         "active_branch": "codex/wiki-tensaku-longform-family-v1",
         "base_main_revision": "bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471",
-        "artifact_output_sha256": "four_mp4_sha256_bound_in_active_artifact_mp4_sha256",
-        "artifact_package_tree_digest_sha256": "bound_by_active_artifact_manifest_sha256",
-        "artifact_manifest_self_sha256": "534882f9be1e36ed773a7b59b418ea1e6e203d64b7f4f690def0674c67bace52",
-        "package_validation_status": "passed_69_payload_manifest_closed_review_http_200_mp4_range_206",
-        "full_suite_status": "passed_712",
+        "artifact_output_sha256": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951",
+        "artifact_package_tree_digest_sha256": "null_not_transport_sealed",
+        "artifact_manifest_self_sha256": "null_successor_receipt_is_current_machine_readback",
+        "package_validation_status": "passed_exact_input_hashes_duration_full_decode_current_successor",
+        "full_suite_status": "not_run_focused_44_passed",
         "human_review_pending": "true",
         "rights_approval": "readback_unresolved",
         "production_acceptance": "false",
@@ -187,8 +187,8 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "upload_attempted": "false",
         "upstream_parity": "0 0 after normal push and remote SHA readback of current handoff revision",
         "remote_code_complete": "true",
-        "decision_required": "human_semantic_choice_for_opening_entry_and_endpoint_policy",
-        "next_review_due": "human_semantic_comparison_of_opening_and_endpoint_on_exact_four_mp4_proof_set",
+        "decision_required": "human_content_review_of_selected_opening_successor",
+        "next_review_due": "human_content_review_of_exact_selected_opening_successor",
     }
     for field, expected in expected_runtime_values.items():
         if runtime.get(field, "") != expected:
@@ -282,7 +282,7 @@ def test_multiple_live_next_actions_fail_semantic_authority_check() -> None:
 def test_runtime_handoff_portability_role_disagreement_fails_semantic_check() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8").replace(
-        "local_artifact_role: ignored_non_adopted_four_mp4_subtitle_cut_comparison_with_loopback_review",
+        "local_artifact_role: ignored_selected_opening_successor_internal_candidate",
         "local_artifact_role: stale_review_target",
         1,
     )

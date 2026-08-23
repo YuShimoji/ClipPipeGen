@@ -6,6 +6,14 @@
 > production acceptance, rights approval, and public readiness remain separate
 > states unless the Runtime capsule records a later reviewed transition.
 
+ED-13 current-basis note: FrontierBoard Choice Set 4 revision 2 selected the existing
+source 2530.319 opening. `clip-wiki-selected-opening-current-basis-v1-001` consumes that
+decision in a new identity and closes at source 2865.599, where the normalized provider
+caption display ends and the next topic begins. The prior 2.841-second rolling-duration
+overlap is no longer treated as semantic-completion evidence. The 335.280-second internal
+candidate is technically complete and awaits one content accept/revise review; old proof,
+rights, production, publication, and the independent missing-source lane remain unchanged.
+
 SH-05 benchmark portfolio note: the current finite output benchmark surface is
 15 families / 32 family-scoped candidate slots, materialized as 32 tracked
 review cards. Open [docs/benchmarks/index.html](docs/benchmarks/index.html).

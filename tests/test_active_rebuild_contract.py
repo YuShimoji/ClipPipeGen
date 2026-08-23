@@ -249,10 +249,13 @@ def test_runtime_points_to_wiki_turn_and_keeps_s1_out13_and_out07_parked() -> (
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: true" in runtime
     assert (
-        "human_entrypoint: package/review/index.html inside the external "
-        "ClipPipeGen portable ZIP" in runtime
+        "human_entrypoint: FrontierBoard successor review after portable media registration"
+        in runtime
     )
-    assert "portable_entrypoint: package/review/index.html" in runtime
+    assert (
+        "portable_entrypoint: package/final_video.mp4 plus package/successor_receipt.json"
+        in runtime
+    )
     assert (
         "cross_machine_resume_class: "
         "tracked_context_plus_separate_project_zip_required_for_review_media"
@@ -260,18 +263,18 @@ def test_runtime_points_to_wiki_turn_and_keeps_s1_out13_and_out07_parked() -> (
     )
     assert (
         "health: "
-        "WIKI_CU04_PROOF_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED_EP1_SOURCE_GATE_PARKED"
+        "WIKI_SELECTED_OPENING_SUCCESSOR_COMPLETE_CONTENT_REVIEW_PENDING_EP1_SOURCE_GATE_PARKED"
         in runtime
     )
     assert "current_slice: ED-13" in runtime
     assert (
-        "canonical_status: proof_set_review_useful_semantic_route_unresolved_"
-        "ep1_exact_source_gate_parked"
+        "canonical_status: selected_opening_consumed_provider_overlap_excised_"
+        "internal_candidate_complete_ep1_exact_source_gate_parked"
         in runtime
     )
-    assert "active_artifact: clip-wiki-integrated-subtitle-cut-proof-v1-001" in runtime
+    assert "active_artifact: clip-wiki-selected-opening-current-basis-v1-001" in runtime
     assert (
-        "review_status: PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED"
+        "review_status: INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING"
         in runtime
     )
     assert "wiki_family_turn_validation: passed_13_of_13" in runtime

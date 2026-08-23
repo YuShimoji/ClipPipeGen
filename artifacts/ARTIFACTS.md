@@ -35,6 +35,25 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-wiki-selected-opening-current-basis-v1-001`
+
+| Field | Value |
+|---|---|
+| purpose | Consume the user-selected 2530.319 opening into a new successor identity and remove the provider rolling-overlap tail from current endpoint authority without overwriting the old four-proof set. |
+| source | Exact retained `youtube:1AcId5Yja10`; media SHA `a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7`; no fetch. |
+| source range | 2530.319–2865.599; 335.280 seconds; gap 0; one actual continuous edit with eight navigation partitions. |
+| exact MP4 | 25,852,742 bytes; SHA `48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`; H.264/AAC 640x360; full decode PASS. |
+| decision binding | FrontierBoard Choice Set 4 revision 2, option position 2 `話題が切り替わるところから始める`, selected by User at 2026-08-23T17:10:16Z. |
+| endpoint correction | Provider event_001639 raw duration ends at 2868.440, but its normalized display ends at the next provider cue start 2865.599. Event_001641 begins there and belongs to the next topic. The 2.841-second rolling overlap is technical provenance, not semantic-completion evidence. |
+| package | `episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/package/` |
+| builder / validation | `scripts/build_wiki_selected_opening_successor.py`; `tests/test_wiki_selected_opening_successor.py`; exact input hashes, timeline endpoint, subtitle exclusion, ffprobe duration, and full decode are checked. |
+| observed work | One materialization run; one endpoint-contract repair; zero corrective render retries; 23.982 seconds elapsed in the recorded run; 335.280 exact retained-source seconds used. |
+| review status | `INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING`. No content, rights, production, publication, monetization, or upload acceptance is inferred. |
+| next action | Register this exact MP4 through the portable media resolver and ask one accept/revise content question. Do not repoll the consumed opening or expose provider event IDs as user-facing choice language. |
+
+The independent Episode 1 lane still requires exact `youtube:Ocqg-RpQURY` 390–585s media and receipt.
+This successor neither uses nor substitutes that missing source.
+
 ## `wiki-tensaku-content-reframe-v1-001`
 
 | Field | Value |

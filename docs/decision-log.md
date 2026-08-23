@@ -8,6 +8,24 @@ last_touched: 2026-08-12
 
 # Decision Log - ClipPipeGen
 
+## 2026-08-24 — 選択済みopeningを後続candidateへ消費し、provider overlapをendpoint根拠から外す
+
+FrontierBoard Choice Set 4 revision 2で、ユーザーは「話題が切り替わるところから始める」を選択した。
+これは既存親candidateのsource 2530.319 / output 0.000と一致するため、旧proofを変更せず、新identity
+`clip-wiki-selected-opening-current-basis-v1-001`が選択を消費する。
+
+旧authorityはopeningとendpointを一つのhuman decisionとしていたが、二つは分離する。provider
+event_001639のraw durationは2868.440まである一方、既存normalized caption mapは表示を次cue開始
+2865.599で閉じ、同時刻にevent_001641の次話題が始まる。provider rolling overlap 2.841秒を
+発話完結の意味根拠に昇格せず、current successorは2865.599で閉じる。旧4本proof、親338秒candidate、
+caption provenanceは履歴として保持する。
+
+新candidateはretained exact source `youtube:1AcId5Yja10`だけを使う。335.280秒、実編集cut 1、
+navigation partition 8、subtitle cue 96、MP4 SHA
+`48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`、full decode PASS。
+これは内部candidateの技術完了であり、human content acceptance、rights、production、publication、upload
+ではない。`youtube:Ocqg-RpQURY` 390–585秒が必要なEpisode 1本線は独立HOLDのままにする。
+
 ## 2026-08-12 — Wiki CU-04 proofをportable handoffへ固定し、semantic winnerを保留する
 
 retained exact source `youtube:1AcId5Yja10`から作成した

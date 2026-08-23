@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: WIKI_CU04_PROOF_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED_EP1_SOURCE_GATE_PARKED
-last_touched: 2026-08-12
+health: WIKI_SELECTED_OPENING_SUCCESSOR_COMPLETE_CONTENT_REVIEW_PENDING_EP1_SOURCE_GATE_PARKED
+last_touched: 2026-08-24
 current_slice: ED-13
-phase: wiki_cu04_proof_portable_handoff_semantic_route_unresolved
-canonical_status: proof_set_review_useful_semantic_route_unresolved_ep1_exact_source_gate_parked
+phase: wiki_selected_opening_successor_complete_content_review_pending
+canonical_status: selected_opening_consumed_provider_overlap_excised_internal_candidate_complete_ep1_exact_source_gate_parked
 active_branch: codex/wiki-tensaku-longform-family-v1
 upstream_branch: origin/codex/wiki-tensaku-longform-family-v1
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
@@ -19,27 +19,27 @@ remote_handoff_status: existing_head_remote_parity_0_0_new_handoff_docs_prepared
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
 parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file
-current_title: Wiki CU-04 integrated subtitle-cut proof portable handoff; semantic route unresolved
-human_entrypoint: package/review/index.html inside the external ClipPipeGen portable ZIP
-portable_entrypoint: package/review/index.html
-review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File .\package\review\open_review.ps1
-review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File .\package\review\open_review.ps1 -NoOpen
-machine_readback: package/proof_set_receipt.json inside the external ClipPipeGen portable ZIP
-decision_required: human_semantic_choice_for_opening_entry_and_endpoint_policy
-review_status: PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED
+current_title: Wiki selected-opening current-basis internal candidate
+human_entrypoint: FrontierBoard successor review after portable media registration
+portable_entrypoint: package/final_video.mp4 plus package/successor_receipt.json
+review_open_command: open through the FrontierBoard video review resolver after registration
+review_server_restart_command: null
+machine_readback: package/successor_receipt.json
+decision_required: human_content_review_of_selected_opening_successor
+review_status: INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING
 remote_code_complete: true
 local_artifact_available: true
-local_artifact_role: ignored_non_adopted_four_mp4_subtitle_cut_comparison_with_loopback_review
+local_artifact_role: ignored_selected_opening_successor_internal_candidate
 portable_local_artifact_available: true
 cross_machine_resume_class: tracked_context_plus_separate_project_zip_required_for_review_media
-active_artifact: clip-wiki-integrated-subtitle-cut-proof-v1-001
-active_artifact_state: NON_ADOPTED_REVIEW_PROOF
-active_artifact_repo_relative_path: episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-integrated-subtitle-cut-proof-continuation-v1/package
-active_artifact_manifest_sha256: 534882f9be1e36ed773a7b59b418ea1e6e203d64b7f4f690def0674c67bace52
-active_artifact_manifest_payload_count: 69
-active_artifact_physical_file_count: 70
-active_artifact_review_sha256: a5d0db6bca005b95aeae51155b52325d64a30e9be1d16608a096411a4b26d26f
-active_artifact_mp4_sha256: [b2dbc8aa1870941ad0251b0f995133d76a9247308a67eb979cf6da3b7448aedb, cc31dedc912307105700e941d4779f2529393dea68da317be5d04a84642af882, 1c3f6a002031ff3c0cc61771f58b2f2e46dfaab56c0fd40431df9b3296eb10a1, 2cafe8930dba3e163286310bb6a1d03c8776b1285600314c904caf467ff70f52]
+active_artifact: clip-wiki-selected-opening-current-basis-v1-001
+active_artifact_state: INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING
+active_artifact_repo_relative_path: episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/package
+active_artifact_manifest_sha256: null_successor_receipt_and_exact_media_hash_are_current_identity
+active_artifact_manifest_payload_count: 7
+active_artifact_physical_file_count: 7
+active_artifact_review_sha256: null_frontierboard_registration_pending
+active_artifact_mp4_sha256: [48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951]
 dispatch_expected_manifest_sha256_superseded_by_access_only_launcher_addition: 3d98c204410a67a29aee24bd20c71c2ac1ac01ae543e0205d7efce7448d9a544
 portable_packet_status: prepared_locally_for_parent_coordinator_commit_push_upload_none
 wiki_content_reframe_work_order_id: CPG-WIKI-CONTENT-REFRAME-001
@@ -74,16 +74,16 @@ wiki_ep1_integrated_product_iteration_count: 0
 wiki_ep1_acceptance_score: 82
 wiki_ep1_human_artistic_acceptance: pending_revise
 wiki_ep1_next_s_event: not_routable_until_integrated_mp4_and_technical_qa_exist
-artifact_output_sha256: four_mp4_sha256_bound_in_active_artifact_mp4_sha256
-artifact_output_byte_size: [2262600, 4846884, 933592, 700415]
-artifact_package_tree_digest_sha256: bound_by_active_artifact_manifest_sha256
-artifact_manifest_self_sha256: 534882f9be1e36ed773a7b59b418ea1e6e203d64b7f4f690def0674c67bace52
-artifact_file_count: 70
-artifact_duration_seconds: [21.466667, 86.433333, 15.966016, 13.1]
+artifact_output_sha256: 48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951
+artifact_output_byte_size: [25852742]
+artifact_package_tree_digest_sha256: null_not_transport_sealed
+artifact_manifest_self_sha256: null_successor_receipt_is_current_machine_readback
+artifact_file_count: 7
+artifact_duration_seconds: [335.3]
 artifact_source_count: 1
-artifact_cut_count: 4_continuous_non_adopted_comparison_proofs
+artifact_cut_count: 1_continuous_internal_candidate_with_8_navigation_partitions
 artifact_source_switch_count: 0
-artifact_caption_cue_count: 42
+artifact_caption_cue_count: 96
 artifact_commentary_count: 0
 benchmark_family_denominator: 15
 benchmark_candidate_slot_denominator: 32
@@ -95,11 +95,11 @@ benchmark_contract_only_count: 0
 benchmark_all_registered_materialized: true
 benchmark_portfolio_gate_status: MET_QUICKWIN_INTERNAL_PORTFOLIO
 benchmark_rights_publication_approval_inferred: false
-package_validation_status: passed_69_payload_manifest_closed_review_http_200_mp4_range_206
+package_validation_status: passed_exact_input_hashes_duration_full_decode_current_successor
 s1_review_http_status: 200
 s1_review_range_status: 206
 focused_test_status: current_package_manifest_and_portable_handoff_validation_passed
-full_suite_status: passed_712
+full_suite_status: not_run_focused_44_passed
 human_review_pending: true
 rights_approval: readback_unresolved
 production_acceptance: false
@@ -350,8 +350,8 @@ out13_m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
 out13_m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 out13_public_use_verdict: deny
 out13_monetized_youtube_verdict: deny
-next_review_due: human_semantic_comparison_of_opening_and_endpoint_on_exact_four_mp4_proof_set
-next_action: verify_portable_packet_then_bind_human_semantic_route_without_promoting_technical_checks
+next_review_due: human_content_review_of_exact_selected_opening_successor
+next_action: register_exact_successor_media_then_request_accept_or_revise_without_reopening_consumed_opening_choice
 current_handoff: docs/CURRENT_HANDOFF.md
 upstream_parity: 0 0 after normal push and remote SHA readback of current handoff revision
 current_slice_push_status: normal_push_and_remote_sha_readback_completed_for_current_head_locator
@@ -362,7 +362,24 @@ related: docs/RUNTIME_STATE.md, docs/content_planning/wiki_tensaku_ep1_integrate
 
 # Current Handoff - ClipPipeGen
 
-## 2026-08-12 Wiki CU-04 proof portable handoff
+## 2026-08-24 Wiki selected-opening successor
+
+Choice Set 4 revision 2でユーザーが選択した「話題が切り替わるところから始める」を、旧proofを
+上書きせず`clip-wiki-selected-opening-current-basis-v1-001`へ消費した。既存親candidateは既に
+source 2530.319から始まっていたため、冒頭の再render方針変更や新しい意味判断は不要だった。
+
+endpoint、subtitle continuity、topic boundary、retained source usageは別々に監査した。provider
+event_001639のraw duration末尾2868.440はrolling display metadataであり、normalized mapでは
+2865.599で閉じる。同時刻に次話題event_001641が始まるため、旧candidateに含まれた2.841秒を
+current basisから除外した。新candidateは335.280秒、MP4 25,852,742 bytes、SHA
+`48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`、full decode PASS。
+
+次の一問は、このcomplete internal candidateを内容として採用するか、どこを修正するかである。
+消費済みopeningを再pollせず、provider event IDやraw秒をuser-facing Choiceへ戻さない。rights、
+production、publication、uploadは未承認。Episode 1本線の`youtube:Ocqg-RpQURY` 390–585秒gateは
+独立してparkし、このcandidateはそのsourceを使用も代替もしていない。
+
+## 2026-08-12 Wiki CU-04 proof portable handoff（historical）
 
 current review materialは`clip-wiki-integrated-subtitle-cut-proof-v1-001`。retained exact source
 `youtube:1AcId5Yja10`とprovider captionを使い、opening差分、causal core、

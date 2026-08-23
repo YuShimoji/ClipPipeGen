@@ -3,13 +3,13 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: WIKI_CU04_PROOF_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED_EP1_SOURCE_GATE_PARKED
-last_touched: 2026-08-12
-state_revision: wiki-cu04-proof-portable-handoff-semantic-route-unresolved-2026-08-12
+health: WIKI_SELECTED_OPENING_SUCCESSOR_COMPLETE_CONTENT_REVIEW_PENDING_EP1_SOURCE_GATE_PARKED
+last_touched: 2026-08-24
+state_revision: wiki-selected-opening-current-basis-successor-2026-08-24
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: ED-13
-phase: wiki_cu04_proof_portable_handoff_semantic_route_unresolved
-canonical_status: proof_set_review_useful_semantic_route_unresolved_ep1_exact_source_gate_parked
+phase: wiki_selected_opening_successor_complete_content_review_pending
+canonical_status: selected_opening_consumed_provider_overlap_excised_internal_candidate_complete_ep1_exact_source_gate_parked
 active_branch: codex/wiki-tensaku-longform-family-v1
 source_branch: codex/wiki-tensaku-longform-family-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
@@ -42,17 +42,17 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: Wiki CU-04 integrated subtitle-cut proof portable handoff; semantic route unresolved
-human_entrypoint: package/review/index.html inside the external ClipPipeGen portable ZIP
-portable_entrypoint: package/review/index.html
-review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File .\package\review\open_review.ps1
-review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File .\package\review\open_review.ps1 -NoOpen
-machine_readback: package/proof_set_receipt.json inside the external ClipPipeGen portable ZIP
+current_title: Wiki selected-opening current-basis internal candidate
+human_entrypoint: FrontierBoard successor review after portable media registration
+portable_entrypoint: package/final_video.mp4 plus package/successor_receipt.json
+review_open_command: open through the FrontierBoard video review resolver after registration
+review_server_restart_command: null
+machine_readback: package/successor_receipt.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: human_semantic_choice_for_opening_entry_and_endpoint_policy
-review_status: PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED
-review_scope: four_non_adopted_retained_source_subtitle_cut_comparison_mp4s
-reviewed_at: null
+decision_required: human_content_review_of_selected_opening_successor
+review_status: INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING
+review_scope: selected_opening_continuous_candidate_without_next_topic_provider_overlap
+reviewed_at: 2026-08-23T17:10:16Z opening_selection_only
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
 m2_review_scope: internal_full_view_editorial_visual_review
 remote_code_complete: true
@@ -60,7 +60,7 @@ remote_decision_binding_available: false
 local_decision_binding_committed: false
 remote_mutation_authorized: false
 local_artifact_available: true
-local_artifact_role: ignored_non_adopted_four_mp4_subtitle_cut_comparison_with_loopback_review
+local_artifact_role: ignored_selected_opening_successor_internal_candidate
 portable_local_artifact_available: true
 cross_machine_resume_class: tracked_context_plus_separate_project_zip_required_for_review_media
 cross_host_resume_status: external_project_zip_and_outer_manifest_prepared_parent_transfer_pending
@@ -70,7 +70,7 @@ optional_recovery_branch: codex/out-08-private-review-package-recovery-v0
 optional_recovery_tip: d1f44d17e9747419f307706cad802aefdd012efd
 optional_recovery_status: PARKED_OPTIONAL_NONCANONICAL_INFRA_PROOF
 optional_recovery_merged: false
-evidence_revision: clip-wiki-integrated-subtitle-cut-proof-v1-001-live-access-package
+evidence_revision: clip-wiki-selected-opening-current-basis-v1-001
 last_verified_host: DESKTOP-U9P4LKJ
 last_verified_host_label: DESKTOP-U9P4LKJ
 local_verified_host: DESKTOP-U9P4LKJ
@@ -137,9 +137,9 @@ winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: stopped_portable_loopback_launcher_available
-next_review_due: human_semantic_comparison_of_opening_and_endpoint_on_exact_four_mp4_proof_set
-next_review_type: timestamp_jumpable_semantic_route_comparison
-next_action: verify_portable_packet_then_bind_human_semantic_route_without_promoting_technical_checks
+next_review_due: human_content_review_of_exact_selected_opening_successor
+next_review_type: one_complete_internal_candidate_content_review
+next_action: register_exact_successor_media_then_request_accept_or_revise_without_reopening_consumed_opening_choice
 wiki_content_reframe_work_order_id: CPG-WIKI-CONTENT-REFRAME-001
 wiki_content_reframe_artifact_id: wiki-tensaku-content-reframe-v1-001
 wiki_content_reframe_topology: thematic_episode_family
@@ -174,29 +174,29 @@ wiki_ep1_integrated_product_iteration_count: 0
 wiki_ep1_acceptance_score: 82
 wiki_ep1_human_artistic_acceptance: pending_revise
 wiki_ep1_next_s_event: not_routable_until_integrated_mp4_and_technical_qa_exist
-active_artifact: clip-wiki-integrated-subtitle-cut-proof-v1-001
-active_artifact_state: NON_ADOPTED_REVIEW_PROOF
-active_artifact_repo_relative_path: episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-integrated-subtitle-cut-proof-continuation-v1/package
-active_artifact_manifest_sha256: 534882f9be1e36ed773a7b59b418ea1e6e203d64b7f4f690def0674c67bace52
-active_artifact_manifest_payload_count: 69
-active_artifact_physical_file_count: 70
-active_artifact_review_sha256: a5d0db6bca005b95aeae51155b52325d64a30e9be1d16608a096411a4b26d26f
-active_artifact_mp4_sha256: [b2dbc8aa1870941ad0251b0f995133d76a9247308a67eb979cf6da3b7448aedb, cc31dedc912307105700e941d4779f2529393dea68da317be5d04a84642af882, 1c3f6a002031ff3c0cc61771f58b2f2e46dfaab56c0fd40431df9b3296eb10a1, 2cafe8930dba3e163286310bb6a1d03c8776b1285600314c904caf467ff70f52]
+active_artifact: clip-wiki-selected-opening-current-basis-v1-001
+active_artifact_state: INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING
+active_artifact_repo_relative_path: episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/package
+active_artifact_manifest_sha256: null_successor_receipt_and_exact_media_hash_are_current_identity
+active_artifact_manifest_payload_count: 7
+active_artifact_physical_file_count: 7
+active_artifact_review_sha256: null_frontierboard_registration_pending
+active_artifact_mp4_sha256: [48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951]
 dispatch_expected_manifest_sha256_superseded_by_access_only_launcher_addition: 3d98c204410a67a29aee24bd20c71c2ac1ac01ae543e0205d7efce7448d9a544
-cu04_proof_reviewer_verdict: PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED
-current_review_component: opening_entry_endpoint_policy_and_subtitle_surface_semantic_comparison
+cu04_proof_reviewer_verdict: OPENING_SELECTED_ENDPOINT_PROVIDER_OVERLAP_CONTRACT_CORRECTED
+current_review_component: complete_selected_opening_successor_content_review
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
 implementation_revision: c307089a592bb73b6539f801ff32b461dc4a424d
-artifact_output_sha256: four_mp4_sha256_bound_in_active_artifact_mp4_sha256
-artifact_output_byte_size: [2262600, 4846884, 933592, 700415]
-artifact_package_tree_digest_sha256: bound_by_active_artifact_manifest_sha256
-artifact_manifest_self_sha256: 534882f9be1e36ed773a7b59b418ea1e6e203d64b7f4f690def0674c67bace52
-artifact_file_count: 70
-artifact_duration_seconds: [21.466667, 86.433333, 15.966016, 13.1]
+artifact_output_sha256: 48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951
+artifact_output_byte_size: [25852742]
+artifact_package_tree_digest_sha256: null_not_transport_sealed
+artifact_manifest_self_sha256: null_successor_receipt_is_current_machine_readback
+artifact_file_count: 7
+artifact_duration_seconds: [335.3]
 artifact_source_count: 1
-artifact_cut_count: 4_continuous_non_adopted_comparison_proofs
+artifact_cut_count: 1_continuous_internal_candidate_with_8_navigation_partitions
 artifact_source_switch_count: 0
-artifact_caption_cue_count: 42
+artifact_caption_cue_count: 96
 artifact_commentary_count: 0
 benchmark_family_denominator: 15
 benchmark_candidate_slot_denominator: 32
@@ -477,11 +477,11 @@ s1_production_acceptance: false
 s1_public_use: false
 s1_monetized_use: false
 s1_upload_attempted: false
-package_validation_status: passed_69_payload_manifest_closed_review_http_200_mp4_range_206
+package_validation_status: passed_exact_input_hashes_duration_full_decode_current_successor
 s1_review_http_status: 200
 s1_review_range_status: 206
 focused_test_status: ep1_preflight_4_passed
-full_suite_status: passed_712
+full_suite_status: not_run_focused_44_passed
 out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive
 out13_human_review_pending: false
 out13_editorial_acceptance_granted: true
@@ -885,52 +885,42 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — ED-13 CU-04 Subtitle/Cut Proof Portable Handoff
+## Current Capsule — ED-13 selected-opening successor
 
 - active slice: `ED-13`
-- active artifact: `clip-wiki-integrated-subtitle-cut-proof-v1-001`
-- review status: `PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED`
-- portable receipt: `package/review/index.html`
-- local artifact role: `ignored_non_adopted_four_mp4_subtitle_cut_comparison_with_loopback_review`
+- active artifact: `clip-wiki-selected-opening-current-basis-v1-001`
+- review status: `INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING`
+- portable receipt: `package/final_video.mp4 plus package/successor_receipt.json`
+- local artifact role: `ignored_selected_opening_successor_internal_candidate`
+- state: `INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING`
+- source: retained exact `youtube:1AcId5Yja10`; SHA
+  `a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7`
+- source range: `2530.319–2865.599`、335.280秒、gap 0、実編集cut 1
+- output: 25,852,742 bytes、SHA
+  `48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`
 - human review pending: `true`
-- state: `NON_ADOPTED_REVIEW_PROOF`
-- Reviewer verdict: `PROOF_SET_REVIEW_USEFUL_SEMANTIC_ROUTE_UNRESOLVED`
-- repo-relative package: `episodes/integrated_checklist_reverse_test_20260811/artifacts/
-  cpg-integrated-checklist-reverse-test-v1/successors/
-  cpg-integrated-subtitle-cut-proof-continuation-v1/package/`
-- live package: 69 payload members + manifest、SHA
-  `534882f9be1e36ed773a7b59b418ea1e6e203d64b7f4f690def0674c67bace52`
-- review HTML: `review/index.html`、SHA
-  `a5d0db6bca005b95aeae51155b52325d64a30e9be1d16608a096411a4b26d26f`
-- four MP4 SHA:
-  `b2dbc8aa...48aedb`、`cc31dedc...af882`、`1c3f6a00...eb10a1`、
-  `2cafe893...70f52`
-- source: retained exact `youtube:1AcId5Yja10`; no network acquisition in this slice
-- transport: project ZIP + ZIP外manifestをGit外に準備。commit / push / uploadは親Coordinator担当。
 
-4本はopeningの2523.480開始対2530.319開始、causal core、event_001639完結対
-event_001641開始前cutを、同じsource/caption/subtitle measurement routeで比較できる。
-subtitle timing、Keifont実幅、最大2行、burn-in、full decode、black/silenceはtechnical evidence。
-それらからsemantic winner、human artistic acceptance、production acceptanceを推定しない。
+Choice Set 4 revision 2でユーザーが選んだ「話題が切り替わるところから始める」は、既存親candidateの
+source 2530.319 / output 0.000と一致したため、その開始点を後続identityへ消費した。旧proofと4 MP4は
+履歴として不変。current authorityからopeningとendpointを一問に束ねる表現を外した。
 
-dispatch時のmanifest `3d98c204...9a544`は、loopback launcher/server追加前のidentity。
-MP4とreview HTMLを変えないaccess-only addition後のlive closed manifestは`534882f9...ace52`。
-他者の追加を戻さず、current closed setをportable packetへ含める。
+endpointは別監査とし、provider event_001639のraw duration 2868.440を発話完結の根拠に使わない。
+normalized subtitle mapではevent_001639表示は2865.599で閉じ、同時刻に次話題event_001641が始まる。
+新candidateはそこで閉じ、旧candidateに入っていた次話題2.841秒とその字幕だけを除外した。これは
+current-basis契約修復であり、人間content acceptance、rights、production、publicationではない。
 
-Episode 1「Wikiが作る人物像」は別laneのまま、CU-02 `youtube:Ocqg-RpQURY`
-390–585秒exact mediaとadjacent receiptを待つ。proof setはCU-02代替ではない。
-親338.166016秒full-1x queueは再pollせず、rights、production、delivery、publication、
-monetization、uploadも閉じたまま維持する。
+Episode 1本線のCU-02 `youtube:Ocqg-RpQURY` 390–585秒exact media/receipt gateは別laneでpark。
+新candidateはretained sourceだけを使い、この欠落laneを代替・解除しない。
 
 ## Next Action
 
-- action: `verify_portable_packet_then_bind_human_semantic_route_without_promoting_technical_checks`
+- action: `register_exact_successor_media_then_request_accept_or_revise_without_reopening_consumed_opening_choice`
 - first files: `README.md` → `docs/RUNTIME_STATE.md` → `docs/CURRENT_HANDOFF.md`
-- first checks: Git branch/HEAD/upstream parity、`git ls-files episodes`が0、ZIP外manifest、
-  ZIP member closure、package manifest、HTTP review 200、MP4 Range 206
-- human decision: opening entryとendpoint policyのどちらが文脈理解に寄与するかを、
-  exact MP4 SHAへbindする。technical checkをcreative acceptanceへ昇格させない。
-- conditional implementation: verdict後、選ばれた次元だけをnew identityのcausal successorへ反映する。
+- first checks: Git branch/HEAD/upstream parity、`git ls-files episodes`が0、successor receipt、
+  MP4 size/SHA、full decode、FrontierBoard resolver Range 206
+- human decision: exact successor一本を内容として採用するか、どこを直すか。消費済みopeningを再pollせず、
+  endpointのprovider内部語彙も選択肢へ戻さない。
+- conditional implementation: verdict後だけcontent successorまたはbounded revisionへ進む。
 - independent EP1 unblock: `youtube:Ocqg-RpQURY` exact bytes + receipt供給後にpreflightを再実行する。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
