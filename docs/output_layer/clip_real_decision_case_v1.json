@@ -1,0 +1,183 @@
+{
+  "schema_version": "clippipegen.video_decision_case.v1",
+  "case_identity": "clip-stt-rolling-overlap-endpoint-case-v1",
+  "status": "corrected_current_basis",
+  "project": "ClipPipeGen",
+  "source_artifact_revision": "5b02f8ddbba75d0a863de99416fdc1301e14ed2a",
+  "choice_authority": {
+    "choice_set_id": 6,
+    "selected_option_id": 15,
+    "selected_option_title": "この内容で進める（推奨）",
+    "source_message": "切り取っている位置としては妥当です",
+    "interpretation": "このexact candidateの切り取り位置を妥当とする明示的な意味権限。Choice Set 6にだけ適用し、chatからChoiceを自動確定する一般規則にはしない。"
+  },
+  "source_segment": {
+    "source_identity": "youtube:1AcId5Yja10",
+    "source_media_sha256": "a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7",
+    "caption_sha256": "f58c248f23b29845a94ae01b789f122c8759687125375a2650cc7a8074107e4f",
+    "problem_range_seconds": [
+      2865.599,
+      2868.44
+    ],
+    "duration_seconds": 2.841,
+    "reuse_state": "HOLD_REUSABLE_AS_NEXT_TOPIC_CONTEXT_NOT_DISCARDED"
+  },
+  "failure_trace": {
+    "agent_observed": "provider event_001639のraw durationは2862.079–2868.440だった。",
+    "agent_inferred": "raw duration末尾までを前話題の意味上の完結として残す必要があると推論した。",
+    "evidence_used": "canonical caption-aligned endとprovider event_001639のraw endが2868.440で一致していた。",
+    "rule_applied": "最後のprovider eventをraw duration末尾まで保持してから終端を置く。",
+    "failure": "normalized displayは次cue開始2865.599で閉じ、event_001641の次話題も同時刻に始まるため、raw durationだけを意味完結へ昇格すると次話題を2.841秒混入する。",
+    "human_change": "provider rolling overlapだけでは意味区間を延長しない。独立した音声内容または話題継続の証拠がある場合だけ例外として延長を再検討する。",
+    "result": "source 2530.319–2865.599を保持し、2865.599–2868.440をHOLDへ戻した335.280秒編集。container readbackは335.300秒。"
+  },
+  "exact_artifacts": {
+    "failing_endpoint_proof": {
+      "artifact_identity": "clip-wiki-integrated-subtitle-cut-proof-v1-001:endpoint_event1639_complete.mp4",
+      "relative_locator": "drive://video-generation/ClipPipeGen/clip-wiki-integrated-subtitle-cut-proof-v1-001/endpoint_event1639_complete.mp4",
+      "sha256": "1c3f6a002031ff3c0cc61771f58b2f2e46dfaab56c0fd40431df9b3296eb10a1",
+      "bytes": 933592,
+      "duration_seconds": 15.966016,
+      "problem_output_range_seconds": [
+        13.119,
+        15.96
+      ],
+      "receipt_sha256": "8e61119d4f5a8ef26e4791c6b985ca5834d618d374ff3681e69bf2cd73ee860e"
+    },
+    "corrected_candidate": {
+      "artifact_identity": "clip-wiki-selected-opening-current-basis-v1-001",
+      "relative_locator": "drive://video-generation/ClipPipeGen/clip-wiki-selected-opening-current-basis-v1-001/final_video.mp4",
+      "sha256": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951",
+      "bytes": 25852742,
+      "edit_duration_seconds": 335.28,
+      "container_duration_seconds": 335.3,
+      "successor_receipt_sha256": "2c1360daaa4dadfae5177bb79a5bc79289d81c0ae1baddc246ff5adf8ef04dbe",
+      "caption_readback_sha256": "799448d8e8f56fea6c897035faf0e71d8b2022310a9bdcffd6fcdb3e8ae0c771"
+    }
+  },
+  "board_record": {
+    "recordKey": "decision-case:ClipPipeGen:stt-rolling-overlap-endpoint:v1",
+    "title": "2.841秒の字幕重複を終端判断へ昇格した失敗",
+    "informationKind": "video_decision_case",
+    "relatedProjectKeys": [
+      "ClipPipeGen"
+    ],
+    "lifecycle": "current",
+    "authority": {
+      "state": "technical_evidence",
+      "scope": "read-only evidence and edit trace; Rule remains proposed; no rights, production, publication, or general acceptance"
+    },
+    "provenance": {
+      "sourceLocator": "repo://ClipPipeGen/docs/output_layer/clip_real_decision_case_v1.json",
+      "sourceRevision": "5b02f8ddbba75d0a863de99416fdc1301e14ed2a",
+      "readbackRevision": "5b02f8ddbba75d0a863de99416fdc1301e14ed2a",
+      "sourceHash": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951",
+      "readbackHash": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951",
+      "observedAt": "2026-08-24T06:05:08+09:00"
+    },
+    "relations": {
+      "batchIdentity": "clip-stt-rolling-overlap-decision-case-v1",
+      "baseChoiceSetId": 6,
+      "attachmentRefs": [
+        "video:ClipPipeGen:clip-wiki-integrated-subtitle-cut-proof-v1-001:endpoint-event1639-complete",
+        "video:ClipPipeGen:clip-wiki-selected-opening-current-basis-v1-001"
+      ]
+    },
+    "portability": {
+      "storage": "portfolio_projection",
+      "absolutePaths": false
+    },
+    "summary": {
+      "caseIdentity": "clip-stt-rolling-overlap-endpoint-case-v1",
+      "revision": 1,
+      "status": "corrected_current_basis",
+      "question": "provider字幕の2.841秒重複を、意味上の終端として残すべきだったか",
+      "ranges": [
+        {
+          "coordinateType": "source_time",
+          "label": "元動画で次話題が始まった後の重複範囲",
+          "startSeconds": 2865.599,
+          "endSeconds": 2868.44,
+          "durationSeconds": 2.841,
+          "playLabel": "元動画47:45から47:48まで"
+        },
+        {
+          "coordinateType": "comparison_output_time",
+          "label": "旧endpoint proof内の問題範囲",
+          "startSeconds": 13.119,
+          "endSeconds": 15.96,
+          "durationSeconds": 2.841,
+          "playLabel": "旧比較動画13.1秒から16.0秒まで"
+        }
+      ],
+      "evidence": [
+        {
+          "identity": "evidence:provider-rolling-timing",
+          "label": "provider時刻と表示時刻の分離",
+          "observedFact": "event_001639のraw endは2868.440だが、normalized display endは2865.599。event_001641の次話題も2865.599から始まる。",
+          "agentInference": "raw endまで残せば前話題が意味上完結すると解釈した。",
+          "limitation": "provider durationは字幕表示metadataで、発話完結やtopic boundaryそのものではない。",
+          "contradiction": "次話題event_001641が2.841秒間すでに始まっており、旧proofにもそのmediaと字幕が入る。",
+          "confidence": "exact timing readback"
+        },
+        {
+          "identity": "evidence:old-endpoint-proof",
+          "label": "旧規則の実MP4",
+          "observedFact": "旧endpoint proofは15.966016秒、SHA 1c3f6a00…10a1。output 13.119–15.960が問題の2.841秒に対応する。",
+          "agentInference": "event_001639完結のための保持範囲として提示した。",
+          "limitation": "proofのdecode PASSは意味判断の正しさを証明しない。",
+          "contradiction": "同proofのreceipt自体がevent_001641の次話題開始を13.119秒に記録している。",
+          "confidence": "exact artifact and receipt"
+        },
+        {
+          "identity": "evidence:corrected-successor",
+          "label": "修正後335.3秒candidate",
+          "observedFact": "source 2530.319–2865.599を連続保持した335.280秒編集で、container 335.300秒、SHA 48c368b9…f951、full decode PASS。",
+          "agentInference": "字幕rolling overlapを意味根拠にせず、次話題開始で終えるcurrent basisへ修正した。",
+          "limitation": "technical completionであり、content、rights、production、publication acceptanceではない。",
+          "contradiction": "なし。除外範囲は破棄せず次話題contextとしてHOLDに残る。",
+          "confidence": "exact successor receipt and media readback"
+        }
+      ],
+      "ruleProposal": {
+        "title": "provider rolling overlapを意味境界へ自動昇格しない",
+        "statement": "字幕providerのraw duration重複だけでは編集区間を延長しない。normalized表示、実音声、話題境界を別証拠として照合する。",
+        "lifecycle": "proposed",
+        "scope": "provider rolling/overlapping caption duration",
+        "exceptions": "独立した音声内容または話題継続のexact evidenceがある場合に限り、人間が延長を再検討する。"
+      },
+      "humanOverride": {
+        "status": "specific candidate boundary accepted",
+        "note": "ユーザーの明示文『切り取っている位置としては妥当です』をChoice Set 6のcandidate固有権限として記録。一般Ruleの自動acceptには使わない。"
+      },
+      "resultingEdit": {
+        "state": "TECHNICALLY_COMPLETE_CONTENT_REVIEW_PENDING",
+        "reason": "source 2865.599で閉じ、次話題2.841秒をcurrent candidateから外した。exact MP4は335.300秒container / SHA 48c368b9…f951。",
+        "trace": [
+          "raw provider end 2868.440とnormalized display end 2865.599を分離",
+          "次話題event_001641の開始2865.599を独立確認",
+          "source endpointを2865.599へ修正",
+          "字幕96 cueを再mapし、event_001641を除外",
+          "335.280秒編集を一回materializeし、full decodeを確認"
+        ]
+      },
+      "decisionMap": [
+        "KEEP source 2530.319–2865.599: current 335.280秒編集",
+        "HOLD source 2865.599–2868.440: 次話題contextとして再利用可能",
+        "DROPなし: exact source、旧proof、receipt、caption provenanceを履歴保存"
+      ],
+      "narrative": [
+        "Agentはprovider raw endを意味上の完結と解釈した",
+        "exact表示mapは次話題が2.841秒早く始まることを示した",
+        "人間はcurrent candidateの切り取り位置を妥当と明示した",
+        "規則をproposalとして狭め、335.3秒candidateへ反映した"
+      ],
+      "authoritySynchronizationCandidate": {
+        "classification": "CONTRACT_REPAIR_CANDIDATE_RECORD_ONLY",
+        "title": "Question Dedup / authority synchronization",
+        "reason": "chat上の意味権限が完結していてもBoard Choiceがopenのまま残り、同じ質問が再提示され得る。再発または小さな予防経路が確認できるまで共通契約は変更しない。"
+      }
+    },
+    "retentionTier": "decision_evidence"
+  }
+}

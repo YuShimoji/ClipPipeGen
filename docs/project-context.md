@@ -5,11 +5,11 @@ type: durable_context
 status: current
 last_touched: 2026-08-24
 current_slice: ED-13
-phase: wiki_selected_opening_successor_complete_content_review_pending
+phase: wiki_selected_opening_successor_decision_case_recorded
 active_branch: codex/wiki-tensaku-longform-family-v1
-sync_observed_head: c307089a592bb73b6539f801ff32b461dc4a424d
+sync_observed_head: 5b02f8ddbba75d0a863de99416fdc1301e14ed2a
 upstream_parity: 0 0
-health: WIKI_SELECTED_OPENING_SUCCESSOR_COMPLETE_CONTENT_REVIEW_PENDING_EP1_SOURCE_GATE_PARKED
+health: WIKI_SELECTED_OPENING_SUCCESSOR_DECISION_CASE_RECORDED_EP1_SOURCE_GATE_PARKED
 ---
 
 # Project Context - ClipPipeGen
@@ -39,9 +39,15 @@ Episode 1「Wikiが作る人物像」のcanonical integrated cutは、CU-02
 旧4本proofとportable manifestは選択根拠のhistoryとして不変。current authorityは新successorであり、
 openingとendpointを一問へ束ねる旧decision requestへ戻さない。
 
+2.841秒のendpoint失敗は
+[`clip_real_decision_case_v1.json`](output_layer/clip_real_decision_case_v1.json)へ実証拠として固定した。
+旧endpoint proofのoutput 13.119–15.960秒と、current candidateから外したsource
+2865.599–2868.440秒を同じcaseで追える。後者はDROPではなく、次話題のcontextとして再利用可能な
+HOLDである。Rule修正はproposalで、ユーザーの明示文はChoice Set 6のcandidate固有権限にだけ使う。
+
 ## 現在のgapと境界
 
-- opening 2530.319はユーザー選択済み。再pollしない。
+- opening 2530.319はユーザー選択済み。current candidateの切り取り位置も明示的に妥当とされたため、再pollしない。
 - provider event_001639のraw durationをsemantic completionへ昇格しない。normalized display endと
   次話題event_001641 startが同じ2865.599であることをcurrent endpoint contractとする。
 - 字幕timing、改行、幅、burn-in、full decodeはtechnical evidenceであり、human content acceptanceではない。
@@ -56,11 +62,11 @@ openingとendpointを一問へ束ねる旧decision requestへ戻さない。
 3. 親CoordinatorからClipPipeGen portable ZIPと外部manifestを受け取り、manifest記載のSHA、
    member count、relative pathsを検証する。Git cloneだけではreview mediaは得られない。
 4. successor MP4/receiptをportable media resolverへ登録し、FrontierBoardでexact size/SHAを確認する。
-5. complete internal candidateへのaccept/reviseだけをexact MP4 SHAへbindする。
+5. DecisionCaseで旧推論、Rule proposal、Human Override、335.3秒resultを読み、必要ならcontent全体のbounded revisionだけをexact MP4 SHAへbindする。
 
 ## 次の依存順
 
-`successor portable registration -> one complete candidate content review -> acceptまたはbounded revision`
+`DecisionCase readback -> one complete candidate content review -> 必要ならbounded revision`
 がcurrent laneの最短経路である。
 Episode 1本線は独立して`Ocqg-RpQURY exact bytes + receipt -> preflight rerun -> integrated render`。
 どちらからもrights、production、publicationを推定しない。

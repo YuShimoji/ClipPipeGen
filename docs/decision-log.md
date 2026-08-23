@@ -3,10 +3,26 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-08-12
+last_touched: 2026-08-24
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-08-24 — 2.841秒rolling overlapを実DecisionCase化し、Choice 6固有の意味権限を回収
+
+current candidateへのユーザー明示文「切り取っている位置としては妥当です」は、このexact candidateの
+切り取り位置を妥当とする意味権限であり、Choice Set 6 option 1「この内容で進める（推奨）」と等価に
+扱う。これはChoice 6だけのLOCAL REPAIRで、chatからChoiceを自動確定する一般規則にはしない。
+
+`clip-stt-rolling-overlap-endpoint-case-v1`は、旧Agentがprovider event_001639のraw end
+2868.440をsemantic completionとして扱い、次話題event_001641開始2865.599後の2.841秒を残した
+失敗を、exact old proofとcurrent 335.300秒candidateへ結ぶ。修正規則は「provider rolling overlap
+だけで意味区間を延長しない」で、状態はproposal。2865.599–2868.440は破棄せず、次話題contextとして
+再利用できるHOLDへ戻す。content、Rule一般採用、rights、production、publicationは未承認のまま。
+
+chat意味権限が完結してもBoard Choiceがopenのまま残るQuestion Dedup / authority synchronizationは
+CONTRACT_REPAIR candidateとして記録だけ行う。再発または小さな予防経路が確認できるまで、共通Choice
+契約やchat-to-Choice変換は実装しない。
 
 ## 2026-08-24 — 選択済みopeningを後続candidateへ消費し、provider overlapをendpoint根拠から外す
 

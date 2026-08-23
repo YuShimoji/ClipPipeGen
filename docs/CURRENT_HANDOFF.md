@@ -350,8 +350,8 @@ out13_m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
 out13_m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 out13_public_use_verdict: deny
 out13_monetized_youtube_verdict: deny
-next_review_due: human_content_review_of_exact_selected_opening_successor
-next_action: register_exact_successor_media_then_request_accept_or_revise_without_reopening_consumed_opening_choice
+next_review_due: bounded_content_review_after_real_decision_case_readback
+next_action: read_real_decision_case_then_request_only_a_specific_remaining_content_revision_if_observed
 current_handoff: docs/CURRENT_HANDOFF.md
 upstream_parity: 0 0 after normal push and remote SHA readback of current handoff revision
 current_slice_push_status: normal_push_and_remote_sha_readback_completed_for_current_head_locator
@@ -361,6 +361,24 @@ related: docs/RUNTIME_STATE.md, docs/content_planning/wiki_tensaku_ep1_integrate
 ---
 
 # Current Handoff - ClipPipeGen
+
+## 2026-08-24 real DecisionCase and Choice 6 authority recovery
+
+ユーザー明示文「切り取っている位置としては妥当です」は、exact current candidateに対する
+Choice Set 6 option 1相当の意味権限として回収する。一般のchat-to-Choice自動変換にはしない。
+
+`clip-stt-rolling-overlap-endpoint-case-v1`は、旧endpoint proof
+`1c3f6a002031ff3c0cc61771f58b2f2e46dfaab56c0fd40431df9b3296eb10a1`のoutput
+13.119–15.960秒に入った次話題と、修正後candidate
+`48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`を同じtraceへ結ぶ。
+失敗規則はprovider raw durationを意味完結へ昇格したこと。修正案はrolling overlapだけでは延長せず、
+実音声と話題境界を独立証拠にすること。Ruleはproposalで、source 2865.599–2868.440はDROPせず
+次話題contextとして再利用可能なHOLDである。portable sourceは
+`docs/output_layer/clip_real_decision_case_v1.json`。
+
+Board上でChoice 6を閉じた後も、335.3秒candidateのcontent全体、Ruleの一般採用、rights、
+production、publicationは未承認。追加質問は実DecisionCaseを読んでも特定のcontent修正が必要と
+判明した場合だけにし、同じ切り取り位置を再pollしない。
 
 ## 2026-08-24 Wiki selected-opening successor
 

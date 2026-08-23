@@ -13,6 +13,9 @@ caption display ends and the next topic begins. The prior 2.841-second rolling-d
 overlap is no longer treated as semantic-completion evidence. The 335.280-second internal
 candidate is technically complete and awaits one content accept/revise review; old proof,
 rights, production, publication, and the independent missing-source lane remain unchanged.
+The exact old proof, failed inference, proposed rule correction, user-specific override,
+reusable HOLD range, and resulting edit are connected in
+[`clip_real_decision_case_v1.json`](docs/output_layer/clip_real_decision_case_v1.json).
 
 SH-05 benchmark portfolio note: the current finite output benchmark surface is
 15 families / 32 family-scoped candidate slots, materialized as 32 tracked
