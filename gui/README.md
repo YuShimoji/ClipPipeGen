@@ -56,7 +56,16 @@ npm install
 npm start                 # Electron 起動
 npm run smoke             # Node 単体 smoke（Electron なし、status-episode JSON shape を確認）
 npm run smoke:electron    # Electron を --smoke で起動・即終了（バイナリ動作確認）
+npm run cockpit           # ED-13b exact current Project Cockpit + existing Range review route
 ```
+
+`npm run cockpit` は汎用episode managerではなく、tracked
+`docs/output_layer/clip_project_cockpit_v1.json` が指す現行candidate専用のreview入口。
+workflow receipt、SHA-256、bytes、ffprobe durationを起動時にfail-closedで照合し、
+実再生後のreview actionでignored host-local receiptを`REVIEW_READY`へ進める。
+このtransitionはopenabilityとreview routeの成立だけを意味し、画面内の
+whole accept / bounded revisionを選択したり、content/creative/production/rights/publicationを
+承認したりしない。
 
 Python が PATH にない場合は環境変数で指定：
 

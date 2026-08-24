@@ -1,0 +1,54 @@
+{
+  "schema_version": "clippipegen.project_cockpit.v1",
+  "requirement_id": "CLIP-COCKPIT-E2E-REVIEW-READY-20260825-001",
+  "artifact_id": "clip-project-cockpit-review-ready-v1-001",
+  "title": "Wiki selected-opening current candidate",
+  "workflow_receipt": {
+    "path": "docs/output_layer/clip_editorial_production_workflow_connection_v1.json",
+    "sha256": "2d5f3d30cf1fea43e6fa63def8441cbe4861115468b57a1b28699e9cf80acac7",
+    "required_status": "CONNECTED_READY_FOR_SERIALIZED_HUMAN_REVIEW"
+  },
+  "candidate": {
+    "artifact_id": "clip-wiki-selected-opening-current-basis-v1-001",
+    "package_root": "episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/package",
+    "media_name": "final_video.mp4",
+    "sha256": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951",
+    "byte_size": 25852742,
+    "editorial_duration_seconds": 335.28,
+    "container_duration_seconds": 335.3,
+    "source_range_seconds": [2530.319, 2865.599]
+  },
+  "state_receipt": {
+    "path": "episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/review/cockpit_review_state_v1.json",
+    "from": "WORKFLOW_CONNECTED",
+    "to": "REVIEW_READY"
+  },
+  "review": {
+    "resolved_decision_units": 15,
+    "item_level_questions": 0,
+    "remaining_human_judgment_count": 1,
+    "question": "Is the exact 335.3-second candidate acceptable as a whole, or does one bounded range need revision?",
+    "allowed_outcomes": [
+      {
+        "id": "accept_whole_candidate",
+        "label": "全体を採用",
+        "meaning": "Accept this exact media only for internal content/editorial use."
+      },
+      {
+        "id": "bounded_revision",
+        "label": "限定exact rangeを修正",
+        "meaning": "Identify exact source/output ranges and the content reason; unaffected ranges keep their technical evidence."
+      }
+    ],
+    "choice_serialization": "Project 13 Choice 7 is an independent GUI-direction judgment and is not this content judgment."
+  },
+  "boundaries": {
+    "human_content_acceptance": "pending",
+    "creative_acceptance": false,
+    "production_acceptance": false,
+    "rights_approval": false,
+    "publication_acceptance": false,
+    "frontierboard_mutation": false,
+    "media_created_or_modified": false
+  }
+}

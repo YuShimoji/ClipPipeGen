@@ -42,6 +42,14 @@ gate stays serialized behind the independent GUI-direction Choice 7 and permits 
 whole-candidate acceptance or an exact-range bounded revision. No production, rights,
 publication, media, or FrontierBoard authority is created by this connection.
 
+The project-local review entrance is now `npm run cockpit`. The Cockpit validates the
+workflow receipt and exact 335.3-second MP4, plays it through the existing byte-range
+`serve-review` path, and records a same-machine `REVIEW_READY` receipt only after playback
+and a 32-byte Range readback succeed. The screen shows the one compressed whole/bounded
+content gate without making the decision. `REVIEW_READY` means artifact openability plus
+review-route availability only; content, creative, production, rights, publication, media,
+and FrontierBoard state remain unchanged.
+
 SH-05 benchmark portfolio note: the current finite output benchmark surface is
 15 families / 32 family-scoped candidate slots, materialized as 32 tracked
 review cards. Open [docs/benchmarks/index.html](docs/benchmarks/index.html).

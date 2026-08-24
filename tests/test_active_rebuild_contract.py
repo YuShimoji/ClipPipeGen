@@ -240,7 +240,7 @@ def test_runtime_points_to_connected_editorial_workflow_and_keeps_other_lanes_pa
     assert "remote_code_complete: false" in runtime
     assert "remote_decision_binding_available: false" in runtime
     assert "active_branch: codex/wiki-tensaku-longform-family-v1" in runtime
-    assert "upstream_parity: 3 0 after_three_local_editorial_commits_push_count_zero" in runtime
+    assert "upstream_parity: 4 0 after_four_local_editorial_and_cockpit_commits_push_count_zero" in runtime
     assert (
         "base_main_revision: "
         "bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471"
@@ -249,7 +249,7 @@ def test_runtime_points_to_connected_editorial_workflow_and_keeps_other_lanes_pa
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: true" in runtime
     assert (
-        "human_entrypoint: FrontierBoard successor review after portable media registration"
+        "human_entrypoint: project-local Project Cockpit after independent Choice 7 serialization clears"
         in runtime
     )
     assert (
@@ -263,18 +263,18 @@ def test_runtime_points_to_connected_editorial_workflow_and_keeps_other_lanes_pa
     )
     assert (
         "health: "
-        "EDITORIAL_CALIBRATION_PASS_335_WHOLE_REVIEW_READY_EP1_SOURCE_GATE_PARKED"
+        "EDITORIAL_CALIBRATION_PASS_335_PROJECT_REVIEW_READY_EP1_SOURCE_GATE_PARKED"
         in runtime
     )
     assert "current_slice: ED-13" in runtime
     assert (
-        "canonical_status: calibrated_decisions_consumed_one_human_content_gate_"
-        "production_authority_closed"
+        "canonical_status: exact_artifact_openability_and_project_review_route_"
+        "established_human_content_gate_pending"
         in runtime
     )
     assert "active_artifact: clip-wiki-selected-opening-current-basis-v1-001" in runtime
     assert (
-        "review_status: INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING"
+        "review_status: REVIEW_READY_EXACT_ARTIFACT_OPENABLE_HUMAN_CONTENT_JUDGMENT_PENDING"
         in runtime
     )
     assert "wiki_family_turn_validation: passed_13_of_13" in runtime

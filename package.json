@@ -6,6 +6,7 @@
   "main": "gui/main.cjs",
   "scripts": {
     "start": "electron gui/main.cjs",
+    "cockpit": "uvx python -m src.cli.main serve-project-cockpit --open",
     "smoke": "node gui/smoke.cjs",
     "smoke:electron": "electron gui/main.cjs --smoke"
   },

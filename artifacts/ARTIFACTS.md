@@ -50,6 +50,21 @@ opened by the root launcher.
 | boundaries | Production, rights, publication, upload, next-video start, media generation, and FrontierBoard mutation remain false/not performed. |
 | validation | `tests/test_editorial_production_workflow.py`, `tests/test_editorial_calibration_sequence.py`, and exact package validators. |
 
+## `clip-project-cockpit-review-ready-v1-001`
+
+| Field | Value |
+|---|---|
+| purpose | Put current artifact, completion point, actual media, one remaining human judgment, next work, and blockers on one project-local screen, then enter the existing Range review path without reviving 15 item questions. |
+| tracked authority | `docs/output_layer/clip_project_cockpit_v1.json`; workflow receipt SHA `2d5f3d30cf1fea43e6fa63def8441cbe4861115468b57a1b28699e9cf80acac7`. |
+| implementation | `src/cli/serve_project_cockpit.py`; `gui/project_cockpit/index.html`; `gui/project_cockpit/app.js`; `gui/project_cockpit/styles.css`. |
+| actual artifact | `clip-wiki-selected-opening-current-basis-v1-001`; 25,852,742 bytes; SHA `48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`; container 335.300 seconds. |
+| open command | `npm run cockpit` then open `http://127.0.0.1:8061/`; media is served by the existing project-owned Range route on `http://127.0.0.1:8060/final_video.mp4`. |
+| local state receipt | `episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/review/cockpit_review_state_v1.json`; ignored same-machine evidence, not portable Git authority. |
+| transition proof | Actual in-app Browser playback advanced beyond 17 seconds at readyState 4, the review action navigated to the exact MP4 route, server-side 32-byte Range readback returned HTTP 206, and the same Cockpit reread `REVIEW_READY` with no console errors/warnings. |
+| remaining human gate | One decision only: accept the exact candidate as a whole, or name exact source/output ranges for bounded revision. No option was selected. Choice 7 remains a separate GUI-direction identity. |
+| boundaries | `REVIEW_READY` means exact artifact openability and project-owned review-route availability. Content, creative, production, rights, publication, upload, media mutation, and FrontierBoard mutation remain ungranted/not performed. |
+| validation | `tests/test_project_cockpit.py`, `tests/test_review_range_server.py`, full suite, exact hash/size/ffprobe readback, browser playback/navigation/reread. |
+
 ## `clip-wiki-selected-opening-current-basis-v1-001`
 
 | Field | Value |

@@ -178,14 +178,14 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "artifact_package_tree_digest_sha256": "null_not_transport_sealed",
         "artifact_manifest_self_sha256": "null_successor_receipt_is_current_machine_readback",
         "package_validation_status": "passed_exact_input_hashes_duration_full_decode_current_successor",
-        "full_suite_status": "passed_725_tests_2026_08_25",
+        "full_suite_status": "passed_730_tests_2026_08_25",
         "human_review_pending": "true",
         "rights_approval": "readback_unresolved",
         "production_acceptance": "false",
         "public_use": "false",
         "monetized_use": "false",
         "upload_attempted": "false",
-        "upstream_parity": "3 0 after_three_local_editorial_commits_push_count_zero",
+        "upstream_parity": "4 0 after_four_local_editorial_and_cockpit_commits_push_count_zero",
         "remote_code_complete": "false",
         "decision_required": "one_whole_candidate_accept_or_bounded_revision_queued_behind_existing_board_choice_7",
         "next_review_due": "after_choice_7_serialization",
@@ -231,7 +231,7 @@ def test_current_resume_rejects_mismatched_local_state() -> None:
             1,
         )
         .replace(
-            "upstream_parity: 3 0 after_three_local_editorial_commits_push_count_zero",
+            "upstream_parity: 4 0 after_four_local_editorial_and_cockpit_commits_push_count_zero",
             "upstream_parity: 1 0 stale_local_state",
             1,
         )

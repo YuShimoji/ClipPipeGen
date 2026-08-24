@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ClipPipeGen Project Cockpit</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">CLIPPIPEGEN · CURRENT FRONTIER</p>
+          <h1>Project Cockpit</h1>
+          <p class="lede">現在成果物から、次の人間判断へ迷わず入るための最小画面。</p>
+        </div>
+        <div class="state-block" aria-live="polite">
+          <span class="state-label">PROJECT STATE</span>
+          <strong id="project-state">LOADING</strong>
+          <span id="state-detail">authorityを照合しています</span>
+        </div>
+      </header>
+
+      <section id="error" class="error" hidden></section>
+
+      <section class="completion-strip" aria-label="Completion point">
+        <div><span>現在成果物</span><strong id="artifact-short">—</strong></div>
+        <div><span>完成地点</span><strong>exact artifact content review</strong></div>
+        <div><span>次実作業</span><strong>whole accept / bounded range revision</strong></div>
+        <div><span>blocker</span><strong>human content judgment 1件</strong></div>
+      </section>
+
+      <div class="content-grid">
+        <section class="media-panel panel">
+          <div class="panel-head">
+            <div>
+              <p class="kicker">ACTUAL ARTIFACT</p>
+              <h2>335.3秒 current candidate</h2>
+            </div>
+            <span id="media-check" class="pill">CHECKING</span>
+          </div>
+          <div class="video-frame">
+            <video id="candidate-video" controls muted preload="metadata"></video>
+            <div id="play-readback" class="play-readback">未再生</div>
+          </div>
+          <div class="media-actions">
+            <button id="play-artifact" type="button" class="primary">実artifactを再生</button>
+            <button id="open-review" type="button" class="secondary" disabled>Project-owned review path を開く</button>
+          </div>
+          <dl class="identity-grid">
+            <div><dt>Artifact</dt><dd id="artifact-id">—</dd></div>
+            <div><dt>Size</dt><dd id="media-size">—</dd></div>
+            <div><dt>Duration</dt><dd id="media-duration">—</dd></div>
+            <div class="wide"><dt>SHA-256</dt><dd id="media-sha">—</dd></div>
+          </dl>
+        </section>
+
+        <aside class="decision-panel panel">
+          <div class="panel-head">
+            <div>
+              <p class="kicker">ONE HUMAN GATE</p>
+              <h2>残る判断を1件に圧縮</h2>
+            </div>
+            <span class="pill neutral">PENDING</span>
+          </div>
+          <p id="decision-question" class="question">—</p>
+          <div id="decision-options" class="decision-options"></div>
+          <p class="guardrail">ここでは選びません。Choice 7は別identityのGUI方向判断です。</p>
+          <div class="calibration-readback">
+            <span>Evidence / Rule / accepted authority</span>
+            <strong id="resolved-count">—</strong>
+            <small id="decision-counts">—</small>
+          </div>
+        </aside>
+      </div>
+
+      <section class="boundary-panel panel">
+        <div>
+          <p class="kicker">REVIEW_READY MEANS</p>
+          <h2>openability + review route</h2>
+          <p>content / creative / production / rights / publication acceptanceではありません。</p>
+        </div>
+        <ul id="boundaries"></ul>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>

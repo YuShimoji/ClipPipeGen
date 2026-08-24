@@ -96,7 +96,7 @@ def test_runtime_and_handoff_route_to_current_proof_without_erasing_reframe_port
             "active_artifact: clip-wiki-selected-opening-current-basis-v1-001"
             in document
         )
-        assert "review_status: INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING" in document
+        assert "review_status: REVIEW_READY_EXACT_ARTIFACT_OPENABLE_HUMAN_CONTENT_JUDGMENT_PENDING" in document
         assert "wiki_content_reframe_topology: thematic_episode_family" in document
         assert "wiki_content_reframe_episode_count: 4" in document
         assert "wiki_content_reframe_clipunit_count: 13" in document
