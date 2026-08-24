@@ -8,6 +8,20 @@ last_touched: 2026-08-25
 
 # Decision Log - ClipPipeGen
 
+## 2026-08-25 — 既存multi-cutでKEEP/DROP/HOLD校正を閉じ、production-scale entryをPASSにする
+
+新規動画を作らず、human-accepted exact OUT-13 Candidate 005を15 meaningful unitへ再読した。
+7 retained cutはKEEP、overlapping provider greeting 1.068秒はunique causal stepなしのDROP、
+残るlead-in、wait、transition、location phrase、action beat、post-resolution tailの7 rangeは
+HOLD_REUSABLEとした。HOLDは復元要求ではなく、alternate pacing/orientationへ使えるsourceを
+削除せず保つ分類である。exact source、plan、timeline、MP4、acceptance receiptは不変。
+
+15 unitすべてをEvidence/Rule/既存human authorityで説明でき、item-level質問は0件へ圧縮した。
+shared grammarはgeneric traceだけに限定し、legacy planのboolean omissionがDROP/HOLDを区別できない
+点はCONTRACT_REPAIR candidateとして記録するだけにした。校正結果は`PASS`だが、production、rights、
+publication、新動画開始を承認しない。335.3秒candidateにはwhole-content `accept / bounded revision`
+一件だけが残る。Project 13 Choice 7がopenなので、新しいBoard Choiceは作っていない。
+
 ## 2026-08-25 — 335.3秒全体をDecisionCase校正し、production-scale移行をPARTIALで止める
 
 exact current candidateを8つのmeaningful decision unitへ分解した。8 unitはすべてcurrent edit内の

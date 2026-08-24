@@ -25,6 +25,15 @@ questions, and leaves one whole-candidate content judgment. Production-scale rea
 `PARTIAL`: one existing multi-cut artifact with real KEEP/DROP/HOLD decisions should be
 calibrated before starting another video. No new Choice or media was created.
 
+That follow-up calibration now uses the existing accepted OUT-13 Candidate 005 rather
+than a new video. Its seven retained cuts, one evidence-resolved duplicate DROP, and seven
+reusable omitted ranges all trace to the exact source and result in
+[`clip_mixed_editorial_calibration_v1.json`](docs/output_layer/clip_mixed_editorial_calibration_v1.json).
+The editorial-decision system reaches `PASS`; this does not start production or grant
+rights/publication authority. The 335.3-second candidate still has exactly one separate
+whole-content `accept / bounded revision` judgment, recorded without creating a Board
+Choice in [`clip_335s_whole_content_review_v1.json`](docs/output_layer/clip_335s_whole_content_review_v1.json).
+
 SH-05 benchmark portfolio note: the current finite output benchmark surface is
 15 families / 32 family-scoped candidate slots, materialized as 32 tracked
 review cards. Open [docs/benchmarks/index.html](docs/benchmarks/index.html).

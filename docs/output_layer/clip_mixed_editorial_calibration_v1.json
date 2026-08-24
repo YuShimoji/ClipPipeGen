@@ -1,0 +1,327 @@
+{
+  "schema_version": "clippipegen.editorial_calibration.v1",
+  "case_identity": "clip-out13-candidate005-mixed-editorial-calibration-v1",
+  "status": "COMPLETE",
+  "purpose": "Validate explainable editorial selection on one existing exact multi-cut artifact without creating media or reopening its accepted review.",
+  "basis": {
+    "artifact_id": "clip-out13-editorial-video-candidate-v1-005",
+    "source_identity": "youtube:7J5aS_pcBj4",
+    "source_sha256": "6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a",
+    "source_duration_seconds": 164.768798,
+    "output_sha256": "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5",
+    "output_bytes": 82594810,
+    "output_duration_seconds": 128.833333,
+    "editorial_plan_sha256": "c3a1b15f6e48751c84d37a001398980ff0efdb42933efc810578a3917dd9c51f",
+    "timeline_ir_sha256": "ed24a8fc3181b4f99be51bc76ac3a352673ebb43c7e5dcd01f498df985f3f9e4",
+    "human_acceptance_receipt_sha256": "881036c3b90303d0147223a974ebf9e8e7f471d3d9155f9fc11279c72d733a95",
+    "human_acceptance_scope": "internal_full_view_editorial_visual_review",
+    "media_created_or_modified": false
+  },
+  "decision_summary": {
+    "meaningful_units": 15,
+    "KEEP": 7,
+    "DROP": 1,
+    "HOLD_REUSABLE": 7,
+    "keep_output_seconds": 128.795,
+    "drop_source_seconds": 1.068,
+    "hold_reusable_source_seconds": 34.905798,
+    "wording_boundary": "KEEP is inclusion in the accepted exact edit. HOLD_REUSABLE is preserved source utility, not a request to restore it. DROP rejects current editorial use but does not delete source bytes or provenance."
+  },
+  "decision_units": [
+    {
+      "unit_id": "cut_001",
+      "decision": "KEEP",
+      "source_range_seconds": [2.453, 17.167],
+      "result_range_seconds": [0.0, 14.714],
+      "reason": "The opening call establishes the challenger, premise, and first target.",
+      "evidence": {"locator": "timeline_ir.json#cut_001", "observed": "Nine direct caption segments are bound to one retained range.", "inferred": "Removing it would erase the challenge setup."},
+      "rule_or_judgment": "rule:retain-explicit-causal-step-v1",
+      "confidence": "high",
+      "limitation": "Caption evidence does not independently prove visual quality.",
+      "resulting_edit": "Output 0.000-14.714.",
+      "reusable_unselected_material": "The preceding 0.000-2.453 lead-in remains separately held.",
+      "neighbor_relation": "Supplies the target referenced by cut_002."
+    },
+    {
+      "unit_id": "cut_002",
+      "decision": "KEEP",
+      "source_range_seconds": [22.606, 24.041],
+      "result_range_seconds": [14.714, 16.149],
+      "reason": "The impatient call motivates the opponent arrival.",
+      "evidence": {"locator": "timeline_ir.json#cut_002", "observed": "One direct caption segment is retained between setup and arrival.", "inferred": "It provides the minimum spoken bridge after the removed wait."},
+      "rule_or_judgment": "rule:retain-explicit-causal-step-v1",
+      "confidence": "high",
+      "limitation": "Alternate slower pacing could use part of the held wait.",
+      "resulting_edit": "Output 14.714-16.149.",
+      "reusable_unselected_material": "Source 17.167-22.606 remains held as an alternate pacing beat.",
+      "neighbor_relation": "Connects cut_001 challenge to cut_003 arrival exchange."
+    },
+    {
+      "unit_id": "cut_003",
+      "decision": "KEEP",
+      "source_range_seconds": [25.109, 49.566],
+      "result_range_seconds": [16.149, 40.606],
+      "reason": "The arrival, first win, and next-opponent lead form one causal unit.",
+      "evidence": {"locator": "timeline_ir.json#cut_003", "observed": "Seventeen direct caption segments and the next-opponent lead are retained.", "inferred": "The overlapping greeting adds no unique causal step."},
+      "rule_or_judgment": "rule:retain-explicit-causal-step-v1",
+      "confidence": "high",
+      "limitation": "The duplicate-greeting judgment is case-grounded, not a provider-wide law.",
+      "resulting_edit": "Output 16.149-40.606.",
+      "reusable_unselected_material": "The duplicate greeting interval is DROP but its source/provenance remains intact.",
+      "neighbor_relation": "Starts after omit_003 and points directly to cut_004."
+    },
+    {
+      "unit_id": "cut_004",
+      "decision": "KEEP",
+      "source_range_seconds": [50.868, 79.163],
+      "result_range_seconds": [40.606, 68.901],
+      "reason": "The second challenge, stake, concession, and final-location handoff remain complete.",
+      "evidence": {"locator": "timeline_ir.json#cut_004", "observed": "Seventeen direct caption segments retain the whole encounter.", "inferred": "The adjacent non-dialogue transition is not required for causal comprehension."},
+      "rule_or_judgment": "rule:retain-explicit-causal-step-v1",
+      "confidence": "high",
+      "limitation": "A rhythm-focused alternate may use the held transition.",
+      "resulting_edit": "Output 40.606-68.901.",
+      "reusable_unselected_material": "Source 49.566-50.868 remains held for alternate transition rhythm.",
+      "neighbor_relation": "Receives the next-opponent lead and hands off to the final location."
+    },
+    {
+      "unit_id": "cut_005",
+      "decision": "KEEP",
+      "source_range_seconds": [81.298, 94.945],
+      "result_range_seconds": [68.901, 82.548],
+      "reason": "The opponents and explicit battle start are necessary to read the confrontation.",
+      "evidence": {"locator": "timeline_ir.json#cut_005", "observed": "Ten direct caption segments introduce opponents and start the battle.", "inferred": "The omitted location phrase is recoverable from the reveal but remains useful orientation material."},
+      "rule_or_judgment": "case-specific:final-confrontation-entry",
+      "confidence": "medium_high",
+      "limitation": "Recoverability is specific to this reveal and cannot become shared grammar.",
+      "resulting_edit": "Output 68.901-82.548.",
+      "reusable_unselected_material": "Source 79.163-81.298 is held as an alternate explicit location bridge.",
+      "neighbor_relation": "Begins after the location bridge and leads into battle escalation."
+    },
+    {
+      "unit_id": "cut_006",
+      "decision": "KEEP",
+      "source_range_seconds": [95.345, 116.467],
+      "result_range_seconds": [82.548, 103.67],
+      "reason": "The battle escalation and full summoning trigger explanation are retained together.",
+      "evidence": {"locator": "timeline_ir.json#cut_006", "observed": "Eleven direct caption segments end after the complete summoning explanation.", "inferred": "The neighboring action beats are pacing options rather than required spoken steps."},
+      "rule_or_judgment": "rule:retain-explicit-causal-step-v1",
+      "confidence": "high",
+      "limitation": "Visual rhythm may still justify a different hold duration in another cut.",
+      "resulting_edit": "Output 82.548-103.670.",
+      "reusable_unselected_material": "Source 94.945-95.345 and 116.467-116.934 remain held action beats.",
+      "neighbor_relation": "Explains the trigger immediately before cut_007 reveal."
+    },
+    {
+      "unit_id": "cut_007",
+      "decision": "KEEP",
+      "source_range_seconds": [116.934, 142.059],
+      "result_range_seconds": [103.67, 128.795],
+      "reason": "The summoned opponent, response, counterattack, and final win close the narrative.",
+      "evidence": {"locator": "timeline_ir.json#cut_007", "observed": "Thirty-seven direct caption segments end on the final complete victory line.", "inferred": "The post-resolution tail is optional breathing room after closure."},
+      "rule_or_judgment": "rule:retain-explicit-causal-step-v1",
+      "confidence": "high",
+      "limitation": "An alternate delivery format may require a longer end hold.",
+      "resulting_edit": "Output 103.670-128.795.",
+      "reusable_unselected_material": "Source 142.059-164.768798 remains held as post-resolution tail.",
+      "neighbor_relation": "Completes the summoning sequence and terminates the current narrative."
+    },
+    {
+      "unit_id": "omit_001",
+      "decision": "HOLD_REUSABLE",
+      "source_range_seconds": [0.0, 2.453],
+      "result_range_seconds": null,
+      "reason": "A pre-dialogue lead-in is unnecessary for the accepted fast opening but may serve an establishing pause.",
+      "evidence": {"locator": "timeline_ir.json#omit_001", "observed": "The range precedes the first complete provider caption and was not marked intentional omission.", "inferred": "Its utility depends on alternate pacing, not causal content."},
+      "rule_or_judgment": "rule:hold-alternate-pacing-material-v1",
+      "confidence": "medium",
+      "limitation": "No separate full-motion visual judgment was recorded for this range.",
+      "resulting_edit": "Excluded before output 0.000.",
+      "reusable_unselected_material": "Preserve as possible establishing lead-in.",
+      "neighbor_relation": "Immediately precedes cut_001."
+    },
+    {
+      "unit_id": "omit_002",
+      "decision": "HOLD_REUSABLE",
+      "source_range_seconds": [17.167, 22.606],
+      "result_range_seconds": null,
+      "reason": "The action wait is not required for the accepted pace but may support a slower arrival beat.",
+      "evidence": {"locator": "timeline_ir.json#omit_002", "observed": "The plan identifies a visual/action wait with no transcript segments.", "inferred": "It can change pacing without adding a unique spoken causal step."},
+      "rule_or_judgment": "rule:hold-alternate-pacing-material-v1",
+      "confidence": "medium_high",
+      "limitation": "No claim is made that every silent interval is reusable.",
+      "resulting_edit": "Excluded between output 14.714 and 14.714.",
+      "reusable_unselected_material": "Preserve for alternate arrival timing.",
+      "neighbor_relation": "Between cut_001 and cut_002."
+    },
+    {
+      "unit_id": "omit_003",
+      "decision": "DROP",
+      "source_range_seconds": [24.041, 25.109],
+      "result_range_seconds": null,
+      "reason": "Two overlapping provider cues add no unique causal step and would duplicate the greeting.",
+      "evidence": {"locator": "timeline_ir.json#omit_003", "observed": "The exact plan binds seg_000011 and seg_000012 to one 1.068-second overlapping interval.", "inferred": "Including it would reintroduce duplicate/overlap without new narrative information."},
+      "rule_or_judgment": "rule:drop-bounded-duplicate-with-no-unique-step-v1",
+      "confidence": "high",
+      "limitation": "The rule requires exact evidence of duplication and absence of a unique step; provider overlap alone is insufficient.",
+      "resulting_edit": "Excluded between output 16.149 and 16.149.",
+      "reusable_unselected_material": "Bytes and provenance remain; current editorial use is rejected.",
+      "neighbor_relation": "Between cut_002 call and cut_003 arrival exchange."
+    },
+    {
+      "unit_id": "omit_004",
+      "decision": "HOLD_REUSABLE",
+      "source_range_seconds": [49.566, 50.868],
+      "result_range_seconds": null,
+      "reason": "The non-dialogue transition is optional for the accepted compact pace.",
+      "evidence": {"locator": "timeline_ir.json#omit_004", "observed": "The range has no transcript segments and precedes the next complete challenge.", "inferred": "It may support a softer transition in an alternate cut."},
+      "rule_or_judgment": "rule:hold-alternate-pacing-material-v1",
+      "confidence": "medium",
+      "limitation": "Its visual contribution was not independently scored.",
+      "resulting_edit": "Excluded between output 40.606 and 40.606.",
+      "reusable_unselected_material": "Preserve for alternate transition rhythm.",
+      "neighbor_relation": "Between cut_003 and cut_004."
+    },
+    {
+      "unit_id": "omit_005",
+      "decision": "HOLD_REUSABLE",
+      "source_range_seconds": [79.163, 81.298],
+      "result_range_seconds": null,
+      "reason": "The location phrase is redundant in the accepted reveal but contains real orientation information.",
+      "evidence": {"locator": "timeline_ir.json#omit_005", "observed": "seg_000047 and the following pause occupy this exact range.", "inferred": "The phrase can be restored if a viewer needs stronger location context."},
+      "rule_or_judgment": "case-specific:location-bridge-held",
+      "confidence": "high",
+      "limitation": "Whether orientation is necessary depends on the surrounding edit and audience.",
+      "resulting_edit": "Excluded between output 68.901 and 68.901.",
+      "reusable_unselected_material": "Preserve as explicit location bridge.",
+      "neighbor_relation": "Between cut_004 handoff and cut_005 reveal."
+    },
+    {
+      "unit_id": "omit_006",
+      "decision": "HOLD_REUSABLE",
+      "source_range_seconds": [94.945, 95.345],
+      "result_range_seconds": null,
+      "reason": "A 0.400-second action beat is optional pacing material between complete battle cues.",
+      "evidence": {"locator": "timeline_ir.json#omit_006", "observed": "No transcript segment is bound to the exact gap.", "inferred": "Its value is rhythmic rather than causal."},
+      "rule_or_judgment": "rule:hold-alternate-pacing-material-v1",
+      "confidence": "medium",
+      "limitation": "Frame-level quality was not separately reviewed.",
+      "resulting_edit": "Excluded between output 82.548 and 82.548.",
+      "reusable_unselected_material": "Preserve as battle pacing handle.",
+      "neighbor_relation": "Between cut_005 and cut_006."
+    },
+    {
+      "unit_id": "omit_007",
+      "decision": "HOLD_REUSABLE",
+      "source_range_seconds": [116.467, 116.934],
+      "result_range_seconds": null,
+      "reason": "A 0.467-second visual beat after the explanation is optional reveal timing.",
+      "evidence": {"locator": "timeline_ir.json#omit_007", "observed": "No transcript segment is bound to the exact gap after a complete explanation.", "inferred": "It may be useful if the reveal needs more breathing room."},
+      "rule_or_judgment": "rule:hold-alternate-pacing-material-v1",
+      "confidence": "medium",
+      "limitation": "Its visual contribution was not independently scored.",
+      "resulting_edit": "Excluded between output 103.670 and 103.670.",
+      "reusable_unselected_material": "Preserve as reveal timing handle.",
+      "neighbor_relation": "Between cut_006 explanation and cut_007 reveal."
+    },
+    {
+      "unit_id": "omit_008",
+      "decision": "HOLD_REUSABLE",
+      "source_range_seconds": [142.059, 164.768798],
+      "result_range_seconds": null,
+      "reason": "The current narrative ends on the final win, while the remaining tail may support alternate closure or post-roll context.",
+      "evidence": {"locator": "timeline_ir.json#omit_008", "observed": "The exact 22.709798-second range follows the final complete victory cue.", "inferred": "It is unnecessary for current closure but too substantial to discard without separate review."},
+      "rule_or_judgment": "rule:hold-unassessed-substantial-tail-v1",
+      "confidence": "medium_high",
+      "limitation": "No claim is made about the tail's content value beyond its preserved locator.",
+      "resulting_edit": "Excluded after output 128.795.",
+      "reusable_unselected_material": "Preserve as post-resolution tail pending any alternate use.",
+      "neighbor_relation": "Immediately follows cut_007."
+    }
+  ],
+  "reusable_rules": [
+    {
+      "rule_id": "retain-explicit-causal-step-v1",
+      "state": "validated",
+      "supporting_evidence": "Seven ordered retained cuts preserve setup, encounters, confrontation, and resolution in an exact human-accepted artifact.",
+      "scope_boundary": "Use for evidence-backed narrative steps; it does not say every captioned statement is interesting or necessary.",
+      "plausible_counterexamples": ["A repeated recap with captions", "A complete statement that is off-topic for the current premise"],
+      "project_specific_facts": "cut IDs, source identity, and provider segment IDs remain evidence only."
+    },
+    {
+      "rule_id": "drop-bounded-duplicate-with-no-unique-step-v1",
+      "state": "validated",
+      "supporting_evidence": "omit_003 is an exact overlap interval with two provider cues and no unique causal step; the accepted result remains coherent without it.",
+      "scope_boundary": "Requires independent proof of duplication and no unique semantic or visual contribution.",
+      "plausible_counterexamples": ["Overlapping dialogue that changes meaning", "A visual reaction needed despite repeated words"],
+      "project_specific_facts": "seg_000011/seg_000012 and provider overlap mechanics remain project evidence."
+    },
+    {
+      "rule_id": "hold-alternate-pacing-material-v1",
+      "state": "proposed",
+      "supporting_evidence": "Lead-ins, waits, transitions, and action beats are unnecessary for the accepted compact cut but retain plausible timing utility.",
+      "scope_boundary": "HOLD preserves optional material; it does not recommend inclusion or create a review request.",
+      "plausible_counterexamples": ["Corrupt or rights-disallowed bytes", "A duplicated interval with no alternate utility"],
+      "project_specific_facts": "The seven exact omitted ranges remain in the project package lineage."
+    },
+    {
+      "rule_id": "ask-only-when-evidence-rule-and-prior-authority-fail-v1",
+      "state": "validated",
+      "supporting_evidence": "The accepted artifact and exact plan resolve all fifteen unit states without reopening item-level review.",
+      "scope_boundary": "Does not answer creative preference, rights, production, or publication decisions.",
+      "plausible_counterexamples": ["Conflicting evidence", "Two valid edits with materially different creative intent"],
+      "project_specific_facts": "The candidate 005 acceptance receipt is case authority, not a universal preference."
+    }
+  ],
+  "question_granularity_audit": {
+    "eliminated_item_questions": 15,
+    "eliminated_reason": "Seven KEEP states inherit exact whole-artifact editorial acceptance, one DROP is evidence-resolved, and seven HOLD states preserve optional material without asking whether to restore it.",
+    "deferred_separate_authorities": ["rights", "production", "publication"],
+    "genuinely_requires_human_authority": [],
+    "choice_created": false
+  },
+  "decision_observatory_audit": {
+    "accepted_ranges": 7,
+    "dropped_ranges": 1,
+    "held_reusable_ranges": 7,
+    "weak_evidence_clusters": ["Visual value of silent transition beats is not independently scored", "Cross-project transfer is specified but not executed"],
+    "new_shared_ui_or_schema_required": false,
+    "reason": "The current project artifact and generic trace fields are sufficient; shared-platform expansion would not reduce a current human judgment."
+  },
+  "cross_project_grammar": {
+    "shared_sequence": ["Segment", "Decision", "Reason", "Evidence", "Rule", "Override", "Result"],
+    "shared_fields": ["portable segment locator", "KEEP/DROP/HOLD", "observed versus inferred", "rule identity and state", "override scope", "result mapping", "confidence", "limitations"],
+    "project_extension_boundary": "Provider names, caption event IDs, transcript mechanics, cut IDs, and candidate-generator fields stay in ClipPipeGen evidence.",
+    "other_projects_modified": false
+  },
+  "issue_interventions": [
+    {
+      "classification": "RECORD",
+      "issue": "Silent and visual omitted ranges have weaker evidence than caption-bound narrative cuts.",
+      "action": "Retain them as HOLD_REUSABLE with explicit limitations instead of guessing DROP or asking seven item-level questions."
+    },
+    {
+      "classification": "CONTRACT_REPAIR_CANDIDATE",
+      "issue": "The legacy plan records intentional omission as a boolean but cannot distinguish DROP from HOLD_REUSABLE.",
+      "action": "Record for a future project-package revision; do not change shared schema or FrontierBoard in this Mission."
+    },
+    {
+      "classification": "ARCHITECTURAL_STOP",
+      "issue": "youtube:Ocqg-RpQURY 390-585 seconds lacks exact source bytes and acquisition receipt.",
+      "action": "Keep its independent Episode 1 lane parked; it is not used by this calibration."
+    }
+  ],
+  "production_scale_entry_conditions": {
+    "overall": "PASS",
+    "recommendation": "ENTER_PRODUCTION_SCALE_ONLY_ON_A_SEPARATE_EXPLICIT_MISSION",
+    "conditions": [
+      {"condition": "All major decisions in one multi-cut video are explainable", "result": "PASS", "evidence": "Seven KEEP, one DROP, and seven HOLD_REUSABLE units have exact source/result locators and limitations."},
+      {"condition": "Repeated item-level Choices compress to rule-level handling", "result": "PASS", "evidence": "Fifteen unit questions are eliminated without proxy selection."},
+      {"condition": "Agent question emission is bounded", "result": "PASS", "evidence": "Evidence, reusable Rule, and prior Human Override are checked before any question; none remains for this accepted artifact."},
+      {"condition": "KEEP/DROP/HOLD and Result are mutually traceable", "result": "PASS", "evidence": "Timeline IR supplies seven output mappings and eight exact omitted source ranges."},
+      {"condition": "Reusable unselected material is retained", "result": "PASS", "evidence": "Seven ranges remain HOLD_REUSABLE and source/package bytes are unmodified."},
+      {"condition": "Shared grammar avoids project leakage", "result": "PASS", "evidence": "The shared contract contains only generic trace fields; provider/caption/cut fields remain project evidence."}
+    ],
+    "non_inference": "PASS does not grant rights, production, publication, or start another video."
+  }
+}

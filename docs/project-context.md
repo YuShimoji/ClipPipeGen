@@ -5,14 +5,28 @@ type: durable_context
 status: current
 last_touched: 2026-08-25
 current_slice: ED-13
-phase: wiki_full_video_editorial_calibration_partial
+phase: mixed_editorial_calibration_pass_whole_review_ready
 active_branch: codex/wiki-tensaku-longform-family-v1
 sync_observed_head: 51291010753563f038a5b4ae30d1b7c63dccf76d
-upstream_parity: 1 0 after_local_calibration_commit_push_count_zero
-health: WIKI_FULL_VIDEO_EDITORIAL_CALIBRATION_PARTIAL_EP1_SOURCE_GATE_PARKED
+upstream_parity: 2 0 after_two_local_calibration_commits_push_count_zero
+health: EDITORIAL_CALIBRATION_PASS_335_WHOLE_REVIEW_READY_EP1_SOURCE_GATE_PARKED
 ---
 
 # Project Context - ClipPipeGen
+
+## 2026-08-25 mixed editorial calibration PASS
+
+既存のhuman-accepted OUT-13 Candidate 005を、7 retained cut、1 exact duplicate DROP、
+7 HOLD_REUSABLEへ再記述した。15 unitすべてがsource locator、観測と推論、Ruleまたは
+case-specific判断、result mapping、限界へ接続され、15件のitem-level質問を再発行せずに
+説明できる。共有文法は`Segment → Decision → Reason → Evidence → Rule → Override → Result`
+だけであり、provider名、caption event、Clip固有cut IDはproject evidenceに留める。
+
+この校正によりClipPipeGenのeditorial decision systemはproduction-scale entry `PASS`となった。
+ただし別Missionなしに次動画やproductionを開始せず、rights/publicationも開かない。335.3秒
+candidateは技術・構造判断を解消済みで、残るcreative authorityはwhole-candidateの
+`accept / bounded revision`一件だけである。FrontierBoard Project 13にはGUI方向Choice 7が
+すでにopenのため、競合Choiceは作らずreview readinessをtracked artifactへ記録した。
 
 ## 現在の軸
 

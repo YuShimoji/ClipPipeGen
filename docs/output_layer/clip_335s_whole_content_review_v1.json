@@ -1,0 +1,43 @@
+{
+  "schema_version": "clippipegen.whole_content_review.v1",
+  "review_identity": "clip-wiki-selected-opening-335s-whole-content-review-v1",
+  "artifact_id": "clip-wiki-selected-opening-current-basis-v1-001",
+  "media": {
+    "sha256": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951",
+    "byte_size": 25852742,
+    "editorial_duration_seconds": 335.28,
+    "container_duration_seconds": 335.3,
+    "source_range_seconds": [2530.319, 2865.599]
+  },
+  "status": "READY_FOR_ONE_WHOLE_CANDIDATE_JUDGMENT",
+  "agent_resolved": [
+    "The selected opening begins at the already-authorized topic transition.",
+    "The endpoint closes before the 2.841-second next-topic rolling overlap.",
+    "The eight internal units are navigation partitions, not eight creative approvals.",
+    "Caption reference repair applies to future successors; the exact current media is preserved.",
+    "No unit-level or caption-timing Choice is required."
+  ],
+  "human_authority_required": {
+    "count": 1,
+    "question": "Is the exact 335.3-second candidate acceptable as a whole, or does one bounded range need revision?",
+    "allowed_outcomes": [
+      {
+        "id": "accept_whole_candidate",
+        "meaning": "Accept this exact media only for internal content/editorial use."
+      },
+      {
+        "id": "bounded_revision",
+        "meaning": "Identify one or more exact source/output ranges and the content reason; unaffected ranges retain their technical evidence."
+      }
+    ],
+    "not_issued_as_choice_in_this_mission": true
+  },
+  "production_scale_relation": {
+    "mixed_calibration_identity": "clip-out13-candidate005-mixed-editorial-calibration-v1",
+    "mixed_calibration_result": "PASS",
+    "boundary": "This candidate's content verdict does not increase or decrease the mixed-decision system calibration result."
+  },
+  "unapproved": ["rights", "production", "publication", "upload"],
+  "media_created_or_modified": false,
+  "frontierboard_mutated": false
+}
