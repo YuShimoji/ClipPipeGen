@@ -3,7 +3,6 @@ from __future__ import annotations
 import importlib.util
 from pathlib import Path
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = REPO_ROOT / "scripts/build_wiki_selected_opening_successor.py"
 SPEC = importlib.util.spec_from_file_location("wiki_selected_opening_successor", SCRIPT)
@@ -22,7 +21,9 @@ def test_current_exact_inputs_and_selected_opening_are_bound() -> None:
     assert evidence["next_topic_caption"]["source_start_seconds"] == 2865.599
 
 
-def test_successor_timeline_excises_provider_overlap_without_new_semantic_claim() -> None:
+def test_successor_timeline_excises_provider_overlap_without_new_semantic_claim() -> (
+    None
+):
     evidence = MODULE.verify_inputs(REPO_ROOT)
     timeline = MODULE.build_successor_timeline(evidence["parent_timeline"])
 
@@ -43,3 +44,47 @@ def test_subtitle_successor_removes_only_the_next_topic_cue() -> None:
     assert "でもねえいやというねものが" in successor
     assert "うん他なんかないの乳首を国境は" not in successor
     assert successor.count("Dialogue:") == 96
+
+
+def test_successor_caption_contract_recomputes_counts_and_references() -> None:
+    timeline = {
+        "cuts": [
+            {"cut_id": "cut_001", "caption_ids": ["caption_0001"]},
+            {
+                "cut_id": "cut_002",
+                "caption_ids": ["caption_0002", "caption_0003"],
+            },
+        ]
+    }
+    readback = {
+        "cue_count": 3,
+        "provider_event_count_in_range": 3,
+        "authority": {"display_cue_count": 3, "provider_event_count_in_range": 3},
+        "rolling_overlap_resolution": {
+            "cue_count": 3,
+            "provider_event_count_in_range": 3,
+        },
+        "items": [
+            {
+                "caption_id": "caption_0001",
+                "provider_event_id": "event_0001",
+                "output_start_seconds": 0.0,
+            },
+            {
+                "caption_id": "caption_0002",
+                "provider_event_id": "event_0002",
+                "output_start_seconds": 5.0,
+            },
+        ],
+    }
+
+    repaired_timeline, repaired_readback = MODULE.reconcile_successor_caption_contract(
+        timeline, readback, endpoint_seconds=10.0
+    )
+
+    assert repaired_timeline["cuts"][-1]["caption_ids"] == ["caption_0002"]
+    assert repaired_readback["cue_count"] == 2
+    assert repaired_readback["provider_event_count_in_range"] == 2
+    assert repaired_readback["authority"]["display_cue_count"] == 2
+    assert repaired_readback["rolling_overlap_resolution"]["cue_count"] == 2
+    assert repaired_readback["excluded_next_topic_event_id"] == "event_001641"

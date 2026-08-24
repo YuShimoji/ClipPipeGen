@@ -17,6 +17,14 @@ The exact old proof, failed inference, proposed rule correction, user-specific o
 reusable HOLD range, and resulting edit are connected in
 [`clip_real_decision_case_v1.json`](docs/output_layer/clip_real_decision_case_v1.json).
 
+The same exact 335.3-second candidate is now calibrated end-to-end in
+[`clip_full_video_editorial_calibration_v1.json`](docs/output_layer/clip_full_video_editorial_calibration_v1.json).
+It distinguishes eight meaningful navigation/decision units from the single actual edit,
+separates reusable Rules from case-specific judgments, removes eleven redundant item-level
+questions, and leaves one whole-candidate content judgment. Production-scale readiness is
+`PARTIAL`: one existing multi-cut artifact with real KEEP/DROP/HOLD decisions should be
+calibrated before starting another video. No new Choice or media was created.
+
 SH-05 benchmark portfolio note: the current finite output benchmark surface is
 15 families / 32 family-scoped candidate slots, materialized as 32 tracked
 review cards. Open [docs/benchmarks/index.html](docs/benchmarks/index.html).

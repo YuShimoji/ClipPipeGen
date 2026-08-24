@@ -1,0 +1,317 @@
+{
+  "schema_version": "clippipegen.full_video_editorial_calibration.v1",
+  "case_identity": "clip-wiki-selected-opening-full-video-calibration-v1",
+  "status": "CALIBRATED_PARTIAL_NOT_PRODUCTION_SCALE_READY",
+  "project": "ClipPipeGen",
+  "calibration_scope": {
+    "artifact_identity": "clip-wiki-selected-opening-current-basis-v1-001",
+    "source_identity": "youtube:1AcId5Yja10",
+    "source_sha256": "a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7",
+    "caption_sha256": "f58c248f23b29845a94ae01b789f122c8759687125375a2650cc7a8074107e4f",
+    "source_range_seconds": [2530.319, 2865.599],
+    "editorial_duration_seconds": 335.28,
+    "container_duration_seconds": 335.3,
+    "output_sha256": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951",
+    "output_bytes": 25852742,
+    "actual_edit_cut_count": 1,
+    "decision_unit_count": 8,
+    "basis": "exact retained media, exact source/caption hashes, timeline IR, caption readback, successor receipt, and the existing 2.841-second failure DecisionCase",
+    "not_claimed": [
+      "full-1x human content acceptance",
+      "rights approval",
+      "production acceptance",
+      "publication acceptance",
+      "production-scale readiness"
+    ]
+  },
+  "observed_measurements": {
+    "materialization_run_count": 1,
+    "endpoint_contract_repair_count": 1,
+    "render_corrective_retry_count": 0,
+    "recorded_materialization_elapsed_seconds": 23.982,
+    "used_source_seconds": 335.28,
+    "available_source_seconds": 5557.812245,
+    "source_use_ratio": 0.060326,
+    "current_decisions": {"KEEP": 8, "DROP": 0, "HOLD": 1},
+    "item_level_questions_eliminated": 11,
+    "current_user_choices_created": 0
+  },
+  "decision_units": [
+    {
+      "unit_id": "unit_001",
+      "timeline_partition": "cut_001",
+      "content_label": "エピソード欄へ移り、扱う話題を探し始める",
+      "decision": "KEEP",
+      "source_range_seconds": [2530.319, 2577.76],
+      "output_range_seconds": [0.0, 47.441],
+      "reason": "ユーザーが選んだ開始位置から、エピソード欄へ移る会話と対象探索の導入が連続しているため、current basisでは保持する。",
+      "evidence": {
+        "observed": [
+          "Choice Set 4 revision 2はsource 2530.319を開始位置として選択済み",
+          "timeline IRはsource gap 0で次unitへ接続",
+          "caption_0001からcaption_0014がこのunitへ対応"
+        ],
+        "inferred": ["この導入が全編のcontentとして最適かは未評価"],
+        "locators": ["package/successor_receipt.json#/decision_authority", "package/timeline_ir.json#/cuts/0", "package/caption_readback.json#/items"]
+      },
+      "applied_authority": "case-specific human opening selection",
+      "confidence": {"boundary": "high", "content_value": "medium"},
+      "uncertainty": "provider字幕に断片・誤認識があり、全編視聴によるcontent acceptanceは未実施。",
+      "resulting_edit": "output 0.000から開始。追加cutは置かない。",
+      "reusable_unselected_material": "2530.319より前はこのcalibrationの監査外であり、DROPとは扱わない。",
+      "neighbor_relation": "unit_002へsource omissionなしで連続"
+    },
+    {
+      "unit_id": "unit_002",
+      "timeline_partition": "cut_002",
+      "content_label": "一覧を眺め、対象エピソードを絞り込む",
+      "decision": "KEEP",
+      "source_range_seconds": [2577.76, 2620.88],
+      "output_range_seconds": [47.441, 90.561],
+      "reason": "一覧の説明から対象を見つけるまでが、後続の企画説明を理解するsetupとしてcurrent basisに含まれている。",
+      "evidence": {
+        "observed": ["timeline titleは『一覧から対象を選ぶ』", "caption_0015からcaption_0027が対応", "前後unitとsource timeが連続"],
+        "inferred": ["setupとしての必要量はhuman content reviewで未確定"],
+        "locators": ["package/timeline_ir.json#/cuts/1", "package/caption_readback.json#/items"]
+      },
+      "applied_rule": "continuous-context-preservation-v1",
+      "confidence": {"mapping": "high", "content_value": "medium"},
+      "uncertainty": "一覧探索の長さを短縮すべきかはexact evidenceだけでは決めない。",
+      "resulting_edit": "連続sourceをそのまま保持。",
+      "reusable_unselected_material": "unit内部のDROP/HOLD指定なし。",
+      "neighbor_relation": "unit_001とunit_003の間を連続接続"
+    },
+    {
+      "unit_id": "unit_003",
+      "timeline_partition": "cut_003",
+      "content_label": "『5年後に着火』の項目を開く",
+      "decision": "KEEP",
+      "source_range_seconds": [2620.88, 2658.119],
+      "output_range_seconds": [90.561, 127.8],
+      "reason": "選択対象を特定し、企画本文へ入る操作と会話をつなぐためcurrent basisでは保持する。",
+      "evidence": {
+        "observed": ["timeline titleは『5年後に着火を開く』", "caption_0028からcaption_0036が対応", "source gap 0"],
+        "inferred": ["項目を開く操作全体が最小必要量かは未評価"],
+        "locators": ["package/timeline_ir.json#/cuts/2", "package/caption_readback.json#/items"]
+      },
+      "applied_rule": "continuous-context-preservation-v1",
+      "confidence": {"mapping": "high", "content_value": "medium"},
+      "uncertainty": "画面操作と会話の重複量はfull-1x reviewなしでは短縮判断できない。",
+      "resulting_edit": "output 90.561–127.800を連続保持。",
+      "reusable_unselected_material": "unit内部のDROP/HOLD指定なし。",
+      "neighbor_relation": "setupから企画説明へ移る境界"
+    },
+    {
+      "unit_id": "unit_004",
+      "timeline_partition": "cut_004",
+      "content_label": "3535リツイート企画の条件を読む",
+      "decision": "KEEP",
+      "source_range_seconds": [2658.119, 2699.8],
+      "output_range_seconds": [127.8, 169.481],
+      "reason": "後で過去投稿が再浮上する理由を説明する中心情報としてcurrent basisに残す。",
+      "evidence": {
+        "observed": ["timeline titleは『3535リツイート企画を読む』", "caption_0037からcaption_0051が対応", "3535リツイート条件を示すprovider captionが存在"],
+        "inferred": ["この説明をcore情報として扱うのはcase-specific editorial judgment"],
+        "locators": ["package/timeline_ir.json#/cuts/3", "package/caption_readback.json#/items"]
+      },
+      "applied_judgment": "case-specific explanatory core",
+      "confidence": {"mapping": "high", "content_value": "medium"},
+      "uncertainty": "provider字幕だけでは話者・正確な文言・最適な説明密度を保証しない。",
+      "resulting_edit": "output 127.800–169.481を保持。",
+      "reusable_unselected_material": "unit内部のDROP/HOLD指定なし。",
+      "neighbor_relation": "setupの対象特定から過去と現在を結ぶ説明へ接続"
+    },
+    {
+      "unit_id": "unit_005",
+      "timeline_partition": "cut_005",
+      "content_label": "過去の企画が2024年に再浮上した経緯を読む",
+      "decision": "KEEP",
+      "source_range_seconds": [2699.8, 2739.28],
+      "output_range_seconds": [169.481, 208.961],
+      "reason": "過去投稿が現在の反応へつながる因果説明としてcurrent basisに含まれている。",
+      "evidence": {
+        "observed": ["timeline titleは『過去投稿が現在へ再浮上する』", "caption_0052からcaption_0062が対応", "前後が連続source"],
+        "inferred": ["過去から現在への因果説明として十分かはhuman content review待ち"],
+        "locators": ["package/timeline_ir.json#/cuts/4", "package/caption_readback.json#/items"]
+      },
+      "applied_judgment": "case-specific bridge from premise to present reaction",
+      "confidence": {"mapping": "high", "content_value": "medium"},
+      "uncertainty": "timeline自身がcausal_order_preserved=falseを記録しており、因果の完全性は未証明。",
+      "resulting_edit": "output 169.481–208.961を保持。",
+      "reusable_unselected_material": "unit内部のDROP/HOLD指定なし。",
+      "neighbor_relation": "企画条件を現在の投稿確認へつなぐ"
+    },
+    {
+      "unit_id": "unit_006",
+      "timeline_partition": "cut_006",
+      "content_label": "達成後の投稿を探して確認する",
+      "decision": "KEEP",
+      "source_range_seconds": [2739.28, 2764.76],
+      "output_range_seconds": [208.961, 234.441],
+      "reason": "説明から実際の投稿確認へ移る操作と反応をcurrent basisでは保持する。",
+      "evidence": {
+        "observed": ["timeline titleは『達成後の投稿を確認する』", "caption_0063からcaption_0071が対応", "音楽cueを含むがsource rangeは連続"],
+        "inferred": ["探索時間の全量が必要かはexact evidenceだけでは解決しない"],
+        "locators": ["package/timeline_ir.json#/cuts/5", "package/caption_readback.json#/items"]
+      },
+      "applied_rule": "continuous-context-preservation-v1",
+      "confidence": {"mapping": "high", "content_value": "medium-low"},
+      "uncertainty": "字幕誤認識が多く、視覚操作を含むためcaptionだけで冗長性を判定できない。",
+      "resulting_edit": "output 208.961–234.441を保持。",
+      "reusable_unselected_material": "unit内部のDROP/HOLD指定なし。",
+      "neighbor_relation": "説明からreaction payoffへ移る橋渡し"
+    },
+    {
+      "unit_id": "unit_007",
+      "timeline_partition": "cut_007",
+      "content_label": "当時の投稿へ現在から反応する",
+      "decision": "KEEP",
+      "source_range_seconds": [2764.76, 2812.28],
+      "output_range_seconds": [234.441, 281.961],
+      "reason": "企画説明に対する現在の反応がpayoffとしてcurrent basisに含まれている。",
+      "evidence": {
+        "observed": ["timeline titleは『当時の投稿へ現在から反応する』", "caption_0072からcaption_0083が対応", "source gap 0"],
+        "inferred": ["payoffとしての面白さ・十分さはcase-specificでhuman未判断"],
+        "locators": ["package/timeline_ir.json#/cuts/6", "package/caption_readback.json#/items"]
+      },
+      "applied_judgment": "case-specific reaction payoff",
+      "confidence": {"mapping": "high", "content_value": "medium-low"},
+      "uncertainty": "provider字幕の誤認識が目立ち、反応の意味をcaptionだけで確定しない。",
+      "resulting_edit": "output 234.441–281.961を保持。",
+      "reusable_unselected_material": "unit内部のDROP/HOLD指定なし。",
+      "neighbor_relation": "投稿確認を結末の会話へ接続"
+    },
+    {
+      "unit_id": "unit_008",
+      "timeline_partition": "cut_008",
+      "content_label": "反応を続け、次の話題へ入る直前で閉じる",
+      "decision": "KEEP",
+      "source_range_seconds": [2812.28, 2865.599],
+      "output_range_seconds": [281.961, 335.28],
+      "reason": "current candidate固有のhuman boundary authorityに従い、event_001639の表示終了までを保持し、次話題開始以後を混ぜない。",
+      "evidence": {
+        "observed": ["event_001639のnormalized display endは2865.599", "event_001641は同時刻に次話題として開始", "ユーザーはこのexact candidateの切り取り位置を妥当と明示"],
+        "inferred": ["raw provider duration末尾2868.440までが意味上必要という旧推論はcounter-evidenceで棄却"],
+        "locators": ["package/timeline_ir.json#/cuts/7", "package/caption_readback.json#/items", "docs/output_layer/clip_real_decision_case_v1.json"]
+      },
+      "applied_rule": "provider-rolling-overlap-not-semantic-boundary-v1",
+      "applied_authority": "Choice Set 6 exact-candidate human override",
+      "confidence": {"boundary": "high", "content_value": "medium-low"},
+      "uncertainty": "終端位置のauthorityはあるが、全編content acceptanceは別。",
+      "resulting_edit": "source 2865.599で閉じ、output 335.280、container 335.300。",
+      "reusable_unselected_material": "source 2865.599–2868.440の2.841秒をHOLD_REUSABLE_AS_NEXT_TOPIC_CONTEXTとして保持。",
+      "neighbor_relation": "次topicをcurrent candidateへ混入させず、後続contextとして分離"
+    }
+  ],
+  "reusable_rules": [
+    {
+      "rule_id": "continuous-context-preservation-v1",
+      "statement": "sourceを省略していないnavigation partitionを、実編集cutや独立した採否質問として数えない。",
+      "supporting_evidence": ["source gap 0", "source overlap 0", "actual edit cut 1", "navigation partition 8"],
+      "scope_boundary": "連続source rangeを意味単位で表示するケース。非連続編集や冗長部分の採否にはそのまま適用しない。",
+      "plausible_counterexamples": ["連続していても長い待機・重複・権利上除外すべき範囲がある", "視覚的操作だけで内容価値がない"],
+      "state": "validated",
+      "project_specific_origin": "ClipPipeGen timeline IRのcut_count 8とactual_edit_cut_count 1の差"
+    },
+    {
+      "rule_id": "provider-rolling-overlap-not-semantic-boundary-v1",
+      "statement": "provider字幕のraw duration重複だけでは編集区間を延長しない。表示時刻、実音声、話題境界を別証拠として扱う。",
+      "supporting_evidence": ["event_001639 raw end 2868.440", "normalized display end 2865.599", "event_001641 start 2865.599", "旧proofに次話題2.841秒が混入"],
+      "scope_boundary": "rolling/overlapping provider captions。字幕provider固有IDはshared grammarへ出さない。",
+      "plausible_counterexamples": ["独立した音声または映像証拠が前話題継続を示す", "次cueが同一発話の分割であることを別証拠が示す"],
+      "state": "proposed",
+      "project_specific_origin": "2.841-second STT rolling-overlap failure"
+    },
+    {
+      "rule_id": "evidence-first-question-emission-v1",
+      "statement": "Evidence、既存Rule、過去Human Overrideの順で解決し、いずれでも解けず結果を変える一つのcreative/semantic判断だけを質問候補にする。",
+      "supporting_evidence": ["openingはChoice 4で解決済み", "endpointはChoice 6固有overrideで解決済み", "8 partitionは1 continuous editなのでitem-level質問不要"],
+      "scope_boundary": "質問生成の前処理。human acceptanceやrights判断をAgentが代行する規則ではない。",
+      "plausible_counterexamples": ["証拠同士が矛盾する", "既存Ruleのscope外", "複数の独立creative intentがある"],
+      "state": "proposed",
+      "project_specific_origin": "same candidateでopening/endpoint/per-partition質問が重複し得たこと"
+    },
+    {
+      "rule_id": "retain-reusable-unselected-material-v1",
+      "statement": "current editから外した範囲を、根拠なく破棄せずDROPまたはHOLD_REUSABLEとしてexact locator付きで残す。",
+      "supporting_evidence": ["2865.599–2868.440は次topic contextとして再利用可能", "旧proofとcaption provenanceを履歴保持"],
+      "scope_boundary": "rights・privacy・安全上の削除義務がない内部editorial evidence。",
+      "plausible_counterexamples": ["保持自体が権利・privacy・storage policyに抵触する", "exact sourceが失われてlocatorだけになる"],
+      "state": "proposed",
+      "project_specific_origin": "current endpointから外れた2.841秒"
+    }
+  ],
+  "case_specific_judgments": [
+    {"identity": "opening-2530.319", "authority": "human-selected", "generalizable": false},
+    {"identity": "eight-units-currently-kept", "authority": "current technical basis, not eight human approvals", "generalizable": false},
+    {"identity": "endpoint-2865.599", "authority": "human accepted for this exact candidate", "generalizable": false}
+  ],
+  "question_granularity_audit": {
+    "eliminated": [
+      {"question": "opening A/Bを再度選ぶ", "reason": "Choice Set 4で選択済み"},
+      {"question": "2.841秒を残すか再度選ぶ", "reason": "exact candidate固有のHuman Overrideとcounter-evidenceで解決済み"},
+      {"question": "8 unitを個別にKEEP/DROPする", "count": 8, "reason": "8 unitはnavigation partitionで実編集cutは1。個別採否を捏造しない"},
+      {"question": "96 cueのtimingを人間に確認する", "reason": "technical mappingはdeterministic evidenceで判定し、creative acceptanceと分離"}
+    ],
+    "deferred": [
+      {"question": "335.3秒candidate全体をcontentとしてaccept/reviseする", "reason": "full-1x human reviewが必要"},
+      {"question": "rightsを承認する", "reason": "別authority"},
+      {"question": "productionへ進める", "reason": "別authority"},
+      {"question": "publicationする", "reason": "別authority"}
+    ],
+    "genuinely_requires_human_authority": [
+      {"question": "この335.3秒全体をcontentとして採用するか、どのbounded rangeを直すか", "emission_state": "not_issued_in_this_mission", "compression": "unit-level質問ではなくwhole-candidate一件"}
+    ],
+    "choice_created": false
+  },
+  "decision_observatory_audit": {
+    "current_basis": {"KEEP_units": 8, "DROP_ranges": 0, "HOLD_REUSABLE_ranges": 1},
+    "wording_boundary": "KEEPはcurrent editへの包含でありhuman acceptanceではない。",
+    "rule_frequency": {
+      "continuous-context-preservation-v1": 7,
+      "provider-rolling-overlap-not-semantic-boundary-v1": 1,
+      "case-specific-human-boundary-authority": 2
+    },
+    "weak_evidence_clusters": [
+      {"units": ["unit_001"], "reason": "導入字幕が断片的で、content量はfull-1x review待ち"},
+      {"units": ["unit_006", "unit_007", "unit_008"], "reason": "provider字幕誤認識が目立ち、視覚・音声の意味評価をcaptionだけで行えない"}
+    ],
+    "human_input_assessment": "unit-levelの追加判断は不要。whole-candidate content acceptanceだけが残る。",
+    "features_added": ["meaningful decision unit trace", "Ruleとcase-specific judgmentの分離", "question elimination/defer list", "production-scale scorecard"],
+    "features_skipped": ["new Board Choice", "new shared packet/schema", "new media derivative", "per-frame annotations"]
+  },
+  "trace_contract_observation": {
+    "classification": "LOCAL_REPAIR",
+    "active_artifact_impact": "timelineは97 caption IDsを参照するがcaption readbackの実itemsは96件で、caption_0097がdangling。media bytesとendpointは一致するが、caption-level mutual traceabilityは完全ではない。",
+    "evidence": {"timeline_caption_reference_count": 97, "caption_readback_item_count": 96, "dangling_caption_ids": ["caption_0097"]},
+    "repair": "current ignored packageはevidenceとして改変せず、successor builderがretained item setから全countとcaption_idsを再計算するようsourceを修復。",
+    "progress_effect": "calibrationは続行可能だが、production-scale traceabilityはPARTIAL。"
+  },
+  "cross_project_grammar": {
+    "shared_sequence": ["Segment", "Decision", "Reason", "Evidence", "Rule", "Override", "Result"],
+    "shared_fields": ["segment locator", "KEEP/DROP/HOLD", "observed vs inferred", "rule identity and state", "human override scope", "result mapping", "confidence", "limitations"],
+    "project_extension_boundary": "provider event IDs, subtitle normalization, candidate generator fields, ClipPipeGen cut IDs are stored only in projectEvidence and never required by shared grammar.",
+    "NLMYTGen_mapping_example": "Segment may be a script/scene/timeline range; Evidence may be source citation or YMM4 placement readback; provider caption fields are absent.",
+    "FastFictionFactory_mapping_example": "Segment may be a shot/beat/voice cue; Evidence may be storyboard/previs/timeline locator; ClipPipeGen caption mechanics are absent.",
+    "other_projects_modified": false
+  },
+  "production_scale_entry_conditions": {
+    "overall": "PARTIAL",
+    "recommendation": "RUN_ONE_MORE_CALIBRATION_BEFORE_PRODUCTION_SCALE",
+    "conditions": [
+      {"condition": "all major decisions in one video are explainable", "result": "PARTIAL", "evidence": "8 current KEEP units and endpoint HOLD are explained, but no actual internal DROP decision exists and content value is not full-1x accepted"},
+      {"condition": "repeated item-level Choices compress to rule-level handling", "result": "PASS", "evidence": "11 item-level/repeated questions eliminated; one whole-candidate review remains"},
+      {"condition": "Agent question-emission criteria are bounded", "result": "PARTIAL", "evidence": "criteria are explicit but have not yet been exercised on a mixed KEEP/DROP/HOLD edit"},
+      {"condition": "KEEP/DROP/HOLD and Resulting Edit are mutually traceable", "result": "PARTIAL", "evidence": "KEEP and endpoint HOLD trace; DROP absent; caption_0097 dangling reference remains in preserved package"},
+      {"condition": "reusable DROP/HOLD material is retained", "result": "PASS", "evidence": "2.841-second next-topic range is HOLD_REUSABLE and old proof/provenance remain"},
+      {"condition": "shared grammar transfers without project leakage", "result": "PARTIAL", "evidence": "generic boundary is defined but NLMYTGen/FastFictionFactory were not modified or executed"}
+    ],
+    "next_calibration_shape": "Use an already-existing exact multi-cut artifact that contains real KEEP, DROP, and HOLD decisions. Do not start a new individual video merely to satisfy the matrix."
+  },
+  "independent_architectural_stop": {
+    "identity": "youtube:Ocqg-RpQURY",
+    "range_seconds": [390, 585],
+    "status": "ARCHITECTURAL_STOP_EXACT_SOURCE_AND_RECEIPT_ABSENT",
+    "used_by_this_calibration": false
+  }
+}

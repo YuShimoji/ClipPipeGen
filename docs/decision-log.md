@@ -3,10 +3,29 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-08-24
+last_touched: 2026-08-25
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-08-25 — 335.3秒全体をDecisionCase校正し、production-scale移行をPARTIALで止める
+
+exact current candidateを8つのmeaningful decision unitへ分解した。8 unitはすべてcurrent edit内の
+KEEPだが、sourceは2530.319–2865.599の一続きで実編集cutは1件、内部7境界はnavigation partition
+である。したがって8件の個別Choiceを作らず、opening・endpoint・8件の採否・字幕timingの計11問を
+既存authority/evidence/ruleへ圧縮した。残るhuman判断はwhole-candidate content acceptance一件だけで、
+このMissionでは発行していない。
+
+reusable Ruleは、continuous partitionを編集cutと混同しない規則をvalidated、provider rolling overlapを
+semantic boundaryへ昇格しない規則、evidence-first question emission、unselected material保持をproposed
+として分離した。opening 2530.319、8 unitのcurrent KEEP、endpoint 2865.599はcase-specificで、shared
+grammarへprovider/event/candidate生成fieldを漏らさない。
+
+現行ignored packageはtimeline caption参照97件、caption readback items 96件で、`caption_0097`がdangling。
+MP4 SHA/size/duration/full decodeとendpoint evidenceは一致するためpackageを改変せず、builderがretained
+itemsからcountとcaption referenceを再計算するようLOCAL REPAIRした。DROPを含むactual editと他project
+transferが未実証なのでproduction-scale entryはPARTIAL。新規動画を始めず、既存exact multi-cut artifactで
+KEEP/DROP/HOLDが共存するもう一回のcalibrationを推奨する。
 
 ## 2026-08-24 — 2.841秒rolling overlapを実DecisionCase化し、Choice 6固有の意味権限を回収
 

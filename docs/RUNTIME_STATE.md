@@ -3,13 +3,13 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: WIKI_SELECTED_OPENING_SUCCESSOR_COMPLETE_CONTENT_REVIEW_PENDING_EP1_SOURCE_GATE_PARKED
-last_touched: 2026-08-24
-state_revision: wiki-selected-opening-current-basis-successor-2026-08-24
+health: WIKI_FULL_VIDEO_EDITORIAL_CALIBRATION_PARTIAL_EP1_SOURCE_GATE_PARKED
+last_touched: 2026-08-25
+state_revision: wiki-full-video-editorial-calibration-v1-2026-08-25
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: ED-13
-phase: wiki_selected_opening_successor_complete_content_review_pending
-canonical_status: selected_opening_consumed_provider_overlap_excised_internal_candidate_complete_ep1_exact_source_gate_parked
+phase: wiki_full_video_editorial_calibration_partial
+canonical_status: whole_candidate_decision_units_traced_question_granularity_compressed_one_more_calibration_required
 active_branch: codex/wiki-tensaku-longform-family-v1
 source_branch: codex/wiki-tensaku-longform-family-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
@@ -139,7 +139,7 @@ cover_review_status: null
 review_server_status: stopped_portable_loopback_launcher_available
 next_review_due: human_content_review_of_exact_selected_opening_successor
 next_review_type: one_complete_internal_candidate_content_review
-next_action: register_exact_successor_media_then_request_accept_or_revise_without_reopening_consumed_opening_choice
+next_action: run_one_more_existing_artifact_calibration_with_real_keep_drop_hold_before_production_scale
 wiki_content_reframe_work_order_id: CPG-WIKI-CONTENT-REFRAME-001
 wiki_content_reframe_artifact_id: wiki-tensaku-content-reframe-v1-001
 wiki_content_reframe_topology: thematic_episode_family
@@ -885,7 +885,7 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — ED-13 selected-opening successor
+## Current Capsule — ED-13 whole-video editorial calibration
 
 - active slice: `ED-13`
 - active artifact: `clip-wiki-selected-opening-current-basis-v1-001`
@@ -899,6 +899,9 @@ instructions.
 - output: 25,852,742 bytes、SHA
   `48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`
 - human review pending: `true`
+- calibration artifact:
+  `docs/output_layer/clip_full_video_editorial_calibration_v1.json`
+- calibration result: `PARTIAL / RUN_ONE_MORE_CALIBRATION_BEFORE_PRODUCTION_SCALE`
 
 Choice Set 4 revision 2でユーザーが選んだ「話題が切り替わるところから始める」は、既存親candidateの
 source 2530.319 / output 0.000と一致したため、その開始点を後続identityへ消費した。旧proofと4 MP4は
@@ -909,18 +912,31 @@ normalized subtitle mapではevent_001639表示は2865.599で閉じ、同時刻�
 新candidateはそこで閉じ、旧candidateに入っていた次話題2.841秒とその字幕だけを除外した。これは
 current-basis契約修復であり、人間content acceptance、rights、production、publicationではない。
 
+335.3秒全体を8つのmeaningful decision unitとして再構成した。8 unitはすべてcurrent edit内の
+`KEEP`だが、これは8件のhuman acceptanceではない。実編集cutは1で、7つの内部境界はsourceを
+省略しないnavigation partitionである。opening、endpoint、8件のitem-level採否、字幕timingの
+計11質問を既存authority/evidence/ruleへ圧縮し、残るhuman判断はwhole-candidateの
+`accept / bounded revise`一件だけとした。このMissionではChoiceを発行していない。
+
+現行packageにはcaption readback item 96件に対しtimeline caption参照97件、dangling
+`caption_0097`一件がある。MP4 hash、size、duration、full decode、endpointは一致するため現行
+ignored packageは証拠として改変しない。successor builderは今後retained item setからcountと
+参照を再計算するようlocal repair済み。DROPを含む実編集判断と他project transferは未実証なので、
+production-scale条件は`PARTIAL`である。
+
 Episode 1本線のCU-02 `youtube:Ocqg-RpQURY` 390–585秒exact media/receipt gateは別laneでpark。
 新candidateはretained sourceだけを使い、この欠落laneを代替・解除しない。
 
 ## Next Action
 
-- action: `register_exact_successor_media_then_request_accept_or_revise_without_reopening_consumed_opening_choice`
+- action: `run_one_more_existing_artifact_calibration_with_real_keep_drop_hold_before_production_scale`
 - first files: `README.md` → `docs/RUNTIME_STATE.md` → `docs/CURRENT_HANDOFF.md`
-- first checks: Git branch/HEAD/upstream parity、`git ls-files episodes`が0、successor receipt、
-  MP4 size/SHA、full decode、FrontierBoard resolver Range 206
-- human decision: exact successor一本を内容として採用するか、どこを直すか。消費済みopeningを再pollせず、
-  endpointのprovider内部語彙も選択肢へ戻さない。
-- conditional implementation: verdict後だけcontent successorまたはbounded revisionへ進む。
+- first checks: exact calibration JSON、validator、Git branch/HEAD/upstream parity、
+  `git ls-files episodes`が0、successor receipt、MP4 size/SHA
+- next calibration: 新規動画を開始せず、既存exact multi-cut artifactから実際のKEEP/DROP/HOLDが
+  共存する一件を選ぶ。provider名・event IDはproject evidenceに閉じる。
+- human decision: one more calibration後もEvidence/Ruleで解けない場合だけ、whole-candidate一件を
+  `accept / bounded revise`として提示する。unit-level Choiceは作らない。
 - independent EP1 unblock: `youtube:Ocqg-RpQURY` exact bytes + receipt供給後にpreflightを再実行する。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->

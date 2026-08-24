@@ -10,7 +10,6 @@ from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 
-
 ARTIFACT_ID = "clip-wiki-selected-opening-current-basis-v1-001"
 PARENT_ARTIFACT_ID = "clip-wiki-cu04-subtitle-timing-measurement-repair-v1-001"
 SOURCE_IDENTITY = "youtube:1AcId5Yja10"
@@ -93,9 +92,7 @@ def verify_inputs(repo_root: Path) -> dict:
     if parent_timeline["cuts"][0]["source_in_seconds"] != SOURCE_IN_SECONDS:
         raise RuntimeError("selected opening is not the current parent entry")
 
-    by_event = {
-        item["provider_event_id"]: item for item in caption_readback["items"]
-    }
+    by_event = {item["provider_event_id"]: item for item in caption_readback["items"]}
     closing = by_event.get("event_001639")
     next_topic = by_event.get("event_001641")
     if not closing or not next_topic:
@@ -155,14 +152,70 @@ def build_successor_timeline(parent_timeline: dict) -> dict:
     return timeline
 
 
+def reconcile_successor_caption_contract(
+    timeline: dict, caption_readback: dict, *, endpoint_seconds: float
+) -> tuple[dict, dict]:
+    """Return internally consistent timeline/caption readback copies.
+
+    The parent package can contain display-only or zero-duration cue references that
+    disappear when the successor endpoint is shortened.  A successor must derive all
+    cue counts and navigation references from the retained item set instead of carrying
+    the parent's aggregate counters forward.
+    """
+
+    reconciled_timeline = deepcopy(timeline)
+    reconciled_readback = deepcopy(caption_readback)
+    retained = [
+        item
+        for item in reconciled_readback["items"]
+        if item["output_start_seconds"] < endpoint_seconds
+    ]
+    retained_ids = {item["caption_id"] for item in retained}
+
+    reconciled_readback["items"] = retained
+    reconciled_readback["cue_count"] = len(retained)
+    reconciled_readback["provider_event_count_in_range"] = len(retained)
+    reconciled_readback["successor_endpoint_seconds"] = endpoint_seconds
+    reconciled_readback["excluded_next_topic_event_id"] = "event_001641"
+
+    authority = reconciled_readback.get("authority")
+    if isinstance(authority, dict):
+        authority["display_cue_count"] = len(retained)
+        authority["provider_event_count_in_range"] = len(retained)
+    resolution = reconciled_readback.get("rolling_overlap_resolution")
+    if isinstance(resolution, dict):
+        resolution["cue_count"] = len(retained)
+        resolution["provider_event_count_in_range"] = len(retained)
+
+    for cut in reconciled_timeline["cuts"]:
+        cut["caption_ids"] = [
+            caption_id
+            for caption_id in cut.get("caption_ids", [])
+            if caption_id in retained_ids
+        ]
+
+    referenced_ids = {
+        caption_id
+        for cut in reconciled_timeline["cuts"]
+        for caption_id in cut.get("caption_ids", [])
+    }
+    if referenced_ids != retained_ids:
+        missing = sorted(retained_ids - referenced_ids)
+        dangling = sorted(referenced_ids - retained_ids)
+        raise RuntimeError(
+            "successor caption contract mismatch: "
+            f"missing={missing} dangling={dangling}"
+        )
+    return reconciled_timeline, reconciled_readback
+
+
 def trimmed_ass(parent_ass: Path) -> str:
     lines = parent_ass.read_text(encoding="utf-8-sig").splitlines()
     retained = [
         line
         for line in lines
         if not (
-            line.startswith("Dialogue:")
-            and "うん他なんかないの乳首を国境は" in line
+            line.startswith("Dialogue:") and "うん他なんかないの乳首を国境は" in line
         )
     ]
     if len(retained) != len(lines) - 1:
@@ -197,9 +250,7 @@ def probe_media(ffprobe: str, video_path: Path) -> dict:
     return json.loads(completed.stdout)
 
 
-def build(
-    *, repo_root: Path, output_dir: Path, ffmpeg: str, ffprobe: str
-) -> dict:
+def build(*, repo_root: Path, output_dir: Path, ffmpeg: str, ffprobe: str) -> dict:
     evidence = verify_inputs(repo_root)
     if output_dir.exists():
         raise RuntimeError(f"successor output already exists: {output_dir}")
@@ -247,22 +298,17 @@ def build(
             )
 
         timeline = build_successor_timeline(evidence["parent_timeline"])
+        timeline, caption_readback = reconcile_successor_caption_contract(
+            timeline,
+            evidence["caption_readback"],
+            endpoint_seconds=OUTPUT_DURATION_SECONDS,
+        )
         write_json(output_dir / "timeline_ir.json", timeline)
         (output_dir / "editorial_subtitles.ass").write_text(
             trimmed_ass(evidence["parent"] / "editorial_subtitles.ass"),
             encoding="utf-8",
         )
 
-        retained_captions = [
-            item
-            for item in evidence["caption_readback"]["items"]
-            if item["output_start_seconds"] < OUTPUT_DURATION_SECONDS
-        ]
-        caption_readback = deepcopy(evidence["caption_readback"])
-        caption_readback["items"] = retained_captions
-        caption_readback["provider_event_count_in_range"] = len(retained_captions)
-        caption_readback["successor_endpoint_seconds"] = OUTPUT_DURATION_SECONDS
-        caption_readback["excluded_next_topic_event_id"] = "event_001641"
         write_json(output_dir / "caption_readback.json", caption_readback)
 
         elapsed = round(time.monotonic() - started, 3)
@@ -314,7 +360,7 @@ def build(
                 },
                 "subtitle_continuity": {
                     "status": "passed_deterministic_mapping_readback",
-                    "retained_cue_count": len(retained_captions),
+                    "retained_cue_count": len(caption_readback["items"]),
                     "last_retained_event_id": "event_001639",
                     "next_topic_event_excluded": "event_001641",
                 },

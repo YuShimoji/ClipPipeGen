@@ -3,13 +3,13 @@ id: project-context
 title: Project Context - ClipPipeGen
 type: durable_context
 status: current
-last_touched: 2026-08-24
+last_touched: 2026-08-25
 current_slice: ED-13
-phase: wiki_selected_opening_successor_decision_case_recorded
+phase: wiki_full_video_editorial_calibration_partial
 active_branch: codex/wiki-tensaku-longform-family-v1
-sync_observed_head: 5b02f8ddbba75d0a863de99416fdc1301e14ed2a
-upstream_parity: 0 0
-health: WIKI_SELECTED_OPENING_SUCCESSOR_DECISION_CASE_RECORDED_EP1_SOURCE_GATE_PARKED
+sync_observed_head: 51291010753563f038a5b4ae30d1b7c63dccf76d
+upstream_parity: 1 0 after_local_calibration_commit_push_count_zero
+health: WIKI_FULL_VIDEO_EDITORIAL_CALIBRATION_PARTIAL_EP1_SOURCE_GATE_PARKED
 ---
 
 # Project Context - ClipPipeGen
@@ -45,6 +45,19 @@ openingとendpointを一問へ束ねる旧decision requestへ戻さない。
 2865.599–2868.440秒を同じcaseで追える。後者はDROPではなく、次話題のcontextとして再利用可能な
 HOLDである。Rule修正はproposalで、ユーザーの明示文はChoice Set 6のcandidate固有権限にだけ使う。
 
+whole-video校正は
+[`clip_full_video_editorial_calibration_v1.json`](output_layer/clip_full_video_editorial_calibration_v1.json)
+に固定した。335.3秒を8 decision unitへ分け、各unitでKEEP理由、observed/inferred、Ruleまたは
+case-specific judgment、confidence、limitation、result、隣接関係を追える。8 unitはcurrent editへ
+含まれるという意味のKEEPであり、human acceptanceではない。source内の実編集cutは1、DROPは0、
+endpoint外2.841秒はHOLD_REUSABLEである。
+
+opening・endpoint・8件のunit採否・字幕timingの計11問は追加Choiceなしで既存authority/evidenceへ
+圧縮できた。残るhuman authorityはwhole-candidate content acceptance一件。現行packageの
+timeline 97 caption参照とreadback 96 itemsの差（dangling `caption_0097`）はLOCAL REPAIRとして
+記録し、packageは改変せずfuture builderだけを修復した。このためproduction-scale判定はPARTIALで、
+既存multi-cut artifactを使うもう一回の校正が必要である。
+
 ## 現在のgapと境界
 
 - opening 2530.319はユーザー選択済み。current candidateの切り取り位置も明示的に妥当とされたため、再pollしない。
@@ -66,7 +79,8 @@ HOLDである。Rule修正はproposalで、ユーザーの明示文はChoice Set
 
 ## 次の依存順
 
-`DecisionCase readback -> one complete candidate content review -> 必要ならbounded revision`
+`full-video calibration readback -> existing mixed KEEP/DROP/HOLD artifactで一回再校正 ->
+必要ならwhole-candidate content review一件`
 がcurrent laneの最短経路である。
 Episode 1本線は独立して`Ocqg-RpQURY exact bytes + receipt -> preflight rerun -> integrated render`。
 どちらからもrights、production、publicationを推定しない。
