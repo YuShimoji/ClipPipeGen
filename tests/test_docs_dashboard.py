@@ -1631,16 +1631,16 @@ def test_artifact_registry_records_wiki_turn_current_focus_and_historical_source
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "selected_opening_consumed_provider_overlap_excised_internal_candidate_complete_ep1_exact_source_gate_parked"
+        "calibrated_decisions_consumed_one_human_content_gate_production_authority_closed"
     )
     assert status["current_focus"]["review_status"] == (
         "INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING"
     )
     assert status["current_focus"]["decision_required"] == (
-        "human_content_review_of_selected_opening_successor"
+        "one_whole_candidate_accept_or_bounded_revision_queued_behind_existing_board_choice_7"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "human_content_review_of_exact_selected_opening_successor"
+        "after_choice_7_serialization"
     )
     assert status["current_focus"]["human_entrypoint"] == (
         "FrontierBoard successor review after portable media registration"
@@ -1651,7 +1651,7 @@ def test_artifact_registry_records_wiki_turn_current_focus_and_historical_source
     assert status["current_focus"]["machine_readback"] == (
         "package/successor_receipt.json"
     )
-    assert status["current_focus"]["remote_code_complete"] == "true"
+    assert status["current_focus"]["remote_code_complete"] == "false"
     assert status["current_focus"]["remote_decision_binding_available"] == "false"
     assert status["current_focus"]["local_artifact_available"] == "true"
     assert status["current_focus"]["portable_local_artifact_available"] == "true"

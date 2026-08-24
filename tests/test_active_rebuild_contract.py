@@ -228,7 +228,7 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_wiki_turn_and_keeps_s1_out13_and_out07_parked() -> (
+def test_runtime_points_to_connected_editorial_workflow_and_keeps_other_lanes_parked() -> (
     None
 ):
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
@@ -237,10 +237,10 @@ def test_runtime_points_to_wiki_turn_and_keeps_s1_out13_and_out07_parked() -> (
     assert (
         "parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in runtime
     )
-    assert "remote_code_complete: true" in runtime
+    assert "remote_code_complete: false" in runtime
     assert "remote_decision_binding_available: false" in runtime
     assert "active_branch: codex/wiki-tensaku-longform-family-v1" in runtime
-    assert "upstream_parity: 0 0" in runtime
+    assert "upstream_parity: 3 0 after_three_local_editorial_commits_push_count_zero" in runtime
     assert (
         "base_main_revision: "
         "bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471"
@@ -263,13 +263,13 @@ def test_runtime_points_to_wiki_turn_and_keeps_s1_out13_and_out07_parked() -> (
     )
     assert (
         "health: "
-        "WIKI_SELECTED_OPENING_SUCCESSOR_COMPLETE_CONTENT_REVIEW_PENDING_EP1_SOURCE_GATE_PARKED"
+        "EDITORIAL_CALIBRATION_PASS_335_WHOLE_REVIEW_READY_EP1_SOURCE_GATE_PARKED"
         in runtime
     )
     assert "current_slice: ED-13" in runtime
     assert (
-        "canonical_status: selected_opening_consumed_provider_overlap_excised_"
-        "internal_candidate_complete_ep1_exact_source_gate_parked"
+        "canonical_status: calibrated_decisions_consumed_one_human_content_gate_"
+        "production_authority_closed"
         in runtime
     )
     assert "active_artifact: clip-wiki-selected-opening-current-basis-v1-001" in runtime

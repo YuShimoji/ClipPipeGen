@@ -4,18 +4,18 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 ## Current Focus
 
-- feature: `ED-12`
-- artifact: `clip-s1-two-source-common-context-probe-v1-001`
-- state: `S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW`
+- feature: `ED-13`
+- artifact: `clip-wiki-selected-opening-current-basis-v1-001`
+- state: `EDITORIAL_CALIBRATION_PASS_335_WHOLE_REVIEW_READY_EP1_SOURCE_GATE_PARKED`
 
 - canonical main: `refs/heads/main`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `s1_s3_common_context_probe_ready_for_s4_human_review`
-- review status: `s4_human_review_pending`
-- remote code complete: `true`
+- canonical status: `calibrated_decisions_consumed_one_human_content_gate_production_authority_closed`
+- review status: `INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING`
+- remote code complete: `false`
 - local artifact available: `true`
-- portable local artifact available: `false`
-- portable entrypoint: `docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md`
+- portable local artifact available: `true`
+- portable entrypoint: `package/final_video.mp4 plus package/successor_receipt.json`
 - exact baseline available: ``
 - accepted baseline status: ``
 - cover direction review available: ``
@@ -23,24 +23,28 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - proxy classification: ``
 - last verified host local artifact available: `true`
 - last verified host entrypoint: `episodes/s1_two_source_common_context_probe_20260726/review/clip_s1_two_source_common_context_probe_v001/review/index.html`
-- pause reason: `s4_human_common_context_review_required`
+- pause reason: ``
 - accepted baseline recovery: ``
 - cover review status: ``
-- cross-machine resume: `tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_review_package_are_not`
+- cross-machine resume: `tracked_context_plus_separate_project_zip_required_for_review_media`
 - active rebuild contract: ``
-- evidence revision: `s1-two-source-common-context-probe-v1-exact-package`
+- evidence revision: `clip-wiki-selected-opening-current-basis-v1-001`
 - accepted baseline SHA-256: `b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
 - recommended cover: ``
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `s4_human_common_context_verdict`
-- next review: `s4_human_common_context_review`
+- decision required: `one_whole_candidate_accept_or_bounded_revision_queued_behind_existing_board_choice_7`
+- next review: `after_choice_7_serialization`
 
 ## Feature Table
 
 | id | title | status | health | progress_pct | active_artifact | next_action |
 |---|---|---|---|---:|---|---|
+| SH-10 | Private artifact transfer | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
+| SH-05 | Benchmark portfolio coverage readback | done | stable | 100 | clip-benchmark-portfolio-coverage-v1-001 | Keep as reference unless a regression or successor lane appears. |
+| ED-13 | Wiki添削 content-first thematic Episode family | in_progress | active | 70 | clip-wiki-tensaku-ep1-integrated-rough-cut-preflight-v1-001 | Finish current acceptance/readback and update artifact registry. |
+| ED-13a | Editorial calibration production-workflow connection | done | stable | 100 | clip-editorial-production-workflow-connection-v1-001 | Keep as reference unless a regression or successor lane appears. |
 | ED-12 | S1 two-source common-context probe | in_progress | active | 70 | clip-s1-two-source-common-context-probe-v1-001 | Finish current acceptance/readback and update artifact registry. |
 | ED-11 | OUT-12 one-command real long-form video automation | done | stable | 100 | clip-out12-one-command-real-video-automation-v1-001 | Keep as reference unless a regression or successor lane appears. |
 | CR-01 | rights_manifest schema v1 縺ｨ validator | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
@@ -152,12 +156,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | SH-03b | GUI Phase 2・・ction 蟆守ｷ夲ｼ・ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-03c | GUI Editing tab・・D-01 / ED-02a 遽・峇縺ｮ縺ｿ・・ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-04 | NLMYTGen GUI 縺ｸ縺ｮ騾・署譯磯°逕ｨ | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| SH-05 | local-preview-pack orchestrator | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-05b | local-preview-pack report QA / polish | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-05b+ | local-preview-pack visual evidence hardening | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-05c | GUI read-only preview pack ingest | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-05d | source-audio preview bridge | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-06 | Non-Repo Artifact Handoff | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| SH-07 | Operator Review UX contract | done | blocked | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| SH-08 | Human Preview Session Bundle | done | stable | 100 | clip-human-preview-session-001 | Keep as reference unless a regression or successor lane appears. |
-| SH-09 | Docs Wiki Dashboard v1.5 | done | stable | 100 | clip-docs-dashboard-001 | Keep as reference unless a regression or successor lane appears. |

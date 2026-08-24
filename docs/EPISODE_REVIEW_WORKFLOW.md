@@ -14,18 +14,33 @@ frame/contact sheet、artifact links、status readback、human decision question
 
 ## Current State
 
-The active review surface is `clip-human-preview-session-001`, with the ED-10g
-successor proof `clip-ed10g-noto-overlay-proof-001` available for `cut_002` /
-`cut_003`. The next human-facing question is no longer "which font candidate?"
-but whether the generated `noto_sans_jp_clean_outline` diagnostic overlay proof
-is acceptable as the current representative subtitle base.
+The active ED-13 content path is connected through
+`clip-editorial-production-workflow-connection-v1-001`. It consumes the exact mixed
+calibration and accepted OUT-13 authority, resolves 15 decision units without item-level
+questions, and routes the exact 335.3-second candidate to one serialized human content
+gate. Historical subtitle review surfaces remain evidence, not the current content gate.
 
 ## Next
 
-Use the review bundle or the direct subtitle overlay proof report before
-asking for production-adjacent acceptance. If the Noto proof is accepted, the
-next workflow bottleneck is either dense/stress coverage (`cut_008`) or a
-separate production render / rights limitation-lift slice.
+Re-run `build-editorial-production-workflow` to verify tracked authority. While Project 13
+Choice 7 remains the competing GUI-direction judgment, do not emit the 335.3-second content
+prompt. After serialization clears, ask only whether the exact candidate is accepted as a
+whole or needs a bounded exact-range revision. Production, rights, and publication remain
+separate gates.
+
+## Editorial Decision Compression Gate
+
+The Cut Review to Video Review Player transition now applies this order before asking a
+person: Evidence, validated Rule, accepted authority. The mixed calibration closes 7 KEEP,
+1 DROP, and 7 HOLD_REUSABLE units through those authorities. HOLD preserves optional source
+material and is not a request to restore it. If all three authorities fail and the result
+depends on creative intent, the workflow may stop for human judgment; otherwise it must not
+recreate per-item questions.
+
+The only current human packet is exact-media-bound and has two outcomes: accept the whole
+candidate for internal content/editorial use, or name exact source/output ranges and a content
+reason for bounded revision. Unaffected ranges retain their technical evidence. This gate
+does not authorize production, rights, publishing, upload, or another video.
 
 ## Constraints / Risks
 
@@ -52,7 +67,7 @@ ClipPipeGen は production/public acceptance を勝手に行わない。
 
 1. episode intake では、source media、rights readback、transcript source、cut/subtitle artifacts が揃っているかを Episode Dashboard で見る。
 2. Review Surface は `review_manifest.json` を読み、最初に playable MP4 または contact sheet を出す。HTML report の探索は第一操作にしない。
-3. Cut Review では、creator は keep / adjust / reject / blocked の判断だけを返す。Agent は採否や creative intent を自動補完しない。
+3. Cut Review では、Evidence / validated Rule / accepted authorityで閉じるitemをAgentが自律解決し、未解決creative authorityだけをcreatorへ渡す。既存authorityから採否を捏造せず、閉じたitemを再質問しない。
 4. Subtitle Design Review では、creator は diagnostic / representative の範囲で subtitle overlay evidence を進めるか、調整するかを答える。
 5. Export / Handoff では、NLE CSV や render identity を外部編集の材料として確認する。
 6. Acceptance Dashboard では、production render、production subtitle design、creative、rights、publishing、public use が false/pending のままかを確認し、次の limitation-lift slice を選ぶ。

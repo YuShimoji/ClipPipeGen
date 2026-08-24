@@ -8,6 +8,18 @@ last_touched: 2026-08-25
 
 # Decision Log - ClipPipeGen
 
+## 2026-08-25 — 校正済み判断をproduction review workflowへ接続する
+
+`build-editorial-production-workflow`を追加し、mixed calibration、OUT-13 exact acceptance receipt、
+335.3秒whole-content reviewの三入力をhash・identity・scopeで同時検証するtracked receiptを生成した。
+7 KEEP / 1 DROP / 7 HOLD_REUSABLEの15 unitはEvidence、validated Rule、accepted authorityの順で
+自律解決済みとして消費し、item-level質問を再発行しない。
+
+残るhuman judgmentはexact 335.3秒candidateのwhole acceptまたは理由付きexact-range bounded revision
+一件に限定した。Project 13 Choice 7は独立GUI方向判断として直列化し、競合中はcontent promptを
+発行しない。これはreview workflowの接続であり、production、rights、publication、Board mutation、
+新規media生成、新動画開始を許可しない。
+
 ## 2026-08-25 — 既存multi-cutでKEEP/DROP/HOLD校正を閉じ、production-scale entryをPASSにする
 
 新規動画を作らず、human-accepted exact OUT-13 Candidate 005を15 meaningful unitへ再読した。

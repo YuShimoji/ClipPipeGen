@@ -6,8 +6,8 @@ status: active
 health: EDITORIAL_CALIBRATION_PASS_335_WHOLE_REVIEW_READY_EP1_SOURCE_GATE_PARKED
 last_touched: 2026-08-25
 current_slice: ED-13
-phase: mixed_editorial_calibration_pass_whole_review_ready
-canonical_status: mixed_keep_drop_hold_explainable_production_scale_entry_separate_mission
+phase: editorial_production_workflow_connected_whole_review_serialized
+canonical_status: calibrated_decisions_consumed_one_human_content_gate_production_authority_closed
 active_branch: codex/wiki-tensaku-longform-family-v1
 upstream_branch: origin/codex/wiki-tensaku-longform-family-v1
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
@@ -15,18 +15,25 @@ latest_remote_main_revision: edb782acd1e06aca46e0a5d10295ea52f30ad5c7
 implementation_revision: c307089a592bb73b6539f801ff32b461dc4a424d
 sync_observed_head: 51291010753563f038a5b4ae30d1b7c63dccf76d
 current_head_locator: refs/heads/codex/wiki-tensaku-longform-family-v1
-remote_handoff_status: coherent_local_calibration_commit_not_pushed_by_mission
+remote_handoff_status: coherent_local_editorial_commits_not_pushed_by_mission
 local_calibration_commit_status: committed_locally_push_prohibited_by_mission
+local_workflow_connection_commit_status: committed_locally_push_prohibited_by_mission
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
 parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file
-current_title: Wiki full-video editorial calibration on selected-opening candidate
+current_title: Calibrated editorial production workflow for selected-opening candidate
 human_entrypoint: FrontierBoard successor review after portable media registration
 portable_entrypoint: package/final_video.mp4 plus package/successor_receipt.json
 review_open_command: open through the FrontierBoard video review resolver after registration
 review_server_restart_command: null
 machine_readback: package/successor_receipt.json
 decision_required: one_whole_candidate_accept_or_bounded_revision_queued_behind_existing_board_choice_7
+workflow_connection_artifact: docs/output_layer/clip_editorial_production_workflow_connection_v1.json
+workflow_connection_status: CONNECTED_READY_FOR_SERIALIZED_HUMAN_REVIEW
+workflow_resolved_decision_unit_count: 15
+workflow_reemitted_item_question_count: 0
+workflow_remaining_human_judgment_count: 1
+workflow_prompt_emission: WAIT_UNTIL_NO_COMPETING_CURRENT_CHOICE
 review_status: INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING
 remote_code_complete: false
 local_artifact_available: true
@@ -99,8 +106,8 @@ benchmark_rights_publication_approval_inferred: false
 package_validation_status: passed_exact_input_hashes_duration_full_decode_current_successor
 s1_review_http_status: 200
 s1_review_range_status: 206
-focused_test_status: mixed_and_whole_review_validator_passed_and_3_focused_tests_passed
-full_suite_status: not_run_scope_proportional
+focused_test_status: workflow_mixed_whole_and_builder_focused_tests_passed
+full_suite_status: passed_725_tests_2026_08_25
 human_review_pending: true
 full_video_calibration_artifact: docs/output_layer/clip_full_video_editorial_calibration_v1.json
 full_video_calibration_decision_unit_count: 8
@@ -370,10 +377,10 @@ out13_m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
 out13_m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 out13_public_use_verdict: deny
 out13_monetized_youtube_verdict: deny
-next_review_due: after_frontierboard_requirement_lifecycle_audit_and_existing_choice_serialization
-next_action: return_the_335s_accept_or_bounded_revision_judgment_only_when_no_competing_current_choice_exists
+next_review_due: after_choice_7_serialization
+next_action: hold_single_335s_content_gate_until_choice_7_serialization_clears
 current_handoff: docs/CURRENT_HANDOFF.md
-upstream_parity: 2 0 after_two_local_calibration_commits_push_count_zero
+upstream_parity: 3 0 after_three_local_editorial_commits_push_count_zero
 current_slice_push_status: local_commit_only_push_prohibited_by_mission
 source_of_truth: true
 owner_lane: editing_ep1_integrated_preflight
@@ -381,6 +388,20 @@ related: docs/RUNTIME_STATE.md, docs/content_planning/wiki_tensaku_ep1_integrate
 ---
 
 # Current Handoff - ClipPipeGen
+
+## 2026-08-25 production review workflow connection
+
+`build-editorial-production-workflow`が、mixed calibration、OUT-13 exact accepted authority、
+335.3秒whole-content reviewを一つのdeterministic receiptへ接続した。7 KEEP / 1 DROP /
+7 HOLD_REUSABLEの15 unitはEvidence、validated Rule、accepted authorityで解決済みとして消費し、
+item-level質問を0件のまま保つ。入力hash・acceptance scope・closed production/rights/publication gateが
+崩れた場合はfail-closedする。
+
+残るhuman content gateはexact SHA
+`48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`の335.3秒candidate一件だけ。
+結果はwhole-candidate internal content accept、または理由付きexact source/output range bounded revisionの
+二経路に限定する。Project 13 Choice 7は別のGUI方向判断なので、競合がなくなるまでcontent promptを
+発行しない。Board、media、production、rights、publicationは変更していない。
 
 ## 2026-08-24 real DecisionCase and Choice 6 authority recovery
 

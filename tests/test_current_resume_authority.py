@@ -178,17 +178,17 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "artifact_package_tree_digest_sha256": "null_not_transport_sealed",
         "artifact_manifest_self_sha256": "null_successor_receipt_is_current_machine_readback",
         "package_validation_status": "passed_exact_input_hashes_duration_full_decode_current_successor",
-        "full_suite_status": "not_run_focused_44_passed",
+        "full_suite_status": "passed_725_tests_2026_08_25",
         "human_review_pending": "true",
         "rights_approval": "readback_unresolved",
         "production_acceptance": "false",
         "public_use": "false",
         "monetized_use": "false",
         "upload_attempted": "false",
-        "upstream_parity": "0 0 after normal push and remote SHA readback of current handoff revision",
-        "remote_code_complete": "true",
-        "decision_required": "human_content_review_of_selected_opening_successor",
-        "next_review_due": "human_content_review_of_exact_selected_opening_successor",
+        "upstream_parity": "3 0 after_three_local_editorial_commits_push_count_zero",
+        "remote_code_complete": "false",
+        "decision_required": "one_whole_candidate_accept_or_bounded_revision_queued_behind_existing_board_choice_7",
+        "next_review_due": "after_choice_7_serialization",
     }
     for field, expected in expected_runtime_values.items():
         if runtime.get(field, "") != expected:
@@ -221,7 +221,7 @@ def test_current_resume_surfaces_have_one_semantically_aligned_live_authority() 
     assert _authority_errors(runtime, handoff) == []
 
 
-def test_current_resume_rejects_stale_local_only_state() -> None:
+def test_current_resume_rejects_mismatched_local_state() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8")
     stale_runtime = (
@@ -230,10 +230,14 @@ def test_current_resume_rejects_stale_local_only_state() -> None:
             "active_branch: codex/stale-wiki-turn",
             1,
         )
-        .replace("upstream_parity: 0 0", "upstream_parity: 1 0", 1)
         .replace(
-            "remote_code_complete: true",
+            "upstream_parity: 3 0 after_three_local_editorial_commits_push_count_zero",
+            "upstream_parity: 1 0 stale_local_state",
+            1,
+        )
+        .replace(
             "remote_code_complete: false",
+            "remote_code_complete: true",
             1,
         )
     )

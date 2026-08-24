@@ -34,6 +34,14 @@ rights/publication authority. The 335.3-second candidate still has exactly one s
 whole-content `accept / bounded revision` judgment, recorded without creating a Board
 Choice in [`clip_335s_whole_content_review_v1.json`](docs/output_layer/clip_335s_whole_content_review_v1.json).
 
+The calibration is now connected to the production review workflow through
+`build-editorial-production-workflow`. Its deterministic receipt verifies the mixed
+calibration, the exact OUT-13 accepted authority, and the 335.3-second whole-review packet
+before resolving all 15 item units without re-emitting questions. The remaining content
+gate stays serialized behind the independent GUI-direction Choice 7 and permits only
+whole-candidate acceptance or an exact-range bounded revision. No production, rights,
+publication, media, or FrontierBoard authority is created by this connection.
+
 SH-05 benchmark portfolio note: the current finite output benchmark surface is
 15 families / 32 family-scoped candidate slots, materialized as 32 tracked
 review cards. Open [docs/benchmarks/index.html](docs/benchmarks/index.html).

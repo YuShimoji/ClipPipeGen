@@ -35,6 +35,21 @@ for the supporting regenerated ED-10l real-font comparison, use
 the reviewed ED-10k BIZ proof is now a reference entry, not the current proof
 opened by the root launcher.
 
+## `clip-editorial-production-workflow-connection-v1-001`
+
+| Field | Value |
+|---|---|
+| purpose | Consume calibrated editorial authority in the current production review workflow without recreating 15 item-level questions. |
+| artifact class | Tracked deterministic workflow receipt; no media bytes and no Board mutation. |
+| repo_relative_path | `docs/output_layer/clip_editorial_production_workflow_connection_v1.json` |
+| builder | `uvx python -m src.cli.main build-editorial-production-workflow --format json` |
+| inputs | Exact mixed calibration, OUT-13 human acceptance receipt, and 335.3-second whole-content review packet, each bound by SHA-256 and identity/scope validation. |
+| autonomous result | 15 units resolved: KEEP 7 / DROP 1 / HOLD_REUSABLE 7; item-level questions re-emitted 0. |
+| remaining human gate | One exact-media judgment: accept the whole 335.3-second candidate or identify exact source/output ranges for bounded revision. |
+| serialization | Project 13 Choice 7 remains an independent GUI-direction judgment; content prompt emission waits until no competing current Choice exists. |
+| boundaries | Production, rights, publication, upload, next-video start, media generation, and FrontierBoard mutation remain false/not performed. |
+| validation | `tests/test_editorial_production_workflow.py`, `tests/test_editorial_calibration_sequence.py`, and exact package validators. |
+
 ## `clip-wiki-selected-opening-current-basis-v1-001`
 
 | Field | Value |

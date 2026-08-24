@@ -1,0 +1,111 @@
+{
+  "schema_version": "clippipegen.editorial_production_workflow.v1",
+  "requirement_id": "CLIP-PRODUCTION-WORKFLOW-CONNECTION-20260825-001",
+  "artifact_id": "clip-editorial-production-workflow-connection-v1-001",
+  "status": "CONNECTED_READY_FOR_SERIALIZED_HUMAN_REVIEW",
+  "material_change": "The production review workflow now consumes calibrated decision authority instead of regenerating fifteen item-level questions.",
+  "inputs": {
+    "mixed_calibration": {
+      "path": "docs/output_layer/clip_mixed_editorial_calibration_v1.json",
+      "sha256": "cf311e8edacb383b6abb9487b45b1033ae816151a8e356115e2712a46a599cf8",
+      "case_identity": "clip-out13-candidate005-mixed-editorial-calibration-v1"
+    },
+    "accepted_authority": {
+      "path": "docs/output_layer/out13_human_acceptance_receipt.json",
+      "sha256": "881036c3b90303d0147223a974ebf9e8e7f471d3d9155f9fc11279c72d733a95",
+      "artifact_id": "clip-out13-editorial-video-candidate-v1-005",
+      "scope": "internal_full_view_editorial_visual_review"
+    },
+    "whole_content_review": {
+      "path": "docs/output_layer/clip_335s_whole_content_review_v1.json",
+      "sha256": "f2e02c0b4e7fa9e61424cb720b4b347db7c30d8a8033d92ce6b71671aedce784",
+      "review_identity": "clip-wiki-selected-opening-335s-whole-content-review-v1",
+      "media_sha256": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951"
+    }
+  },
+  "ready_conditions": [
+    {
+      "condition": "mixed_keep_drop_hold_calibration",
+      "result": "PASS"
+    },
+    {
+      "condition": "accepted_exact_authority_hash_and_scope",
+      "result": "PASS"
+    },
+    {
+      "condition": "fifteen_item_questions_eliminated",
+      "result": "PASS"
+    },
+    {
+      "condition": "single_whole_or_bounded_revision_gate",
+      "result": "PASS"
+    },
+    {
+      "condition": "workflow_builder_performed_no_media_or_frontierboard_mutation",
+      "result": "PASS"
+    }
+  ],
+  "autonomous_resolution": {
+    "precedence": [
+      "Evidence",
+      "validated Rule",
+      "accepted authority"
+    ],
+    "decision_units_resolved": 15,
+    "decision_counts": {
+      "KEEP": 7,
+      "DROP": 1,
+      "HOLD_REUSABLE": 7
+    },
+    "item_level_questions_reemitted": 0,
+    "policy": "ask only when all three authorities fail and creative authority changes the result"
+  },
+  "human_judgment": {
+    "count": 1,
+    "artifact_id": "clip-wiki-selected-opening-current-basis-v1-001",
+    "media": {
+      "sha256": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951",
+      "byte_size": 25852742,
+      "editorial_duration_seconds": 335.28,
+      "container_duration_seconds": 335.3,
+      "source_range_seconds": [
+        2530.319,
+        2865.599
+      ]
+    },
+    "question": "Is the exact 335.3-second candidate acceptable as a whole, or does one bounded range need revision?",
+    "allowed_outcomes": [
+      {
+        "id": "accept_whole_candidate",
+        "meaning": "Accept this exact media only for internal content/editorial use."
+      },
+      {
+        "id": "bounded_revision",
+        "meaning": "Identify one or more exact source/output ranges and the content reason; unaffected ranges retain their technical evidence."
+      }
+    ],
+    "item_level_fallback_allowed": false
+  },
+  "choice_serialization": {
+    "tracked_existing_choice": "Project13_ChoiceSet7_revision1",
+    "relationship": "independent_gui_direction_not_335s_content_judgment",
+    "new_choice_created": false,
+    "prompt_emission": "WAIT_UNTIL_NO_COMPETING_CURRENT_CHOICE"
+  },
+  "workflow_connection": {
+    "entry": "Episode Review Workflow / Cut Review to Video Review Player",
+    "input_contract": "calibrated trace plus accepted exact authority",
+    "output_contract": "one whole-candidate accept or exact-range bounded revision judgment",
+    "on_accept": "record exact-media internal content/editorial acceptance only",
+    "on_bounded_revision": "reopen only named ranges and causally affected dimensions"
+  },
+  "closed_boundaries": {
+    "next_video_started": false,
+    "new_media_generated": false,
+    "production_acceptance": false,
+    "rights_approval": false,
+    "publication_acceptance": false,
+    "frontierboard_mutated": false,
+    "remote_seal": "NOT_PERFORMED"
+  }
+}

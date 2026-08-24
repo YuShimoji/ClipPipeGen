@@ -5,10 +5,10 @@ type: durable_context
 status: current
 last_touched: 2026-08-25
 current_slice: ED-13
-phase: mixed_editorial_calibration_pass_whole_review_ready
+phase: editorial_production_workflow_connected_whole_review_serialized
 active_branch: codex/wiki-tensaku-longform-family-v1
 sync_observed_head: 51291010753563f038a5b4ae30d1b7c63dccf76d
-upstream_parity: 2 0 after_two_local_calibration_commits_push_count_zero
+upstream_parity: 3 0 after_three_local_editorial_commits_push_count_zero
 health: EDITORIAL_CALIBRATION_PASS_335_WHOLE_REVIEW_READY_EP1_SOURCE_GATE_PARKED
 ---
 
@@ -27,6 +27,11 @@ case-specific判断、result mapping、限界へ接続され、15件のitem-leve
 candidateは技術・構造判断を解消済みで、残るcreative authorityはwhole-candidateの
 `accept / bounded revision`一件だけである。FrontierBoard Project 13にはGUI方向Choice 7が
 すでにopenのため、競合Choiceは作らずreview readinessをtracked artifactへ記録した。
+
+`build-editorial-production-workflow`はこの校正を現在のEpisode Review Workflowへ接続する。
+mixed calibration、exact accepted authority、335.3秒whole-review packetのhashとscopeを同時に検証し、
+15件のitem questionを0のまま消費する。Choice 7が競合中はpromptを出さず、直列化後も返すのは
+whole-candidate acceptまたは理由付きexact-range bounded revisionの一件だけである。
 
 ## 現在の軸
 
@@ -69,8 +74,8 @@ endpoint外2.841秒はHOLD_REUSABLEである。
 opening・endpoint・8件のunit採否・字幕timingの計11問は追加Choiceなしで既存authority/evidenceへ
 圧縮できた。残るhuman authorityはwhole-candidate content acceptance一件。現行packageの
 timeline 97 caption参照とreadback 96 itemsの差（dangling `caption_0097`）はLOCAL REPAIRとして
-記録し、packageは改変せずfuture builderだけを修復した。このためproduction-scale判定はPARTIALで、
-既存multi-cut artifactを使うもう一回の校正が必要である。
+記録し、packageは改変せずfuture builderだけを修復した。既存OUT-13 multi-cut artifactで追加校正を
+完了したためdecision-system判定はPASSへ進み、production workflow receiptへ接続済みである。
 
 ## 現在のgapと境界
 
@@ -93,8 +98,7 @@ timeline 97 caption参照とreadback 96 itemsの差（dangling `caption_0097`）
 
 ## 次の依存順
 
-`full-video calibration readback -> existing mixed KEEP/DROP/HOLD artifactで一回再校正 ->
-必要ならwhole-candidate content review一件`
+`workflow receipt再検証 -> Choice 7との直列化 -> whole-candidate acceptまたはexact-range bounded revision一件`
 がcurrent laneの最短経路である。
 Episode 1本線は独立して`Ocqg-RpQURY exact bytes + receipt -> preflight rerun -> integrated render`。
 どちらからもrights、production、publicationを推定しない。
