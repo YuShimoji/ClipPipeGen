@@ -3,9 +3,9 @@ id: project-context
 title: Project Context - ClipPipeGen
 type: durable_context
 status: current
-last_touched: 2026-08-25
+last_touched: 2026-08-30
 current_slice: ED-13
-phase: editorial_production_workflow_connected_whole_review_serialized
+phase: editorial_production_workflow_current_basis_adopted
 active_branch: codex/wiki-tensaku-longform-family-v1
 sync_observed_head: 51291010753563f038a5b4ae30d1b7c63dccf76d
 upstream_parity: 3 0 after_three_local_editorial_commits_push_count_zero
@@ -13,6 +13,18 @@ health: EDITORIAL_CALIBRATION_PASS_335_WHOLE_REVIEW_READY_EP1_SOURCE_GATE_PARKED
 ---
 
 # Project Context - ClipPipeGen
+
+## 2026-08-30 current 335.3秒basis adoption
+
+ユーザー明示文「修正後の終端artifactを現行基準として採用する判断でよい」を、exact current
+artifact `clip-wiki-selected-opening-current-basis-v1-001`とSHA
+`48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`だけへbindした。
+Project 13 Choice Set 7 revision 2 / option 18 / selection 5は解決済み、`awaitingUser=0`である。
+
+append-only receipt `docs/output_layer/clip_335s_current_basis_adoption_v1.json`をworkflow builderが
+検証し、15 resolved unit、item question 0を維持したままremaining human judgmentを0へ進める。
+この採用はinternal content/editorial current basisに限り、一般creative Rule、別artifact、rights、
+production、delivery、publication、monetization、uploadへ波及しない。
 
 ## 2026-08-25 mixed editorial calibration PASS
 
@@ -98,7 +110,7 @@ timeline 97 caption参照とreadback 96 itemsの差（dangling `caption_0097`）
 
 ## 次の依存順
 
-`workflow receipt再検証 -> Choice 7との直列化 -> whole-candidate acceptまたはexact-range bounded revision一件`
-がcurrent laneの最短経路である。
+`workflow receipt再検証 -> current basis保持`がcurrent laneの最短経路である。新しいbounded revisionが
+明示された場合だけ、そのexact rangeと理由を別権限として扱う。
 Episode 1本線は独立して`Ocqg-RpQURY exact bytes + receipt -> preflight rerun -> integrated render`。
 どちらからもrights、production、publicationを推定しない。

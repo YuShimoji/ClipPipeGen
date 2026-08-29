@@ -2,8 +2,8 @@
   "schema_version": "clippipegen.editorial_production_workflow.v1",
   "requirement_id": "CLIP-PRODUCTION-WORKFLOW-CONNECTION-20260825-001",
   "artifact_id": "clip-editorial-production-workflow-connection-v1-001",
-  "status": "CONNECTED_READY_FOR_SERIALIZED_HUMAN_REVIEW",
-  "material_change": "The production review workflow now consumes calibrated decision authority instead of regenerating fifteen item-level questions.",
+  "status": "CONNECTED_CURRENT_BASIS_ADOPTED",
+  "material_change": "The production review workflow consumes the exact user current-basis adoption without regenerating fifteen item-level questions.",
   "inputs": {
     "mixed_calibration": {
       "path": "docs/output_layer/clip_mixed_editorial_calibration_v1.json",
@@ -21,6 +21,13 @@
       "sha256": "f2e02c0b4e7fa9e61424cb720b4b347db7c30d8a8033d92ce6b71671aedce784",
       "review_identity": "clip-wiki-selected-opening-335s-whole-content-review-v1",
       "media_sha256": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951"
+    },
+    "current_basis_adoption": {
+      "path": "docs/output_layer/clip_335s_current_basis_adoption_v1.json",
+      "sha256": "2055c60937a8ddb1bdc7d9f5862aed280d5f83688bfb7139cabb569f7b9953ce",
+      "receipt_id": "clip-335s-current-basis-adoption-v1-001",
+      "selected_outcome": "accept_whole_candidate",
+      "scope": "exact_artifact_internal_content_editorial_current_basis_only"
     }
   },
   "ready_conditions": [
@@ -38,6 +45,14 @@
     },
     {
       "condition": "single_whole_or_bounded_revision_gate",
+      "result": "PASS"
+    },
+    {
+      "condition": "exact_current_basis_adoption_bound",
+      "result": "PASS"
+    },
+    {
+      "condition": "choice_7_resolved_and_awaiting_user_zero",
       "result": "PASS"
     },
     {
@@ -62,6 +77,10 @@
   },
   "human_judgment": {
     "count": 1,
+    "count_meaning": "original_compressed_gate_count",
+    "remaining_count": 0,
+    "status": "RESOLVED_ACCEPT_WHOLE_CANDIDATE",
+    "selected_outcome": "accept_whole_candidate",
     "artifact_id": "clip-wiki-selected-opening-current-basis-v1-001",
     "media": {
       "sha256": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951",
@@ -73,7 +92,7 @@
         2865.599
       ]
     },
-    "question": "Is the exact 335.3-second candidate acceptable as a whole, or does one bounded range need revision?",
+    "original_question": "Is the exact 335.3-second candidate acceptable as a whole, or does one bounded range need revision?",
     "allowed_outcomes": [
       {
         "id": "accept_whole_candidate",
@@ -84,27 +103,38 @@
         "meaning": "Identify one or more exact source/output ranges and the content reason; unaffected ranges retain their technical evidence."
       }
     ],
-    "item_level_fallback_allowed": false
+    "item_level_fallback_allowed": false,
+    "authority_receipt": {
+      "path": "docs/output_layer/clip_335s_current_basis_adoption_v1.json",
+      "sha256": "2055c60937a8ddb1bdc7d9f5862aed280d5f83688bfb7139cabb569f7b9953ce"
+    }
   },
   "choice_serialization": {
-    "tracked_existing_choice": "Project13_ChoiceSet7_revision1",
+    "tracked_existing_choice": "Project13_ChoiceSet7_revision2",
+    "option_id": 18,
+    "selection_id": 5,
+    "status": "RESOLVED_SELECTED",
     "relationship": "independent_gui_direction_not_335s_content_judgment",
     "new_choice_created": false,
-    "prompt_emission": "WAIT_UNTIL_NO_COMPETING_CURRENT_CHOICE"
+    "prompt_emission": "NONE_ALREADY_RESOLVED"
   },
   "workflow_connection": {
     "entry": "Episode Review Workflow / Cut Review to Video Review Player",
     "input_contract": "calibrated trace plus accepted exact authority",
-    "output_contract": "one whole-candidate accept or exact-range bounded revision judgment",
-    "on_accept": "record exact-media internal content/editorial acceptance only",
-    "on_bounded_revision": "reopen only named ranges and causally affected dimensions"
+    "output_contract": "exact current-basis internal content/editorial adoption receipt",
+    "on_accept": "consume the bound exact-media current-basis adoption",
+    "on_bounded_revision": "reopen only named ranges and causally affected dimensions",
+    "current_state": "CURRENT_BASIS_ADOPTED_NO_HUMAN_PROMPT_PENDING"
   },
   "closed_boundaries": {
     "next_video_started": false,
     "new_media_generated": false,
     "production_acceptance": false,
     "rights_approval": false,
+    "delivery_acceptance": false,
     "publication_acceptance": false,
+    "monetization": false,
+    "upload_attempted": false,
     "frontierboard_mutated": false,
     "remote_seal": "NOT_PERFORMED"
   }

@@ -3,11 +3,11 @@ id: current-handoff
 title: Current Handoff - ClipPipeGen
 type: handoff
 status: active
-health: EDITORIAL_CALIBRATION_PASS_335_PROJECT_REVIEW_READY_EP1_SOURCE_GATE_PARKED
-last_touched: 2026-08-25
+health: EDITORIAL_CALIBRATION_PASS_335_CURRENT_BASIS_ADOPTED_EP1_SOURCE_GATE_PARKED
+last_touched: 2026-08-30
 current_slice: ED-13
-phase: project_cockpit_exact_artifact_review_ready
-canonical_status: exact_artifact_openability_and_project_review_route_established_human_content_gate_pending
+phase: exact_artifact_current_basis_adopted
+canonical_status: exact_artifact_internal_content_editorial_current_basis_adopted_no_human_prompt_pending
 active_branch: codex/wiki-tensaku-longform-family-v1
 upstream_branch: origin/codex/wiki-tensaku-longform-family-v1
 base_main_revision: bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471
@@ -21,19 +21,20 @@ local_workflow_connection_commit_status: committed_locally_push_prohibited_by_mi
 parallel_remote_review_branch: origin/codex/out14-editorial-presentation-v3
 parallel_remote_review_revision: 06975b0e5edab2faed585fd7f5e82d9c699ec235
 remote_resume_contract: fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file
-current_title: Project Cockpit review-ready selected-opening candidate
-human_entrypoint: project-local Project Cockpit after independent Choice 7 serialization clears
+current_title: Selected-opening exact artifact current basis adopted
+human_entrypoint: none_current_basis_decision_already_bound
 portable_entrypoint: package/final_video.mp4 plus package/successor_receipt.json
 review_open_command: npm run cockpit
 review_server_restart_command: uvx python -m src.cli.main serve-project-cockpit --cockpit-port 8061 --review-port 8060
 machine_readback: package/successor_receipt.json
-decision_required: one_whole_candidate_accept_or_bounded_revision_queued_behind_existing_board_choice_7
+decision_required: none_for_current_335s_basis
 workflow_connection_artifact: docs/output_layer/clip_editorial_production_workflow_connection_v1.json
-workflow_connection_status: CONNECTED_READY_FOR_SERIALIZED_HUMAN_REVIEW
+workflow_connection_status: CONNECTED_CURRENT_BASIS_ADOPTED
 workflow_resolved_decision_unit_count: 15
 workflow_reemitted_item_question_count: 0
-workflow_remaining_human_judgment_count: 1
-workflow_prompt_emission: WAIT_UNTIL_NO_COMPETING_CURRENT_CHOICE
+workflow_remaining_human_judgment_count: 0
+workflow_prompt_emission: NONE_ALREADY_RESOLVED
+current_basis_adoption_receipt: docs/output_layer/clip_335s_current_basis_adoption_v1.json
 project_cockpit_artifact: docs/output_layer/clip_project_cockpit_v1.json
 project_cockpit_state_receipt: episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/review/cockpit_review_state_v1.json
 project_cockpit_state: REVIEW_READY
@@ -41,14 +42,14 @@ project_cockpit_transition_meaning: exact_artifact_openability_and_project_owned
 project_cockpit_actual_playback_seconds_observed_minimum: 17.28
 project_cockpit_review_route_range_readback: HTTP_206_32_BYTES
 project_cockpit_console_errors_or_warnings: 0
-review_status: REVIEW_READY_EXACT_ARTIFACT_OPENABLE_HUMAN_CONTENT_JUDGMENT_PENDING
+review_status: ACCEPTED_EXACT_ARTIFACT_INTERNAL_CONTENT_EDITORIAL_CURRENT_BASIS_ONLY
 remote_code_complete: false
 local_artifact_available: true
 local_artifact_role: ignored_selected_opening_successor_internal_candidate
 portable_local_artifact_available: true
 cross_machine_resume_class: tracked_context_plus_separate_project_zip_required_for_review_media
 active_artifact: clip-wiki-selected-opening-current-basis-v1-001
-active_artifact_state: REVIEW_READY_EXACT_ARTIFACT_OPENABLE_HUMAN_CONTENT_JUDGMENT_PENDING
+active_artifact_state: ACCEPTED_EXACT_ARTIFACT_INTERNAL_CONTENT_EDITORIAL_CURRENT_BASIS_ONLY
 active_artifact_repo_relative_path: episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/package
 active_artifact_manifest_sha256: null_successor_receipt_and_exact_media_hash_are_current_identity
 active_artifact_manifest_payload_count: 7
@@ -133,8 +134,8 @@ mixed_editorial_calibration_hold_reusable_count: 7
 mixed_editorial_calibration_eliminated_question_count: 15
 mixed_editorial_calibration_production_scale_result: PASS
 whole_content_review_artifact: docs/output_layer/clip_335s_whole_content_review_v1.json
-whole_content_review_remaining_human_judgment_count: 1
-frontierboard_open_choice_preserved: Project13_ChoiceSet7_revision1
+whole_content_review_remaining_human_judgment_count: 0
+frontierboard_choice_readback: Project13_ChoiceSet7_revision2_option18_selection5_awaitingUser0_read_only
 rights_approval: readback_unresolved
 production_acceptance: false
 public_use: false
@@ -409,6 +410,18 @@ item-level質問を0件のまま保つ。入力hash・acceptance scope・closed 
 結果はwhole-candidate internal content accept、または理由付きexact source/output range bounded revisionの
 二経路に限定する。Project 13 Choice 7は別のGUI方向判断なので、競合がなくなるまでcontent promptを
 発行しない。Board、media、production、rights、publicationは変更していない。
+
+## 2026-08-30 exact current-basis adoption
+
+ユーザー明示文「修正後の終端artifactを現行基準として採用する判断でよい」を、artifact
+`clip-wiki-selected-opening-current-basis-v1-001`、MP4 SHA
+`48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`、25,852,742 bytes、
+source 2530.319–2865.599へ限定してappend-only receiptへbindした。Choice Set 7 revision 2は
+option 18 / selection 5で解決済み、Board `awaitingUser=0`をread-only確認した。
+
+workflowは15 resolved unit / item question 0を保ったまま`CONNECTED_CURRENT_BASIS_ADOPTED`へ進み、
+remaining human judgmentは0。これはcurrent artifactのinternal content/editorial basisだけを採用する。
+一般creative Rule、別video、rights、production、delivery、publication、monetization、uploadは開かない。
 
 ## 2026-08-24 real DecisionCase and Choice 6 authority recovery
 

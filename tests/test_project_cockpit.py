@@ -154,6 +154,46 @@ def test_snapshot_rejects_reemitted_item_questions(tmp_path: Path) -> None:
         )
 
 
+def test_snapshot_accepts_resolved_current_basis_without_reopening_items(
+    tmp_path: Path,
+) -> None:
+    root, config_path = _fixture(tmp_path)
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    workflow_path = root / config["workflow_receipt"]["path"]
+    workflow = json.loads(workflow_path.read_text(encoding="utf-8"))
+    workflow["status"] = "CONNECTED_CURRENT_BASIS_ADOPTED"
+    workflow["human_judgment"].update(
+        {
+            "remaining_count": 0,
+            "status": "RESOLVED_ACCEPT_WHOLE_CANDIDATE",
+            "selected_outcome": "accept_whole_candidate",
+        }
+    )
+    workflow_path.write_text(json.dumps(workflow), encoding="utf-8")
+    config["workflow_receipt"]["sha256"] = _sha256(workflow_path)
+    config["workflow_receipt"]["required_status"] = workflow["status"]
+    config["review"].update(
+        {
+            "remaining_human_judgment_count": 0,
+            "status": "RESOLVED_ACCEPT_WHOLE_CANDIDATE",
+            "selected_outcome": "accept_whole_candidate",
+        }
+    )
+    config_path.write_text(json.dumps(config), encoding="utf-8")
+
+    snapshot = load_cockpit_snapshot(
+        repo_root=root,
+        config_path=config_path,
+        duration_probe=lambda _path: 12.3,
+    )
+    payload = cockpit_payload(
+        snapshot, review_url="http://127.0.0.1:8060/final_video.mp4"
+    )
+    assert payload["workflow"]["status"] == "CONNECTED_CURRENT_BASIS_ADOPTED"
+    assert payload["human_judgment"]["remaining_human_judgment_count"] == 0
+    assert payload["human_judgment"]["selected_outcome"] == "accept_whole_candidate"
+
+
 def test_static_surface_exposes_one_non_selecting_gate() -> None:
     repo_root = Path(__file__).resolve().parents[1]
     html = (repo_root / "gui" / "project_cockpit" / "index.html").read_text(encoding="utf-8")

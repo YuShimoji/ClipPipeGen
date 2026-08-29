@@ -5,8 +5,14 @@
   "title": "Wiki selected-opening current candidate",
   "workflow_receipt": {
     "path": "docs/output_layer/clip_editorial_production_workflow_connection_v1.json",
-    "sha256": "2d5f3d30cf1fea43e6fa63def8441cbe4861115468b57a1b28699e9cf80acac7",
-    "required_status": "CONNECTED_READY_FOR_SERIALIZED_HUMAN_REVIEW"
+    "sha256": "a6a0667b37618698b6e48a60a41a42b7cf9af9fd6a93bf1c03f027de383096de",
+    "required_status": "CONNECTED_CURRENT_BASIS_ADOPTED"
+  },
+  "current_basis_adoption": {
+    "path": "docs/output_layer/clip_335s_current_basis_adoption_v1.json",
+    "sha256": "2055c60937a8ddb1bdc7d9f5862aed280d5f83688bfb7139cabb569f7b9953ce",
+    "receipt_id": "clip-335s-current-basis-adoption-v1-001",
+    "scope": "exact_artifact_internal_content_editorial_current_basis_only"
   },
   "candidate": {
     "artifact_id": "clip-wiki-selected-opening-current-basis-v1-001",
@@ -26,8 +32,10 @@
   "review": {
     "resolved_decision_units": 15,
     "item_level_questions": 0,
-    "remaining_human_judgment_count": 1,
-    "question": "Is the exact 335.3-second candidate acceptable as a whole, or does one bounded range need revision?",
+    "remaining_human_judgment_count": 0,
+    "status": "RESOLVED_ACCEPT_WHOLE_CANDIDATE",
+    "selected_outcome": "accept_whole_candidate",
+    "original_question": "Is the exact 335.3-second candidate acceptable as a whole, or does one bounded range need revision?",
     "allowed_outcomes": [
       {
         "id": "accept_whole_candidate",
@@ -40,14 +48,17 @@
         "meaning": "Identify exact source/output ranges and the content reason; unaffected ranges keep their technical evidence."
       }
     ],
-    "choice_serialization": "Project 13 Choice 7 is an independent GUI-direction judgment and is not this content judgment."
+    "choice_serialization": "Project 13 Choice Set 7 revision 2 is selected; awaitingUser is zero and no content prompt remains."
   },
   "boundaries": {
-    "human_content_acceptance": "pending",
+    "human_content_acceptance": "accepted_exact_artifact_internal_content_editorial_current_basis_only",
     "creative_acceptance": false,
     "production_acceptance": false,
     "rights_approval": false,
+    "delivery_acceptance": false,
     "publication_acceptance": false,
+    "monetization": false,
+    "upload": false,
     "frontierboard_mutation": false,
     "media_created_or_modified": false
   }

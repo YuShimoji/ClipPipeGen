@@ -47,23 +47,36 @@ opened by the root launcher.
 | autonomous result | 15 units resolved: KEEP 7 / DROP 1 / HOLD_REUSABLE 7; item-level questions re-emitted 0. |
 | remaining human gate | One exact-media judgment: accept the whole 335.3-second candidate or identify exact source/output ranges for bounded revision. |
 | serialization | Project 13 Choice 7 remains an independent GUI-direction judgment; content prompt emission waits until no competing current Choice exists. |
-| boundaries | Production, rights, publication, upload, next-video start, media generation, and FrontierBoard mutation remain false/not performed. |
+| current state | `CONNECTED_CURRENT_BASIS_ADOPTED`; 15 resolved units、0 re-emitted item questions、0 remaining human judgments. |
+| adoption input | `docs/output_layer/clip_335s_current_basis_adoption_v1.json`; exact user statement is bound only to the current 335.3-second artifact. |
+| boundaries | Production, rights, delivery, publication, monetization, upload, next-video start, media generation, and FrontierBoard mutation remain false/not performed. |
 | validation | `tests/test_editorial_production_workflow.py`, `tests/test_editorial_calibration_sequence.py`, and exact package validators. |
 
 ## `clip-project-cockpit-review-ready-v1-001`
 
 | Field | Value |
 |---|---|
-| purpose | Put current artifact, completion point, actual media, one remaining human judgment, next work, and blockers on one project-local screen, then enter the existing Range review path without reviving 15 item questions. |
-| tracked authority | `docs/output_layer/clip_project_cockpit_v1.json`; workflow receipt SHA `2d5f3d30cf1fea43e6fa63def8441cbe4861115468b57a1b28699e9cf80acac7`. |
+| purpose | Retain the exact artifact and Range review entrance while showing that the current-basis judgment is resolved without reviving 15 item questions. |
+| tracked authority | `docs/output_layer/clip_project_cockpit_v1.json`; workflow receipt SHA `a6a0667b37618698b6e48a60a41a42b7cf9af9fd6a93bf1c03f027de383096de`. |
 | implementation | `src/cli/serve_project_cockpit.py`; `gui/project_cockpit/index.html`; `gui/project_cockpit/app.js`; `gui/project_cockpit/styles.css`. |
 | actual artifact | `clip-wiki-selected-opening-current-basis-v1-001`; 25,852,742 bytes; SHA `48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`; container 335.300 seconds. |
 | open command | `npm run cockpit` then open `http://127.0.0.1:8061/`; media is served by the existing project-owned Range route on `http://127.0.0.1:8060/final_video.mp4`. |
 | local state receipt | `episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/review/cockpit_review_state_v1.json`; ignored same-machine evidence, not portable Git authority. |
 | transition proof | Actual in-app Browser playback advanced beyond 17 seconds at readyState 4, the review action navigated to the exact MP4 route, server-side 32-byte Range readback returned HTTP 206, and the same Cockpit reread `REVIEW_READY` with no console errors/warnings. |
 | remaining human gate | One decision only: accept the exact candidate as a whole, or name exact source/output ranges for bounded revision. No option was selected. Choice 7 remains a separate GUI-direction identity. |
-| boundaries | `REVIEW_READY` means exact artifact openability and project-owned review-route availability. Content, creative, production, rights, publication, upload, media mutation, and FrontierBoard mutation remain ungranted/not performed. |
+| boundaries | Same-machine `REVIEW_READY` remains openability evidence. The tracked current-basis adoption grants exact-artifact internal content/editorial use only; creative-general, production, rights, delivery, publication, upload, media mutation, and FrontierBoard mutation remain ungranted/not performed. |
 | validation | `tests/test_project_cockpit.py`, `tests/test_review_range_server.py`, full suite, exact hash/size/ffprobe readback, browser playback/navigation/reread. |
+
+## `clip-335s-current-basis-adoption-v1-001`
+
+| Field | Value |
+|---|---|
+| purpose | Preserve the user's already-given current-basis decision as append-only Project-local authority for one exact artifact. |
+| path | `docs/output_layer/clip_335s_current_basis_adoption_v1.json` |
+| exact artifact | `clip-wiki-selected-opening-current-basis-v1-001`; 25,852,742 bytes; SHA `48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`; 335.3 seconds; source 2530.319–2865.599. |
+| Board readback | Project 13 Choice Set 7 revision 2 / option 18 / selection 5; `awaitingUser=0`; read-only, no Board delta. |
+| disposition | `ACCEPTED_CURRENT_BASIS_INTERNAL_CONTENT_EDITORIAL`; no remaining current-basis human prompt. |
+| boundaries | No general creative Rule, other-artifact authority, rights, production, delivery, publication, monetization, upload, media mutation, or FrontierBoard mutation. |
 
 ## `clip-wiki-selected-opening-current-basis-v1-001`
 

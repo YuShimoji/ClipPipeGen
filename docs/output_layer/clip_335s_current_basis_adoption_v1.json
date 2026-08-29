@@ -1,0 +1,60 @@
+{
+  "schema_version": "clippipegen.current_basis_adoption.v1",
+  "receipt_id": "clip-335s-current-basis-adoption-v1-001",
+  "mission": {
+    "mission_id": "VIDEO-CLIP-CURRENT-REVIEW-CLOSE-20260830-001",
+    "scope_sha256": "2e57cce2e4bd2d10bc63a370cddbea38559dda05ec0952ba3620b6fca9c19ca5",
+    "authority_envelope_id": "video.clip.current-review.specialist.v1",
+    "parent_authority_envelope_id": "video.clip.current-review.project.v1"
+  },
+  "authority": {
+    "kind": "explicit_user_statement",
+    "source_task_id": "01a0202f-adb4-76c2-980d-f63509a5fa17",
+    "statement": "修正後の終端artifactを現行基準として採用する判断でよい",
+    "selected_outcome": "accept_whole_candidate",
+    "scope": "exact_artifact_internal_content_editorial_current_basis_only"
+  },
+  "board_readback": {
+    "context_identity": "video-generation-20260829T1623431112465Z-4eedf34efa514d16b4f169d8ee62eb9c",
+    "context_sha256": "05eb79593cba2951aa49173e07ece5a3597c7e6d7682ad9546328f1702fd7968",
+    "status": "PASS",
+    "project_id": 13,
+    "choice_set_id": 7,
+    "choice_set_revision": 2,
+    "option_id": 18,
+    "selection_id": 5,
+    "awaiting_user_count": 0,
+    "production_authority": false,
+    "scheduler_authority": false,
+    "read_only": true
+  },
+  "artifact": {
+    "artifact_id": "clip-wiki-selected-opening-current-basis-v1-001",
+    "media_path": "episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/package/final_video.mp4",
+    "sha256": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951",
+    "byte_size": 25852742,
+    "editorial_duration_seconds": 335.28,
+    "container_duration_seconds": 335.3,
+    "source_range_seconds": [2530.319, 2865.599]
+  },
+  "disposition": {
+    "status": "ACCEPTED_CURRENT_BASIS_INTERNAL_CONTENT_EDITORIAL",
+    "whole_content_review_gate": "CLOSED_ACCEPT_WHOLE_CANDIDATE",
+    "remaining_human_judgment_count": 0,
+    "item_level_questions_reemitted": 0,
+    "opening_or_endpoint_question_reopened": false,
+    "new_choice_created": false,
+    "media_created_or_modified": false
+  },
+  "not_granted": [
+    "general_creative_rule_adoption",
+    "another_artifact_or_video_authority",
+    "rights_approval",
+    "production_acceptance",
+    "delivery_acceptance",
+    "publication_acceptance",
+    "monetization",
+    "upload",
+    "frontierboard_mutation"
+  ]
+}

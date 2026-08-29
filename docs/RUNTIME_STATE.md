@@ -3,13 +3,13 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: EDITORIAL_CALIBRATION_PASS_335_PROJECT_REVIEW_READY_EP1_SOURCE_GATE_PARKED
-last_touched: 2026-08-25
-state_revision: wiki-project-cockpit-review-ready-v1-2026-08-25
+health: EDITORIAL_CALIBRATION_PASS_335_CURRENT_BASIS_ADOPTED_EP1_SOURCE_GATE_PARKED
+last_touched: 2026-08-30
+state_revision: wiki-335-current-basis-adopted-v1-2026-08-30
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: ED-13
-phase: project_cockpit_exact_artifact_review_ready
-canonical_status: exact_artifact_openability_and_project_review_route_established_human_content_gate_pending
+phase: exact_artifact_current_basis_adopted
+canonical_status: exact_artifact_internal_content_editorial_current_basis_adopted_no_human_prompt_pending
 active_branch: codex/wiki-tensaku-longform-family-v1
 source_branch: codex/wiki-tensaku-longform-family-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
@@ -43,19 +43,20 @@ sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_has
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
 current_title: Wiki selected-opening current-basis internal candidate
-human_entrypoint: project-local Project Cockpit after independent Choice 7 serialization clears
+human_entrypoint: none_current_basis_decision_already_bound
 portable_entrypoint: package/final_video.mp4 plus package/successor_receipt.json
 review_open_command: npm run cockpit
 review_server_restart_command: uvx python -m src.cli.main serve-project-cockpit --cockpit-port 8061 --review-port 8060
 machine_readback: package/successor_receipt.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: one_whole_candidate_accept_or_bounded_revision_queued_behind_existing_board_choice_7
+decision_required: none_for_current_335s_basis
 workflow_connection_artifact: docs/output_layer/clip_editorial_production_workflow_connection_v1.json
-workflow_connection_status: CONNECTED_READY_FOR_SERIALIZED_HUMAN_REVIEW
+workflow_connection_status: CONNECTED_CURRENT_BASIS_ADOPTED
 workflow_resolved_decision_unit_count: 15
 workflow_reemitted_item_question_count: 0
-workflow_remaining_human_judgment_count: 1
-workflow_prompt_emission: WAIT_UNTIL_NO_COMPETING_CURRENT_CHOICE
+workflow_remaining_human_judgment_count: 0
+workflow_prompt_emission: NONE_ALREADY_RESOLVED
+current_basis_adoption_receipt: docs/output_layer/clip_335s_current_basis_adoption_v1.json
 project_cockpit_artifact: docs/output_layer/clip_project_cockpit_v1.json
 project_cockpit_state_receipt: episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/review/cockpit_review_state_v1.json
 project_cockpit_state: REVIEW_READY
@@ -63,14 +64,14 @@ project_cockpit_transition_meaning: exact_artifact_openability_and_project_owned
 project_cockpit_actual_playback_seconds_observed_minimum: 17.28
 project_cockpit_review_route_range_readback: HTTP_206_32_BYTES
 project_cockpit_console_errors_or_warnings: 0
-review_status: REVIEW_READY_EXACT_ARTIFACT_OPENABLE_HUMAN_CONTENT_JUDGMENT_PENDING
+review_status: ACCEPTED_EXACT_ARTIFACT_INTERNAL_CONTENT_EDITORIAL_CURRENT_BASIS_ONLY
 review_scope: selected_opening_continuous_candidate_without_next_topic_provider_overlap
 reviewed_at: 2026-08-23T17:10:16Z opening_selection_only
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
 m2_review_scope: internal_full_view_editorial_visual_review
 remote_code_complete: false
 remote_decision_binding_available: false
-local_decision_binding_committed: false
+local_decision_binding_committed: true
 remote_mutation_authorized: false
 local_artifact_available: true
 local_artifact_role: ignored_selected_opening_successor_internal_candidate
@@ -911,7 +912,7 @@ instructions.
 - source range: `2530.319–2865.599`、335.280秒、gap 0、実編集cut 1
 - output: 25,852,742 bytes、SHA
   `48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`
-- human review pending: `true`
+- human review pending: `false` for this exact current-basis internal content/editorial gate
 - calibration artifact:
   `docs/output_layer/clip_full_video_editorial_calibration_v1.json`
 - mixed calibration artifact:
@@ -922,7 +923,7 @@ instructions.
   `docs/output_layer/clip_project_cockpit_v1.json`
 - same-machine REVIEW_READY receipt:
   `episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/review/cockpit_review_state_v1.json`
-- calibration result: `PASS / CONNECTED_READY_FOR_SERIALIZED_HUMAN_REVIEW`
+- calibration result: `PASS / CONNECTED_CURRENT_BASIS_ADOPTED`
 
 Choice Set 4 revision 2でユーザーが選んだ「話題が切り替わるところから始める」は、既存親candidateの
 source 2530.319 / output 0.000と一致したため、その開始点を後続identityへ消費した。旧proofと4 MP4は
@@ -947,15 +948,17 @@ ignored packageは証拠として改変しない。successor builderは今後ret
 authorityで閉じた。production-scale decision-system条件は`PASS`だが、production実行権限ではない。
 
 `build-editorial-production-workflow`はmixed calibration、exact acceptance receipt、335.3秒whole-review
-packetを同時検証し、15件のitem-level質問を再発行しないtracked receiptへ接続する。残るhuman判断は
-whole-candidate acceptまたはexact range bounded revision一件だけ。Project 13 Choice 7は独立GUI方向
-判断として保持し、競合中はこのcontent promptを発行しない。
+packet、current-basis adoption receiptを同時検証し、15件のitem-level質問を再発行しないtracked receiptへ
+接続する。ユーザー明示文「修正後の終端artifactを現行基準として採用する判断でよい」をexact SHAへ
+限定して消費し、残るhuman判断は0件。Project 13 Choice Set 7 revision 2 / option 18 / selection 5と
+`awaitingUser=0`をread-only evidenceとして記録し、新Choiceやcontent promptは作らない。
 
 `serve-project-cockpit`はそのtracked receiptとexact MP4をSHA、bytes、ffprobe durationで照合し、
 既存`serve-review` Range経路からactual artifactをロードする。実画面試走ではmuted再生が17.28秒超、
 readyState 4、640×360、review actionのexact MP4 navigation、32-byte HTTP 206を確認し、same-machine
 stateを`WORKFLOW_CONNECTED`から`REVIEW_READY`へ進めた。同じCockpitの再読も`REVIEW_READY`、
-console error/warning 0。これはopenabilityとproject-owned routeだけの状態で、human verdictは未選択。
+console error/warning 0。このsame-machine receiptはopenabilityとproject-owned routeだけの履歴証拠で、
+current content/editorial basisの採用権限はtracked adoption receiptが担う。
 以後の自動media QAは`muted=true`、`volume=0`、route遷移前pauseを必須とする。
 
 Episode 1本線のCU-02 `youtube:Ocqg-RpQURY` 390–585秒exact media/receipt gateは別laneでpark。
@@ -963,15 +966,15 @@ Episode 1本線のCU-02 `youtube:Ocqg-RpQURY` 390–585秒exact media/receipt ga
 
 ## Next Action
 
-- action: `after_choice_7_serialization_use_project_cockpit_for_one_whole_or_bounded_content_judgment`
+- action: `retain_exact_current_basis_until_separately_authorized_bounded_revision_or_next_project_mission`
 - first files: `README.md` → `docs/RUNTIME_STATE.md` → `docs/CURRENT_HANDOFF.md`
 - first checks: exact calibration JSON、validator、Git branch/HEAD/upstream parity、
   `git ls-files episodes`が0、successor receipt、MP4 size/SHA
 - workflow receipt: `uvx python -m src.cli.main build-editorial-production-workflow --format json`で
-  tracked inputsとaccepted authorityを再検証できる。15 unitを個別質問へ戻さない。
-- project entry: `npm run cockpit`でexact media/receiptを再照合し、Cockpitを開く。
-- human decision: Choice 7と直列化できた後だけ、Cockpit上の335.3秒whole-candidate一件を
-  `accept whole / exact-range bounded revision`として提示する。unit-level Choiceは作らない。
+  current-basis adoptionとtracked inputsを再検証できる。15 unitを個別質問へ戻さない。
+- project entry: 必要なread-only再確認時だけ`npm run cockpit`でexact media/receiptを照合する。
+- human decision: current 335.3秒basisには残っていない。新しいbounded revision要望が明示された場合だけ
+  そのexact rangeと理由を別権限として扱う。
 - production boundary: 次動画開始、production acceptance、rights、publicationは別Missionのまま。
 - independent EP1 unblock: `youtube:Ocqg-RpQURY` exact bytes + receipt供給後にpreflightを再実行する。
 

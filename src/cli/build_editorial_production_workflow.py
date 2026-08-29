@@ -33,6 +33,12 @@ def run(argv: list[str]) -> int:
         type=Path,
     )
     parser.add_argument(
+        "--current-basis-adoption",
+        default=REPO_ROOT
+        / "docs/output_layer/clip_335s_current_basis_adoption_v1.json",
+        type=Path,
+    )
+    parser.add_argument(
         "--output",
         default=REPO_ROOT
         / "docs/output_layer/clip_editorial_production_workflow_connection_v1.json",
@@ -45,6 +51,7 @@ def run(argv: list[str]) -> int:
             mixed_path=args.mixed,
             acceptance_path=args.accepted_authority,
             whole_review_path=args.whole_review,
+            current_basis_adoption_path=args.current_basis_adoption,
             output_path=args.output,
             base_dir=REPO_ROOT,
         )
@@ -59,7 +66,7 @@ def run(argv: list[str]) -> int:
             "decision_units_resolved"
         ],
         "itemLevelQuestionsReemitted": 0,
-        "remainingHumanJudgments": packet["human_judgment"]["count"],
+        "remainingHumanJudgments": packet["human_judgment"]["remaining_count"],
         "promptEmission": packet["choice_serialization"]["prompt_emission"],
         "output": args.output.resolve().as_posix(),
     }

@@ -8,6 +8,18 @@ last_touched: 2026-08-25
 
 # Decision Log - ClipPipeGen
 
+## 2026-08-30 — 修正終端artifactをexact current basisとして採用
+
+ユーザー明示文「修正後の終端artifactを現行基準として採用する判断でよい」を、
+`clip-wiki-selected-opening-current-basis-v1-001`、SHA
+`48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`、25,852,742 bytes、
+335.3秒、source 2530.319–2865.599へ限定して採用した。Choice Set 7 revision 2 / option 18 /
+selection 5と`awaitingUser=0`はread-only evidenceであり、Board mutationや新Choiceはない。
+
+採用scopeはexact artifactのinternal content/editorial current basisだけ。15 unitは解決済み、item-level
+質問は0、残るwhole/bounded human gateは0になった。一般creative Rule、別artifact、rights、production、
+delivery、publication、monetization、uploadは未承認のまま。
+
 ## 2026-08-25 — 校正済み判断をproduction review workflowへ接続する
 
 `build-editorial-production-workflow`を追加し、mixed calibration、OUT-13 exact acceptance receipt、
