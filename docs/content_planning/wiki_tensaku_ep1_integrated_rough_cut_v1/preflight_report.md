@@ -2,7 +2,7 @@
 
 Work Order: `CPG-WIKI-EP1-INTEGRATED-ROUGH-CUT-001`
 
-Status: **BLOCKED_EXACT_SOURCE_MEDIA_REQUIRED**
+Status: **READY_TO_RENDER**
 
 Sの`content_continue`はproduction entryだけを許可した。human artistic acceptanceとfinal delivery acceptanceは未付与。mandatory preflightでCU-02のexact source mediaが解決できないため、MP4は生成していない。
 
@@ -11,15 +11,11 @@ Sの`content_continue`はproduction entryだけを許可した。human artistic 
 | Chapter | ClipUnit | Source/time | Media | Content connection |
 |---:|---|---|---|---|
 | 1 | `CU-01` 非公式Wikiは何を記録しているのか | `youtube:1AcId5Yja10` 390–510s | exact_media_ready | Wiki添削は誤字探しではなく、ファンが作った人物像を本人が読み返す企画だと定義する。 → 同じWikiでも人物ごとに記録のされ方が違う、という比較へ進む。 |
-| 2 | `CU-02` 情報量が示す桃鈴ねね像 | `youtube:Ocqg-RpQURY` 390–585s | missing_exact_media_and_or_binding_receipt | 網羅量そのものではなく、何に記述が集まるかがその人の見え方を作る。 → ページの強調点を、本人の訂正が最も多いプロフィール項目へ接続する。 |
+| 2 | `CU-02` 情報量が示す桃鈴ねね像 | `youtube:Ocqg-RpQURY` 390–585s | exact_media_bound_by_local_acquisition_receipt | 網羅量そのものではなく、何に記述が集まるかがその人の見え方を作る。 → ページの強調点を、本人の訂正が最も多いプロフィール項目へ接続する。 |
 | 3 | `CU-03` プロフィール訂正で像が動く | `youtube:1AcId5Yja10` 1530–1905s | exact_media_ready | 訂正してもファンの記憶は消えず、公式と非公式の間に現在の人物像ができる。 → 訂正で終わらず、ページが忘れた出来事をどう呼び戻すかへ進む。 |
 
 ## Exact blocker
 
-- `CU-02` requires `youtube:Ocqg-RpQURY` 390–585s.
-- Expected media: `episodes/wiki_tensaku_family_20260804/corpus/materials/Ocqg-RpQURY/source_video.mp4` (missing).
-- Expected receipt: `episodes/wiki_tensaku_family_20260804/corpus/materials/Ocqg-RpQURY/acquisition_receipt.json` (missing).
-- Caption SHA-256: `a383ad8a545fe9a24da142dace96fe19f05bf834a03e1e52616a5332db3c3992` is present, but captions do not substitute for source video.
 
 ## Resume
 

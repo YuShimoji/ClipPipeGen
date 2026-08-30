@@ -425,6 +425,7 @@ def render_markdown(result: dict[str, Any]) -> str:
 
 
 def coordinator_packet(result: dict[str, Any]) -> dict[str, Any]:
+    ready = result["status"] == READY_STATUS
     return {
         "schema_version": "clippipegen.wiki_tensaku_ep1_coordinator_resume.v1",
         "work_order_id": result["work_order_id"],
@@ -439,8 +440,16 @@ def coordinator_packet(result: dict[str, Any]) -> dict[str, Any]:
         "acceptance_score": result["acceptance_score"],
         "resume_contract": result["resume_contract"],
         "next_s_event": result["next_s_event"],
-        "content_status": "S_CONTENT_CONTINUE_BUT_RENDER_DEPENDENCY_BLOCKED",
-        "technical_status": "PREFLIGHT_FAIL_CLOSED_NO_OUTPUT",
+        "content_status": (
+            "S_CONTENT_CONTINUE_READY_FOR_INTEGRATED_RENDER"
+            if ready
+            else "S_CONTENT_CONTINUE_BUT_RENDER_DEPENDENCY_BLOCKED"
+        ),
+        "technical_status": (
+            "PREFLIGHT_READY_NO_OUTPUT_YET"
+            if ready
+            else "PREFLIGHT_FAIL_CLOSED_NO_OUTPUT"
+        ),
     }
 
 

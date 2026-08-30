@@ -2,22 +2,22 @@
   "schema_version": "clippipegen.wiki_tensaku_ep1_preflight_package.v1",
   "work_order_id": "CPG-WIKI-EP1-INTEGRATED-ROUGH-CUT-001",
   "preflight_id": "clip-wiki-tensaku-ep1-integrated-rough-cut-preflight-v1-001",
-  "status": "BLOCKED_EXACT_SOURCE_MEDIA_REQUIRED",
+  "status": "READY_TO_RENDER",
   "members": [
     {
       "path": "docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_receipt.json",
-      "bytes": 13077,
-      "sha256": "f872caebdc1a5d7c6aaef8a234a91b65dba5fa5b3c9f06ebe297d7c75073df6f"
+      "bytes": 11904,
+      "sha256": "196688e18b923724c30bf473a88ad0cd7ac2fe04c3e9123d53034ea161da2683"
     },
     {
       "path": "docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/preflight_report.md",
-      "bytes": 3092,
-      "sha256": "0291e01a958e2acb7dda85f997592c045fe4142c3c2985dd0494a8311547e92e"
+      "bytes": 2636,
+      "sha256": "5a7de1943eafafbd3425a25456578bfd5021f769e6d0b2d8949024eff71ed8fd"
     },
     {
       "path": "docs/content_planning/wiki_tensaku_ep1_integrated_rough_cut_v1/coordinator_resume_packet.json",
-      "bytes": 4791,
-      "sha256": "90fac7e958f27ae5343becfa1e7f04a2b1d23aae2ed61d36c454cca1f5087210"
+      "bytes": 3545,
+      "sha256": "65ecd6f274e7fe4c60a095c9c3d5b5e5c81bd785fa87ff88107e0f7c50dc07d6"
     }
   ],
   "generated_mp4_count": 0

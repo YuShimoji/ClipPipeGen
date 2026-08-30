@@ -67,7 +67,7 @@
     {
       "task_id": "ED-13R-09",
       "title": "Episode 1 CU-02 source入力を解決する",
-      "status": "held_external_input",
+      "status": "done",
       "work": "Obtain explicitly supplied youtube:Ocqg-RpQURY 390-585s exact media bytes plus an acquisition receipt.",
       "unblocks": "Episode 1 can move from source preflight to integrated rough-cut preparation.",
       "stop_condition": "Do not fetch, guess, substitute, or infer rights."
@@ -75,17 +75,17 @@
     {
       "task_id": "ED-13R-10",
       "title": "Episode 1 preflightを再実行する",
-      "status": "blocked_by_ED-13R-09",
+      "status": "done",
       "work": "After exact CU-02 bytes and receipt exist, rerun the deterministic three-unit preflight; do not render before READY.",
       "unblocks": "A valid renderer entry can be prepared without turning technical readiness into production acceptance."
     }
   ],
   "counts": {
     "total": 10,
-    "done": 8,
+    "done": 10,
     "in_progress": 0,
     "planned": 0,
-    "held_or_blocked": 2,
+    "held_or_blocked": 0,
     "human_choices_created": 0
   },
   "frontierboard_projection": {

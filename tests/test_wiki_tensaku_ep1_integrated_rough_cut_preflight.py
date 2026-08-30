@@ -22,11 +22,11 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def test_preflight_stops_on_exact_cu02_media_dependency() -> None:
+def test_preflight_binds_exact_cu02_media_and_reaches_render_entry() -> None:
     result = _load(PREFLIGHT_PATH)
 
     assert result["work_order_id"] == "CPG-WIKI-EP1-INTEGRATED-ROUGH-CUT-001"
-    assert result["status"] == "BLOCKED_EXACT_SOURCE_MEDIA_REQUIRED"
+    assert result["status"] == "READY_TO_RENDER"
     assert result["canonical_ir"]["sha256"] == (
         "af502873b54786c5225236e1e47a4e0d38873da0ec4566ed7156ee5a8361288f"
     )
@@ -39,23 +39,17 @@ def test_preflight_stops_on_exact_cu02_media_dependency() -> None:
     assert mappings[0]["media_resolution"]["state"] == "exact_media_ready"
     assert mappings[2]["media_resolution"]["state"] == "exact_media_ready"
     assert mappings[1]["media_resolution"]["state"] == (
-        "missing_exact_media_and_or_binding_receipt"
+        "exact_media_bound_by_local_acquisition_receipt"
     )
     assert mappings[1]["source_id"] == "youtube:Ocqg-RpQURY"
     assert mappings[1]["source_timestamp"]["requested_start_seconds"] == 390
     assert mappings[1]["source_timestamp"]["requested_end_seconds"] == 585
 
-    assert result["missing_dependency_count"] == 1
-    dependency = result["missing_dependencies"][0]
-    assert dependency["clip_id"] == "CU-02"
-    assert dependency["caption_only_evidence"]["sha256"] == (
-        "a383ad8a545fe9a24da142dace96fe19f05bf834a03e1e52616a5332db3c3992"
-    )
-    assert dependency["expected_media_path"].endswith(
-        "corpus/materials/Ocqg-RpQURY/source_video.mp4"
-    )
-    assert dependency["expected_receipt_path"].endswith(
-        "corpus/materials/Ocqg-RpQURY/acquisition_receipt.json"
+    assert result["missing_dependency_count"] == 0
+    assert result["missing_dependencies"] == []
+    assert mappings[1]["media_resolution"]["bytes"] == 199347775
+    assert mappings[1]["media_resolution"]["sha256"] == (
+        "cd06aa1ebb963498c0a39c33a3fea33bf34c3f3a0e986ebefce09919265c1a9e"
     )
 
 
@@ -84,9 +78,9 @@ def test_blocked_preflight_does_not_inflate_product_or_acceptance() -> None:
     )
 
 
-def test_package_binds_portable_blocker_evidence_and_no_mp4() -> None:
+def test_package_binds_portable_ready_evidence_and_no_mp4() -> None:
     package = _load(PACKAGE_PATH)
-    assert package["status"] == "BLOCKED_EXACT_SOURCE_MEDIA_REQUIRED"
+    assert package["status"] == "READY_TO_RENDER"
     assert package["generated_mp4_count"] == 0
     assert len(package["members"]) == 3
     for member in package["members"]:
@@ -96,8 +90,8 @@ def test_package_binds_portable_blocker_evidence_and_no_mp4() -> None:
     assert not list(OUTPUT_DIR.glob("*.mp4"))
 
     coordinator = _load(COORDINATOR_PATH)
-    assert coordinator["technical_status"] == "PREFLIGHT_FAIL_CLOSED_NO_OUTPUT"
-    assert coordinator["content_status"] == "S_CONTENT_CONTINUE_BUT_RENDER_DEPENDENCY_BLOCKED"
+    assert coordinator["technical_status"] == "PREFLIGHT_READY_NO_OUTPUT_YET"
+    assert coordinator["content_status"] == "S_CONTENT_CONTINUE_READY_FOR_INTEGRATED_RENDER"
     assert coordinator["next_s_event"]["current_state"] == "NOT_ROUTABLE_NO_INTEGRATED_MP4"
 
 
