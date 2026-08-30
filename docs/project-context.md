@@ -5,18 +5,32 @@ type: durable_context
 status: current
 last_touched: 2026-08-30
 current_slice: ED-13
-phase: editorial_production_workflow_current_basis_adopted
+phase: temporary_project_task_surface_active
 active_branch: codex/wiki-tensaku-longform-family-v1
 sync_observed_head: 51291010753563f038a5b4ae30d1b7c63dccf76d
 upstream_parity: 3 0 after_three_local_editorial_commits_push_count_zero
-health: EDITORIAL_CALIBRATION_PASS_335_WHOLE_REVIEW_READY_EP1_SOURCE_GATE_PARKED
+health: WHOLE_GATE_REJECTED_TASK_BOARD_ACTIVE_EP1_SOURCE_GATE_PARKED
 ---
 
 # Project Context - ClipPipeGen
 
-## 2026-08-30 current 335.3秒basis adoption
+## 2026-08-30 全体採否タスクをリジェクトし、作業ボードへ移行
 
-ユーザー明示文「修正後の終端artifactを現行基準として採用する判断でよい」を、exact current
+335.3秒artifactに「全体採用か、限定区間修正か」の二択を要求して他作業を止める設定は、
+現在段階と合わないためタスク設定自体をリジェクトした。旧review packet、current-basis adoption
+receipt、workflow connection、Cockpit v1は削除も改変もせず、履歴として
+`docs/output_layer/clip_335s_whole_gate_rejection_v1.json`から訂正関係を追える。
+
+現行artifactは採用済みでも非採用でもなく、技術校正fixtureとして保持する。必要なら区間・観察・
+不確実性・任意の修正案を部分記録できるが、全体 verdictも15件のitem質問も要求しない。
+`docs/output_layer/clip_ed13_recovery_task_board_v1.json`をProject-local正本とし、同じ10 task IDを
+Project Cockpit v2とFrontierBoardへ一時投影する。作業はこのボードから継続でき、Episode 1の
+CU-02 exact-source gateだけは独立した外部入力待ちとして残る。
+
+## 2026-08-30 legacy record — current 335.3秒basis adoption
+
+この節は当時の解釈を保存する履歴であり、現行authorityではない。ユーザー明示文
+「修正後の終端artifactを現行基準として採用する判断でよい」を、exact current
 artifact `clip-wiki-selected-opening-current-basis-v1-001`とSHA
 `48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`だけへbindした。
 Project 13 Choice Set 7 revision 2 / option 18 / selection 5は解決済み、`awaitingUser=0`である。

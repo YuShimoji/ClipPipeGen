@@ -12,7 +12,7 @@
         <div>
           <p class="eyebrow">CLIPPIPEGEN · CURRENT FRONTIER</p>
           <h1>Project Cockpit</h1>
-          <p class="lede">現在成果物から、次の人間判断へ迷わず入るための最小画面。</p>
+          <p class="lede">正確な動画を開き、いま進められる作業を確認する一時作業面です。</p>
         </div>
         <div class="state-block" aria-live="polite">
           <span class="state-label">PROJECT STATE</span>
@@ -25,9 +25,9 @@
 
       <section class="completion-strip" aria-label="Completion point">
         <div><span>現在成果物</span><strong id="artifact-short">—</strong></div>
-        <div><span>完成地点</span><strong>exact artifact content review</strong></div>
-        <div><span>次実作業</span><strong>whole accept / bounded range revision</strong></div>
-        <div><span>blocker</span><strong>human content judgment 1件</strong></div>
+        <div><span>現在段階</span><strong>部分観察 + 制作準備</strong></div>
+        <div><span>作業面</span><strong>ED-13 recovery · 10 tasks</strong></div>
+        <div><span>全体採否</span><strong>この段階では要求しない</strong></div>
       </section>
 
       <div class="content-grid">
@@ -45,7 +45,7 @@
           </div>
           <div class="media-actions">
             <button id="play-artifact" type="button" class="primary">実artifactを再生</button>
-            <button id="open-review" type="button" class="secondary" disabled>Project-owned review path を開く</button>
+            <button id="open-review" type="button" class="secondary">動画を別タブで開く</button>
           </div>
           <dl class="identity-grid">
             <div><dt>Artifact</dt><dd id="artifact-id">—</dd></div>
@@ -58,16 +58,15 @@
         <aside class="decision-panel panel">
           <div class="panel-head">
             <div>
-              <p class="kicker">ONE HUMAN GATE</p>
-              <h2>残る判断を1件に圧縮</h2>
+              <p class="kicker">PROJECT WORK</p>
+              <h2>いま進める作業</h2>
             </div>
-            <span class="pill neutral">PENDING</span>
+            <span class="pill neutral">10 TASKS</span>
           </div>
-          <p id="decision-question" class="question">—</p>
-          <div id="decision-options" class="decision-options"></div>
-          <p class="guardrail">ここでは選びません。Choice 7は別identityのGUI方向判断です。</p>
+          <p id="legacy-task-note" class="guardrail">旧「全体採用 / 限定修正」タスクは設定不良としてレガシー化済みです。</p>
+          <div id="task-list" class="task-list"></div>
           <div class="calibration-readback">
-            <span>Evidence / Rule / accepted authority</span>
+            <span>Calibration evidence retained</span>
             <strong id="resolved-count">—</strong>
             <small id="decision-counts">—</small>
           </div>
@@ -76,9 +75,9 @@
 
       <section class="boundary-panel panel">
         <div>
-          <p class="kicker">REVIEW_READY MEANS</p>
-          <h2>openability + review route</h2>
-          <p>content / creative / production / rights / publication acceptanceではありません。</p>
+          <p class="kicker">PARTIAL OBSERVATION</p>
+          <h2>区間を見て、気づきを残せます</h2>
+          <p>動画を開くことも部分的な指摘も、動画全体の採用・非採用を意味しません。</p>
         </div>
         <ul id="boundaries"></ul>
       </section>

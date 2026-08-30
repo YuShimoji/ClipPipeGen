@@ -249,7 +249,7 @@ def test_runtime_points_to_connected_editorial_workflow_and_keeps_other_lanes_pa
     assert "local_artifact_available: true" in runtime
     assert "portable_local_artifact_available: true" in runtime
     assert (
-        "human_entrypoint: project-local Project Cockpit after independent Choice 7 serialization clears"
+        "human_entrypoint: optional_partial_observation_only_no_whole_acceptance_requested"
         in runtime
     )
     assert (
@@ -263,23 +263,23 @@ def test_runtime_points_to_connected_editorial_workflow_and_keeps_other_lanes_pa
     )
     assert (
         "health: "
-        "EDITORIAL_CALIBRATION_PASS_335_PROJECT_REVIEW_READY_EP1_SOURCE_GATE_PARKED"
+        "WHOLE_GATE_REJECTED_TASK_BOARD_ACTIVE_EP1_SOURCE_GATE_PARKED"
         in runtime
     )
     assert "current_slice: ED-13" in runtime
     assert (
-        "canonical_status: exact_artifact_openability_and_project_review_route_"
-        "established_human_content_gate_pending"
+        "canonical_status: whole_candidate_gate_rejected_partial_observation_"
+        "optional_project_work_continues"
         in runtime
     )
     assert "active_artifact: clip-wiki-selected-opening-current-basis-v1-001" in runtime
     assert (
-        "review_status: REVIEW_READY_EXACT_ARTIFACT_OPENABLE_HUMAN_CONTENT_JUDGMENT_PENDING"
+        "review_status: WHOLE_ACCEPTANCE_NOT_REQUESTED_PARTIAL_OBSERVATION_OPTIONAL"
         in runtime
     )
     assert "wiki_family_turn_validation: passed_13_of_13" in runtime
     assert "wiki_family_turn_editorial_acceptance_granted: false" in runtime
-    assert "human_review_pending: true" in runtime
+    assert "human_review_pending: false" in runtime
     assert "s1_lane_status: parked_human_review_pending" in runtime
     assert "out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive" in runtime
     assert "out13_human_review_pending: false" in runtime

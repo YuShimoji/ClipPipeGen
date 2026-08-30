@@ -6,12 +6,12 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 
 - feature: `ED-13`
 - artifact: `clip-wiki-selected-opening-current-basis-v1-001`
-- state: `EDITORIAL_CALIBRATION_PASS_335_WHOLE_REVIEW_READY_EP1_SOURCE_GATE_PARKED`
+- state: `WHOLE_GATE_REJECTED_TASK_BOARD_ACTIVE_EP1_SOURCE_GATE_PARKED`
 
 - canonical main: `refs/heads/main`
 - canonical baseline: `OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50`
-- canonical status: `calibrated_decisions_consumed_one_human_content_gate_production_authority_closed`
-- review status: `INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING`
+- canonical status: `whole_candidate_gate_rejected_partial_observation_optional_project_work_continues`
+- review status: `WHOLE_ACCEPTANCE_NOT_REQUESTED_PARTIAL_OBSERVATION_OPTIONAL`
 - remote code complete: `false`
 - local artifact available: `true`
 - portable local artifact available: `true`
@@ -34,8 +34,8 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 - recommended cover SHA-256: ``
 - recommended cover timestamp: ``
 - recommended cover selection: ``
-- decision required: `one_whole_candidate_accept_or_bounded_revision_queued_behind_existing_board_choice_7`
-- next review: `after_choice_7_serialization`
+- decision required: `none_whole_candidate_task_rejected`
+- next review: `optional_partial_observation_only`
 
 ## Feature Table
 
@@ -44,7 +44,9 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | SH-10 | Private artifact transfer | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-05 | Benchmark portfolio coverage readback | done | stable | 100 | clip-benchmark-portfolio-coverage-v1-001 | Keep as reference unless a regression or successor lane appears. |
 | ED-13 | Wiki添削 content-first thematic Episode family | in_progress | active | 70 | clip-wiki-tensaku-ep1-integrated-rough-cut-preflight-v1-001 | Finish current acceptance/readback and update artifact registry. |
-| ED-13a | Editorial calibration production-workflow connection | done | stable | 100 | clip-editorial-production-workflow-connection-v1-001 | Keep as reference unless a regression or successor lane appears. |
+| ED-13a | Editorial calibration production-workflow connection | done | stable | 100 | clip-335s-whole-gate-rejection-v1-001 | Keep as reference unless a regression or successor lane appears. |
+| ED-13b | Exact-artifact Project Cockpit review entrance | successor-lane | superseded | 100 |  | The v1 openability proof and exact Range route remain evidence. Its one-human-gate presentation is legacy and is replac... |
+| ED-13c | Temporary Project task surface | in_progress | active | 70 |  | Finish current acceptance/readback and update artifact registry. |
 | ED-12 | S1 two-source common-context probe | in_progress | active | 70 | clip-s1-two-source-common-context-probe-v1-001 | Finish current acceptance/readback and update artifact registry. |
 | ED-11 | OUT-12 one-command real long-form video automation | done | stable | 100 | clip-out12-one-command-real-video-automation-v1-001 | Keep as reference unless a regression or successor lane appears. |
 | CR-01 | rights_manifest schema v1 縺ｨ validator | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
@@ -159,5 +161,3 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | SH-05b | local-preview-pack report QA / polish | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-05b+ | local-preview-pack visual evidence hardening | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | SH-05c | GUI read-only preview pack ingest | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| SH-05d | source-audio preview bridge | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |
-| SH-06 | Non-Repo Artifact Handoff | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |

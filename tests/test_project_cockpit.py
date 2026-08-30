@@ -38,9 +38,25 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path]:
         },
     }
     workflow_path.write_text(json.dumps(workflow), encoding="utf-8")
+    rejection_path = tmp_path / "docs" / "rejection.json"
+    rejection = {
+        "status": "REJECTED_LEGACY_TASK_SETTING",
+        "artifact": {"sha256": _sha256(media)},
+    }
+    rejection_path.write_text(json.dumps(rejection), encoding="utf-8")
+    task_board_path = tmp_path / "docs" / "task_board.json"
+    task_board = {
+        "status": "ACTIVE_TEMPORARY_PROJECT_WORK_SURFACE",
+        "artifact_id": "task-board-001",
+        "tasks": [
+            {"task_id": f"ED-13R-{index:02d}", "title": f"Task {index}", "status": "planned", "work": "work"}
+            for index in range(1, 11)
+        ],
+    }
+    task_board_path.write_text(json.dumps(task_board), encoding="utf-8")
     config_path = tmp_path / "docs" / "cockpit.json"
     config = {
-        "schema_version": "clippipegen.project_cockpit.v1",
+        "schema_version": "clippipegen.project_cockpit.v2",
         "requirement_id": "REQ-1",
         "artifact_id": "cockpit-001",
         "title": "Current candidate",
@@ -48,6 +64,14 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path]:
             "path": "docs/workflow.json",
             "sha256": _sha256(workflow_path),
             "required_status": "CONNECTED_READY_FOR_SERIALIZED_HUMAN_REVIEW",
+        },
+        "legacy_task_rejection": {
+            "path": "docs/rejection.json",
+            "sha256": _sha256(rejection_path),
+        },
+        "task_board": {
+            "path": "docs/task_board.json",
+            "sha256": _sha256(task_board_path),
         },
         "candidate": {
             "artifact_id": "candidate-001",
@@ -64,18 +88,14 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path]:
             "from": "WORKFLOW_CONNECTED",
             "to": "REVIEW_READY",
         },
-        "review": {
-            "resolved_decision_units": 15,
-            "item_level_questions": 0,
-            "remaining_human_judgment_count": 1,
-            "question": "Accept whole or bounded revision?",
-            "allowed_outcomes": [
-                {"id": "accept_whole_candidate", "label": "Accept", "meaning": "internal only"},
-                {"id": "bounded_revision", "label": "Revise", "meaning": "exact ranges"},
-            ],
+        "observation_mode": {
+            "status": "OPTIONAL_PARTIAL_OBSERVATION",
+            "whole_acceptance_requested": False,
+            "whole_rejection_requested": False,
+            "mandatory_item_questions": 0,
         },
         "boundaries": {
-            "human_content_acceptance": "pending",
+            "human_content_acceptance": "not_requested_at_this_stage",
             "production_acceptance": False,
             "rights_approval": False,
             "publication_acceptance": False,
@@ -93,7 +113,7 @@ def test_snapshot_and_payload_start_workflow_connected(tmp_path: Path) -> None:
         duration_probe=lambda _path: 12.3,
     )
     payload = cockpit_payload(snapshot, review_url="http://127.0.0.1:8060/final_video.mp4")
-    assert payload["project_state"] == "WORKFLOW_CONNECTED"
+    assert payload["project_state"] == "TASK_BOARD_ACTIVE"
     assert payload["candidate"]["observed_byte_size"] == 128
     assert payload["workflow"]["resolved_decision_units"] == 15
     assert payload["workflow"]["item_level_questions_reemitted"] == 0
@@ -129,12 +149,12 @@ def test_transition_writes_review_ready_without_acceptance(tmp_path: Path) -> No
         review_url="http://127.0.0.1:8060/final_video.mp4",
         route_validator=lambda _url: {"http_status": 206, "bytes_read": 32, "content_range": "bytes 0-31/128"},
     )
-    assert state["status"] == "REVIEW_READY"
-    assert state["human_judgment"]["status"] == "PENDING_NOT_SELECTED"
-    assert state["human_judgment"]["selected_outcome"] is None
+    assert state["status"] == "ARTIFACT_ROUTE_READY"
+    assert state["legacy_task"]["status"] == "REJECTED_LEGACY_TASK_SETTING"
+    assert state["legacy_task"]["human_gate_count"] == 0
     assert state["boundaries"]["production_acceptance"] is False
     payload = cockpit_payload(snapshot, review_url="http://127.0.0.1:8060/final_video.mp4")
-    assert payload["project_state"] == "REVIEW_READY"
+    assert payload["project_state"] == "TASK_BOARD_ACTIVE"
 
 
 def test_snapshot_rejects_reemitted_item_questions(tmp_path: Path) -> None:
@@ -154,57 +174,36 @@ def test_snapshot_rejects_reemitted_item_questions(tmp_path: Path) -> None:
         )
 
 
-def test_snapshot_accepts_resolved_current_basis_without_reopening_items(
-    tmp_path: Path,
-) -> None:
+def test_snapshot_rejects_task_board_without_ten_unique_tasks(tmp_path: Path) -> None:
     root, config_path = _fixture(tmp_path)
     config = json.loads(config_path.read_text(encoding="utf-8"))
-    workflow_path = root / config["workflow_receipt"]["path"]
-    workflow = json.loads(workflow_path.read_text(encoding="utf-8"))
-    workflow["status"] = "CONNECTED_CURRENT_BASIS_ADOPTED"
-    workflow["human_judgment"].update(
-        {
-            "remaining_count": 0,
-            "status": "RESOLVED_ACCEPT_WHOLE_CANDIDATE",
-            "selected_outcome": "accept_whole_candidate",
-        }
-    )
-    workflow_path.write_text(json.dumps(workflow), encoding="utf-8")
-    config["workflow_receipt"]["sha256"] = _sha256(workflow_path)
-    config["workflow_receipt"]["required_status"] = workflow["status"]
-    config["review"].update(
-        {
-            "remaining_human_judgment_count": 0,
-            "status": "RESOLVED_ACCEPT_WHOLE_CANDIDATE",
-            "selected_outcome": "accept_whole_candidate",
-        }
-    )
+    task_board_path = root / config["task_board"]["path"]
+    task_board = json.loads(task_board_path.read_text(encoding="utf-8"))
+    task_board["tasks"] = task_board["tasks"][:9]
+    task_board_path.write_text(json.dumps(task_board), encoding="utf-8")
+    config["task_board"]["sha256"] = _sha256(task_board_path)
     config_path.write_text(json.dumps(config), encoding="utf-8")
-
-    snapshot = load_cockpit_snapshot(
-        repo_root=root,
-        config_path=config_path,
-        duration_probe=lambda _path: 12.3,
-    )
-    payload = cockpit_payload(
-        snapshot, review_url="http://127.0.0.1:8060/final_video.mp4"
-    )
-    assert payload["workflow"]["status"] == "CONNECTED_CURRENT_BASIS_ADOPTED"
-    assert payload["human_judgment"]["remaining_human_judgment_count"] == 0
-    assert payload["human_judgment"]["selected_outcome"] == "accept_whole_candidate"
+    with pytest.raises(ValueError, match="exactly ten unique tasks"):
+        load_cockpit_snapshot(
+            repo_root=root,
+            config_path=config_path,
+            duration_probe=lambda _path: 12.3,
+        )
 
 
-def test_static_surface_exposes_one_non_selecting_gate() -> None:
+def test_static_surface_exposes_task_board_without_whole_gate() -> None:
     repo_root = Path(__file__).resolve().parents[1]
     html = (repo_root / "gui" / "project_cockpit" / "index.html").read_text(encoding="utf-8")
     script = (repo_root / "gui" / "project_cockpit" / "app.js").read_text(encoding="utf-8")
-    assert "残る判断を1件に圧縮" in html
-    assert "ここでは選びません" in html
+    assert "いま進める作業" in html
+    assert "この段階では要求しない" in html
+    assert "task_board.tasks" in script
     assert "payload.workflow.resolved_decision_units" in script
     assert "0 questions revived" in script
-    assert "/api/review-ready" in script
+    assert "window.open(cockpit.candidate.review_url" in script
     assert 'type="radio"' not in html
     assert "accept_whole_candidate" not in html
     assert '<video id="candidate-video" controls muted' in html
     assert "ui.video.volume = 0" in script
     assert "ui.video.pause()" in script
+    assert "Accept whole or bounded revision?" not in html

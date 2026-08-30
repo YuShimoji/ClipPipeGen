@@ -3,20 +3,21 @@ id: idea-ledger
 title: Idea Ledger - ClipPipeGen
 type: durable_idea_ledger
 status: current
-last_touched: 2026-08-12
+last_touched: 2026-08-30
 ---
 
 # Idea Ledger - ClipPipeGen
 
-現在のWiki添削familyは、probe数やcoverageを増やす段階ではなく、同じsource/cut/subtitle/test
-identity上で意味を選び、Episodeへ統合する段階である。以下の候補は別gateを混ぜない。
+旧「全体採用 / bounded revision」ゲートは設定不良としてレガシー化した。現在のWiki添削familyは、
+335.3秒fixtureを全体採否せず、部分観察と独立作業を並行しながらEpisode統合へ進む。以下の入口は
+同じ`ED-13R-*` task identityでCockpitとFrontierBoardへ投影し、別gateを混ぜない。
 
 | 入口 | 解くbottleneck | 必要条件 | 現在状態 | 次の動き |
 |---|---|---|---|---|
-| Review proof set | openingとendpointの意味判断 | portable packet、loopback review、exact MP4 SHA | ready | human/editorがsemantic routeを選ぶかbounded repairを返す |
-| Subtitle bounded repair | timing・改行・可読性の局所問題 | 選択routeと具体的な観察 | conditional | material/cutを変えずnew identityで修復 |
-| Causal successor | source/cut/subtitle/testを一つの編集単位へ上げる | semantic route verdict | blocked on verdict | 採用された次元だけrender-ready inputへ反映 |
-| Parent full-1x | 338.166016秒全体の知覚評価 | queued human review | queued | short proofで代替せず別gateのまま実施 |
+| Temporary task surface | 全体採否ゲートがProjectを止める | correction receipt、10 task IDs | active | CockpitとFrontierBoardを同じtask identityで読む |
+| Partial observation | 長尺動画の局所的な気づきを残す | exact MP4 SHA、任意のoutput range | planned | 採否ではなく観察・不確実性・任意修正案を記録する |
+| Optional navigation | 335秒を迷わず移動する | 既存8 navigation partitions | planned | 承認単位や質問にせず表示anchorだけを追加する |
+| Workflow readback | legacy gateを前提にした状態表示 | rejection receipt | planned | DecisionCaseとartifact readbackを非blocking化する |
 | Episode 1 integrated cut | CU-01→CU-02→CU-03を一続きにする | `Ocqg-RpQURY` 390–585秒exact media + receipt | exact-source blocked | bytes供給後preflightを再実行 |
 | Rights / production | 利用・delivery品質を決める | selected material、owner verdict | closed | semantic/technical結果から開かない |
 
@@ -30,7 +31,7 @@ identity上で意味を選び、Episodeへ統合する段階である。以下�
 
 ## 次の取っ掛かり
 
-- **Review**: portable proofをtimestamp jumpで比較し、openingとendpointの二判断を返す。
-- **Advance**: verdict後、選択次元だけをnon-overwriting causal successorへ反映する。
+- **Advance**: `ED-13R-03`〜`08`を順に進め、判断待ちではないProject作業を閉じる。
+- **Review**: 必要な区間だけを開き、採否ではなく観察・不確実性・任意修正案を残す。
 - **Verify**: 別端末でZIP外manifest、ZIP member closure、HTTP 200 / Range 206を再確認する。
 - **Unblock**: Episode 1用CU-02 exact source bytesとreceiptを明示供給する。

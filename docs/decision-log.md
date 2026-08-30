@@ -3,12 +3,23 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-08-25
+last_touched: 2026-08-30
 ---
 
 # Decision Log - ClipPipeGen
 
-## 2026-08-30 — 修正終端artifactをexact current basisとして採用
+## 2026-08-30 — 全体採否タスクを設定不良としてリジェクトし、レガシー化する
+
+335.3秒artifactについて、全体採用または一件のbounded revisionを必須のHuman Gateとして
+他のProject作業を止める契約を廃止した。現在はartifact単位の採用・非採用段階ではなく、必要なら
+部分ごとの観察だけが可能である。旧packetとreceiptは監査履歴として残し、append-only correction
+`clip-335s-whole-gate-rejection-v1-001`がそれらの現行解釈をsupersedeする。
+
+後継はChoiceではなく、`ED-13R-01`から`ED-13R-10`までのProject作業である。Project-local task boardを
+正本にし、CockpitとFrontierBoardは同じtask IDを表示する一時projectionとして使う。動画再生成、
+Choice/selection/history変更、rights、production、publication、uploadはこの判断から開かない。
+
+## 2026-08-30 — legacy record: 修正終端artifactをexact current basisとして採用
 
 ユーザー明示文「修正後の終端artifactを現行基準として採用する判断でよい」を、
 `clip-wiki-selected-opening-current-basis-v1-001`、SHA

@@ -26,17 +26,17 @@
   "current_focus": {
     "feature_id": "ED-13",
     "artifact_id": "clip-wiki-selected-opening-current-basis-v1-001",
-    "state": "EDITORIAL_CALIBRATION_PASS_335_WHOLE_REVIEW_READY_EP1_SOURCE_GATE_PARKED",
-    "title": "Wiki selected-opening current-basis internal candidate",
+    "state": "WHOLE_GATE_REJECTED_TASK_BOARD_ACTIVE_EP1_SOURCE_GATE_PARKED",
+    "title": "ED-13 recovery task board with retained 335s calibration fixture",
     "active_branch": "codex/wiki-tensaku-longform-family-v1",
-    "phase": "editorial_production_workflow_connected_whole_review_serialized",
+    "phase": "temporary_project_task_surface_active",
     "canonical_main_head": "refs/heads/main",
     "canonical_main_baseline": "OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
-    "canonical_status": "calibrated_decisions_consumed_one_human_content_gate_production_authority_closed",
-    "review_status": "INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING",
-    "human_entrypoint": "FrontierBoard successor review after portable media registration",
-    "review_open_command": "open through the FrontierBoard video review resolver after registration",
-    "review_server_restart_command": "",
+    "canonical_status": "whole_candidate_gate_rejected_partial_observation_optional_project_work_continues",
+    "review_status": "WHOLE_ACCEPTANCE_NOT_REQUESTED_PARTIAL_OBSERVATION_OPTIONAL",
+    "human_entrypoint": "optional_partial_observation_only_no_whole_acceptance_requested",
+    "review_open_command": "npm run cockpit",
+    "review_server_restart_command": "uvx python -m src.cli.main serve-project-cockpit --cockpit-port 8061 --review-port 8060",
     "machine_readback": "package/successor_receipt.json",
     "remote_code_complete": "false",
     "remote_decision_binding_available": "false",
@@ -68,9 +68,9 @@
     "local_artifact_evidence_receipt": "episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-integrated-subtitle-cut-proof-continuation-v1/package/proof_set_receipt.json",
     "handoff": "docs/CURRENT_HANDOFF.md",
     "last_verified_at": "2026-07-27T20:10:59+09:00",
-    "decision_required": "one_whole_candidate_accept_or_bounded_revision_queued_behind_existing_board_choice_7",
-    "next_review_action_type": "after_choice_7_serialization",
-    "next_action": "hold_single_335s_content_gate_until_choice_7_serialization_clears",
+    "decision_required": "none_whole_candidate_task_rejected",
+    "next_review_action_type": "optional_partial_observation_only",
+    "next_action": "ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation",
     "source_metadata": "docs/RUNTIME_STATE.md"
   },
   "open_surfaces": [
@@ -82,9 +82,9 @@
     },
     {
       "label": "ED-13 Current Focus",
-      "command": "open through the FrontierBoard video review resolver after registration",
-      "target": "FrontierBoard successor review after portable media registration",
-      "when_to_use": "hold_single_335s_content_gate_until_choice_7_serialization_clears"
+      "command": "npm run cockpit",
+      "target": "optional_partial_observation_only_no_whole_acceptance_requested",
+      "when_to_use": "ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation"
     },
     {
       "label": "Artifacts",
@@ -381,9 +381,31 @@
       "status": "done",
       "health": "stable",
       "progress_pct": 100,
-      "active_artifact": "clip-editorial-production-workflow-connection-v1-001",
+      "active_artifact": "clip-335s-whole-gate-rejection-v1-001",
       "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "build-editorial-production-workflow validates the mixed 7 KEEP / 1 DROP / 7 HOLD_REUSABLE calibration, exact OUT-13 accepted authority, and 335.3-second whole-review packet, then emits clip-editorial-production-workflow...",
+      "summary_excerpt": "Historical calibration remains valid as evidence for 7 KEEP / 1 DROP / 7 HOLD_REUSABLE and zero re-emitted item questions. Its later whole-or-bounded gate interpretation is superseded by clip-335s-whole-gate-rejection-v...",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-13b",
+      "title": "Exact-artifact Project Cockpit review entrance",
+      "status": "successor-lane",
+      "health": "superseded",
+      "progress_pct": 100,
+      "active_artifact": "",
+      "next_action": "The v1 openability proof and exact Range route remain evidence. Its one-human-gate presentation is legacy and is replac...",
+      "summary_excerpt": "The v1 openability proof and exact Range route remain evidence. Its one-human-gate presentation is legacy and is replaced by ED-13c without deleting the old receipt or ignored review state.",
+      "source_path": "docs/FEATURE_REGISTRY.md"
+    },
+    {
+      "id": "ED-13c",
+      "title": "Temporary Project task surface",
+      "status": "in_progress",
+      "health": "active",
+      "progress_pct": 70,
+      "active_artifact": "",
+      "next_action": "Finish current acceptance/readback and update artifact registry.",
+      "summary_excerpt": "Cockpit v2 binds the exact 335.3-second calibration fixture, append-only legacy-task rejection, and ten stable ED-13R task IDs. It exposes a direct muted video route and optional partial observation context, never whole...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1639,35 +1661,14 @@
       "next_action": "Keep as reference unless a regression or successor lane appears.",
       "summary_excerpt": "GUI 縺ｫ Preview Pack tab 繧定ｿｽ蜉縲よ里蟄・episode directory 縺ｾ縺溘・ preview_manifest.json 繧定ｪｭ縺ｿ縲［anifest validation縲ヾtatus Summary縲．ecision Warnings縲、rtifact Links 繧・read-only 陦ｨ遉ｺ縺吶ｋ縲・UI 縺九ｉ build / fetch / render / upload 縺ｯ螳...",
       "source_path": "docs/FEATURE_REGISTRY.md"
-    },
-    {
-      "id": "SH-05d",
-      "title": "source-audio preview bridge",
-      "status": "done",
-      "health": "stable",
-      "progress_pct": 100,
-      "active_artifact": "",
-      "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "build-local-preview-pack --use-existing-source-audio 繧定ｿｽ蜉縺励！NT-02e 縺ｪ縺ｩ縺ｧ蜿門ｾ玲ｸ医∩縺ｮ source.wav / fetch_receipt.json / sidecar.json / material_ledger.json 繧貞・ download 縺ｪ縺励〒 local preview pack 縺ｮ review surface / previ...",
-      "source_path": "docs/FEATURE_REGISTRY.md"
-    },
-    {
-      "id": "SH-06",
-      "title": "Non-Repo Artifact Handoff",
-      "status": "done",
-      "health": "stable",
-      "progress_pct": 100,
-      "active_artifact": "",
-      "next_action": "Keep as reference unless a regression or successor lane appears.",
-      "summary_excerpt": "build-non-repo-handoff CLI 縺ｨ src/pipeline/non_repo_artifact_handoff.py 繧定ｿｽ蜉縲３3 縺ｮ diagnostic rendered_video.mp4 繧・Git 縺ｫ蜈･繧後★縲〕ocal path / size / sha256 / source identity / generation command / dependency artifacts /...",
-      "source_path": "docs/FEATURE_REGISTRY.md"
     }
   ],
   "feature_summary": {
     "feature_count": 120,
     "status_counts": {
-      "done": 107,
-      "in_progress": 2,
+      "done": 105,
+      "in_progress": 3,
+      "successor-lane": 1,
       "proposed": 10,
       "approved": 1
     }
@@ -1676,9 +1677,19 @@
     {
       "artifact_id": "clip-editorial-production-workflow-connection-v1-001",
       "title": "",
-      "purpose": "Consume calibrated editorial authority in the current production review workflow without recreating 15 item-level questions.",
+      "purpose": "Retain the exact artifact and Range review entrance while showing that the current-basis judgment is resolved without reviving 15 item questions.",
       "storage_class": "",
       "repo_relative_path": "docs/output_layer/clip_editorial_production_workflow_connection_v1.json",
+      "open_command": "",
+      "review_status": "",
+      "next_action": ""
+    },
+    {
+      "artifact_id": "clip-335s-current-basis-adoption-v1-001",
+      "title": "",
+      "purpose": "Preserve the user's already-given current-basis decision as append-only Project-local authority for one exact artifact.",
+      "storage_class": "",
+      "repo_relative_path": "",
       "open_command": "",
       "review_status": "",
       "next_action": ""
@@ -2627,6 +2638,7 @@
   "artifact_summary": {
     "artifact_ids": [
       "clip-editorial-production-workflow-connection-v1-001",
+      "clip-335s-current-basis-adoption-v1-001",
       "clip-wiki-selected-opening-current-basis-v1-001",
       "wiki-tensaku-content-reframe-v1-001",
       "clip-wiki-tensaku-ep1-integrated-rough-cut-preflight-v1-001",
@@ -2722,20 +2734,22 @@
       "clip-docs-dashboard-001",
       "clip-subtitle-font-candidate-sweep-001"
     ],
-    "artifact_count": 95
+    "artifact_count": 96
   },
   "artifact_coverage": {
-    "registered_artifact_count": 95,
-    "features_with_artifact_count": 53,
+    "registered_artifact_count": 96,
+    "features_with_artifact_count": 52,
     "current_focus_artifact_registered": true,
-    "missing_registered_artifact_mentions": []
+    "missing_registered_artifact_mentions": [
+      "ED-13a"
+    ]
   },
   "next_review_items": [
     {
       "item": "ED-13 current focus",
       "artifact": "clip-wiki-selected-opening-current-basis-v1-001",
-      "question": "Wiki selected-opening current-basis internal candidate",
-      "next_route": "hold_single_335s_content_gate_until_choice_7_serialization_clears"
+      "question": "ED-13 recovery task board with retained 335s calibration fixture",
+      "next_route": "ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation"
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2964,7 +2978,7 @@
     {
       "path": "README.md",
       "title": "ClipPipeGen",
-      "line_count": 297,
+      "line_count": 305,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2972,7 +2986,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 88,
+      "boundary_term_count": 90,
       "status": "contains_done_history"
     },
     {
@@ -2992,19 +3006,19 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 3158,
+      "line_count": 3181,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "active",
-        "health": "EDITORIAL_CALIBRATION_PASS_335_WHOLE_REVIEW_READY_EP1_SOURCE_GATE_PARKED",
-        "last_touched": "2026-08-25",
-        "state_revision": "wiki-editorial-production-workflow-connected-v1-2026-08-25",
+        "health": "WHOLE_GATE_REJECTED_TASK_BOARD_ACTIVE_EP1_SOURCE_GATE_PARKED",
+        "last_touched": "2026-08-30",
+        "state_revision": "ed13-recovery-task-board-v1-2026-08-30",
         "contract_repair_status": "out13_v4_preserved_windows_reparse_point_detection_added",
         "current_slice": "ED-13",
-        "phase": "editorial_production_workflow_connected_whole_review_serialized",
-        "canonical_status": "calibrated_decisions_consumed_one_human_content_gate_production_authority_closed",
+        "phase": "temporary_project_task_surface_active",
+        "canonical_status": "whole_candidate_gate_rejected_partial_observation_optional_project_work_continues",
         "active_branch": "codex/wiki-tensaku-longform-family-v1",
         "source_branch": "codex/wiki-tensaku-longform-family-v1",
         "development_baseline_main_revision": "5bd6e65318df129bebc87291c2ae733f143ed8d8",
@@ -3023,7 +3037,7 @@
         "m5_verification_tree_locator": "refs/heads/main^{tree}",
         "closure_branch": "",
         "remote_resume_contract": "fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_current_handoff",
-        "upstream_parity": "3 0 after_three_local_editorial_commits_push_count_zero",
+        "upstream_parity": "4 0 after_four_local_editorial_and_cockpit_commits_push_count_zero",
         "current_slice_push_status": "local_commits_only_push_prohibited_by_mission",
         "sync_audit_head": "c307089a592bb73b6539f801ff32b461dc4a424d",
         "latest_remote_sync_head": "edb782acd1e06aca46e0a5d10295ea52f30ad5c7",
@@ -3037,28 +3051,38 @@
         "sync_audit_live_out09_package": "access_only_repair_present_manifest_and_video_hashes_match",
         "historical_r3_reviewability_at_sync": "review_ready",
         "sync_audit_report": "docs/SUPERVISOR_STATUS_REPORT.md",
-        "current_title": "Wiki selected-opening current-basis internal candidate",
-        "human_entrypoint": "FrontierBoard successor review after portable media registration",
+        "current_title": "ED-13 recovery task board with retained 335s calibration fixture",
+        "human_entrypoint": "optional_partial_observation_only_no_whole_acceptance_requested",
         "portable_entrypoint": "package/final_video.mp4 plus package/successor_receipt.json",
-        "review_open_command": "open through the FrontierBoard video review resolver after registration",
-        "review_server_restart_command": "",
+        "review_open_command": "npm run cockpit",
+        "review_server_restart_command": "uvx python -m src.cli.main serve-project-cockpit --cockpit-port 8061 --review-port 8060",
         "machine_readback": "package/successor_receipt.json",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
-        "decision_required": "one_whole_candidate_accept_or_bounded_revision_queued_behind_existing_board_choice_7",
+        "decision_required": "none_whole_candidate_task_rejected",
         "workflow_connection_artifact": "docs/output_layer/clip_editorial_production_workflow_connection_v1.json",
-        "workflow_connection_status": "CONNECTED_READY_FOR_SERIALIZED_HUMAN_REVIEW",
+        "workflow_connection_status": "CONNECTED_CURRENT_BASIS_ADOPTED",
         "workflow_resolved_decision_unit_count": "15",
         "workflow_reemitted_item_question_count": "0",
-        "workflow_remaining_human_judgment_count": "1",
-        "workflow_prompt_emission": "WAIT_UNTIL_NO_COMPETING_CURRENT_CHOICE",
-        "review_status": "INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING",
+        "workflow_remaining_human_judgment_count": "0",
+        "workflow_prompt_emission": "NONE_ALREADY_RESOLVED",
+        "current_basis_adoption_receipt": "docs/output_layer/clip_335s_current_basis_adoption_v1.json",
+        "project_cockpit_artifact": "docs/output_layer/clip_project_cockpit_v2.json",
+        "project_task_board_artifact": "docs/output_layer/clip_ed13_recovery_task_board_v1.json",
+        "whole_gate_rejection_receipt": "docs/output_layer/clip_335s_whole_gate_rejection_v1.json",
+        "project_cockpit_state_receipt": "episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/review/cockpit_task_surface_state_v2.json",
+        "project_cockpit_state": "TASK_BOARD_ACTIVE",
+        "project_cockpit_transition_meaning": "exact_artifact_route_plus_ten_project_tasks_no_whole_gate",
+        "project_cockpit_actual_playback_seconds_observed_minimum": "17.28",
+        "project_cockpit_review_route_range_readback": "HTTP_206_32_BYTES",
+        "project_cockpit_console_errors_or_warnings": "0",
+        "review_status": "WHOLE_ACCEPTANCE_NOT_REQUESTED_PARTIAL_OBSERVATION_OPTIONAL",
         "review_scope": "selected_opening_continuous_candidate_without_next_topic_provider_overlap",
         "reviewed_at": "2026-08-23T17:10:16Z opening_selection_only",
         "m2_review_status": "accepted_internal_exact_media_sha_and_recorded_dimensions",
         "m2_review_scope": "internal_full_view_editorial_visual_review",
         "remote_code_complete": "false",
         "remote_decision_binding_available": "false",
-        "local_decision_binding_committed": "false",
+        "local_decision_binding_committed": "true",
         "remote_mutation_authorized": "false",
         "local_artifact_available": "true",
         "local_artifact_role": "ignored_selected_opening_successor_internal_candidate",
@@ -3110,7 +3134,7 @@
         "subtitle_presentation_timing_status": "provider_json3_102_cues_keifont_two_line_safe_area_pass",
         "endpoint_status": "final_complete_victory_cue_closes_before_post_resolution_tail",
         "reviewed_by_human": "false",
-        "human_review_pending": "true",
+        "human_review_pending": "false",
         "acceptance_granted": "false",
         "editorial_acceptance_granted": "false",
         "acceptance_receipt": "",
@@ -3138,9 +3162,9 @@
         "subtitle_debt_acceptance_scope": "",
         "cover_review_status": "",
         "review_server_status": "stopped_portable_loopback_launcher_available",
-        "next_review_due": "after_choice_7_serialization",
+        "next_review_due": "optional_partial_observation_only",
         "next_review_type": "one_complete_internal_candidate_content_review",
-        "next_action": "hold_single_335s_content_gate_until_choice_7_serialization_clears",
+        "next_action": "ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation",
         "wiki_content_reframe_work_order_id": "CPG-WIKI-CONTENT-REFRAME-001",
         "wiki_content_reframe_artifact_id": "wiki-tensaku-content-reframe-v1-001",
         "wiki_content_reframe_topology": "thematic_episode_family",
@@ -3482,7 +3506,7 @@
         "s1_review_http_status": "200",
         "s1_review_range_status": "206",
         "focused_test_status": "ep1_preflight_4_passed",
-        "full_suite_status": "passed_725_tests_2026_08_25",
+        "full_suite_status": "passed_730_tests_2026_08_25",
         "out13_predecessor_status": "m6_closed_deny_exact_artifact_read_only_archive",
         "out13_human_review_pending": "false",
         "out13_editorial_acceptance_granted": "true",
@@ -3882,7 +3906,7 @@
     {
       "path": "docs/FEATURE_REGISTRY.md",
       "title": "FEATURE_REGISTRY",
-      "line_count": 209,
+      "line_count": 211,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -3890,7 +3914,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 355,
+      "boundary_term_count": 351,
       "status": "in_progress"
     },
     {
@@ -3999,7 +4023,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 3022,
+      "line_count": 3061,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -4007,7 +4031,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 1113,
+      "boundary_term_count": 1117,
       "status": "reference"
     },
     {
@@ -4041,7 +4065,7 @@
     {
       "path": "docs/AUTOMATION_BOUNDARY.md",
       "title": "Automation Boundary",
-      "line_count": 151,
+      "line_count": 152,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -4049,7 +4073,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 73,
+      "boundary_term_count": 75,
       "status": "reference"
     },
     {
@@ -4069,17 +4093,17 @@
     {
       "path": "docs/CURRENT_HANDOFF.md",
       "title": "Current Handoff - ClipPipeGen",
-      "line_count": 840,
+      "line_count": 862,
       "metadata": {
         "id": "current-handoff",
         "title": "Current Handoff - ClipPipeGen",
         "type": "handoff",
         "status": "active",
-        "health": "EDITORIAL_CALIBRATION_PASS_335_WHOLE_REVIEW_READY_EP1_SOURCE_GATE_PARKED",
-        "last_touched": "2026-08-25",
+        "health": "WHOLE_GATE_REJECTED_TASK_BOARD_ACTIVE_EP1_SOURCE_GATE_PARKED",
+        "last_touched": "2026-08-30",
         "current_slice": "ED-13",
-        "phase": "editorial_production_workflow_connected_whole_review_serialized",
-        "canonical_status": "calibrated_decisions_consumed_one_human_content_gate_production_authority_closed",
+        "phase": "temporary_project_task_surface_active",
+        "canonical_status": "whole_candidate_gate_rejected_partial_observation_optional_project_work_continues",
         "active_branch": "codex/wiki-tensaku-longform-family-v1",
         "upstream_branch": "origin/codex/wiki-tensaku-longform-family-v1",
         "base_main_revision": "bafe25afe0d2cad0cfaa0a2bda432b7ac0ef8471",
@@ -4093,27 +4117,37 @@
         "parallel_remote_review_branch": "origin/codex/out14-editorial-presentation-v3",
         "parallel_remote_review_revision": "06975b0e5edab2faed585fd7f5e82d9c699ec235",
         "remote_resume_contract": "fetch_then_switch_tracking_branch_then_ff_only_pull_then_read_this_file",
-        "current_title": "Calibrated editorial production workflow for selected-opening candidate",
-        "human_entrypoint": "FrontierBoard successor review after portable media registration",
+        "current_title": "ED-13 recovery task board with retained 335s calibration fixture",
+        "human_entrypoint": "optional_partial_observation_only_no_whole_acceptance_requested",
         "portable_entrypoint": "package/final_video.mp4 plus package/successor_receipt.json",
-        "review_open_command": "open through the FrontierBoard video review resolver after registration",
-        "review_server_restart_command": "",
+        "review_open_command": "npm run cockpit",
+        "review_server_restart_command": "uvx python -m src.cli.main serve-project-cockpit --cockpit-port 8061 --review-port 8060",
         "machine_readback": "package/successor_receipt.json",
-        "decision_required": "one_whole_candidate_accept_or_bounded_revision_queued_behind_existing_board_choice_7",
+        "decision_required": "none_whole_candidate_task_rejected",
         "workflow_connection_artifact": "docs/output_layer/clip_editorial_production_workflow_connection_v1.json",
-        "workflow_connection_status": "CONNECTED_READY_FOR_SERIALIZED_HUMAN_REVIEW",
+        "workflow_connection_status": "CONNECTED_CURRENT_BASIS_ADOPTED",
         "workflow_resolved_decision_unit_count": "15",
         "workflow_reemitted_item_question_count": "0",
-        "workflow_remaining_human_judgment_count": "1",
-        "workflow_prompt_emission": "WAIT_UNTIL_NO_COMPETING_CURRENT_CHOICE",
-        "review_status": "INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING",
+        "workflow_remaining_human_judgment_count": "0",
+        "workflow_prompt_emission": "NONE_ALREADY_RESOLVED",
+        "current_basis_adoption_receipt": "docs/output_layer/clip_335s_current_basis_adoption_v1.json",
+        "project_cockpit_artifact": "docs/output_layer/clip_project_cockpit_v2.json",
+        "project_task_board_artifact": "docs/output_layer/clip_ed13_recovery_task_board_v1.json",
+        "whole_gate_rejection_receipt": "docs/output_layer/clip_335s_whole_gate_rejection_v1.json",
+        "project_cockpit_state_receipt": "episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/review/cockpit_task_surface_state_v2.json",
+        "project_cockpit_state": "TASK_BOARD_ACTIVE",
+        "project_cockpit_transition_meaning": "exact_artifact_route_plus_ten_project_tasks_no_whole_gate",
+        "project_cockpit_actual_playback_seconds_observed_minimum": "17.28",
+        "project_cockpit_review_route_range_readback": "HTTP_206_32_BYTES",
+        "project_cockpit_console_errors_or_warnings": "0",
+        "review_status": "WHOLE_ACCEPTANCE_NOT_REQUESTED_PARTIAL_OBSERVATION_OPTIONAL",
         "remote_code_complete": "false",
         "local_artifact_available": "true",
         "local_artifact_role": "ignored_selected_opening_successor_internal_candidate",
         "portable_local_artifact_available": "true",
         "cross_machine_resume_class": "tracked_context_plus_separate_project_zip_required_for_review_media",
         "active_artifact": "clip-wiki-selected-opening-current-basis-v1-001",
-        "active_artifact_state": "INTERNAL_CANDIDATE_TECHNICALLY_COMPLETE_HUMAN_CONTENT_REVIEW_PENDING",
+        "active_artifact_state": "TECHNICAL_CALIBRATION_FIXTURE_PARTIAL_OBSERVATION_OPTIONAL",
         "active_artifact_repo_relative_path": "episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/package",
         "active_artifact_manifest_sha256": "null_successor_receipt_and_exact_media_hash_are_current_identity",
         "active_artifact_manifest_payload_count": "7",
@@ -4179,8 +4213,8 @@
         "s1_review_http_status": "200",
         "s1_review_range_status": "206",
         "focused_test_status": "workflow_mixed_whole_and_builder_focused_tests_passed",
-        "full_suite_status": "passed_725_tests_2026_08_25",
-        "human_review_pending": "true",
+        "full_suite_status": "passed_730_tests_2026_08_25",
+        "human_review_pending": "false",
         "full_video_calibration_artifact": "docs/output_layer/clip_full_video_editorial_calibration_v1.json",
         "full_video_calibration_decision_unit_count": "8",
         "full_video_calibration_keep_unit_count": "8",
@@ -4198,8 +4232,8 @@
         "mixed_editorial_calibration_eliminated_question_count": "15",
         "mixed_editorial_calibration_production_scale_result": "PASS",
         "whole_content_review_artifact": "docs/output_layer/clip_335s_whole_content_review_v1.json",
-        "whole_content_review_remaining_human_judgment_count": "1",
-        "frontierboard_open_choice_preserved": "Project13_ChoiceSet7_revision1",
+        "whole_content_review_remaining_human_judgment_count": "0",
+        "frontierboard_choice_readback": "Project13_ChoiceSet7_revision2_option18_selection5_awaitingUser0_read_only",
         "rights_approval": "readback_unresolved",
         "production_acceptance": "false",
         "public_use": "false",
@@ -4449,10 +4483,10 @@
         "out13_m6_packet": "docs/rights/out13_m6_rights_decision_readiness_packet.json",
         "out13_public_use_verdict": "deny",
         "out13_monetized_youtube_verdict": "deny",
-        "next_review_due": "after_choice_7_serialization",
-        "next_action": "hold_single_335s_content_gate_until_choice_7_serialization_clears",
+        "next_review_due": "optional_partial_observation_only",
+        "next_action": "ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
-        "upstream_parity": "3 0 after_three_local_editorial_commits_push_count_zero",
+        "upstream_parity": "4 0 after_four_local_editorial_and_cockpit_commits_push_count_zero",
         "current_slice_push_status": "local_commit_only_push_prohibited_by_mission",
         "source_of_truth": "true",
         "owner_lane": "editing_ep1_integrated_preflight",
@@ -4464,7 +4498,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 104,
+      "boundary_term_count": 105,
       "status": "active"
     },
     {
@@ -4484,13 +4518,13 @@
     {
       "path": "docs/decision-log.md",
       "title": "Decision Log - ClipPipeGen",
-      "line_count": 560,
+      "line_count": 583,
       "metadata": {
         "id": "decision-log",
         "title": "Decision Log - ClipPipeGen",
         "type": "durable_decision_log",
         "status": "current",
-        "last_touched": "2026-08-25"
+        "last_touched": "2026-08-30"
       },
       "front_sections": {
         "what_it_is": false,
@@ -4498,7 +4532,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 132,
+      "boundary_term_count": 137,
       "status": "current"
     },
     {
@@ -4574,13 +4608,13 @@
     {
       "path": "docs/idea-ledger.md",
       "title": "Idea Ledger - ClipPipeGen",
-      "line_count": 36,
+      "line_count": 37,
       "metadata": {
         "id": "idea-ledger",
         "title": "Idea Ledger - ClipPipeGen",
         "type": "durable_idea_ledger",
         "status": "current",
-        "last_touched": "2026-08-12"
+        "last_touched": "2026-08-30"
       },
       "front_sections": {
         "what_it_is": false,
@@ -4588,7 +4622,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 2,
+      "boundary_term_count": 3,
       "status": "current"
     },
     {
@@ -4692,19 +4726,19 @@
     {
       "path": "docs/project-context.md",
       "title": "Project Context - ClipPipeGen",
-      "line_count": 104,
+      "line_count": 130,
       "metadata": {
         "id": "project-context",
         "title": "Project Context - ClipPipeGen",
         "type": "durable_context",
         "status": "current",
-        "last_touched": "2026-08-25",
+        "last_touched": "2026-08-30",
         "current_slice": "ED-13",
-        "phase": "editorial_production_workflow_connected_whole_review_serialized",
+        "phase": "temporary_project_task_surface_active",
         "active_branch": "codex/wiki-tensaku-longform-family-v1",
         "sync_observed_head": "51291010753563f038a5b4ae30d1b7c63dccf76d",
         "upstream_parity": "3 0 after_three_local_editorial_commits_push_count_zero",
-        "health": "EDITORIAL_CALIBRATION_PASS_335_WHOLE_REVIEW_READY_EP1_SOURCE_GATE_PARKED"
+        "health": "WHOLE_GATE_REJECTED_TASK_BOARD_ACTIVE_EP1_SOURCE_GATE_PARKED"
       },
       "front_sections": {
         "what_it_is": false,
@@ -4712,7 +4746,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 17,
+      "boundary_term_count": 18,
       "status": "current"
     },
     {
@@ -4897,8 +4931,8 @@
     }
   ],
   "doc_health": {
-    "finding_count": 31,
-    "finding_total": 31,
+    "finding_count": 32,
+    "finding_total": 32,
     "finding_limit": 50,
     "findings_truncated": false,
     "findings": [
@@ -4911,13 +4945,13 @@
       {
         "type": "over_guarded",
         "path": "README.md",
-        "detail": "Boundary terms appear 88 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 90 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (3158 lines) is likely carrying history.",
+        "detail": "Long active doc (3181 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -4929,7 +4963,7 @@
       {
         "type": "over_guarded",
         "path": "docs/FEATURE_REGISTRY.md",
-        "detail": "Boundary terms appear 355 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 351 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -4947,13 +4981,13 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (3022 lines) is likely carrying history.",
+        "detail": "Long active doc (3061 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Boundary terms appear 1113 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 1117 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -4965,7 +4999,7 @@
       {
         "type": "over_guarded",
         "path": "docs/AUTOMATION_BOUNDARY.md",
-        "detail": "Boundary terms appear 73 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 75 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -4977,13 +5011,13 @@
       {
         "type": "stale",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Long active doc (840 lines) is likely carrying history.",
+        "detail": "Long active doc (862 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "docs/CURRENT_HANDOFF.md",
-        "detail": "Boundary terms appear 104 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 105 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -4995,13 +5029,13 @@
       {
         "type": "stale",
         "path": "docs/decision-log.md",
-        "detail": "Long active doc (560 lines) is likely carrying history.",
+        "detail": "Long active doc (583 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
         "type": "over_guarded",
         "path": "docs/decision-log.md",
-        "detail": "Boundary terms appear 132 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 137 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
@@ -5050,6 +5084,12 @@
         "type": "over_guarded",
         "path": "docs/PREVIEW_PACK.md",
         "detail": "Boundary terms appear 44 times without a front Constraints / Risks section.",
+        "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
+      },
+      {
+        "type": "over_guarded",
+        "path": "docs/project-context.md",
+        "detail": "Boundary terms appear 18 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {

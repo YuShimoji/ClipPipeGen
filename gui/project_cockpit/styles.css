@@ -53,10 +53,12 @@ video { width: 100%; height: 100%; display: block; }
 dt { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 5px; }
 dd { margin: 0; font: 12px/1.45 Consolas, monospace; overflow-wrap: anywhere; }
 .question { font-size: 19px; line-height: 1.45; margin: 22px 0; }
-.decision-options { display: grid; gap: 10px; }
-.decision-option { border: 1px solid var(--line); padding: 14px; display: grid; gap: 6px; }
-.decision-option strong { color: var(--blue); }
-.decision-option span, .guardrail { color: var(--muted); font-size: 13px; line-height: 1.55; }
+.task-list { display: grid; gap: 8px; max-height: 550px; overflow: auto; }
+.task-item { border: 1px solid var(--line); padding: 12px; display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; }
+.task-item div { display: grid; gap: 5px; }
+.task-item strong { color: var(--blue); font-size: 13px; }
+.task-item span, .guardrail { color: var(--muted); font-size: 12px; line-height: 1.5; }
+.task-item em { color: var(--accent); font: 10px/1.2 Consolas, monospace; text-transform: uppercase; font-style: normal; }
 .guardrail { border-left: 2px solid var(--warning); padding-left: 12px; margin: 18px 0; }
 .calibration-readback { border-top: 1px solid var(--line); padding-top: 17px; display: grid; gap: 5px; }
 .calibration-readback span, .calibration-readback small { color: var(--muted); }

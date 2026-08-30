@@ -3,13 +3,13 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: EDITORIAL_CALIBRATION_PASS_335_CURRENT_BASIS_ADOPTED_EP1_SOURCE_GATE_PARKED
+health: WHOLE_GATE_REJECTED_TASK_BOARD_ACTIVE_EP1_SOURCE_GATE_PARKED
 last_touched: 2026-08-30
-state_revision: wiki-335-current-basis-adopted-v1-2026-08-30
+state_revision: ed13-recovery-task-board-v1-2026-08-30
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: ED-13
-phase: exact_artifact_current_basis_adopted
-canonical_status: exact_artifact_internal_content_editorial_current_basis_adopted_no_human_prompt_pending
+phase: temporary_project_task_surface_active
+canonical_status: whole_candidate_gate_rejected_partial_observation_optional_project_work_continues
 active_branch: codex/wiki-tensaku-longform-family-v1
 source_branch: codex/wiki-tensaku-longform-family-v1
 development_baseline_main_revision: 5bd6e65318df129bebc87291c2ae733f143ed8d8
@@ -42,14 +42,14 @@ sync_audit_live_out08_package: historical_accepted_package_untouched
 sync_audit_live_out09_package: access_only_repair_present_manifest_and_video_hashes_match
 historical_r3_reviewability_at_sync: review_ready
 sync_audit_report: docs/SUPERVISOR_STATUS_REPORT.md
-current_title: Wiki selected-opening current-basis internal candidate
-human_entrypoint: none_current_basis_decision_already_bound
+current_title: ED-13 recovery task board with retained 335s calibration fixture
+human_entrypoint: optional_partial_observation_only_no_whole_acceptance_requested
 portable_entrypoint: package/final_video.mp4 plus package/successor_receipt.json
 review_open_command: npm run cockpit
 review_server_restart_command: uvx python -m src.cli.main serve-project-cockpit --cockpit-port 8061 --review-port 8060
 machine_readback: package/successor_receipt.json
 current_handoff: docs/CURRENT_HANDOFF.md
-decision_required: none_for_current_335s_basis
+decision_required: none_whole_candidate_task_rejected
 workflow_connection_artifact: docs/output_layer/clip_editorial_production_workflow_connection_v1.json
 workflow_connection_status: CONNECTED_CURRENT_BASIS_ADOPTED
 workflow_resolved_decision_unit_count: 15
@@ -57,14 +57,16 @@ workflow_reemitted_item_question_count: 0
 workflow_remaining_human_judgment_count: 0
 workflow_prompt_emission: NONE_ALREADY_RESOLVED
 current_basis_adoption_receipt: docs/output_layer/clip_335s_current_basis_adoption_v1.json
-project_cockpit_artifact: docs/output_layer/clip_project_cockpit_v1.json
-project_cockpit_state_receipt: episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/review/cockpit_review_state_v1.json
-project_cockpit_state: REVIEW_READY
-project_cockpit_transition_meaning: exact_artifact_openability_and_project_owned_review_route_only
+project_cockpit_artifact: docs/output_layer/clip_project_cockpit_v2.json
+project_task_board_artifact: docs/output_layer/clip_ed13_recovery_task_board_v1.json
+whole_gate_rejection_receipt: docs/output_layer/clip_335s_whole_gate_rejection_v1.json
+project_cockpit_state_receipt: episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/review/cockpit_task_surface_state_v2.json
+project_cockpit_state: TASK_BOARD_ACTIVE
+project_cockpit_transition_meaning: exact_artifact_route_plus_ten_project_tasks_no_whole_gate
 project_cockpit_actual_playback_seconds_observed_minimum: 17.28
 project_cockpit_review_route_range_readback: HTTP_206_32_BYTES
 project_cockpit_console_errors_or_warnings: 0
-review_status: ACCEPTED_EXACT_ARTIFACT_INTERNAL_CONTENT_EDITORIAL_CURRENT_BASIS_ONLY
+review_status: WHOLE_ACCEPTANCE_NOT_REQUESTED_PARTIAL_OBSERVATION_OPTIONAL
 review_scope: selected_opening_continuous_candidate_without_next_topic_provider_overlap
 reviewed_at: 2026-08-23T17:10:16Z opening_selection_only
 m2_review_status: accepted_internal_exact_media_sha_and_recorded_dimensions
@@ -123,7 +125,7 @@ content_selection_status: jp_pilot01_provider_caption_evidence_explicit_seven_cu
 subtitle_presentation_timing_status: provider_json3_102_cues_keifont_two_line_safe_area_pass
 endpoint_status: final_complete_victory_cue_closes_before_post_resolution_tail
 reviewed_by_human: false
-human_review_pending: true
+human_review_pending: false
 acceptance_granted: false
 editorial_acceptance_granted: false
 acceptance_receipt: null
@@ -151,9 +153,9 @@ winner: null
 subtitle_debt_acceptance_scope: null
 cover_review_status: null
 review_server_status: stopped_portable_loopback_launcher_available
-next_review_due: after_choice_7_serialization
+next_review_due: optional_partial_observation_only
 next_review_type: one_complete_internal_candidate_content_review
-next_action: after_choice_7_serialization_use_project_cockpit_for_one_whole_or_bounded_content_judgment
+next_action: ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation
 wiki_content_reframe_work_order_id: CPG-WIKI-CONTENT-REFRAME-001
 wiki_content_reframe_artifact_id: wiki-tensaku-content-reframe-v1-001
 wiki_content_reframe_topology: thematic_episode_family
@@ -899,20 +901,20 @@ Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
-## Current Capsule — ED-13 exact-artifact Project Cockpit review entrance
+## Current Capsule — ED-13 temporary Project task surface
 
 - active slice: `ED-13`
 - active artifact: `clip-wiki-selected-opening-current-basis-v1-001`
-- review status: `REVIEW_READY_EXACT_ARTIFACT_OPENABLE_HUMAN_CONTENT_JUDGMENT_PENDING`
+- review status: `WHOLE_ACCEPTANCE_NOT_REQUESTED_PARTIAL_OBSERVATION_OPTIONAL`
 - portable receipt: `package/final_video.mp4 plus package/successor_receipt.json`
 - local artifact role: `ignored_selected_opening_successor_internal_candidate`
-- state: `REVIEW_READY_EXACT_ARTIFACT_OPENABLE_HUMAN_CONTENT_JUDGMENT_PENDING`
+- state: `TASK_BOARD_ACTIVE`
 - source: retained exact `youtube:1AcId5Yja10`; SHA
   `a994228674d0a6756f8747cf6a07b2cc4c4601fdbf98d5ca0bea3ee2f32060e7`
 - source range: `2530.319–2865.599`、335.280秒、gap 0、実編集cut 1
 - output: 25,852,742 bytes、SHA
   `48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951`
-- human review pending: `false` for this exact current-basis internal content/editorial gate
+- human review pending: `false`
 - calibration artifact:
   `docs/output_layer/clip_full_video_editorial_calibration_v1.json`
 - mixed calibration artifact:
@@ -920,7 +922,7 @@ instructions.
 - production workflow receipt:
   `docs/output_layer/clip_editorial_production_workflow_connection_v1.json`
 - project Cockpit authority:
-  `docs/output_layer/clip_project_cockpit_v1.json`
+  `docs/output_layer/clip_project_cockpit_v2.json`
 - same-machine REVIEW_READY receipt:
   `episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/review/cockpit_review_state_v1.json`
 - calibration result: `PASS / CONNECTED_CURRENT_BASIS_ADOPTED`
@@ -937,8 +939,8 @@ current-basis契約修復であり、人間content acceptance、rights、product
 335.3秒全体を8つのmeaningful decision unitとして再構成した。8 unitはすべてcurrent edit内の
 `KEEP`だが、これは8件のhuman acceptanceではない。実編集cutは1で、7つの内部境界はsourceを
 省略しないnavigation partitionである。opening、endpoint、8件のitem-level採否、字幕timingの
-計11質問を既存authority/evidence/ruleへ圧縮し、残るhuman判断はwhole-candidateの
-`accept / bounded revise`一件だけとした。このMissionではChoiceを発行していない。
+計11質問を既存authority/evidence/ruleへ圧縮した。whole-candidateの
+`accept / bounded revise`を必須にする後続設定はリジェクト済みで、このMissionではChoiceを発行していない。
 
 現行packageにはcaption readback item 96件に対しtimeline caption参照97件、dangling
 `caption_0097`一件がある。MP4 hash、size、duration、full decode、endpointは一致するため現行
@@ -966,15 +968,14 @@ Episode 1本線のCU-02 `youtube:Ocqg-RpQURY` 390–585秒exact media/receipt ga
 
 ## Next Action
 
-- action: `retain_exact_current_basis_until_separately_authorized_bounded_revision_or_next_project_mission`
+- action: `ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation`
 - first files: `README.md` → `docs/RUNTIME_STATE.md` → `docs/CURRENT_HANDOFF.md`
 - first checks: exact calibration JSON、validator、Git branch/HEAD/upstream parity、
   `git ls-files episodes`が0、successor receipt、MP4 size/SHA
 - workflow receipt: `uvx python -m src.cli.main build-editorial-production-workflow --format json`で
   current-basis adoptionとtracked inputsを再検証できる。15 unitを個別質問へ戻さない。
 - project entry: 必要なread-only再確認時だけ`npm run cockpit`でexact media/receiptを照合する。
-- human decision: current 335.3秒basisには残っていない。新しいbounded revision要望が明示された場合だけ
-  そのexact rangeと理由を別権限として扱う。
+- observation: 必要な区間だけを観察できるが、全体採用・非採用は要求しない。
 - production boundary: 次動画開始、production acceptance、rights、publicationは別Missionのまま。
 - independent EP1 unblock: `youtube:Ocqg-RpQURY` exact bytes + receipt供給後にpreflightを再実行する。
 

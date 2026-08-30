@@ -1,5 +1,13 @@
 ﻿# Artifact Registry
 
+## Current temporary work artifacts
+
+| Artifact | Role | Open / inspect | Current meaning |
+|---|---|---|---|
+| `clip-ed13-recovery-task-board-v1-001` | Ten concrete Project tasks | `docs/output_layer/clip_ed13_recovery_task_board_v1.json` | Cockpit and FrontierBoard use the same `ED-13R-01`–`10` IDs; no Choice is created. |
+| `clip-335s-whole-gate-rejection-v1-001` | Append-only correction | `docs/output_layer/clip_335s_whole_gate_rejection_v1.json` | The old whole-accept-or-bounded-revision requirement is rejected; historical receipts and media remain. |
+| `clip-project-cockpit-temporary-work-surface-v2-001` | Exact video route plus task surface | Run `npm run cockpit`, open `http://127.0.0.1:8061/`, then use `動画を別タブで開く`. | Playback starts muted at volume zero; partial observations do not accept or reject the artifact. |
+
 This registry points to reviewable artifacts without pretending that ignored
 local files are portable across clones. Use `docs/RUNTIME_STATE.md` for the
 current artifact and next action; generated dashboard current-focus fields
@@ -52,7 +60,10 @@ opened by the root launcher.
 | boundaries | Production, rights, delivery, publication, monetization, upload, next-video start, media generation, and FrontierBoard mutation remain false/not performed. |
 | validation | `tests/test_editorial_production_workflow.py`, `tests/test_editorial_calibration_sequence.py`, and exact package validators. |
 
-## `clip-project-cockpit-review-ready-v1-001`
+## `clip-project-cockpit-review-ready-v1-001` (legacy)
+
+Its exact-media openability proof remains useful, but the one-human-gate presentation is superseded by
+`clip-project-cockpit-temporary-work-surface-v2-001`.
 
 | Field | Value |
 |---|---|

@@ -19,15 +19,19 @@ from urllib.request import Request, urlopen
 
 from .serve_review import create_review_server
 
-DEFAULT_CONFIG = Path("docs/output_layer/clip_project_cockpit_v1.json")
+DEFAULT_CONFIG = Path("docs/output_layer/clip_project_cockpit_v2.json")
 
 
 @dataclass(frozen=True)
 class CockpitSnapshot:
     config: dict[str, Any]
     workflow_receipt: dict[str, Any]
+    legacy_task_rejection: dict[str, Any]
+    task_board: dict[str, Any]
     config_path: Path
     workflow_receipt_path: Path
+    legacy_task_rejection_path: Path
+    task_board_path: Path
     media_path: Path
     state_path: Path
     observed_media_sha256: str
@@ -84,23 +88,39 @@ def load_cockpit_snapshot(
     root = repo_root.resolve()
     resolved_config_path = (root / config_path).resolve() if not config_path.is_absolute() else config_path.resolve()
     config = _load_json(resolved_config_path)
-    if config.get("schema_version") != "clippipegen.project_cockpit.v1":
+    if config.get("schema_version") != "clippipegen.project_cockpit.v2":
         raise ValueError("unsupported project cockpit schema_version")
 
     workflow_config = config.get("workflow_receipt") or {}
+    rejection_config = config.get("legacy_task_rejection") or {}
+    task_board_config = config.get("task_board") or {}
     candidate = config.get("candidate") or {}
     state_receipt = config.get("state_receipt") or {}
     workflow_receipt_path = (root / str(workflow_config.get("path", ""))).resolve()
+    legacy_task_rejection_path = (root / str(rejection_config.get("path", ""))).resolve()
+    task_board_path = (root / str(task_board_config.get("path", ""))).resolve()
     package_root = (root / str(candidate.get("package_root", ""))).resolve()
     media_path = (package_root / str(candidate.get("media_name", ""))).resolve()
     state_path = (root / str(state_receipt.get("path", ""))).resolve()
-    for path in (resolved_config_path, workflow_receipt_path, package_root, media_path, state_path.parent):
+    for path in (
+        resolved_config_path,
+        workflow_receipt_path,
+        legacy_task_rejection_path,
+        task_board_path,
+        package_root,
+        media_path,
+        state_path.parent,
+    ):
         try:
             path.relative_to(root)
         except ValueError as exc:
             raise ValueError(f"cockpit path escapes repo root: {path}") from exc
     if not workflow_receipt_path.is_file():
         raise ValueError(f"workflow receipt is missing: {workflow_receipt_path}")
+    if not legacy_task_rejection_path.is_file():
+        raise ValueError(f"legacy task rejection is missing: {legacy_task_rejection_path}")
+    if not task_board_path.is_file():
+        raise ValueError(f"task board is missing: {task_board_path}")
     if not package_root.is_dir():
         raise ValueError(f"candidate package is missing: {package_root}")
     if not media_path.is_file():
@@ -118,10 +138,27 @@ def load_cockpit_snapshot(
     if autonomous.get("item_level_questions_reemitted") != 0:
         raise ValueError("workflow receipt must not re-emit item-level questions")
     human = workflow_receipt.get("human_judgment") or {}
-    if human.get("count") != 1 or human.get("item_level_fallback_allowed") is not False:
-        raise ValueError("workflow receipt must expose one compressed human judgment")
     if human.get("artifact_id") != candidate.get("artifact_id"):
         raise ValueError("workflow receipt candidate identity does not match cockpit authority")
+
+    rejection_sha = _sha256(legacy_task_rejection_path)
+    if rejection_sha != str(rejection_config.get("sha256", "")).lower():
+        raise ValueError("legacy task rejection SHA-256 does not match cockpit authority")
+    legacy_task_rejection = _load_json(legacy_task_rejection_path)
+    if legacy_task_rejection.get("status") != "REJECTED_LEGACY_TASK_SETTING":
+        raise ValueError("legacy task rejection is not authoritative")
+    if legacy_task_rejection.get("artifact", {}).get("sha256") != str(candidate.get("sha256", "")).lower():
+        raise ValueError("legacy task rejection candidate identity does not match cockpit authority")
+
+    task_board_sha = _sha256(task_board_path)
+    if task_board_sha != str(task_board_config.get("sha256", "")).lower():
+        raise ValueError("task board SHA-256 does not match cockpit authority")
+    task_board = _load_json(task_board_path)
+    if task_board.get("status") != "ACTIVE_TEMPORARY_PROJECT_WORK_SURFACE":
+        raise ValueError("task board is not active")
+    tasks = task_board.get("tasks") or []
+    if len(tasks) != 10 or len({item.get("task_id") for item in tasks}) != 10:
+        raise ValueError("task board must expose exactly ten unique tasks")
 
     observed_media_bytes = media_path.stat().st_size
     observed_media_sha256 = _sha256(media_path)
@@ -135,8 +172,12 @@ def load_cockpit_snapshot(
     return CockpitSnapshot(
         config=config,
         workflow_receipt=workflow_receipt,
+        legacy_task_rejection=legacy_task_rejection,
+        task_board=task_board,
         config_path=resolved_config_path,
         workflow_receipt_path=workflow_receipt_path,
+        legacy_task_rejection_path=legacy_task_rejection_path,
+        task_board_path=task_board_path,
         media_path=media_path,
         state_path=state_path,
         observed_media_sha256=observed_media_sha256,
@@ -200,20 +241,20 @@ def transition_review_ready(
     candidate = snapshot.config["candidate"]
     workflow_sha = _sha256(snapshot.workflow_receipt_path)
     state = {
-        "schema_version": "clippipegen.project_cockpit_review_state.v1",
+        "schema_version": "clippipegen.project_cockpit_task_surface_state.v2",
         "requirement_id": snapshot.config["requirement_id"],
         "cockpit_artifact_id": snapshot.config["artifact_id"],
         "artifact_id": candidate["artifact_id"],
-        "status": "REVIEW_READY",
+        "status": "ARTIFACT_ROUTE_READY",
         "media_sha256": snapshot.observed_media_sha256,
         "media_bytes": snapshot.observed_media_bytes,
         "container_duration_seconds": snapshot.observed_duration_seconds,
         "transition": {
-            "from": "WORKFLOW_CONNECTED",
-            "to": "REVIEW_READY",
+            "from": "TASK_BOARD_ACTIVE",
+            "to": "ARTIFACT_ROUTE_READY",
             "transitioned_at_utc": transitioned_at,
             "last_verified_at_utc": now,
-            "meaning": "Exact artifact openability and the project-owned review route are established.",
+            "meaning": "The exact artifact route is established without creating a whole-artifact judgment gate.",
         },
         "checks": {
             "workflow_receipt_sha256": workflow_sha,
@@ -226,11 +267,10 @@ def transition_review_ready(
             },
             "review_route_range_readback": {"status": "PASS", **route_readback},
         },
-        "human_judgment": {
-            "status": "PENDING_NOT_SELECTED",
-            "count": 1,
-            "allowed_outcomes": [item["id"] for item in snapshot.config["review"]["allowed_outcomes"]],
-            "selected_outcome": None,
+        "legacy_task": {
+            "status": "REJECTED_LEGACY_TASK_SETTING",
+            "human_gate_count": 0,
+            "replacement": snapshot.task_board["artifact_id"],
         },
         "boundaries": snapshot.config["boundaries"],
     }
@@ -246,7 +286,7 @@ def cockpit_payload(snapshot: CockpitSnapshot, *, review_url: str) -> dict[str, 
         "requirement_id": snapshot.config["requirement_id"],
         "cockpit_artifact_id": snapshot.config["artifact_id"],
         "title": snapshot.config["title"],
-        "project_state": (state or {}).get("status", "WORKFLOW_CONNECTED"),
+        "project_state": "TASK_BOARD_ACTIVE",
         "candidate": {
             **candidate,
             "observed_sha256": snapshot.observed_media_sha256,
@@ -260,7 +300,9 @@ def cockpit_payload(snapshot: CockpitSnapshot, *, review_url: str) -> dict[str, 
             "decision_counts": snapshot.workflow_receipt["autonomous_resolution"]["decision_counts"],
             "item_level_questions_reemitted": 0,
         },
-        "human_judgment": snapshot.config["review"],
+        "legacy_task": snapshot.legacy_task_rejection,
+        "task_board": snapshot.task_board,
+        "observation_mode": snapshot.config["observation_mode"],
         "boundaries": snapshot.config["boundaries"],
         "state_receipt": state,
     }

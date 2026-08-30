@@ -1,0 +1,53 @@
+{
+  "schema_version": "clippipegen.task_setting_rejection.v1",
+  "receipt_id": "clip-335s-whole-gate-rejection-v1-001",
+  "status": "REJECTED_LEGACY_TASK_SETTING",
+  "recorded_at": "2026-08-30",
+  "rejected_task": {
+    "identity": "clip-wiki-selected-opening-335s-whole-content-review-v1",
+    "path": "docs/output_layer/clip_335s_whole_content_review_v1.json",
+    "rejected_requirement": "Require either whole-candidate acceptance or one bounded revision before other project work can continue.",
+    "reason": "The project is not at whole-artifact adoption or rejection. Useful judgment can be partial and the binary gate incorrectly blocks independent work."
+  },
+  "superseded_interpretations": [
+    {
+      "path": "docs/output_layer/clip_335s_current_basis_adoption_v1.json",
+      "superseded_claim": "The user's current-basis wording is equivalent to whole-candidate acceptance."
+    },
+    {
+      "path": "docs/output_layer/clip_editorial_production_workflow_connection_v1.json",
+      "superseded_claim": "The whole-or-bounded gate is a required production-workflow predecessor."
+    },
+    {
+      "path": "docs/output_layer/clip_project_cockpit_v1.json",
+      "superseded_claim": "The Project Cockpit should present a single whole-candidate human gate."
+    }
+  ],
+  "artifact": {
+    "artifact_id": "clip-wiki-selected-opening-current-basis-v1-001",
+    "sha256": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951",
+    "byte_size": 25852742,
+    "container_duration_seconds": 335.3,
+    "retained_role": "technical_calibration_fixture_available_for_partial_observation"
+  },
+  "replacement_contract": {
+    "whole_acceptance_requested": false,
+    "whole_rejection_requested": false,
+    "mandatory_human_gate_count": 0,
+    "partial_observation_allowed": true,
+    "partial_observation_fields": [
+      "output_range_seconds",
+      "observation",
+      "uncertainty",
+      "requested_change_if_any"
+    ],
+    "unrelated_project_tasks_may_continue": true
+  },
+  "preservation": {
+    "old_receipts_remain_historical": true,
+    "choice_history_changed": false,
+    "media_changed": false,
+    "screenshots_changed": false,
+    "rights_or_publication_authority_granted": false
+  }
+}

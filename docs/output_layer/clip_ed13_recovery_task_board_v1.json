@@ -1,0 +1,106 @@
+{
+  "schema_version": "clippipegen.temporary_project_task_board.v1",
+  "artifact_id": "clip-ed13-recovery-task-board-v1-001",
+  "status": "ACTIVE_TEMPORARY_PROJECT_WORK_SURFACE",
+  "project": "ClipPipeGen",
+  "current_slice": "ED-13",
+  "updated_at": "2026-08-30",
+  "purpose": "Keep project work moving after rejecting the over-broad whole-candidate judgment gate.",
+  "identity_rule": "The same task_id is projected to the Project Cockpit and FrontierBoard; neither projection creates a human Choice.",
+  "tasks": [
+    {
+      "task_id": "ED-13R-01",
+      "title": "全体採否ゲートをレガシー化する",
+      "status": "done",
+      "work": "Reject the whole-accept-or-bounded-revision requirement itself and retain its old records as history.",
+      "unblocks": "Independent project work is no longer serialized behind an invalid verdict."
+    },
+    {
+      "task_id": "ED-13R-02",
+      "title": "現行authorityを訂正receiptへ接続する",
+      "status": "done",
+      "work": "Record that the old current-basis adoption interpretation is superseded without rewriting its receipt.",
+      "unblocks": "Current state can be read without treating the artifact as accepted or rejected."
+    },
+    {
+      "task_id": "ED-13R-03",
+      "title": "Cockpitを作業一覧へ置き換える",
+      "status": "done",
+      "work": "Show exact artifact identity, a direct video route, and project tasks instead of a synthetic decision panel.",
+      "unblocks": "The operator can see what can be done now from one temporary surface."
+    },
+    {
+      "task_id": "ED-13R-04",
+      "title": "CockpitとFrontierBoardのtask identityを揃える",
+      "status": "done",
+      "work": "Project the ten stable task IDs to FrontierBoard as task cards and retain project-local authority here.",
+      "unblocks": "Board navigation no longer depends on an invisible or withdrawn Choice."
+    },
+    {
+      "task_id": "ED-13R-05",
+      "title": "動画を開く経路を一つに固定する",
+      "status": "done",
+      "work": "Expose npm run cockpit, the loopback Cockpit URL, and a direct exact-media button with muted initial playback.",
+      "unblocks": "Review entry is explicit and consistent for this project."
+    },
+    {
+      "task_id": "ED-13R-06",
+      "title": "部分観察の記録形式を定義する",
+      "status": "done",
+      "work": "Use range, observation, uncertainty, and optional requested change without forcing accept or reject.",
+      "unblocks": "Useful feedback can accumulate before an artifact-level decision exists."
+    },
+    {
+      "task_id": "ED-13R-07",
+      "title": "既存8区間を任意ナビゲーションへ接続する",
+      "status": "planned",
+      "work": "Expose existing navigation partitions only as optional viewing anchors, not approval units or questions.",
+      "unblocks": "Long-form inspection can be bounded without recreating fifteen mandatory judgments."
+    },
+    {
+      "task_id": "ED-13R-08",
+      "title": "DecisionCaseとworkflow readbackを非blocking化する",
+      "status": "in_progress",
+      "work": "Read the legacy gate as rejected and allow evidence, rule, override, result, and artifact readback to continue independently.",
+      "unblocks": "The calibration fixture remains evidence instead of becoming a parent-product blocker."
+    },
+    {
+      "task_id": "ED-13R-09",
+      "title": "Episode 1 CU-02 source入力を解決する",
+      "status": "held_external_input",
+      "work": "Obtain explicitly supplied youtube:Ocqg-RpQURY 390-585s exact media bytes plus an acquisition receipt.",
+      "unblocks": "Episode 1 can move from source preflight to integrated rough-cut preparation.",
+      "stop_condition": "Do not fetch, guess, substitute, or infer rights."
+    },
+    {
+      "task_id": "ED-13R-10",
+      "title": "Episode 1 preflightを再実行する",
+      "status": "blocked_by_ED-13R-09",
+      "work": "After exact CU-02 bytes and receipt exist, rerun the deterministic three-unit preflight; do not render before READY.",
+      "unblocks": "A valid renderer entry can be prepared without turning technical readiness into production acceptance."
+    }
+  ],
+  "counts": {
+    "total": 10,
+    "done": 6,
+    "in_progress": 1,
+    "planned": 1,
+    "held_or_blocked": 2,
+    "human_choices_created": 0
+  },
+  "frontierboard_projection": {
+    "status": "APPLIED_AND_READ_BACK",
+    "project": "ClipPipeGen",
+    "task_card_count": 10,
+    "packet_identity_pattern": "clippipegen-ed13r-NN-20260830-v1",
+    "open_choice_set_created": false,
+    "host_local_card_ids_and_snapshot_receipt_not_committed": true
+  },
+  "boundaries": {
+    "media_generation": false,
+    "rights_decision": false,
+    "production_acceptance": false,
+    "publication_or_upload": false,
+    "choice_mutation": false
+  }
+}

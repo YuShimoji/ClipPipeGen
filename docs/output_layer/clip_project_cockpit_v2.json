@@ -1,0 +1,63 @@
+{
+  "schema_version": "clippipegen.project_cockpit.v2",
+  "requirement_id": "CLIP-COCKPIT-TEMPORARY-WORK-SURFACE-20260830-001",
+  "artifact_id": "clip-project-cockpit-temporary-work-surface-v2-001",
+  "title": "ClipPipeGen ED-13 temporary work surface",
+  "workflow_receipt": {
+    "path": "docs/output_layer/clip_editorial_production_workflow_connection_v1.json",
+    "sha256": "a6a0667b37618698b6e48a60a41a42b7cf9af9fd6a93bf1c03f027de383096de",
+    "required_status": "CONNECTED_CURRENT_BASIS_ADOPTED",
+    "role": "legacy_calibration_evidence_only"
+  },
+  "legacy_task_rejection": {
+    "path": "docs/output_layer/clip_335s_whole_gate_rejection_v1.json",
+    "sha256": "dc6d7e5771416b5222fa4ccdaa5b24ffa96b1b13f601de1df6424aae7aca4655",
+    "receipt_id": "clip-335s-whole-gate-rejection-v1-001"
+  },
+  "task_board": {
+    "path": "docs/output_layer/clip_ed13_recovery_task_board_v1.json",
+    "sha256": "e6932a3fa5f0f8607cac4a9b3a2b6f3b4eabf600495b1d84c95e430f858abe0c",
+    "artifact_id": "clip-ed13-recovery-task-board-v1-001"
+  },
+  "candidate": {
+    "artifact_id": "clip-wiki-selected-opening-current-basis-v1-001",
+    "package_root": "episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/package",
+    "media_name": "final_video.mp4",
+    "sha256": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951",
+    "byte_size": 25852742,
+    "editorial_duration_seconds": 335.28,
+    "container_duration_seconds": 335.3,
+    "source_range_seconds": [2530.319, 2865.599],
+    "role": "technical_calibration_fixture_available_for_partial_observation"
+  },
+  "state_receipt": {
+    "path": "episodes/integrated_checklist_reverse_test_20260811/artifacts/cpg-integrated-checklist-reverse-test-v1/successors/cpg-wiki-selected-opening-current-basis-v1/review/cockpit_task_surface_state_v2.json",
+    "from": "TASK_BOARD_ACTIVE",
+    "to": "ARTIFACT_ROUTE_READY"
+  },
+  "observation_mode": {
+    "status": "OPTIONAL_PARTIAL_OBSERVATION",
+    "whole_acceptance_requested": false,
+    "whole_rejection_requested": false,
+    "mandatory_item_questions": 0,
+    "fields": [
+      "output_range_seconds",
+      "observation",
+      "uncertainty",
+      "requested_change_if_any"
+    ],
+    "note": "Opening the artifact or recording a partial observation does not accept or reject the whole artifact."
+  },
+  "boundaries": {
+    "human_content_acceptance": "not_requested_at_this_stage",
+    "creative_acceptance": false,
+    "production_acceptance": false,
+    "rights_approval": false,
+    "delivery_acceptance": false,
+    "publication_acceptance": false,
+    "monetization": false,
+    "upload": false,
+    "choice_mutation": false,
+    "media_created_or_modified": false
+  }
+}

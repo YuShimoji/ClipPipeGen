@@ -179,7 +179,7 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "artifact_manifest_self_sha256": "null_successor_receipt_is_current_machine_readback",
         "package_validation_status": "passed_exact_input_hashes_duration_full_decode_current_successor",
         "full_suite_status": "passed_730_tests_2026_08_25",
-        "human_review_pending": "true",
+        "human_review_pending": "false",
         "rights_approval": "readback_unresolved",
         "production_acceptance": "false",
         "public_use": "false",
@@ -187,8 +187,8 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "upload_attempted": "false",
         "upstream_parity": "4 0 after_four_local_editorial_and_cockpit_commits_push_count_zero",
         "remote_code_complete": "false",
-        "decision_required": "one_whole_candidate_accept_or_bounded_revision_queued_behind_existing_board_choice_7",
-        "next_review_due": "after_choice_7_serialization",
+        "decision_required": "none_whole_candidate_task_rejected",
+        "next_review_due": "optional_partial_observation_only",
     }
     for field, expected in expected_runtime_values.items():
         if runtime.get(field, "") != expected:

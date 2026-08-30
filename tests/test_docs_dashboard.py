@@ -1631,19 +1631,19 @@ def test_artifact_registry_records_wiki_turn_current_focus_and_historical_source
         "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
     )
     assert status["current_focus"]["canonical_status"] == (
-        "exact_artifact_openability_and_project_review_route_established_human_content_gate_pending"
+        "whole_candidate_gate_rejected_partial_observation_optional_project_work_continues"
     )
     assert status["current_focus"]["review_status"] == (
-        "REVIEW_READY_EXACT_ARTIFACT_OPENABLE_HUMAN_CONTENT_JUDGMENT_PENDING"
+        "WHOLE_ACCEPTANCE_NOT_REQUESTED_PARTIAL_OBSERVATION_OPTIONAL"
     )
     assert status["current_focus"]["decision_required"] == (
-        "one_whole_candidate_accept_or_bounded_revision_queued_behind_existing_board_choice_7"
+        "none_whole_candidate_task_rejected"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "after_choice_7_serialization"
+        "optional_partial_observation_only"
     )
     assert status["current_focus"]["human_entrypoint"] == (
-        "project-local Project Cockpit after independent Choice 7 serialization clears"
+        "optional_partial_observation_only_no_whole_acceptance_requested"
     )
     assert status["current_focus"]["review_open_command"] == "npm run cockpit"
     assert status["current_focus"]["machine_readback"] == (
@@ -1683,7 +1683,7 @@ def test_artifact_registry_records_wiki_turn_current_focus_and_historical_source
     ]
     assert len(current_surfaces) == 1
     assert current_surfaces[0]["target"].endswith(
-        "project-local Project Cockpit after independent Choice 7 serialization clears"
+        "optional_partial_observation_only_no_whole_acceptance_requested"
     )
     assert status["current_focus"]["cross_machine_resume_class"] == (
         "tracked_context_plus_separate_project_zip_required_for_review_media"
