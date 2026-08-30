@@ -1,0 +1,66 @@
+{
+  "schema_version": "clippipegen.editorial_workflow_nonblocking_readback.v1",
+  "artifact_id": "clip-editorial-workflow-nonblocking-readback-v1-001",
+  "status": "CONNECTED_NONBLOCKING_PARTIAL_OBSERVATION",
+  "purpose": "Keep the exact 335.3-second fixture connected to its decision evidence without treating the rejected whole-candidate task as a workflow blocker.",
+  "inputs": {
+    "legacy_workflow_receipt": {
+      "path": "docs/output_layer/clip_editorial_production_workflow_connection_v1.json",
+      "sha256": "a6a0667b37618698b6e48a60a41a42b7cf9af9fd6a93bf1c03f027de383096de",
+      "role": "historical_calibration_connection"
+    },
+    "legacy_task_rejection": {
+      "path": "docs/output_layer/clip_335s_whole_gate_rejection_v1.json",
+      "sha256": "dc6d7e5771416b5222fa4ccdaa5b24ffa96b1b13f601de1df6424aae7aca4655",
+      "required_status": "REJECTED_LEGACY_TASK_SETTING"
+    },
+    "decision_case": {
+      "path": "docs/output_layer/clip_real_decision_case_v1.json",
+      "sha256": "e936e698b11b188abbafa4597cce787b7f8bfd4dcded180dcd3ba42da5078c2b"
+    },
+    "navigation_calibration": {
+      "path": "docs/output_layer/clip_full_video_editorial_calibration_v1.json",
+      "sha256": "d0234ef2b9196c561f5537904f658884234ae1dbd9ed42f6b47cfcb10a316d13",
+      "unit_count": 8
+    }
+  },
+  "artifact": {
+    "artifact_id": "clip-wiki-selected-opening-current-basis-v1-001",
+    "sha256": "48c368b9ce5abf117114c29ba99f87a7a31973539aef0bb6aa34d246febff951",
+    "byte_size": 25852742,
+    "container_duration_seconds": 335.3,
+    "role": "technical_calibration_fixture_available_for_partial_observation"
+  },
+  "decision_path": {
+    "evidence": "CONNECTED",
+    "rule": "CONNECTED",
+    "override": "CONNECTED",
+    "result": "CONNECTED",
+    "artifact_readback": "CONNECTED",
+    "item_level_questions_reemitted": 0
+  },
+  "legacy_gate": {
+    "status": "REJECTED_LEGACY_TASK_SETTING",
+    "blocks_workflow": false,
+    "whole_acceptance_requested": false,
+    "whole_rejection_requested": false,
+    "mandatory_human_judgment_count": 0
+  },
+  "review_route": {
+    "mode": "OPTIONAL_PARTIAL_OBSERVATION",
+    "navigation_unit_count": 8,
+    "observation_fields": [
+      "output_range_seconds",
+      "observation",
+      "uncertainty",
+      "requested_change_if_any"
+    ]
+  },
+  "boundaries": {
+    "media_generated_or_modified": false,
+    "frontierboard_or_choice_mutation": false,
+    "rights_decision": false,
+    "production_acceptance": false,
+    "publication_or_upload": false
+  }
+}

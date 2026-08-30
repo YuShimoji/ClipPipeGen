@@ -46,7 +46,7 @@ This generated index is the scan-friendly v1.5 view of [../FEATURE_REGISTRY.md](
 | ED-13 | Wiki添削 content-first thematic Episode family | in_progress | active | 70 | clip-wiki-tensaku-ep1-integrated-rough-cut-preflight-v1-001 | Finish current acceptance/readback and update artifact registry. |
 | ED-13a | Editorial calibration production-workflow connection | done | stable | 100 | clip-335s-whole-gate-rejection-v1-001 | Keep as reference unless a regression or successor lane appears. |
 | ED-13b | Exact-artifact Project Cockpit review entrance | successor-lane | superseded | 100 |  | The v1 openability proof and exact Range route remain evidence. Its one-human-gate presentation is legacy and is replac... |
-| ED-13c | Temporary Project task surface | in_progress | active | 70 |  | Finish current acceptance/readback and update artifact registry. |
+| ED-13c | Temporary Project task surface | done | blocked | 100 |  | Keep as reference unless a regression or successor lane appears. |
 | ED-12 | S1 two-source common-context probe | in_progress | active | 70 | clip-s1-two-source-common-context-probe-v1-001 | Finish current acceptance/readback and update artifact registry. |
 | ED-11 | OUT-12 one-command real long-form video automation | done | stable | 100 | clip-out12-one-command-real-video-automation-v1-001 | Keep as reference unless a regression or successor lane appears. |
 | CR-01 | rights_manifest schema v1 縺ｨ validator | done | stable | 100 |  | Keep as reference unless a regression or successor lane appears. |

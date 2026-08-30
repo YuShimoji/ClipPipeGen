@@ -7,6 +7,7 @@
 | `clip-ed13-recovery-task-board-v1-001` | Ten concrete Project tasks | `docs/output_layer/clip_ed13_recovery_task_board_v1.json` | Cockpit and FrontierBoard use the same `ED-13R-01`–`10` IDs; no Choice is created. |
 | `clip-335s-whole-gate-rejection-v1-001` | Append-only correction | `docs/output_layer/clip_335s_whole_gate_rejection_v1.json` | The old whole-accept-or-bounded-revision requirement is rejected; historical receipts and media remain. |
 | `clip-project-cockpit-temporary-work-surface-v2-001` | Exact video route plus task surface | Run `npm run cockpit`, open `http://127.0.0.1:8061/`, then use `動画を別タブで開く`. | Playback starts muted at volume zero; partial observations do not accept or reject the artifact. |
+| `clip-editorial-workflow-nonblocking-readback-v1-001` | Nonblocking DecisionCase/workflow readback | `docs/output_layer/clip_editorial_workflow_nonblocking_readback_v1.json` | Evidence, rule, override, result, and exact artifact readback remain connected; the rejected whole gate blocks nothing and creates no human question. |
 
 This registry points to reviewable artifacts without pretending that ignored
 local files are portable across clones. Use `docs/RUNTIME_STATE.md` for the

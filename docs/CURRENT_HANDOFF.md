@@ -388,7 +388,7 @@ out13_m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
 out13_public_use_verdict: deny
 out13_monetized_youtube_verdict: deny
 next_review_due: optional_partial_observation_only
-next_action: ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation
+next_action: await_explicit_ED-13R-09_CU-02_source_input_decision
 current_handoff: docs/CURRENT_HANDOFF.md
 upstream_parity: 4 0 after_four_local_editorial_and_cockpit_commits_push_count_zero
 current_slice_push_status: local_commit_only_push_prohibited_by_mission

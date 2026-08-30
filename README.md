@@ -11,7 +11,7 @@ source 2530.319 opening. `clip-wiki-selected-opening-current-basis-v1-001` consu
 decision in a new identity and closes at source 2865.599, where the normalized provider
 caption display ends and the next topic begins. The prior 2.841-second rolling-duration
 overlap is no longer treated as semantic-completion evidence. The 335.280-second internal
-candidate is technically complete and awaits one content accept/revise review; old proof,
+candidate is retained as a technical calibration fixture; no whole-candidate accept/revise review is requested. Old proof,
 rights, production, publication, and the independent missing-source lane remain unchanged.
 The exact old proof, failed inference, proposed rule correction, user-specific override,
 reusable HOLD range, and resulting edit are connected in
@@ -21,7 +21,7 @@ The same exact 335.3-second candidate is now calibrated end-to-end in
 [`clip_full_video_editorial_calibration_v1.json`](docs/output_layer/clip_full_video_editorial_calibration_v1.json).
 It distinguishes eight meaningful navigation/decision units from the single actual edit,
 separates reusable Rules from case-specific judgments, removes eleven redundant item-level
-questions, and leaves one whole-candidate content judgment. Production-scale readiness is
+questions. Those eight units now serve only as optional viewing anchors, not approval units or questions. Production-scale readiness is
 `PARTIAL`: one existing multi-cut artifact with real KEEP/DROP/HOLD decisions should be
 calibrated before starting another video. No new Choice or media was created.
 
@@ -30,23 +30,22 @@ than a new video. Its seven retained cuts, one evidence-resolved duplicate DROP,
 reusable omitted ranges all trace to the exact source and result in
 [`clip_mixed_editorial_calibration_v1.json`](docs/output_layer/clip_mixed_editorial_calibration_v1.json).
 The editorial-decision system reaches `PASS`; this does not start production or grant
-rights/publication authority. The 335.3-second candidate still has exactly one separate
-whole-content `accept / bounded revision` judgment, recorded without creating a Board
-Choice in [`clip_335s_whole_content_review_v1.json`](docs/output_layer/clip_335s_whole_content_review_v1.json).
+rights/publication authority. The prior whole-content `accept / bounded revision` task was
+rejected as an invalid project blocker and is retained only as historical evidence.
 
 The calibration is now connected to the production review workflow through
 `build-editorial-production-workflow`. Its deterministic receipt verifies the mixed
 calibration, the exact OUT-13 accepted authority, and the 335.3-second whole-review packet
-before resolving all 15 item units without re-emitting questions. The remaining content
-gate stays serialized behind the independent GUI-direction Choice 7 and permits only
-whole-candidate acceptance or an exact-range bounded revision. No production, rights,
+before resolving all 15 item units without re-emitting questions. The successor nonblocking
+readback keeps evidence, rule, override, result, and artifact identity connected while the
+legacy whole gate blocks nothing. No production, rights,
 publication, media, or FrontierBoard authority is created by this connection.
 
 The project-local review entrance is now `npm run cockpit`. The Cockpit validates the
 workflow receipt and exact 335.3-second MP4, plays it through the existing byte-range
 `serve-review` path, and records a same-machine `REVIEW_READY` receipt only after playback
-and a 32-byte Range readback succeed. The screen shows the one compressed whole/bounded
-content gate without making the decision. `REVIEW_READY` means artifact openability plus
+and a 32-byte Range readback succeed. The screen shows ten project tasks and eight optional
+muted navigation ranges without creating a content decision. `REVIEW_READY` means artifact openability plus
 review-route availability only; content, creative, production, rights, publication, media,
 and FrontierBoard state remain unchanged.
 

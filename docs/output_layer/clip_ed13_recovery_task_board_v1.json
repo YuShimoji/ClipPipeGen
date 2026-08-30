@@ -4,7 +4,7 @@
   "status": "ACTIVE_TEMPORARY_PROJECT_WORK_SURFACE",
   "project": "ClipPipeGen",
   "current_slice": "ED-13",
-  "updated_at": "2026-08-30",
+  "updated_at": "2026-08-31",
   "purpose": "Keep project work moving after rejecting the over-broad whole-candidate judgment gate.",
   "identity_rule": "The same task_id is projected to the Project Cockpit and FrontierBoard; neither projection creates a human Choice.",
   "tasks": [
@@ -53,14 +53,14 @@
     {
       "task_id": "ED-13R-07",
       "title": "既存8区間を任意ナビゲーションへ接続する",
-      "status": "planned",
+      "status": "done",
       "work": "Expose existing navigation partitions only as optional viewing anchors, not approval units or questions.",
       "unblocks": "Long-form inspection can be bounded without recreating fifteen mandatory judgments."
     },
     {
       "task_id": "ED-13R-08",
       "title": "DecisionCaseとworkflow readbackを非blocking化する",
-      "status": "in_progress",
+      "status": "done",
       "work": "Read the legacy gate as rejected and allow evidence, rule, override, result, and artifact readback to continue independently.",
       "unblocks": "The calibration fixture remains evidence instead of becoming a parent-product blocker."
     },
@@ -82,19 +82,21 @@
   ],
   "counts": {
     "total": 10,
-    "done": 6,
-    "in_progress": 1,
-    "planned": 1,
+    "done": 8,
+    "in_progress": 0,
+    "planned": 0,
     "held_or_blocked": 2,
     "human_choices_created": 0
   },
   "frontierboard_projection": {
-    "status": "APPLIED_AND_READ_BACK",
+    "status": "PROJECT_LOCAL_STATE_AHEAD_OF_LAST_BOARD_READBACK",
     "project": "ClipPipeGen",
     "task_card_count": 10,
     "packet_identity_pattern": "clippipegen-ed13r-NN-20260830-v1",
     "open_choice_set_created": false,
-    "host_local_card_ids_and_snapshot_receipt_not_committed": true
+    "host_local_card_ids_and_snapshot_receipt_not_committed": true,
+    "current_update_written_to_frontierboard": false,
+    "note": "ED-13R-07 and ED-13R-08 were completed project-locally without mutating FrontierBoard. Existing card identity remains historical read-only evidence."
   },
   "boundaries": {
     "media_generation": false,

@@ -3,10 +3,18 @@ id: decision-log
 title: Decision Log - ClipPipeGen
 type: durable_decision_log
 status: current
-last_touched: 2026-08-30
+last_touched: 2026-08-31
 ---
 
 # Decision Log - ClipPipeGen
+
+## 2026-08-31 — 8区間を任意ナビゲーションとして接続し、旧gateを非blocking化する
+
+既存8区間は長尺動画内の移動先に限定し、個別の採否単位やHuman Gateへ昇格させない。
+Cockpitは各区間を無音再生し終端で停止する。workflowの現行表示はappend-only successor receipt
+`clip-editorial-workflow-nonblocking-readback-v1-001`から取得し、旧whole-candidate gateは
+`blocks_workflow=false`、mandatory human judgmentは0として扱う。新Choice、Board更新、media変更は
+行わない。
 
 ## 2026-08-30 — 全体採否タスクを設定不良としてリジェクトし、レガシー化する
 

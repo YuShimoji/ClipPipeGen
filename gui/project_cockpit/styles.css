@@ -35,6 +35,7 @@ h1 { font-size: clamp(40px, 6vw, 82px); letter-spacing: -.05em; line-height: .9;
 .media-panel, .decision-panel { padding: 22px; }
 .panel-head { display: flex; justify-content: space-between; gap: 20px; align-items: start; margin-bottom: 16px; }
 h2 { margin: 0; font-size: 23px; letter-spacing: -.025em; }
+h3 { margin: 0; font-size: 17px; }
 .pill { border: 1px solid var(--line); color: var(--warning); padding: 7px 9px; font-size: 11px; letter-spacing: .08em; white-space: nowrap; }
 .pill.pass { color: var(--accent); border-color: #55701d; }
 .pill.neutral { color: var(--blue); }
@@ -45,6 +46,14 @@ video { width: 100%; height: 100%; display: block; }
 .media-actions { display: flex; gap: 10px; margin: 14px 0 18px; }
 .media-actions button { border: 1px solid var(--line); padding: 11px 14px; cursor: pointer; }
 .media-actions button:disabled { opacity: .36; cursor: not-allowed; }
+.navigation-panel { border: 1px solid var(--line); padding: 16px; margin: 0 0 18px; background: rgba(7, 11, 15, .42); }
+.navigation-head { display: flex; justify-content: space-between; gap: 14px; align-items: start; }
+.navigation-panel > p { color: var(--muted); font-size: 12px; line-height: 1.5; }
+.navigation-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+.navigation-item { display: grid; gap: 4px; text-align: left; border: 1px solid var(--line); background: #151d24; color: var(--ink); padding: 10px; cursor: pointer; }
+.navigation-item span { color: var(--blue); font: 10px/1.2 Consolas, monospace; }
+.navigation-item strong { font-size: 12px; line-height: 1.35; }
+.navigation-item:hover, .navigation-item.active { border-color: var(--accent); background: #202a20; }
 .primary { background: var(--accent); color: #111; font-weight: 800; }
 .secondary { background: #1d2730; color: var(--ink); }
 .identity-grid { display: grid; grid-template-columns: 1.3fr .7fr .7fr; gap: 1px; margin: 0; background: var(--line); }
@@ -80,4 +89,5 @@ dd { margin: 0; font: 12px/1.45 Consolas, monospace; overflow-wrap: anywhere; }
   .identity-grid { grid-template-columns: 1fr; }
   .identity-grid .wide { grid-column: auto; }
   .media-actions { flex-direction: column; }
+  .navigation-list { grid-template-columns: 1fr; }
 }

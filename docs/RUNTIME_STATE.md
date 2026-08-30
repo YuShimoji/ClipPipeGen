@@ -4,11 +4,11 @@ title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
 health: WHOLE_GATE_REJECTED_TASK_BOARD_ACTIVE_EP1_SOURCE_GATE_PARKED
-last_touched: 2026-08-30
-state_revision: ed13-recovery-task-board-v1-2026-08-30
+last_touched: 2026-08-31
+state_revision: ed13-optional-navigation-nonblocking-readback-v1-2026-08-31
 contract_repair_status: out13_v4_preserved_windows_reparse_point_detection_added
 current_slice: ED-13
-phase: temporary_project_task_surface_active
+phase: temporary_project_task_surface_navigation_ready
 canonical_status: whole_candidate_gate_rejected_partial_observation_optional_project_work_continues
 active_branch: codex/wiki-tensaku-longform-family-v1
 source_branch: codex/wiki-tensaku-longform-family-v1
@@ -52,6 +52,8 @@ current_handoff: docs/CURRENT_HANDOFF.md
 decision_required: none_whole_candidate_task_rejected
 workflow_connection_artifact: docs/output_layer/clip_editorial_production_workflow_connection_v1.json
 workflow_connection_status: CONNECTED_CURRENT_BASIS_ADOPTED
+workflow_nonblocking_readback: docs/output_layer/clip_editorial_workflow_nonblocking_readback_v1.json
+workflow_nonblocking_status: CONNECTED_NONBLOCKING_PARTIAL_OBSERVATION
 workflow_resolved_decision_unit_count: 15
 workflow_reemitted_item_question_count: 0
 workflow_remaining_human_judgment_count: 0
@@ -155,7 +157,7 @@ cover_review_status: null
 review_server_status: stopped_portable_loopback_launcher_available
 next_review_due: optional_partial_observation_only
 next_review_type: one_complete_internal_candidate_content_review
-next_action: ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation
+next_action: await_explicit_ED-13R-09_CU-02_source_input_decision
 wiki_content_reframe_work_order_id: CPG-WIKI-CONTENT-REFRAME-001
 wiki_content_reframe_artifact_id: wiki-tensaku-content-reframe-v1-001
 wiki_content_reframe_topology: thematic_episode_family
@@ -968,16 +970,17 @@ Episode 1本線のCU-02 `youtube:Ocqg-RpQURY` 390–585秒exact media/receipt ga
 
 ## Next Action
 
-- action: `ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation`
+- action: `await_explicit_ED-13R-09_CU-02_source_input_decision`
 - first files: `README.md` → `docs/RUNTIME_STATE.md` → `docs/CURRENT_HANDOFF.md`
 - first checks: exact calibration JSON、validator、Git branch/HEAD/upstream parity、
   `git ls-files episodes`が0、successor receipt、MP4 size/SHA
-- workflow receipt: `uvx python -m src.cli.main build-editorial-production-workflow --format json`で
-  current-basis adoptionとtracked inputsを再検証できる。15 unitを個別質問へ戻さない。
-- project entry: 必要なread-only再確認時だけ`npm run cockpit`でexact media/receiptを照合する。
-- observation: 必要な区間だけを観察できるが、全体採用・非採用は要求しない。
+- workflow readback: `clip_editorial_workflow_nonblocking_readback_v1.json`が旧gateを非blockingとして
+  接続済み。15 unitを個別質問へ戻さない。
+- project entry: `npm run cockpit`でexact mediaを開き、必要なら8区間の任意ナビゲーションを使う。
+- observation: 区間ボタンは再生位置だけを変え、採否や修正要求を記録しない。
 - production boundary: 次動画開始、production acceptance、rights、publicationは別Missionのまま。
-- independent EP1 unblock: `youtube:Ocqg-RpQURY` exact bytes + receipt供給後にpreflightを再実行する。
+- independent EP1 unblock: CU-02を扱う明示判断と`youtube:Ocqg-RpQURY` exact bytes + receipt供給後に
+  ED-13R-10 preflightを再実行する。入力前には実行しない。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 

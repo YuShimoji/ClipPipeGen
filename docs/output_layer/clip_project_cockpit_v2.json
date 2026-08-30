@@ -9,6 +9,17 @@
     "required_status": "CONNECTED_CURRENT_BASIS_ADOPTED",
     "role": "legacy_calibration_evidence_only"
   },
+  "workflow_readback": {
+    "path": "docs/output_layer/clip_editorial_workflow_nonblocking_readback_v1.json",
+    "sha256": "f7be89a69f9567af273dc22b885510b2ecbe27f2db35142d26b35f2f596d9364",
+    "required_status": "CONNECTED_NONBLOCKING_PARTIAL_OBSERVATION"
+  },
+  "navigation_calibration": {
+    "path": "docs/output_layer/clip_full_video_editorial_calibration_v1.json",
+    "sha256": "d0234ef2b9196c561f5537904f658884234ae1dbd9ed42f6b47cfcb10a316d13",
+    "unit_count": 8,
+    "role": "optional_viewing_anchors_not_approval_units"
+  },
   "legacy_task_rejection": {
     "path": "docs/output_layer/clip_335s_whole_gate_rejection_v1.json",
     "sha256": "dc6d7e5771416b5222fa4ccdaa5b24ffa96b1b13f601de1df6424aae7aca4655",
@@ -16,7 +27,7 @@
   },
   "task_board": {
     "path": "docs/output_layer/clip_ed13_recovery_task_board_v1.json",
-    "sha256": "e6932a3fa5f0f8607cac4a9b3a2b6f3b4eabf600495b1d84c95e430f858abe0c",
+    "sha256": "831f784ffb6afca884ee9e4559f720a71e8b01f994a1487bce5c58f4d9e2a963",
     "artifact_id": "clip-ed13-recovery-task-board-v1-001"
   },
   "candidate": {

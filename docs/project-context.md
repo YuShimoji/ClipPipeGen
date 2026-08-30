@@ -3,7 +3,7 @@ id: project-context
 title: Project Context - ClipPipeGen
 type: durable_context
 status: current
-last_touched: 2026-08-30
+last_touched: 2026-08-31
 current_slice: ED-13
 phase: temporary_project_task_surface_active
 active_branch: codex/wiki-tensaku-longform-family-v1
@@ -13,6 +13,18 @@ health: WHOLE_GATE_REJECTED_TASK_BOARD_ACTIVE_EP1_SOURCE_GATE_PARKED
 ---
 
 # Project Context - ClipPipeGen
+
+## 2026-08-31 8区間ナビゲーションと非blocking readback
+
+ED-13R-07とED-13R-08を完了した。既存calibrationの8区間はCockpit上で任意の再生位置として
+選べるが、採否、修正要求、質問には変換しない。区間再生は常にmute / volume zeroで開始し、
+区間終端で停止する。DecisionCaseからevidence / rule / override / result / artifact readbackまでの
+接続は`clip_editorial_workflow_nonblocking_readback_v1.json`で照合し、旧whole gateはworkflowを
+止めず、mandatory human judgmentは0である。
+
+10 task中8件がProject-localで完了した。FrontierBoardはこの更新で変更していないため、最後の
+readbackよりProject-local正本が先行している。次に進めるのはED-13R-09のCU-02 exact source入力に
+関する明示判断だけで、その入力なしにED-13R-10を実行しない。
 
 ## 2026-08-30 全体採否タスクをリジェクトし、作業ボードへ移行
 

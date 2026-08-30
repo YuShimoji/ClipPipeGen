@@ -17,9 +17,12 @@ const ui = {
   resolvedCount: document.querySelector("#resolved-count"),
   decisionCounts: document.querySelector("#decision-counts"),
   boundaries: document.querySelector("#boundaries"),
+  workflowState: document.querySelector("#workflow-state"),
+  navigationList: document.querySelector("#navigation-list"),
 };
 
 let cockpit = null;
+let activeNavigation = null;
 ui.video.muted = true;
 ui.video.volume = 0;
 
@@ -45,6 +48,20 @@ function render(payload) {
   ui.mediaCheck.classList.add("pass");
   if (ui.video.src !== candidate.review_url) ui.video.src = candidate.review_url;
   ui.legacyTaskNote.textContent = `${payload.legacy_task.status} · 全体採用/非採用は要求しません。`;
+  ui.workflowState.textContent = payload.workflow.blocks_workflow
+    ? "BLOCKED"
+    : "全体判断待ちなし · 部分確認は任意";
+  ui.navigationList.replaceChildren(
+    ...payload.navigation_units.map((unit, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "navigation-item";
+      button.dataset.unitId = unit.unit_id;
+      button.innerHTML = `<span>${String(index + 1).padStart(2, "0")} · ${unit.start_seconds.toFixed(1)}–${unit.end_seconds.toFixed(1)}s</span><strong>${unit.label}</strong>`;
+      button.addEventListener("click", () => playNavigationUnit(unit, button));
+      return button;
+    }),
+  );
   ui.taskList.replaceChildren(
     ...payload.task_board.tasks.map((task) => {
       const item = document.createElement("div");
@@ -74,6 +91,31 @@ function render(payload) {
   );
 }
 
+function waitForMetadata() {
+  if (ui.video.readyState >= 1) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    ui.video.addEventListener("loadedmetadata", resolve, { once: true });
+    ui.video.addEventListener("error", () => reject(new Error("Actual artifact metadata could not be loaded.")), { once: true });
+  });
+}
+
+async function playNavigationUnit(unit, button) {
+  try {
+    ui.video.pause();
+    ui.video.muted = true;
+    ui.video.volume = 0;
+    await waitForMetadata();
+    ui.video.currentTime = unit.start_seconds;
+    activeNavigation = unit;
+    document.querySelectorAll(".navigation-item").forEach((item) => item.classList.remove("active"));
+    button.classList.add("active");
+    ui.playReadback.textContent = `${unit.unit_id} · ${unit.start_seconds.toFixed(1)}–${unit.end_seconds.toFixed(1)}s`;
+    await ui.video.play();
+  } catch (error) {
+    showError(error);
+  }
+}
+
 async function loadCockpit() {
   const response = await fetch("/api/cockpit", { cache: "no-store" });
   if (!response.ok) throw new Error(`Cockpit readback failed: HTTP ${response.status}`);
@@ -86,6 +128,11 @@ function showError(error) {
 }
 
 ui.video.addEventListener("timeupdate", () => {
+  if (activeNavigation && ui.video.currentTime >= activeNavigation.end_seconds) {
+    ui.video.pause();
+    ui.playReadback.textContent = `${activeNavigation.unit_id} END · ${activeNavigation.end_seconds.toFixed(1)}s`;
+    activeNavigation = null;
+  }
   if (ui.video.currentTime > 0 && ui.video.readyState >= 2) {
     ui.playReadback.textContent = `PLAYING · ${ui.video.currentTime.toFixed(2)}s · readyState ${ui.video.readyState}`;
     ui.playReadback.classList.add("pass");
@@ -98,6 +145,7 @@ ui.play.addEventListener("click", async () => {
   try {
     ui.video.muted = true;
     ui.video.volume = 0;
+    activeNavigation = null;
     await ui.video.play();
   } catch (error) {
     showError(error);

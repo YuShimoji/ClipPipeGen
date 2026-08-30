@@ -38,6 +38,27 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path]:
         },
     }
     workflow_path.write_text(json.dumps(workflow), encoding="utf-8")
+    readback_path = tmp_path / "docs" / "readback.json"
+    readback = {
+        "status": "CONNECTED_NONBLOCKING_PARTIAL_OBSERVATION",
+        "artifact": {"artifact_id": "candidate-001", "sha256": _sha256(media)},
+        "decision_path": {"item_level_questions_reemitted": 0},
+        "legacy_gate": {"blocks_workflow": False, "mandatory_human_judgment_count": 0},
+    }
+    readback_path.write_text(json.dumps(readback), encoding="utf-8")
+    navigation_path = tmp_path / "docs" / "navigation.json"
+    navigation = {
+        "calibration_scope": {"artifact_identity": "candidate-001", "output_sha256": _sha256(media)},
+        "decision_units": [
+            {
+                "unit_id": f"unit_{index + 1:03d}",
+                "content_label": f"Section {index + 1}",
+                "output_range_seconds": [index * 1.5, (index + 1) * 1.5 if index < 7 else 12.3],
+            }
+            for index in range(8)
+        ],
+    }
+    navigation_path.write_text(json.dumps(navigation), encoding="utf-8")
     rejection_path = tmp_path / "docs" / "rejection.json"
     rejection = {
         "status": "REJECTED_LEGACY_TASK_SETTING",
@@ -64,6 +85,16 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path]:
             "path": "docs/workflow.json",
             "sha256": _sha256(workflow_path),
             "required_status": "CONNECTED_READY_FOR_SERIALIZED_HUMAN_REVIEW",
+        },
+        "workflow_readback": {
+            "path": "docs/readback.json",
+            "sha256": _sha256(readback_path),
+            "required_status": "CONNECTED_NONBLOCKING_PARTIAL_OBSERVATION",
+        },
+        "navigation_calibration": {
+            "path": "docs/navigation.json",
+            "sha256": _sha256(navigation_path),
+            "unit_count": 8,
         },
         "legacy_task_rejection": {
             "path": "docs/rejection.json",
@@ -117,6 +148,8 @@ def test_snapshot_and_payload_start_workflow_connected(tmp_path: Path) -> None:
     assert payload["candidate"]["observed_byte_size"] == 128
     assert payload["workflow"]["resolved_decision_units"] == 15
     assert payload["workflow"]["item_level_questions_reemitted"] == 0
+    assert payload["workflow"]["blocks_workflow"] is False
+    assert len(payload["navigation_units"]) == 8
 
 
 def test_transition_requires_actual_playback(tmp_path: Path) -> None:
@@ -191,6 +224,23 @@ def test_snapshot_rejects_task_board_without_ten_unique_tasks(tmp_path: Path) ->
         )
 
 
+def test_snapshot_rejects_noncontiguous_navigation_units(tmp_path: Path) -> None:
+    root, config_path = _fixture(tmp_path)
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    navigation_path = root / config["navigation_calibration"]["path"]
+    navigation = json.loads(navigation_path.read_text(encoding="utf-8"))
+    navigation["decision_units"][3]["output_range_seconds"][0] = 5.0
+    navigation_path.write_text(json.dumps(navigation), encoding="utf-8")
+    config["navigation_calibration"]["sha256"] = _sha256(navigation_path)
+    config_path.write_text(json.dumps(config), encoding="utf-8")
+    with pytest.raises(ValueError, match="contiguous"):
+        load_cockpit_snapshot(
+            repo_root=root,
+            config_path=config_path,
+            duration_probe=lambda _path: 12.3,
+        )
+
+
 def test_static_surface_exposes_task_board_without_whole_gate() -> None:
     repo_root = Path(__file__).resolve().parents[1]
     html = (repo_root / "gui" / "project_cockpit" / "index.html").read_text(encoding="utf-8")
@@ -201,6 +251,10 @@ def test_static_surface_exposes_task_board_without_whole_gate() -> None:
     assert "payload.workflow.resolved_decision_units" in script
     assert "0 questions revived" in script
     assert "window.open(cockpit.candidate.review_url" in script
+    assert "8区間から再生位置を選ぶ" in html
+    assert "payload.navigation_units.map" in script
+    assert "activeNavigation.end_seconds" in script
+    assert "ui.video.currentTime = unit.start_seconds" in script
     assert 'type="radio"' not in html
     assert "accept_whole_candidate" not in html
     assert '<video id="candidate-video" controls muted' in html

@@ -26,10 +26,14 @@ DEFAULT_CONFIG = Path("docs/output_layer/clip_project_cockpit_v2.json")
 class CockpitSnapshot:
     config: dict[str, Any]
     workflow_receipt: dict[str, Any]
+    workflow_readback: dict[str, Any]
+    navigation_calibration: dict[str, Any]
     legacy_task_rejection: dict[str, Any]
     task_board: dict[str, Any]
     config_path: Path
     workflow_receipt_path: Path
+    workflow_readback_path: Path
+    navigation_calibration_path: Path
     legacy_task_rejection_path: Path
     task_board_path: Path
     media_path: Path
@@ -92,11 +96,15 @@ def load_cockpit_snapshot(
         raise ValueError("unsupported project cockpit schema_version")
 
     workflow_config = config.get("workflow_receipt") or {}
+    readback_config = config.get("workflow_readback") or {}
+    navigation_config = config.get("navigation_calibration") or {}
     rejection_config = config.get("legacy_task_rejection") or {}
     task_board_config = config.get("task_board") or {}
     candidate = config.get("candidate") or {}
     state_receipt = config.get("state_receipt") or {}
     workflow_receipt_path = (root / str(workflow_config.get("path", ""))).resolve()
+    workflow_readback_path = (root / str(readback_config.get("path", ""))).resolve()
+    navigation_calibration_path = (root / str(navigation_config.get("path", ""))).resolve()
     legacy_task_rejection_path = (root / str(rejection_config.get("path", ""))).resolve()
     task_board_path = (root / str(task_board_config.get("path", ""))).resolve()
     package_root = (root / str(candidate.get("package_root", ""))).resolve()
@@ -105,6 +113,8 @@ def load_cockpit_snapshot(
     for path in (
         resolved_config_path,
         workflow_receipt_path,
+        workflow_readback_path,
+        navigation_calibration_path,
         legacy_task_rejection_path,
         task_board_path,
         package_root,
@@ -117,6 +127,10 @@ def load_cockpit_snapshot(
             raise ValueError(f"cockpit path escapes repo root: {path}") from exc
     if not workflow_receipt_path.is_file():
         raise ValueError(f"workflow receipt is missing: {workflow_receipt_path}")
+    if not workflow_readback_path.is_file():
+        raise ValueError(f"workflow readback is missing: {workflow_readback_path}")
+    if not navigation_calibration_path.is_file():
+        raise ValueError(f"navigation calibration is missing: {navigation_calibration_path}")
     if not legacy_task_rejection_path.is_file():
         raise ValueError(f"legacy task rejection is missing: {legacy_task_rejection_path}")
     if not task_board_path.is_file():
@@ -140,6 +154,53 @@ def load_cockpit_snapshot(
     human = workflow_receipt.get("human_judgment") or {}
     if human.get("artifact_id") != candidate.get("artifact_id"):
         raise ValueError("workflow receipt candidate identity does not match cockpit authority")
+
+    readback_sha = _sha256(workflow_readback_path)
+    if readback_sha != str(readback_config.get("sha256", "")).lower():
+        raise ValueError("workflow readback SHA-256 does not match cockpit authority")
+    workflow_readback = _load_json(workflow_readback_path)
+    if workflow_readback.get("status") != readback_config.get("required_status"):
+        raise ValueError("workflow readback is not connected in nonblocking mode")
+    readback_artifact = workflow_readback.get("artifact") or {}
+    if readback_artifact.get("artifact_id") != candidate.get("artifact_id"):
+        raise ValueError("workflow readback artifact identity does not match cockpit authority")
+    if readback_artifact.get("sha256") != str(candidate.get("sha256", "")).lower():
+        raise ValueError("workflow readback media SHA-256 does not match cockpit authority")
+    decision_path = workflow_readback.get("decision_path") or {}
+    if decision_path.get("item_level_questions_reemitted") != 0:
+        raise ValueError("workflow readback must not re-emit item-level questions")
+    legacy_gate = workflow_readback.get("legacy_gate") or {}
+    if legacy_gate.get("blocks_workflow") is not False or legacy_gate.get("mandatory_human_judgment_count") != 0:
+        raise ValueError("legacy whole-candidate gate must remain nonblocking")
+
+    navigation_sha = _sha256(navigation_calibration_path)
+    if navigation_sha != str(navigation_config.get("sha256", "")).lower():
+        raise ValueError("navigation calibration SHA-256 does not match cockpit authority")
+    navigation_calibration = _load_json(navigation_calibration_path)
+    calibration_scope = navigation_calibration.get("calibration_scope") or {}
+    if calibration_scope.get("artifact_identity") != candidate.get("artifact_id"):
+        raise ValueError("navigation calibration artifact identity does not match cockpit authority")
+    if calibration_scope.get("output_sha256") != str(candidate.get("sha256", "")).lower():
+        raise ValueError("navigation calibration media SHA-256 does not match cockpit authority")
+    navigation_units = navigation_calibration.get("decision_units") or []
+    required_unit_count = int(navigation_config.get("unit_count", 0))
+    if required_unit_count != 8 or len(navigation_units) != required_unit_count:
+        raise ValueError("navigation calibration must expose exactly eight units")
+    previous_end = 0.0
+    for index, unit in enumerate(navigation_units):
+        output_range = unit.get("output_range_seconds") or []
+        if len(output_range) != 2:
+            raise ValueError("navigation unit must have an output range")
+        start, end = map(float, output_range)
+        if start < 0 or end <= start or abs(start - previous_end) > 0.001:
+            raise ValueError("navigation units must be positive contiguous ranges")
+        if not unit.get("unit_id") or not unit.get("content_label"):
+            raise ValueError("navigation unit must have an id and label")
+        previous_end = end
+    if abs(previous_end - float(candidate.get("editorial_duration_seconds"))) > 0.05:
+        raise ValueError("navigation units must cover the editorial duration")
+    if previous_end > float(candidate.get("container_duration_seconds")):
+        raise ValueError("navigation units exceed the candidate duration")
 
     rejection_sha = _sha256(legacy_task_rejection_path)
     if rejection_sha != str(rejection_config.get("sha256", "")).lower():
@@ -172,10 +233,14 @@ def load_cockpit_snapshot(
     return CockpitSnapshot(
         config=config,
         workflow_receipt=workflow_receipt,
+        workflow_readback=workflow_readback,
+        navigation_calibration=navigation_calibration,
         legacy_task_rejection=legacy_task_rejection,
         task_board=task_board,
         config_path=resolved_config_path,
         workflow_receipt_path=workflow_receipt_path,
+        workflow_readback_path=workflow_readback_path,
+        navigation_calibration_path=navigation_calibration_path,
         legacy_task_rejection_path=legacy_task_rejection_path,
         task_board_path=task_board_path,
         media_path=media_path,
@@ -295,11 +360,22 @@ def cockpit_payload(snapshot: CockpitSnapshot, *, review_url: str) -> dict[str, 
             "review_url": review_url,
         },
         "workflow": {
-            "status": snapshot.workflow_receipt["status"],
+            "status": snapshot.workflow_readback["status"],
+            "legacy_status": snapshot.workflow_receipt["status"],
+            "blocks_workflow": False,
             "resolved_decision_units": 15,
             "decision_counts": snapshot.workflow_receipt["autonomous_resolution"]["decision_counts"],
             "item_level_questions_reemitted": 0,
         },
+        "navigation_units": [
+            {
+                "unit_id": unit["unit_id"],
+                "label": unit["content_label"],
+                "start_seconds": float(unit["output_range_seconds"][0]),
+                "end_seconds": float(unit["output_range_seconds"][1]),
+            }
+            for unit in snapshot.navigation_calibration["decision_units"]
+        ],
         "legacy_task": snapshot.legacy_task_rejection,
         "task_board": snapshot.task_board,
         "observation_mode": snapshot.config["observation_mode"],

@@ -29,7 +29,7 @@
     "state": "WHOLE_GATE_REJECTED_TASK_BOARD_ACTIVE_EP1_SOURCE_GATE_PARKED",
     "title": "ED-13 recovery task board with retained 335s calibration fixture",
     "active_branch": "codex/wiki-tensaku-longform-family-v1",
-    "phase": "temporary_project_task_surface_active",
+    "phase": "temporary_project_task_surface_navigation_ready",
     "canonical_main_head": "refs/heads/main",
     "canonical_main_baseline": "OUT-09 accepted internal exact SHA b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50",
     "canonical_status": "whole_candidate_gate_rejected_partial_observation_optional_project_work_continues",
@@ -70,7 +70,7 @@
     "last_verified_at": "2026-07-27T20:10:59+09:00",
     "decision_required": "none_whole_candidate_task_rejected",
     "next_review_action_type": "optional_partial_observation_only",
-    "next_action": "ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation",
+    "next_action": "await_explicit_ED-13R-09_CU-02_source_input_decision",
     "source_metadata": "docs/RUNTIME_STATE.md"
   },
   "open_surfaces": [
@@ -84,7 +84,7 @@
       "label": "ED-13 Current Focus",
       "command": "npm run cockpit",
       "target": "optional_partial_observation_only_no_whole_acceptance_requested",
-      "when_to_use": "ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation"
+      "when_to_use": "await_explicit_ED-13R-09_CU-02_source_input_decision"
     },
     {
       "label": "Artifacts",
@@ -400,12 +400,12 @@
     {
       "id": "ED-13c",
       "title": "Temporary Project task surface",
-      "status": "in_progress",
-      "health": "active",
-      "progress_pct": 70,
+      "status": "done",
+      "health": "blocked",
+      "progress_pct": 100,
       "active_artifact": "",
-      "next_action": "Finish current acceptance/readback and update artifact registry.",
-      "summary_excerpt": "Cockpit v2 binds the exact 335.3-second calibration fixture, append-only legacy-task rejection, and ten stable ED-13R task IDs. It exposes a direct muted video route and optional partial observation context, never whole...",
+      "next_action": "Keep as reference unless a regression or successor lane appears.",
+      "summary_excerpt": "Cockpit v2 binds the exact 335.3-second calibration fixture, append-only legacy-task rejection, and ten stable ED-13R task IDs. Eight existing ranges are optional muted navigation anchors, and the successor workflow rea...",
       "source_path": "docs/FEATURE_REGISTRY.md"
     },
     {
@@ -1666,8 +1666,8 @@
   "feature_summary": {
     "feature_count": 120,
     "status_counts": {
-      "done": 105,
-      "in_progress": 3,
+      "done": 106,
+      "in_progress": 2,
       "successor-lane": 1,
       "proposed": 10,
       "approved": 1
@@ -2749,7 +2749,7 @@
       "item": "ED-13 current focus",
       "artifact": "clip-wiki-selected-opening-current-basis-v1-001",
       "question": "ED-13 recovery task board with retained 335s calibration fixture",
-      "next_route": "ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation"
+      "next_route": "await_explicit_ED-13R-09_CU-02_source_input_decision"
     },
     {
       "item": "ED-10bc Thank v2 opener repair",
@@ -2978,7 +2978,7 @@
     {
       "path": "README.md",
       "title": "ClipPipeGen",
-      "line_count": 305,
+      "line_count": 304,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -2986,7 +2986,7 @@
         "next": false,
         "constraints_risks": false
       },
-      "boundary_term_count": 90,
+      "boundary_term_count": 89,
       "status": "contains_done_history"
     },
     {
@@ -3006,18 +3006,18 @@
     {
       "path": "docs/RUNTIME_STATE.md",
       "title": "Runtime State - ClipPipeGen",
-      "line_count": 3181,
+      "line_count": 3184,
       "metadata": {
         "id": "runtime-state",
         "title": "Runtime State - ClipPipeGen",
         "type": "resume_surface",
         "status": "active",
         "health": "WHOLE_GATE_REJECTED_TASK_BOARD_ACTIVE_EP1_SOURCE_GATE_PARKED",
-        "last_touched": "2026-08-30",
-        "state_revision": "ed13-recovery-task-board-v1-2026-08-30",
+        "last_touched": "2026-08-31",
+        "state_revision": "ed13-optional-navigation-nonblocking-readback-v1-2026-08-31",
         "contract_repair_status": "out13_v4_preserved_windows_reparse_point_detection_added",
         "current_slice": "ED-13",
-        "phase": "temporary_project_task_surface_active",
+        "phase": "temporary_project_task_surface_navigation_ready",
         "canonical_status": "whole_candidate_gate_rejected_partial_observation_optional_project_work_continues",
         "active_branch": "codex/wiki-tensaku-longform-family-v1",
         "source_branch": "codex/wiki-tensaku-longform-family-v1",
@@ -3061,6 +3061,8 @@
         "decision_required": "none_whole_candidate_task_rejected",
         "workflow_connection_artifact": "docs/output_layer/clip_editorial_production_workflow_connection_v1.json",
         "workflow_connection_status": "CONNECTED_CURRENT_BASIS_ADOPTED",
+        "workflow_nonblocking_readback": "docs/output_layer/clip_editorial_workflow_nonblocking_readback_v1.json",
+        "workflow_nonblocking_status": "CONNECTED_NONBLOCKING_PARTIAL_OBSERVATION",
         "workflow_resolved_decision_unit_count": "15",
         "workflow_reemitted_item_question_count": "0",
         "workflow_remaining_human_judgment_count": "0",
@@ -3164,7 +3166,7 @@
         "review_server_status": "stopped_portable_loopback_launcher_available",
         "next_review_due": "optional_partial_observation_only",
         "next_review_type": "one_complete_internal_candidate_content_review",
-        "next_action": "ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation",
+        "next_action": "await_explicit_ED-13R-09_CU-02_source_input_decision",
         "wiki_content_reframe_work_order_id": "CPG-WIKI-CONTENT-REFRAME-001",
         "wiki_content_reframe_artifact_id": "wiki-tensaku-content-reframe-v1-001",
         "wiki_content_reframe_topology": "thematic_episode_family",
@@ -3900,7 +3902,7 @@
         "next": true,
         "constraints_risks": true
       },
-      "boundary_term_count": 549,
+      "boundary_term_count": 548,
       "status": "active"
     },
     {
@@ -4023,7 +4025,7 @@
     {
       "path": "artifacts/ARTIFACTS.md",
       "title": "ARTIFACTS",
-      "line_count": 3061,
+      "line_count": 3062,
       "metadata": {},
       "front_sections": {
         "what_it_is": false,
@@ -4484,7 +4486,7 @@
         "out13_public_use_verdict": "deny",
         "out13_monetized_youtube_verdict": "deny",
         "next_review_due": "optional_partial_observation_only",
-        "next_action": "ED-13R-08_nonblocking_workflow_readback_then_ED-13R-07_optional_navigation",
+        "next_action": "await_explicit_ED-13R-09_CU-02_source_input_decision",
         "current_handoff": "docs/CURRENT_HANDOFF.md",
         "upstream_parity": "4 0 after_four_local_editorial_and_cockpit_commits_push_count_zero",
         "current_slice_push_status": "local_commit_only_push_prohibited_by_mission",
@@ -4518,13 +4520,13 @@
     {
       "path": "docs/decision-log.md",
       "title": "Decision Log - ClipPipeGen",
-      "line_count": 583,
+      "line_count": 591,
       "metadata": {
         "id": "decision-log",
         "title": "Decision Log - ClipPipeGen",
         "type": "durable_decision_log",
         "status": "current",
-        "last_touched": "2026-08-30"
+        "last_touched": "2026-08-31"
       },
       "front_sections": {
         "what_it_is": false,
@@ -4726,13 +4728,13 @@
     {
       "path": "docs/project-context.md",
       "title": "Project Context - ClipPipeGen",
-      "line_count": 130,
+      "line_count": 142,
       "metadata": {
         "id": "project-context",
         "title": "Project Context - ClipPipeGen",
         "type": "durable_context",
         "status": "current",
-        "last_touched": "2026-08-30",
+        "last_touched": "2026-08-31",
         "current_slice": "ED-13",
         "phase": "temporary_project_task_surface_active",
         "active_branch": "codex/wiki-tensaku-longform-family-v1",
@@ -4945,13 +4947,13 @@
       {
         "type": "over_guarded",
         "path": "README.md",
-        "detail": "Boundary terms appear 90 times without a front Constraints / Risks section.",
+        "detail": "Boundary terms appear 89 times without a front Constraints / Risks section.",
         "suggested_fix": "Collect repeated caveats into Constraints / Risks and keep the opening action-oriented."
       },
       {
         "type": "stale",
         "path": "docs/RUNTIME_STATE.md",
-        "detail": "Long active doc (3181 lines) is likely carrying history.",
+        "detail": "Long active doc (3184 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -4981,7 +4983,7 @@
       {
         "type": "stale",
         "path": "artifacts/ARTIFACTS.md",
-        "detail": "Long active doc (3061 lines) is likely carrying history.",
+        "detail": "Long active doc (3062 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {
@@ -5029,7 +5031,7 @@
       {
         "type": "stale",
         "path": "docs/decision-log.md",
-        "detail": "Long active doc (583 lines) is likely carrying history.",
+        "detail": "Long active doc (591 lines) is likely carrying history.",
         "suggested_fix": "Move older closeouts to archive/history and keep this page as a pointer or dashboard surface."
       },
       {

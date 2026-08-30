@@ -47,6 +47,17 @@
             <button id="play-artifact" type="button" class="primary">実artifactを再生</button>
             <button id="open-review" type="button" class="secondary">動画を別タブで開く</button>
           </div>
+          <section class="navigation-panel" aria-labelledby="navigation-title">
+            <div class="navigation-head">
+              <div>
+                <p class="kicker">OPTIONAL NAVIGATION</p>
+                <h3 id="navigation-title">8区間から再生位置を選ぶ</h3>
+              </div>
+              <span id="workflow-state" class="pill neutral">READING</span>
+            </div>
+            <p>見たい位置へ移動するための区切りです。各区間への移動は、採用・非採用・修正要求ではありません。</p>
+            <div id="navigation-list" class="navigation-list"></div>
+          </section>
           <dl class="identity-grid">
             <div><dt>Artifact</dt><dd id="artifact-id">—</dd></div>
             <div><dt>Size</dt><dd id="media-size">—</dd></div>
