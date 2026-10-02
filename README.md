@@ -151,9 +151,9 @@ ED-07c note: `transcribe-audio --engine vosk` now validates inferable model lang
 
 ## 現在のスライス
 
-現在のactive sliceは`ED-13`。S1 persona-led digestのexact source二本をread-only reuseし、「7月18日の第一印象と、7月25日の理解更新を並べて見る」という一つの問いへ、3つのprimary quote / paired evidence beatを同時二画面で結ぶ。active artifactは`clip-s2-subaru-evidence-linked-comparison-v1-002`。
+現在のactive sliceは`ED-13`。S1 persona-led digestのexact source二本をread-only reuseし、「7月18日の第一印象と、7月25日の理解更新を並べて見る」という一つの問いへ、3つのprimary quote / paired evidence beatを同時二画面で結ぶ。tracked authority上のactive artifact identityは`clip-s2-subaru-evidence-linked-comparison-v1-002`。
 
-exact local MP4は63.466667秒、SHA `a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f`。各beatはvisible source/date label、exact source range、creator-authored proposition、foreground audio owner一件を持つ。machine/readbackとsilent browser inspectionはpassしたが、human editorial acceptanceはpending。branchは`codex/s2-evidence-linked-comparison-v1`で、tracked code/docs/testsは`origin/codex/s2-evidence-linked-comparison-v1`へ同期済み。Git common configの書込み制限によりlocal upstreamは未設定なので、remote比較には同remote tracking refを明示する。`episodes/`内のsource mediaとreview packageはGitでは移動しない。
+source hostで検証済みのMP4は63.466667秒、SHA `a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f`。各beatはvisible source/date label、exact source range、creator-authored proposition、foreground audio owner一件を持ち、machine/readbackとsilent browser inspectionはpassしたが、human editorial acceptanceはpending。branchは`codex/s2-evidence-linked-comparison-v1`で、2026-07-31のcurrent checkoutはremote tip `978f8a97...`とparity `0 0`。ただしcurrent `episodes/`にはS1/S2 exact packageがなく、Gitだけではsource mediaとreview packageが移動しないため、code development-readyとartifact review-readyを分離する。
 
 `record-evidence-linked-comparison-decision`は、人間が記入した`accept / bounded_repair / reject`だけをclosed manifest、exact MP4 SHA、manifest self-integrity、4 review dimensionsへfail-closedでbindする。判断自体は生成せず、artifact packageも変更せず、rights、production、thumbnail、publishing、public/upload gateを開かない。
 
@@ -161,7 +161,7 @@ S1 artifact `clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`はhuman rev
 
 Campaign Horizonは、ED-13 evidence-linked comparison explainer、ED-14 synchronized multi-participant camera director、ED-15 event-centered reaction compiler、ED-16 held-out genre variation proofの順。comparison / multi-camera / reactionのbenchmark名は方向検証用のstaged scenarioで、source/rights availabilityを主張しない。
 
-直近のnext actionは、このexact S2 MP4について同時二画面が比較を速めるか、primary quoteとpaired evidenceの関係、audio ownerの切替、3 beatの理解更新が一つの論として成立するかを全編reviewし、`accept / bounded repair / reject`をidentityへbindすること。rights approval、production render/subtitle design/image quality、thumbnail、Publishing / OAuth、upload、public releaseは独立した未承認gateのまま。
+直近のnext actionは、source hostで検証済みのexact S2 packageを許可されたprivate transferで戻すか、exact S1 inputsを回復して再生成・hash検証した後、同時二画面が比較を速めるか、primary quoteとpaired evidenceの関係、audio ownerの切替、3 beatの理解更新が一つの論として成立するかを全編reviewし、`accept / bounded repair / reject`をidentityへbindすること。rights approval、production render/subtitle design/image quality、thumbnail、Publishing / OAuth、upload、public releaseは独立した未承認gateのまま。
 
 詳細: [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) / [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 

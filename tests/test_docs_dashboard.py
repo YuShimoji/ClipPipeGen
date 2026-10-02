@@ -286,22 +286,8 @@ def test_ed10az_route_decision_is_registered_in_dashboard_inputs():
     )
 
 
-def test_current_resume_surfaces_point_to_s1_and_historical_sources_remain_linked():
-    current_s1_artifact = "clip-s1-two-source-common-context-probe-v1-001"
-    current_out06_artifact = (
-        "clip-out06-complete-narrative-short-delivery-candidate-v0-001"
-    )
-    accepted_out05_artifact = "clip-out05-vertical-short-internal-candidate-v0-001"
-    current_out04_artifact = "clip-out04-editorial-representative-sequence-v0-001"
-    current_out03_artifact = "clip-out03-real-local-selected-cut-proof-v0-001"
-    baseline_out02_artifact = "clip-out02-local-fixture-output-proof-smoke-v0-001"
-    current_int_artifact = "clip-int01-parallel-lane-aggregation-v0-001"
-    current_ews_artifact = "clip-ews05-human-ok-fetch-prep-ready-package-v0-001"
-    current_ews_fetch_prep_artifact = "clip-ews04-source-fetch-prep-planner-v0-001"
-    current_ews_decision_artifact = "clip-ews03-source-identity-decision-intake-v0-001"
-    current_ews_inspector_artifact = "clip-ews02-episode-workspace-inspector-v0-001"
-    current_ews_spine_artifact = "clip-ews01-episode-workspace-spine-v0-001"
-    current_cpd_artifact = "clip-cpd12-minimal-review-console-v0-001"
+def test_current_resume_surfaces_point_to_s2_and_historical_sources_remain_linked():
+    current_s2_artifact = "clip-s2-subaru-evidence-linked-comparison-v1-002"
     active_artifact = "clip-ed10bc-thank-v2-open-command-repair-readback-001"
     active_json = "docs/style_intent/thank-v2-open-command-repair-readback.json"
     active_md = "docs/style_intent/thank-v2-open-command-repair-readback.md"
@@ -347,68 +333,37 @@ def test_current_resume_surfaces_point_to_s1_and_historical_sources_remain_linke
         text = path.read_text(encoding="utf-8")
 
         if path.name == "CURRENT_HANDOFF.md":
-            assert f"active_artifact: {current_s1_artifact}" in text
-            assert "local_artifact_available: true" in text
+            assert f"active_artifact: {current_s2_artifact}" in text
+            assert "local_artifact_available: false" in text
+            assert "human_entrypoint: null" in text
             assert (
-                "human_entrypoint: "
-                "episodes/s1_two_source_common_context_probe_20260726/review/"
-                "clip_s1_two_source_common_context_probe_v001/review/index.html"
+                "portable_entrypoint: "
+                "docs/output_layer/S2_EVIDENCE_LINKED_COMPARISON.md"
                 in text
             )
             assert "latest_out06_complete_narrative_short" not in text
             continue
 
-        if path.name in {"CURRENT_HANDOFF.md", "RUNTIME_STATE.md"}:
-            assert f"active_artifact: {current_s1_artifact}" in text
+        if path.name == "RUNTIME_STATE.md":
+            assert f"active_artifact: {current_s2_artifact}" in text
             assert (
-                "historical_source_host_out06_artifact: "
-                f"{current_out06_artifact}" in text
-            )
-            assert (
-                "latest_out05_vertical_short_internal_candidate_artifact: "
-                f"{accepted_out05_artifact}" in text
-            )
-            assert (
-                "latest_out04_editorial_representative_sequence_artifact: "
-                f"{current_out04_artifact}" in text
-            )
-            assert (
-                "latest_out03_real_local_selected_cut_proof_artifact: "
-                f"{current_out03_artifact}" in text
-            )
-            assert (
-                "latest_out02_local_fixture_output_proof_artifact: "
-                f"{baseline_out02_artifact}" in text
-            )
-            assert (
-                "latest_int01_parallel_lane_aggregation_artifact: "
-                f"{current_int_artifact}" in text
-            )
-            assert (
-                f"latest_human_ok_fetch_prep_ready_artifact: {current_ews_artifact}"
+                "portable_entrypoint: "
+                "docs/output_layer/S2_EVIDENCE_LINKED_COMPARISON.md"
                 in text
             )
             assert (
-                "latest_source_fetch_prep_planner_artifact: "
-                f"{current_ews_fetch_prep_artifact}" in text
-            )
-            assert (
-                "latest_source_identity_decision_intake_artifact: "
-                f"{current_ews_decision_artifact}" in text
-            )
-            assert (
-                f"latest_episode_workspace_inspector_artifact: {current_ews_inspector_artifact}"
+                "out13_predecessor_status: "
+                "m6_closed_deny_exact_artifact_read_only_archive"
                 in text
             )
             assert (
-                f"latest_episode_workspace_spine_artifact: {current_ews_spine_artifact}"
+                "out07_predecessor_status: "
+                "parked_provisional_usable_noncanonical_no_additional_iteration"
                 in text
             )
-            assert (
-                f"latest_content_planning_operator_cockpit_artifact: {current_cpd_artifact}"
-                in text
-            )
-        elif path.name != "SUBTITLE_PRESENTATION_CONTRACT.md":
+            continue
+
+        if path.name != "SUBTITLE_PRESENTATION_CONTRACT.md":
             assert f"active_artifact: {active_artifact}" in text
 
         if path.name != "SUBTITLE_PRESENTATION_CONTRACT.md":
@@ -1618,47 +1573,36 @@ def test_docs_dashboard_current_focus_registration_uses_runtime_artifact(
     assert status["artifact_coverage"]["current_focus_artifact_registered"] is False
 
 
-def test_artifact_registry_records_s1_current_focus_and_historical_sources():
+def test_artifact_registry_records_s2_current_focus_and_historical_sources():
     status = build_project_status(base_dir=REPO_ROOT, generated_at="test-run")
     artifact_ids = set(status["artifact_summary"]["artifact_ids"])
 
     assert status["current_focus"]["active_branch"] == (
-        "codex/s1-two-source-common-context-probe-v1"
+        "codex/s2-evidence-linked-comparison-v1"
     )
-    assert status["current_focus"]["canonical_main_head"] == "refs/heads/main"
-    assert status["current_focus"]["canonical_main_baseline"] == (
-        "OUT-09 accepted internal exact SHA "
-        "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
-    )
+    assert status["current_focus"]["canonical_main_head"] == ""
+    assert status["current_focus"]["canonical_main_baseline"] == ""
     assert status["current_focus"]["canonical_status"] == (
-        "s1_s3_common_context_probe_ready_for_s4_human_review"
+        "s2_code_ready_local_review_package_missing"
     )
     assert status["current_focus"]["review_status"] == (
-        "s4_human_review_pending"
+        "human_editorial_review_pending_local_package_missing"
     )
     assert status["current_focus"]["decision_required"] == (
-        "s4_human_common_context_verdict"
+        "human_editorial_verdict_on_exact_evidence_linked_comparison"
     )
     assert status["current_focus"]["next_review_action_type"] == (
-        "s4_human_common_context_review"
+        "restore_exact_s2_review_artifact_before_human_review"
     )
-    assert status["current_focus"]["human_entrypoint"] == (
-        "episodes/s1_two_source_common_context_probe_20260726/review/"
-        "clip_s1_two_source_common_context_probe_v001/review/index.html"
-    )
-    assert status["current_focus"]["review_open_command"].endswith(
-        "clip_s1_two_source_common_context_probe_v001\\review\\open_preview.ps1"
-    )
-    assert status["current_focus"]["machine_readback"] == (
-        "episodes/s1_two_source_common_context_probe_20260726/review/"
-        "clip_s1_two_source_common_context_probe_v001/validation_readback.json"
-    )
+    assert status["current_focus"]["human_entrypoint"] == ""
+    assert status["current_focus"]["review_open_command"] == ""
+    assert status["current_focus"]["machine_readback"] == ""
     assert status["current_focus"]["remote_code_complete"] == "true"
-    assert status["current_focus"]["remote_decision_binding_available"] == "false"
-    assert status["current_focus"]["local_artifact_available"] == "true"
+    assert status["current_focus"]["remote_decision_binding_available"] == ""
+    assert status["current_focus"]["local_artifact_available"] == "false"
     assert status["current_focus"]["portable_local_artifact_available"] == "false"
     assert status["current_focus"]["portable_entrypoint"] == (
-        "docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md"
+        "docs/output_layer/S2_EVIDENCE_LINKED_COMPARISON.md"
     )
     assert status["current_focus"]["exact_baseline_available"] == ""
     assert status["current_focus"]["accepted_baseline_status"] == ""
@@ -1667,46 +1611,38 @@ def test_artifact_registry_records_s1_current_focus_and_historical_sources():
     assert status["current_focus"]["proxy_classification"] == ""
     assert status["current_focus"]["source_byte_equivalence_claimed"] == ""
     assert status["current_focus"]["review_server_status"] == (
-        "stopped_restart_command_available"
+        "unavailable_missing_local_package"
     )
     assert (
-        status["current_focus"]["last_verified_host_local_artifact_available"] == "true"
+        status["current_focus"]["last_verified_host_local_artifact_available"] == ""
     )
-    assert status["current_focus"]["last_verified_host_entrypoint"] == (
-        "episodes/s1_two_source_common_context_probe_20260726/review/"
-        "clip_s1_two_source_common_context_probe_v001/review/index.html"
-    )
-    assert status["current_focus"]["local_verified_host"] == "DESKTOP-U9P4LKJ"
+    assert status["current_focus"]["last_verified_host_entrypoint"] == ""
+    assert status["current_focus"]["local_verified_host"] == ""
     assert status["current_focus"]["pause_reason"] == (
-        "s4_human_common_context_review_required"
+        "exact_s2_private_review_package_missing_on_current_checkout"
     )
     assert status["current_focus"]["accepted_baseline_recovery_status"] == ""
     assert status["current_focus"]["cover_review_status"] == ""
     current_surfaces = [
         item
         for item in status["open_surfaces"]
-        if item["label"] == "ED-12 Current Focus"
+        if item["label"] == "ED-13 Current Focus"
     ]
-    assert len(current_surfaces) == 1
-    assert current_surfaces[0]["target"].endswith(
-        "clip_s1_two_source_common_context_probe_v001/review/index.html"
-    )
+    assert current_surfaces == []
     assert status["current_focus"]["cross_machine_resume_class"] == (
         "tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_"
         "review_package_are_not"
     )
     assert status["current_focus"]["active_rebuild_contract"] == ""
-    assert status["current_focus"]["accepted_baseline_sha256"] == (
-        "b6b90a4b29cdc61eb70b6f0f6476fffa8a5d0b148d9ed85a66a36ab8fa73da50"
-    )
+    assert status["current_focus"]["accepted_baseline_sha256"] == ""
     assert status["current_focus"]["recommended_cover_path"] == ""
     assert status["current_focus"]["recommended_cover_sha256"] == ""
     assert status["current_focus"]["recommended_cover_timestamp_seconds"] == ""
     assert status["current_focus"]["recommended_cover_selection_status"] == ""
     assert status["current_focus"]["artifact_id"] == (
-        "clip-s1-two-source-common-context-probe-v1-001"
+        "clip-s2-subaru-evidence-linked-comparison-v1-002"
     )
-    assert "clip-s1-two-source-common-context-probe-v1-001" in artifact_ids
+    assert "clip-s2-subaru-evidence-linked-comparison-v1-002" in artifact_ids
     assert "clip-out13-editorial-video-candidate-v1-005" in artifact_ids
     assert "clip-out13-editorial-video-candidate-v1-004" in artifact_ids
     assert "clip-out13-editorial-video-candidate-v1-003" in artifact_ids

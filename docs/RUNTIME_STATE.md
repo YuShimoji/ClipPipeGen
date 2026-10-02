@@ -3,12 +3,13 @@ id: runtime-state
 title: Runtime State - ClipPipeGen
 type: resume_surface
 status: active
-health: EVIDENCE_LINKED_MULTI_SOURCE_COMPARISON_ARTIFACT_READY_FOR_HUMAN_REVIEW
+health: S2_CODE_READY_LOCAL_REVIEW_PACKAGE_MISSING
 last_touched: 2026-07-31
 state_revision: s2-evidence-linked-comparison-decision-recorder-ready-2026-07-31
 current_slice: ED-13
-phase: evidence_linked_comparison_built_human_editorial_review_pending
-canonical_status: evidence_linked_multi_source_comparison_artifact_ready_for_human_review
+phase: evidence_linked_comparison_code_ready_local_review_package_recovery_pending
+canonical_status: s2_code_ready_local_review_package_missing
+artifact_identity_status: evidence_linked_multi_source_comparison_artifact_ready_for_human_review_on_source_host
 active_branch: codex/s2-evidence-linked-comparison-v1
 source_branch: codex/s2-evidence-linked-comparison-v1
 mission_base_branch: codex/s1-persona-led-subaru-digest-v1
@@ -17,28 +18,48 @@ base_main_revision: 40fe3fbdf13631948d03641e33325e7f01ed9e56
 implementation_revision: 3e6ebb9947e7f87520a974a63bc2139d42317c0f
 implementation_revision_locator: refs/heads/codex/s2-evidence-linked-comparison-v1
 current_head_locator: refs/heads/codex/s2-evidence-linked-comparison-v1
-upstream_branch: null
+upstream_branch: origin/codex/s2-evidence-linked-comparison-v1
 remote_tracking_ref: origin/codex/s2-evidence-linked-comparison-v1
-upstream_parity: local_upstream_not_configured_remote_tracking_ref_parity_0_0
+upstream_parity: 0 0
 remote_code_complete: true
 remote_handoff_status: pushed_and_fetch_readback_verified
 remote_mutation_authority: normal_push_consumed_by_supervision_restart_delegation_2026_07_31
 additional_remote_mutation_authorized: false
-local_upstream_configuration: unavailable_git_common_config_write_denied
+local_upstream_configuration: configured_for_origin_tracking_branch
 decision_recorder_revision: 536458105e22b1ece5cdef1d83b39a88678d9266
 decision_recording_status: exact_artifact_bound_cli_ready_human_input_pending
 decision_receipt_available: false
-current_title: S2 evidence-linked Subaru two-week comparison ready for human review
-human_entrypoint: episodes/s2_evidence_linked_comparison_20260729/artifacts/clip-s2-subaru-evidence-linked-comparison-v1-002/review/index.html
+out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive
+out13_human_review_pending: false
+out13_editorial_acceptance_granted: true
+out13_acceptance_receipt: docs/output_layer/out13_human_acceptance_receipt.json
+out13_main_integration_approved: true
+out13_m4_main_integration_status: complete
+out13_m5_integrated_baseline_verification_status: passed
+out13_m6_rights_status: closed_deny_exact_artifact
+out13_m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT
+out13_m6_packet: docs/rights/out13_m6_rights_decision_readiness_packet.json
+out13_public_use_verdict: deny
+out13_monetized_youtube_verdict: deny
+out07_predecessor_status: parked_provisional_usable_noncanonical_no_additional_iteration
+out07_canonical_pattern: false
+out07_default_template: false
+out07_reuse_as_standard: false
+out07_revisit_after_real_short_count: 3_to_5
+current_title: S2 code ready; exact local review package recovery required
+human_entrypoint: null
 portable_entrypoint: docs/output_layer/S2_EVIDENCE_LINKED_COMPARISON.md
-review_open_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s2_evidence_linked_comparison_20260729\artifacts\clip-s2-subaru-evidence-linked-comparison-v1-002\review\open_preview.ps1
-review_server_restart_command: powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s2_evidence_linked_comparison_20260729\artifacts\clip-s2-subaru-evidence-linked-comparison-v1-002\review\serve_preview.ps1
-machine_readback: episodes/s2_evidence_linked_comparison_20260729/artifacts/clip-s2-subaru-evidence-linked-comparison-v1-002/media_readback.json
-review_status: human_editorial_review_pending
-local_artifact_available: true
-local_artifact_role: active_private_human_review_target_same_machine_only
+review_open_command: null
+review_server_restart_command: null
+machine_readback: null
+last_verified_source_host_entrypoint: episodes/s2_evidence_linked_comparison_20260729/artifacts/clip-s2-subaru-evidence-linked-comparison-v1-002/review/index.html
+review_status: human_editorial_review_pending_local_package_missing
+local_artifact_available: false
+local_artifact_role: missing_on_current_checkout_private_transfer_or_source_recovery_required
 portable_local_artifact_available: false
 cross_machine_resume_class: tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_review_package_are_not
+current_host_artifact_search_status: exact_s1_and_s2_artifact_directories_absent
+pause_reason: exact_s2_private_review_package_missing_on_current_checkout
 active_artifact: clip-s2-subaru-evidence-linked-comparison-v1-002
 artifact_output_sha256: a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f
 artifact_output_byte_size: 7829406
@@ -50,11 +71,11 @@ artifact_source_count: 2
 artifact_beat_count: 3
 artifact_concurrent_source_panels: true
 artifact_foreground_audio_owner_per_beat: 1
-package_validation_status: passed
+package_validation_status: historical_source_host_passed_current_checkout_package_missing
 focused_test_status: decision_recorder_and_s2_s1_contracts_20_passed
-full_suite_status: not_run_focused_20_passed_decision_recorder_and_s2_s1_contracts
+full_suite_status: current_checkout_702_passed_after_authority_and_predecessor_gate_repair
 browser_validation_status: wide_narrow_actual_content_passed_console_errors_zero_page_200_range_206
-review_server_status: stopped_restart_command_available
+review_server_status: unavailable_missing_local_package
 human_review_pending: true
 acceptance_granted: false
 editorial_acceptance_granted: false
@@ -78,9 +99,9 @@ rejected_predecessor_verdict_state: superseded
 rejected_predecessor_repair_class: not_bounded_repair
 campaign_horizon: ED-13_evidence_linked_comparison__ED-14_synchronized_multi_participant_camera_director__ED-15_event_centered_reaction_compiler__ED-16_held_out_genre_variation_proof
 campaign_benchmark_authority: staged_scenarios_only_source_and_rights_availability_not_asserted
-next_review_due: exact_evidence_linked_comparison_human_review
+next_review_due: restore_exact_s2_review_artifact_before_human_review
 decision_required: human_editorial_verdict_on_exact_evidence_linked_comparison
-next_action: obtain_human_editorial_verdict_on_exact_evidence_linked_comparison
+next_action: restore_exact_s2_review_package_then_obtain_human_editorial_verdict
 current_handoff: docs/CURRENT_HANDOFF.md
 source_of_truth: true
 owner_lane: editing_review_handoff
@@ -104,30 +125,31 @@ instructions.
 
 - active slice: `ED-13`
 - active artifact: `clip-s2-subaru-evidence-linked-comparison-v1-002`
-- state: `EVIDENCE_LINKED_MULTI_SOURCE_COMPARISON_ARTIFACT_READY_FOR_HUMAN_REVIEW`
-- review status: `human_editorial_review_pending`
+- state: `S2_CODE_READY_LOCAL_REVIEW_PACKAGE_MISSING`
+- review status: `human_editorial_review_pending_local_package_missing`
 - portable receipt: `docs/output_layer/S2_EVIDENCE_LINKED_COMPARISON.md`
-- local artifact role: `active_private_human_review_target_same_machine_only`
+- local artifact role: `missing_on_current_checkout_private_transfer_or_source_recovery_required`
 - human review pending: `true`
 
 - exact baseは`codex/s1-persona-led-subaru-digest-v1` / `40fe3fbdf13631948d03641e33325e7f01ed9e56`。そこから作った`codex/s2-evidence-linked-comparison-v1`の実装revisionは`3e6ebb9947e7f87520a974a63bc2139d42317c0f`。当初missionのlocal-only境界は、2026-07-29のrepository progress delegationによるnormal push権限で一度だけ更新され、tracked code/docs/testsは`origin/codex/s2-evidence-linked-comparison-v1`へ同期した。fetch/readbackでlocal HEADとremote tracking refのparity `0 0`を確認した。PR / merge / tag / release / deploy / upload / publicationは行っていない。
-- Git common configへの書込みがdenyされるためlocal upstream設定は未構成のまま。remote identityとparityの比較対象は明示的に`origin/codex/s2-evidence-linked-comparison-v1`を使う。これはremote bytesの欠損ではなく端末ローカル設定上の制限であり、branch名を省略した`git pull` / `git push`には依存しない。
+- 2026-07-31の再開監査ではlocal upstreamが`origin/codex/s2-evidence-linked-comparison-v1`へ構成済みで、fetch後に`d65ba7f...`から`978f8a9...`へfast-forwardしparity `0 0`を確認した。履歴分岐、stash、rebase、merge commit、force、checkoutは発生していない。
 - S1 exact artifact `clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`はhuman review pendingのまま保存した。S2はS1のacceptanceを継承・再判定せず、S1 source/packageを変更していない。
 - S2は取得済み通常配信`youtube:ib3DwHDI71Q`（2026-07-18）と`youtube:rltNvZ_FY8Q`（2026-07-25）のexact bytesと既存provenanceだけを再利用した。新規acquisition、network access、credential/OAuthは0。
 - thesisは「7月18日の第一印象と、7月25日の理解更新を並べて見る」。3 beatすべてで二sourceを同時表示し、primary quoteとpaired evidenceをexact rangeへbindする。各beatのforeground audio ownerは一つだけで、参照側audioはmuteする。
-- exact local packageは12 payload files＋manifest。final MP4は7,829,406 bytes / 63.466667s / SHA `a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f`。tree digest`ea2e6cb3...8090`、manifest self-integrity`4eda3d7f...5479`。
+- source hostで検証済みのexact packageは12 payload files＋manifest。final MP4は7,829,406 bytes / 63.466667s / SHA `a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f`。tree digest`ea2e6cb3...8090`、manifest self-integrity`4eda3d7f...5479`。2026-07-31の現在checkoutではS1/S2 exact artifact directoryがともに存在せず、この検証済みidentityをlocal package存在の主張へ読み替えない。
 - 2026-07-29の同期前再検証でfocused S2/S1/current-authority testsは`15 passed in 32.68s`。manifest 12 payload、tree digest、self-integrity、final MP4 SHA/sizeを再照合し、ffprobeとfull non-audible decodeもpassした。既存のwide/narrow muted browser、page 200 / MP4 Range 206 evidenceも保持する。outer overflowとconsole/page errorsは0。opening、全3 transition、各comparison beatをpaused/mutedでseekし、両panelに実source frameがあることを確認済み。browser/listenerは停止済み。
-- 2026-07-31に`record-evidence-linked-comparison-decision`を追加した。これは人間が明示したverdictだけをclosed manifest、MP4 SHA、manifest self-integrity、4 review dimensionsへbindし、receiptをartifact package外へexclusive atomic writeする。`accept`の推定、package mutation、既存receipt上書き、rights / production / thumbnail / publishing / public / upload gateの開放は行わない。decision recorder＋S2/S1 artifact contract＋current authorityのfocused testsは20件pass。実際のdecision input/receiptはまだ存在しない。
-- 同一マシンのentrypointは`episodes/s2_evidence_linked_comparison_20260729/artifacts/clip-s2-subaru-evidence-linked-comparison-v1-002/review/index.html`。`episodes/`はignored / tracked 0なので、Gitだけの別端末でreview-readyを推定しない。
+- 2026-07-31に`record-evidence-linked-comparison-decision`を追加した。これは人間が明示したverdictだけをclosed manifest、MP4 SHA、manifest self-integrity、4 review dimensionsへbindし、receiptをartifact package外へexclusive atomic writeする。`accept`の推定、package mutation、既存receipt上書き、rights / production / thumbnail / publishing / public / upload gateの開放は行わない。decision recorder＋S2/S1 artifact contract＋current authorityのfocused testsは20件pass。現在checkoutのauthority / predecessor gate修復後のfull suiteは702件pass。実際のdecision input/receiptはまだ存在しない。
+- source hostで最後に検証されたentrypointは`episodes/s2_evidence_linked_comparison_20260729/artifacts/clip-s2-subaru-evidence-linked-comparison-v1-002/review/index.html`。現在checkoutにはこのpathがない。`episodes/`はignored / tracked 0なので、human review前に許可されたprivate artifact transfer、またはexact S1 inputsの回復後の再生成が必要。
+- OUT-13 Candidate 005は`M6_CLOSED_DENY_EXACT_ARTIFACT`のread-only archive、OUT-07 direction proxyはnoncanonicalな`PARK_PROVISIONAL_USABLE`のまま。S2進行やdecision recorder追加によってrights / public / monetized / production gateを再開しない。
 - processing snapshotは`local_private_review_only`とunderlying rights `pending_or_unverified`を分離する。rights clearance/approvalではない。`production_acceptance=false`、`public_use=false`、`monetized_use=false`、`publication_approval=false`、`upload_attempted=false`。
 - Campaign HorizonはED-13 comparison、ED-14 synchronized multi-participant camera director、ED-15 event-centered reaction compiler、ED-16 held-out genre variation proofの順。ED-14以降とbenchmark名はstaged scenarioであり、source/rights availabilityを主張しない。
 
 ## Next Action
 
-- action: `obtain_human_editorial_verdict_on_exact_evidence_linked_comparison`
+- action: `restore_exact_s2_review_package_then_obtain_human_editorial_verdict`
 - authorization state: `machine_complete_human_editorial_decision_pending`
 - owner: `Product owner / User / Supervisor`
-- condition: exact SHAのMP4を全編視聴し、二source同時表示が比較を速めるか、primary quoteとpaired evidenceの関係が誤解なく読めるか、audio ownerの切替と3つの理解更新が一つの論になるかを`accept / bounded repair / reject`で判断する。その明示JSONを`record-evidence-linked-comparison-decision`でdry-run検証後、exact receiptへ記録する。machine passをcreative acceptanceに昇格しない。acceptでもrights、production、thumbnail、publishing、upload、public releaseは開かない。repair時はsuccessful packageを上書きせずnew identityを作る。
+- condition: まずsource hostで検証済みのexact SHA packageをprivate transferで戻すか、exact S1 inputsを回復してnew identityへ再生成し、manifest / MP4 hashを再検証する。その後に全編視聴し、二source同時表示が比較を速めるか、primary quoteとpaired evidenceの関係が誤解なく読めるか、audio ownerの切替と3つの理解更新が一つの論になるかを`accept / bounded repair / reject`で判断する。明示JSONは`record-evidence-linked-comparison-decision`でdry-run検証後にreceipt化する。machine passをcreative acceptanceに昇格せず、acceptでもrights、production、thumbnail、publishing、upload、public releaseは開かない。
 
 <!-- HISTORICAL_RUNTIME_ARCHIVE_START -->
 

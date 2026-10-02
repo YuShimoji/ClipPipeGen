@@ -22,6 +22,7 @@ ALIGNED_FIELDS = (
     "human_entrypoint",
     "portable_entrypoint",
     "local_artifact_role",
+    "local_artifact_available",
     "cross_machine_resume_class",
     "review_status",
     "base_main_revision",
@@ -192,12 +193,14 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "artifact_manifest_self_sha256": (
             "4eda3d7f01a4fc1abc4c1d863a03d5dec2b061d3708149ba00259515d51b5479"
         ),
-        "package_validation_status": "passed",
+        "package_validation_status": (
+            "historical_source_host_passed_current_checkout_package_missing"
+        ),
         "focused_test_status": (
             "decision_recorder_and_s2_s1_contracts_20_passed"
         ),
         "full_suite_status": (
-            "not_run_focused_20_passed_decision_recorder_and_s2_s1_contracts"
+            "current_checkout_702_passed_after_authority_and_predecessor_gate_repair"
         ),
         "human_review_pending": "true",
         "rights_approval": "not_granted",
@@ -205,10 +208,10 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
         "public_use": "false",
         "monetized_use": "false",
         "upload_attempted": "false",
-        "upstream_branch": "",
+        "upstream_branch": "origin/codex/s2-evidence-linked-comparison-v1",
         "remote_tracking_ref": "origin/codex/s2-evidence-linked-comparison-v1",
         "remote_handoff_status": "pushed_and_fetch_readback_verified",
-        "local_upstream_configuration": "unavailable_git_common_config_write_denied",
+        "local_upstream_configuration": "configured_for_origin_tracking_branch",
         "decision_recorder_revision": (
             "536458105e22b1ece5cdef1d83b39a88678d9266"
         ),
@@ -216,10 +219,18 @@ def _authority_errors(runtime_text: str, handoff_text: str) -> list[str]:
             "exact_artifact_bound_cli_ready_human_input_pending"
         ),
         "decision_receipt_available": "false",
-        "upstream_parity": "local_upstream_not_configured_remote_tracking_ref_parity_0_0",
+        "upstream_parity": "0 0",
         "remote_code_complete": "true",
+        "human_entrypoint": "",
+        "local_artifact_available": "false",
+        "local_artifact_role": (
+            "missing_on_current_checkout_private_transfer_or_source_recovery_required"
+        ),
         "decision_required": "human_editorial_verdict_on_exact_evidence_linked_comparison",
-        "next_review_due": "exact_evidence_linked_comparison_human_review",
+        "next_review_due": "restore_exact_s2_review_artifact_before_human_review",
+        "next_action": (
+            "restore_exact_s2_review_package_then_obtain_human_editorial_verdict"
+        ),
     }
     for field, expected in expected_runtime_values.items():
         if runtime.get(field, "") != expected:
@@ -262,8 +273,8 @@ def test_s2_resume_rejects_stale_remote_sync_state() -> None:
             1,
         )
         .replace(
-            "upstream_parity: local_upstream_not_configured_remote_tracking_ref_parity_0_0",
-            "upstream_parity: no_upstream_local_only",
+            "upstream_parity: 0 0",
+            "upstream_parity: divergent",
             1,
         )
         .replace(
@@ -317,7 +328,7 @@ def test_multiple_live_next_actions_fail_semantic_authority_check() -> None:
 def test_runtime_handoff_portability_role_disagreement_fails_semantic_check() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8").replace(
-        "local_artifact_role: active_private_human_review_target_same_machine_only",
+        "local_artifact_role: missing_on_current_checkout_private_transfer_or_source_recovery_required",
         "local_artifact_role: stale_review_target",
         1,
     )
@@ -332,7 +343,7 @@ def test_runtime_handoff_portability_role_disagreement_fails_semantic_check() ->
 def test_runtime_handoff_package_status_disagreement_fails_semantic_check() -> None:
     runtime = RUNTIME_PATH.read_text(encoding="utf-8")
     handoff = HANDOFF_PATH.read_text(encoding="utf-8").replace(
-        "package_validation_status: passed",
+        "package_validation_status: historical_source_host_passed_current_checkout_package_missing",
         "package_validation_status: failed",
         1,
     )

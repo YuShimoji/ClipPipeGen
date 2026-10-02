@@ -4,13 +4,14 @@
 
 - artifact_id: `clip-s2-subaru-evidence-linked-comparison-v1-002`
 - state: `EVIDENCE_LINKED_MULTI_SOURCE_COMPARISON_ARTIFACT_READY_FOR_HUMAN_REVIEW`
-- local package: `episodes/s2_evidence_linked_comparison_20260729/artifacts/clip-s2-subaru-evidence-linked-comparison-v1-002/`
-- review entry: `review/index.html`
-- open command: `powershell -NoProfile -ExecutionPolicy Bypass -File episodes\s2_evidence_linked_comparison_20260729\artifacts\clip-s2-subaru-evidence-linked-comparison-v1-002\review\open_preview.ps1`
+- last verified source-host package: `episodes/s2_evidence_linked_comparison_20260729/artifacts/clip-s2-subaru-evidence-linked-comparison-v1-002/`
+- current checkout availability: `missing`（S1/S2 exact artifact directoryともに不在）
+- review entry / open command: package transferまたはexact-input recovery後に上記source-host locatorを再検証してから使用
 - final MP4 SHA-256: `a959dc50a0b1b36d37644195fab9105403afdbc7e5f60dfc42ca90c70c72d00f`
 - duration / size: `63.466667s / 7,829,406 bytes`
 
-このidentityはprivate human review対象であり、editorial acceptance、rights
+このidentityはprivate human review対象だが、現在checkoutはidentity/contractのみを保持し、
+review package本体は保持していない。editorial acceptance、rights
 clearance、production acceptance、public/monetized use、publication、uploadを
 含まない。
 
@@ -71,7 +72,9 @@ data faviconを追加した。MP4 bytesとSHAは同一で、v001をactive identi
 ## Portabilityとpredecessor
 
 `episodes/`はignoredかつtracked 0。tracked code/tests/docsは別hostへ移るが、source media、
-final MP4、review packageはGitでは移らない。同一マシン以外でreview-readyを推定しない。
+final MP4、review packageはGitでは移らない。2026-07-31のcurrent checkout auditではS1/S2
+exact artifact directoryがともに不在だったため、code development-readyからartifact
+review-readyを推定しない。
 
 S1 artifact `clip-s1-subaru-ohasuba-20260718-20260725-digest-v1-001`はhuman review
 pendingのまま保存されている。S2はS1 source/packageを変更せず、S1を再受理・rejectせず、

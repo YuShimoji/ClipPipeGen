@@ -228,176 +228,59 @@ def test_active_rebuild_contract_has_no_host_secrets_or_pixel_payloads() -> None
     assert "password" not in text.lower()
 
 
-def test_runtime_points_to_s1_and_keeps_out13_and_out07_predecessors_parked() -> (
+def test_runtime_points_to_s2_and_keeps_out13_and_out07_predecessors_parked() -> (
     None
 ):
     runtime = (ROOT / "docs" / "RUNTIME_STATE.md").read_text(encoding="utf-8")
 
-    assert "active_rebuild_contract: null" in runtime
-    assert (
-        "parked_predecessor_rebuild_contract: artifacts/ACTIVE_REBUILD.json" in runtime
-    )
-    assert "remote_code_complete: true" in runtime
-    assert "remote_decision_binding_available: false" in runtime
-    assert "active_branch: codex/s1-two-source-common-context-probe-v1" in runtime
+    assert "current_slice: ED-13" in runtime
+    assert "active_branch: codex/s2-evidence-linked-comparison-v1" in runtime
+    assert "upstream_branch: origin/codex/s2-evidence-linked-comparison-v1" in runtime
     assert "upstream_parity: 0 0" in runtime
+    assert "remote_code_complete: true" in runtime
     assert (
-        "base_main_revision: "
-        "edb782acd1e06aca46e0a5d10295ea52f30ad5c7"
+        "active_artifact: clip-s2-subaru-evidence-linked-comparison-v1-002"
         in runtime
     )
-    assert "local_artifact_available: true" in runtime
-    assert "portable_local_artifact_available: false" in runtime
+    assert "human_entrypoint: null" in runtime
+    assert "local_artifact_available: false" in runtime
     assert (
-        "human_entrypoint: episodes/s1_two_source_common_context_probe_20260726/"
-        "review/clip_s1_two_source_common_context_probe_v001/review/index.html"
-        in runtime
-    )
-    assert (
-        "portable_entrypoint: "
-        "docs/output_layer/S1_TWO_SOURCE_COMMON_CONTEXT_PROBE.md" in runtime
-    )
-    assert (
-        "cross_machine_resume_class: "
-        "tracked_code_docs_tests_and_identity_are_portable_ignored_source_media_and_"
-        "review_package_are_not"
+        "local_artifact_role: "
+        "missing_on_current_checkout_private_transfer_or_source_recovery_required"
         in runtime
     )
     assert (
-        "health: "
-        "S1_S3_COMMON_CONTEXT_PROBE_READY_FOR_S4_HUMAN_REVIEW"
+        "portable_entrypoint: docs/output_layer/S2_EVIDENCE_LINKED_COMPARISON.md"
         in runtime
     )
-    assert "current_slice: ED-12" in runtime
-    assert (
-        "canonical_status: s1_s3_common_context_probe_ready_for_s4_human_review"
-        in runtime
-    )
-    assert "active_artifact: clip-s1-two-source-common-context-probe-v1-001" in runtime
-    assert (
-        "review_status: s4_human_review_pending"
-        in runtime
-    )
-    assert "automation_acceptance_granted: false" in runtime
-    assert (
-        "automation_acceptance_scope: "
-        "machine_validated_internal_probe_human_s4_pending"
-        in runtime
-    )
+    assert "decision_receipt_available: false" in runtime
     assert "acceptance_granted: false" in runtime
     assert "editorial_acceptance_granted: false" in runtime
-    assert "human_review_pending: true" in runtime
+    assert "rights_approval: not_granted" in runtime
+    assert "production_acceptance: false" in runtime
+    assert "public_use: false" in runtime
+    assert "monetized_use: false" in runtime
+
     assert (
-        "artifact_output_sha256: "
-        "dc621bfe4be95b1fcc22204942e744d3a4a5dd56600bd8987b7cb6f5b55f95be"
+        "out13_predecessor_status: "
+        "m6_closed_deny_exact_artifact_read_only_archive"
         in runtime
     )
-    assert "main_integration_approved: false" in runtime
-    assert (
-        "main_integration_preflight_verdict: "
-        "not_requested_for_s1"
-        in runtime
-    )
-    assert "out13_predecessor_status: m6_closed_deny_exact_artifact_read_only_archive" in runtime
     assert "out13_human_review_pending: false" in runtime
     assert "out13_editorial_acceptance_granted: true" in runtime
-    assert "out13_main_integration_approved: true" in runtime
-    assert "out13_m4_main_integration_status: complete" in runtime
-    assert "out13_m5_integrated_baseline_verification_status: passed" in runtime
     assert "out13_m6_rights_status: closed_deny_exact_artifact" in runtime
     assert "out13_m6_packet_status: M6_CLOSED_DENY_EXACT_ARTIFACT" in runtime
+    assert "out13_public_use_verdict: deny" in runtime
+    assert "out13_monetized_youtube_verdict: deny" in runtime
+
     assert (
-        "accepted_feature_revision: "
-        "18641fe917b084259869263e8db05d78325aa2db"
+        "out07_predecessor_status: "
+        "parked_provisional_usable_noncanonical_no_additional_iteration"
         in runtime
     )
-    assert (
-        "integrated_main_revision: "
-        "18641fe917b084259869263e8db05d78325aa2db"
-        in runtime
-    )
-    assert "this_commit_after_push" not in runtime
-    assert "out13_source_identity: youtube:7J5aS_pcBj4" in runtime
-    assert (
-        "out13_source_sha256: "
-        "6f78657ea251f623eee75b3b4be64af3b1bad1f6bc028eb00e38baebd076103a"
-        in runtime
-    )
-    assert "out13_cut_count: 7" in runtime
-    assert "out13_semantic_section_count: 5" in runtime
-    assert "out13_output_duration_seconds: 128.833333" in runtime
-    assert (
-        "out13_output_sha256: "
-        "a76babda8b24335635ab048a9a5389d892c2761dd1598cd5b9c6c22ab758bbb5"
-        in runtime
-    )
-    assert "out13_validation_status: passed" in runtime
-    assert "out13_mapping_coverage_ratio: 1.0" in runtime
-    assert "out13_resolved_font_family: Keifont" in runtime
-    assert "out13_resolved_maximum_lines: 2" in runtime
-    assert "out13_resume_render_executed: false" in runtime
-    assert "out13_historical_source_host_resume_render_executed: false" in runtime
-    assert "out13_review_mobile_overflow: null" in runtime
-    assert "out13_rights_status: packet_prepared_rights_decision_pending" in runtime
-    assert "out13_production_acceptance: false" in runtime
-    assert "out13_public_or_publishing_acceptance: false" in runtime
-    # OUT-12 remains the operational predecessor evidence.
-    assert "out12_source_identity: youtube:gUwJBRUIWow" in runtime
-    assert (
-        "out12_source_sha256: "
-        "8decc04ddcd805cadb77100eb5f7cbf2dc9883a32cb42aba0ed4c216fd0037cf"
-        in runtime
-    )
-    assert "out12_cut_count: 11" in runtime
-    assert "out12_output_duration_seconds: 260.693767" in runtime
-    assert (
-        "out12_output_sha256: "
-        "5d391ffd5ff48da03858d8f558ff680bd45643e108d765fefefceb32c250a584"
-        in runtime
-    )
-    assert "out12_validation_status: passed" in runtime
-    assert "out12_mapping_coverage_ratio: 1.0" in runtime
-    assert "out12_resume_render_executed: false" in runtime
-    assert "out12_review_mobile_overflow: false" in runtime
-    assert "out12_rights_status: pending_or_snapshot_only" in runtime
-    assert "out12_production_acceptance: false" in runtime
-    assert "out12_public_or_publishing_acceptance: false" in runtime
-    # OUT-10/11 remain exact historical closure evidence.
-    assert "out10_inventory_count: 5" in runtime
-    assert "out10_distinct_source_preflight_count: 3" in runtime
-    assert "out10_eligible_source_count: 1" in runtime
-    assert "out10_external_acquisition_required: false" in runtime
-    assert "out10_external_acquisition_authorized: true" in runtime
-    assert "out10_candidate_generated: true" in runtime
-    assert "out11_scorecard_row_count: 5" in runtime
-    assert "out11_review_media_count: 2" in runtime
-    assert "out11_accepted_receipt_count: 1" in runtime
-    assert "out11_review_question_count: 1" in runtime
-    assert "out07_review_result: PARK_PROVISIONAL_USABLE" in runtime
-    assert "subtitle_display_authority: official_json3_event_text_and_timing" in runtime
-    assert "additional_subtitle_burn_in: true" in runtime
-    assert "source_native_caption_pixels_suppressed: false" in runtime
-    assert "full_source_blur_fallback_allowed: false" in runtime
-    assert "additional_blur_or_frosted_caption_surface: false" in runtime
-    assert (
-        "candidate_01_sha256: "
-        "62d4b45b26c2833e8a939a8f3d1954a4ea79047436f08d8f999269b539697cdd" in runtime
-    )
-    assert (
-        "candidate_02_sha256: "
-        "b4a01413202e3e177a11dc42754d38f5a4b7b10cd7c7bec0aa43536d440a4969" in runtime
-    )
-    assert (
-        "out11_source04_mp4_sha256: "
-        "465d732c05cf29f42e89c5b0564a0d6a15f3814b70073ff9039a27a93f916524" in runtime
-    )
-    assert "optional_recovery_merged: false" in runtime
-    assert "out07_selection_status: deferred" in runtime
     assert "out07_canonical_pattern: false" in runtime
     assert "out07_default_template: false" in runtime
     assert "out07_reuse_as_standard: false" in runtime
-    assert "out07_final_thumbnail_system_acceptance: false" in runtime
-    assert "out07_additional_thumbnail_iteration: prohibited" in runtime
     assert "out07_revisit_after_real_short_count: 3_to_5" in runtime
 
 
