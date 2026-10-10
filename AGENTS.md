@@ -21,6 +21,7 @@
 - [docs/FEATURE_REGISTRY.md](docs/FEATURE_REGISTRY.md) — 機能一覧
 - [docs/FIRST_SLICE.md](docs/FIRST_SLICE.md) — 現スライスの実装計画
 - [docs/SCHEMAS/v1/*.md](docs/SCHEMAS/v1/) — schema 詳細
+- [docs/CODEX_CLOUD.md](docs/CODEX_CLOUD.md) — Cloud環境のセットアップと開発検証
 
 ## 事前確認が必要な操作
 
