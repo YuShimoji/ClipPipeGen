@@ -203,3 +203,13 @@ uvx python -m src.cli.main build-local-preview-pack `
 - 現在位置: [docs/RUNTIME_STATE.md](docs/RUNTIME_STATE.md)
 - GUI MVP: [docs/GUI_MVP_SCOPE.md](docs/GUI_MVP_SCOPE.md)
 - AI エージェント入口: [AGENTS.md](AGENTS.md)
+
+## 成果物の一覧（人が開いて確かめるもの）
+
+追跡対象の動画・画像成果は無い（動画の実体は repo 外。`docs/NON_REPO_ARTIFACT_HANDOFF.md`）。開ける静的成果は次のとおり。
+
+- [ダッシュボード](docs/dashboard/index.html)
+- [オペレーター cockpit](docs/content_planning/operator_cockpit.html)
+- [字幕スタイル family palette proof](docs/style_intent/subtitle-style-family-palette-proof.html)
+- [字幕 visual selector proof](docs/style_intent/subtitle-visual-selector-proof.html)
+- [local output readback](docs/output_layer/local_output_readback.html)
