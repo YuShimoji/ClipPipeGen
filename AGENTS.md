@@ -36,7 +36,6 @@
 
 ## Worktree cleanup
 
-- Cleanup rules are recorded in [docs/WORKTREE_CLEANUP_POLICY.md](docs/WORKTREE_CLEANUP_POLICY.md).
 - Before code or docs edits, classify dirty state into active-scope tracked files, unrelated tracked modifications, untracked files, ignored generated/cache files, and active retained preview session artifacts.
 - Restore unrelated tracked modifications and delete unrelated untracked/temp/cache files with path-scoped commands.
 - Do not run broad ignored cleanup while an active `episodes/.../human_preview_session/` is retained for pending human review.

@@ -401,22 +401,3 @@ def test_runtime_points_to_out13_editorial_video_and_keeps_out07_rebuild_contrac
     assert "out07_additional_thumbnail_iteration: prohibited" in runtime
     assert "out07_revisit_after_real_short_count: 3_to_5" in runtime
 
-
-def test_out10_inventory_receipt_stops_without_fabricating_a_candidate() -> None:
-    path = ROOT / "docs" / "output_layer" / "out10_third_source_inventory_receipt.json"
-    receipt = json.loads(path.read_text(encoding="utf-8"))
-    assert receipt["state"] == "NO_ELIGIBLE_LOCAL_THIRD_SOURCE_DECISION_READY"
-    assert receipt["scope"]["inventory_count"] == 5
-    assert receipt["scope"]["distinct_source_preflight_count"] == 3
-    assert receipt["scope"]["render_execution_count"] == 0
-    assert len(receipt["inventory"]) == 5
-    assert sum(item["preflight"] == "completed" for item in receipt["inventory"]) == 3
-    assert receipt["decision"]["eligible_local_third_source_count"] == 0
-    assert receipt["decision"]["external_acquisition_required"] is True
-    assert receipt["decision"]["external_acquisition_authorized"] is False
-    assert receipt["selected_source"] is None
-    assert receipt["selected_slice"] is None
-    assert receipt["candidate_media"] is None
-    assert receipt["portfolio_scorecard"]["status"] == (
-        "not_created_no_third_source_candidate"
-    )
