@@ -605,7 +605,7 @@ instructions.
 ここからファイル末尾までは過去時点の事実と判断を保持するarchiveであり、再開指示ではない。
 後続節に残る日付、artifact、候補判定、手順は、その時点の履歴としてのみ読む。現在の
 `current_slice`、current artifact、next action、restart authorityは上のfrontmatter、
-`Current Capsule`、`Next Action`と[CURRENT_HANDOFF.md](CURRENT_HANDOFF.md)だけが担う。
+`Current Capsule`、`Next Action`とCURRENT_HANDOFF.mdだけが担う。
 
 ## Historical Current-Host Recovery — 2026-07-25 Remote Latest Synced, Candidate 005 Exact Local Review Ready
 
@@ -2514,17 +2514,13 @@ gates.
 
 ## Navigation
 
-- Human-readable entry: [index.md](index.md)
-- Static dashboard: [dashboard/index.html](dashboard/index.html)
-- Machine-readable dashboard: [dashboard/project-status.json](dashboard/project-status.json)
-- Feature table: features/index.md
+- Feature table: [FEATURE_REGISTRY.md](FEATURE_REGISTRY.md)
 - Artifact registry: [../artifacts/ARTIFACTS.md](../artifacts/ARTIFACTS.md)
 
 Repo-root launcher order for a fresh terminal:
 
-1. `.\open-dashboard.ps1`
-2. choose the artifact or doc from the dashboard
-3. use artifact-specific launchers only when needed:
+1. `.\open-artifacts.ps1` (artifact registry)
+2. use artifact-specific launchers only when needed:
    `.\open-artifacts.ps1`, current ED-10z tiny render-path probe via
    `.\open-current-proof.ps1`, ED-10o focused comparison reference via
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_multifont_focused_review\open_comparison.ps1`,
@@ -2535,12 +2531,6 @@ Repo-root launcher order for a fresh terminal:
    `.\open-font-candidates.ps1`, or the ED-10i
    comparison helper:
    `powershell -ExecutionPolicy Bypass -File episodes\jp_pilot01_hololive_bancho_20260525\review\jp_pilot01r3_cut_review\subtitle_kirinuki_gothic_balance_comparison\open_comparison.ps1`
-
-Regenerate the docs dashboard with:
-
-```powershell
-uvx python -m src.cli.main build-docs-dashboard --format json
-```
 
 ## Implementation Notes
 
@@ -2581,8 +2571,7 @@ uvx python -m src.cli.main build-docs-dashboard --format json
   with normal dialogue separated from emphasis/shout and mood/literary slots.
   Production/public/rights gates remain closed.
 - 2026-06-16: Review surface launchers added and pushed. Normal open order is
-  `.\open-dashboard.ps1`, then dashboard artifact selection, then
-  artifact-specific launchers only when needed. This records navigation only;
+  `.\open-artifacts.ps1`, then artifact-specific launchers only when needed. This records navigation only;
   it does not mutate source media, transcript, official subtitle evidence,
   rights, publishing, upload, or production acceptance state.
 - 2026-06-16: docs 繧・v1.5 Wiki / Dashboard 蜈･蜿｣縺ｸ蟇・○縲・壼ｸｸ蝣ｱ蜻翫〒縺ｯ

@@ -5,8 +5,7 @@ local files are portable across clones. Use `docs/RUNTIME_STATE.md` for the
 current artifact and next action; generated dashboard current-focus fields
 follow that Runtime metadata.
 
-Normal open order is `.\open-dashboard.ps1` first, then use the Runtime-driven
-current focus. OUT-13 now opens the tracked acceptance receipt; its historical
+Use `docs/RUNTIME_STATE.md` for the Runtime-driven current focus. OUT-13 now opens the tracked acceptance receipt; its historical
 media launcher is not a scheduled review action.
 OUT-13 candidate 005 is the current accepted-internal, content-lineage-bound editorial route.
 Its exact ignored review package, plan, inputs, and launcher are present in the current root and were
@@ -2689,22 +2688,6 @@ MP4/PNG/ASS files themselves. Other worktrees should treat missing
 `episodes/` proof assets as local evidence absence, not as a tracked Git
 failure.
 
-## `clip-docs-dashboard-001`
-
-| Field | Value |
-|---|---|
-| title | Docs Wiki Dashboard v1.5 |
-| purpose | Make the tracked Markdown corpus readable as a project wiki/dashboard with current focus, feature progress, active artifacts, doc-health findings, and next review items. |
-| storage class | Tracked docs artifact; portable Git evidence. |
-| repo_relative_path | `docs/dashboard/index.html` |
-| metadata_json | `docs/dashboard/project-status.json` |
-| features_index | `docs/features/index.md` |
-| open_command | `.\open-dashboard.ps1` |
-| generated_from | `build-docs-dashboard` reading tracked Markdown registries and docs. |
-| validation_command | `uvx python -m src.cli.main build-docs-dashboard --format json` plus `uvx pytest -q tests/test_docs_dashboard.py`. |
-| latest_validation_result | 2026-06-16 v1.5 slice: dashboard regenerated; `project-status.json` parsed; Chrome headless screenshot inspected as readable/nonblank; `uvx pytest -q tests/test_docs_dashboard.py tests/test_subtitle_style_spike.py tests/test_subtitle_overlay_visual_proof.py tests/test_episode_review_bundle.py tests/test_episode_status.py` -> `21 passed, 8 skipped`. |
-| review_status | Tracked dashboard entry is ready for operator navigation; not an episode media proof and not production/public acceptance. |
-| next_action | Use this as the first docs navigation surface, then improve high-friction docs from the generated doc-health findings. |
 
 ## `clip-subtitle-font-candidate-sweep-001`
 

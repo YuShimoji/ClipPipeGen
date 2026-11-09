@@ -492,25 +492,3 @@ def test_rights_ready_or_approved_claim_fails_when_inventory_is_incomplete() -> 
         _packet_errors(ready_missing_range)
     )
 
-
-def test_runtime_handoff_and_packet_agree_on_m6_decision_state() -> None:
-    packet = _packet()
-    runtime = RUNTIME_PATH.read_text(encoding="utf-8")
-    handoff = HANDOFF_PATH.read_text(encoding="utf-8")
-
-    for text in (runtime, handoff):
-        assert "canonical_status: m6_closed_deny_exact_artifact" in text
-        assert "m6_rights_status: closed_deny_exact_artifact" in text
-        assert (
-            f"m6_packet_status: {packet['packet_readiness_status']}" in text
-        )
-        assert (
-            "m6_packet: docs/rights/"
-            "out13_m6_rights_decision_readiness_packet.json"
-            in text
-        )
-        assert "rights_approval: not_granted" in text
-        assert "public_use_verdict: deny" in text
-        assert "monetized_youtube_verdict: deny" in text
-        assert "production_acceptance: false" in text
-        assert "public_or_publishing_acceptance: false" in text

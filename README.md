@@ -207,7 +207,6 @@ uvx python -m src.cli.main build-local-preview-pack `
 
 追跡対象の動画・画像成果は無い（動画の実体は repo 外。`docs/NON_REPO_ARTIFACT_HANDOFF.md`）。開ける静的成果は次のとおり。
 
-- [ダッシュボード](docs/dashboard/index.html)
 - オペレーター cockpit
 - 字幕スタイル family palette proof
 - 字幕 visual selector proof

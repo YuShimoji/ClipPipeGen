@@ -24,6 +24,4 @@ if (Test-Path -LiteralPath $docPath -PathType Leaf) {
 }
 
 Write-Host "Font candidate sweep doc is missing: $relativeDoc"
-Write-Host "Open the dashboard instead:"
-Write-Host "  .\open-dashboard.ps1"
 exit 1

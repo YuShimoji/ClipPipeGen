@@ -40,7 +40,6 @@ Subcommands:
     plan-source-fetch-prep EWS-04: decision-gated local source fetch-prep plan.
     build-episode-review-bundle SH-08: existing artifacts -> single diagnostic review bundle.
     build-human-preview-session SH-08: alias for the single human preview session bundle.
-    build-docs-dashboard     Docs v1.5: wiki/dashboard status and doc-health findings.
     build-external-source-registry HUB-01: local RSS/manual fixtures -> source registry.
     build-output-layer-gap-report OUT-02: output fixture proof package and gap log.
     build-selected-cut-proof OUT-03: one real-local selected-cut playable review proof.
@@ -113,7 +112,6 @@ from . import (
     build_operator_cockpit,
     build_source_inspection_packet,
     build_episode_seed_drafts,
-    build_docs_dashboard,
     build_local_preview_pack,
     build_non_repo_handoff,
     build_operator_proxy_decision_handoff,
@@ -185,7 +183,6 @@ SUBCOMMANDS: dict[str, Callable[[list[str]], int]] = {
     "plan-source-fetch-prep": plan_source_fetch_prep.run,
     "build-episode-review-bundle": build_episode_review_bundle.run,
     "build-human-preview-session": build_episode_review_bundle.run_human_preview_session,
-    "build-docs-dashboard": build_docs_dashboard.run,
     "build-external-source-registry": build_external_source_registry.run,
     "build-selected-cut-proof": build_selected_cut_proof.run,
     "build-editorial-sequence": build_editorial_sequence.run,
