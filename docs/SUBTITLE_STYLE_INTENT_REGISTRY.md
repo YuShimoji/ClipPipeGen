@@ -174,16 +174,16 @@ production/public approval.
 ED-10ah also adds
 `clip-ed10ah-render-readiness-separation-readback-001` as the narrow
 render-readiness readback at
-[`docs/style_intent/subtitle-render-readiness-separation.json`](style_intent/subtitle-render-readiness-separation.json)
+`docs/style_intent/subtitle-render-readiness-separation.json`
 and
-[`docs/style_intent/subtitle-render-readiness-separation.md`](style_intent/subtitle-render-readiness-separation.md).
+`docs/style_intent/subtitle-render-readiness-separation.md`.
 It is the quick handoff answer for what ED-10ag proves, what ED-10ag does not
 prove, and which later explicit milestone may trigger a new render.
 
 ED-10ai adds `clip-ed10ai-final-render-path-readiness-packet-001` at
-[`docs/style_intent/subtitle-final-render-path-readiness.json`](style_intent/subtitle-final-render-path-readiness.json)
+`docs/style_intent/subtitle-final-render-path-readiness.json`
 and
-[`docs/style_intent/subtitle-final-render-path-readiness.md`](style_intent/subtitle-final-render-path-readiness.md).
+`docs/style_intent/subtitle-final-render-path-readiness.md`.
 It consumes ED-10ah, keeps ED-10af as the active diagnostic proof source, and
 records selector/semantic contract plus render adapter input contract evidence
 before `final-render-path-stage-1`. Production subtitle design, production
@@ -191,9 +191,9 @@ render, creative acceptance, rights, publishing, and public-use remain missing
 or pending.
 
 ED-10aj adds `clip-ed10aj-final-render-path-stage-1-001` at
-[`docs/style_intent/subtitle-final-render-path-stage-1.json`](style_intent/subtitle-final-render-path-stage-1.json)
+`docs/style_intent/subtitle-final-render-path-stage-1.json`
 and
-[`docs/style_intent/subtitle-final-render-path-stage-1.md`](style_intent/subtitle-final-render-path-stage-1.md).
+`docs/style_intent/subtitle-final-render-path-stage-1.md`.
 It consumes ED-10ai, selects the FFmpeg/libass diagnostic subtitle overlay path
 from ED-10af as the stage-1 candidate, and preserves the semantic selector
 contract, stable body text, badge/accent/backplate routing, and safe-area
@@ -202,9 +202,9 @@ creative acceptance, rights, publishing, and public-use remain missing or
 pending.
 
 ED-10ak adds `clip-ed10ak-final-render-path-stage-2-replayability-001` at
-[`docs/style_intent/subtitle-final-render-path-stage-2.json`](style_intent/subtitle-final-render-path-stage-2.json)
+`docs/style_intent/subtitle-final-render-path-stage-2.json`
 and
-[`docs/style_intent/subtitle-final-render-path-stage-2.md`](style_intent/subtitle-final-render-path-stage-2.md).
+`docs/style_intent/subtitle-final-render-path-stage-2.md`.
 It consumes ED-10aj and records the replayability/operation surface for the
 selected FFmpeg/libass diagnostic path: tracked inputs, same-machine local
 inputs, ignored outputs, expected output types, command family, readback
@@ -214,9 +214,9 @@ prepares `final-render-path-stage-3` or
 `production-limitation-lift-stage-1`.
 
 ED-10al adds `clip-ed10al-final-render-path-stage-3-rehearsal-001` at
-[`docs/style_intent/subtitle-final-render-path-stage-3.json`](style_intent/subtitle-final-render-path-stage-3.json)
+`docs/style_intent/subtitle-final-render-path-stage-3.json`
 and
-[`docs/style_intent/subtitle-final-render-path-stage-3.md`](style_intent/subtitle-final-render-path-stage-3.md).
+`docs/style_intent/subtitle-final-render-path-stage-3.md`.
 It consumes ED-10ak and runs one bounded ignored FFmpeg/libass diagnostic
 rehearsal because local source video/audio were present and the ED-10af
 same-machine ASS/MP4/manifest outputs were absent at slice start. It records
@@ -227,9 +227,9 @@ production/public gates closed and prepares `production-limitation-lift-stage-1`
 or `final-render-path-stage-4`.
 
 ED-10am adds `clip-ed10am-production-limitation-lift-stage-1-001` at
-[`docs/style_intent/subtitle-production-limitation-lift-stage-1.json`](style_intent/subtitle-production-limitation-lift-stage-1.json)
+`docs/style_intent/subtitle-production-limitation-lift-stage-1.json`
 and
-[`docs/style_intent/subtitle-production-limitation-lift-stage-1.md`](style_intent/subtitle-production-limitation-lift-stage-1.md).
+`docs/style_intent/subtitle-production-limitation-lift-stage-1.md`.
 It consumes ED-10al as diagnostic rehearsal evidence and separates production
 subtitle design, production render, creative, rights, publishing, public-use,
 tracked media, and same-machine ignored evidence gates. It records next decision
@@ -239,9 +239,9 @@ media, and prepares `production-limitation-lift-stage-2-decision-packet` unless
 
 ED-10an adds
 `clip-ed10an-production-limitation-lift-stage-2-decision-packet-001` at
-[`docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json`](style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json)
+`docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.json`
 and
-[`docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md`](style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md).
+`docs/style_intent/subtitle-production-limitation-lift-stage-2-decision-packet.md`.
 It consumes ED-10am as the source gate matrix and groups the remaining
 production/public decisions into subtitle design / visual acceptance,
 production render readiness, and rights / publishing / public-use clearance.
@@ -252,9 +252,9 @@ production/public flags false or pending, and prepares
 
 ED-10ao adds
 `clip-ed10ao-production-limitation-lift-stage-3-owner-review-prep-001` at
-[`docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json`](style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json)
+`docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.json`
 and
-[`docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md`](style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md).
+`docs/style_intent/subtitle-production-limitation-lift-stage-3-owner-review-prep.md`.
 It consumes ED-10an and prepares future owner-review topics for subtitle
 design / visual acceptance, production render readiness, and rights /
 publishing / public-use clearance. It requests no immediate user decision,
@@ -265,9 +265,9 @@ flags false or pending, and prepares
 
 ED-10ap adds
 `clip-ed10ap-production-limitation-lift-stage-4-user-decision-card-001` at
-[`docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json`](style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json)
+`docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.json`
 and
-[`docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md`](style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md).
+`docs/style_intent/subtitle-production-limitation-lift-stage-4-user-decision-card.md`.
 It consumes ED-10ao and prepares a future short freeform user decision card for
 subtitle design / visual acceptance, production render readiness, and rights /
 publishing / public-use clearance. It requests no immediate user decision,
@@ -345,18 +345,18 @@ does not create a new visual proof.
 
 ED-10ac adds the current visual selector proof artifact:
 `clip-ed10ac-visual-selector-proof-001`. The tracked proof lives at
-[`docs/style_intent/subtitle-visual-selector-proof.json`](style_intent/subtitle-visual-selector-proof.json)
+`docs/style_intent/subtitle-visual-selector-proof.json`
 and
-[`docs/style_intent/subtitle-visual-selector-proof.html`](style_intent/subtitle-visual-selector-proof.html).
+`docs/style_intent/subtitle-visual-selector-proof.html`.
 It makes those six selector examples inspectable as static badge/accent/
 backplate/size/motion/line-break differences while preserving stable body text
 color. It does not run a new render or approve production/public use.
 
 ED-10ad adds the style-family / palette axis proof artifact:
 `clip-ed10ad-style-family-palette-axis-proof-001`. The tracked proof lives at
-[`docs/style_intent/subtitle-style-family-palette-proof.json`](style_intent/subtitle-style-family-palette-proof.json)
+`docs/style_intent/subtitle-style-family-palette-proof.json`
 and
-[`docs/style_intent/subtitle-style-family-palette-proof.html`](style_intent/subtitle-style-family-palette-proof.html).
+`docs/style_intent/subtitle-style-family-palette-proof.html`.
 It groups the same six examples by family and palette route while preserving
 `stable_default_body_text`. The routes are readback vocabulary only; they do
 not approve a new style family or new palette.
@@ -364,9 +364,9 @@ not approve a new style family or new palette.
 ED-10ae adds the current render-path selector contract artifact:
 `clip-ed10ae-render-path-selector-contract-probe-001`. The tracked contract
 lives at
-[`docs/style_intent/subtitle-render-path-selector-contract.json`](style_intent/subtitle-render-path-selector-contract.json)
+`docs/style_intent/subtitle-render-path-selector-contract.json`
 and
-[`docs/style_intent/subtitle-render-path-selector-contract.md`](style_intent/subtitle-render-path-selector-contract.md).
+`docs/style_intent/subtitle-render-path-selector-contract.md`.
 It lists the semantic, style-family, palette, color-surface, motion, and
 line-break fields a later render adapter would receive. This is L0 static
 readback only; the later L2 tiny render-path probe remains a separate
@@ -374,9 +374,9 @@ milestone, and production/public-use boundaries stay closed or pending.
 
 ED-10af adds the current L2 render-path selector probe artifact:
 `clip-ed10af-l2-render-path-selector-probe-001`. The tracked probe readback lives at
-[`docs/style_intent/subtitle-render-path-selector-probe.json`](style_intent/subtitle-render-path-selector-probe.json)
+`docs/style_intent/subtitle-render-path-selector-probe.json`
 and
-[`docs/style_intent/subtitle-render-path-selector-probe.md`](style_intent/subtitle-render-path-selector-probe.md).
+`docs/style_intent/subtitle-render-path-selector-probe.md`.
 It consumes the ED-10ae contract and selects three semantic examples: neutral
 dialogue, shout / high intensity, and low-pressure whisper.
 
@@ -388,9 +388,9 @@ pending.
 
 ED-10ag adds the lineage and observation surface:
 `clip-ed10ag-lineage-and-observation-surface-001`. The tracked surface lives at
-[`docs/style_intent/subtitle-render-path-lineage-observation-surface.json`](style_intent/subtitle-render-path-lineage-observation-surface.json)
+`docs/style_intent/subtitle-render-path-lineage-observation-surface.json`
 and
-[`docs/style_intent/subtitle-render-path-lineage-observation-surface.md`](style_intent/subtitle-render-path-lineage-observation-surface.md).
+`docs/style_intent/subtitle-render-path-lineage-observation-surface.md`.
 It consumes the restored dry-read files, keeps the ED-10af L2 probe as active
 render-path evidence, lists ASS / MP4 / manifest / contact-sheet paths, and records
 `new_render_run=false` for ED-10ag. It does not request user review or change

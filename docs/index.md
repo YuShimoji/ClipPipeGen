@@ -34,25 +34,25 @@ Start here:
 | Current resume capsule | [RUNTIME_STATE.md](RUNTIME_STATE.md) |
 | Current terminal handoff | [CURRENT_HANDOFF.md](CURRENT_HANDOFF.md) |
 | Durable project context | [project-context.md](project-context.md) |
-| Decision history | [decision-log.md](decision-log.md) |
-| Active next-step ideas | [idea-ledger.md](idea-ledger.md) |
-| Supervising review status | [SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md) |
+| Decision history | decision-log.md |
+| Active next-step ideas | idea-ledger.md |
+| Supervising review status | SUPERVISOR_STATUS_REPORT.md |
 | Generated docs dashboard | [dashboard/index.html](dashboard/index.html) |
-| Content planning Review Console / operator cockpit | [content_planning/operator_cockpit.html](content_planning/operator_cockpit.html) |
-| Content planning dashboard | [content_planning/content_dashboard.html](content_planning/content_dashboard.html) |
-| Episode seed drafts | [content_planning/episode_seed_dashboard.html](content_planning/episode_seed_dashboard.html) |
-| Source resolution dashboard | [content_planning/source_resolution_dashboard.html](content_planning/source_resolution_dashboard.html) |
-| Episode init dry-run plan | [content_planning/episode_init_plan_dashboard.html](content_planning/episode_init_plan_dashboard.html) |
-| Source inspection packet | [content_planning/source_inspection_packet_dashboard.html](content_planning/source_inspection_packet_dashboard.html) |
+| Content planning Review Console / operator cockpit | content_planning/operator_cockpit.html |
+| Content planning dashboard | content_planning/content_dashboard.html |
+| Episode seed drafts | content_planning/episode_seed_dashboard.html |
+| Source resolution dashboard | content_planning/source_resolution_dashboard.html |
+| Episode init dry-run plan | content_planning/episode_init_plan_dashboard.html |
+| Source inspection packet | content_planning/source_inspection_packet_dashboard.html |
 | Content planning notes | [content_planning/README.md](content_planning/README.md) |
 | Dashboard metadata | [dashboard/project-status.json](dashboard/project-status.json) |
-| Feature progress table | [features/index.md](features/index.md) |
+| Feature progress table | features/index.md |
 | Reviewable artifact registry | [../artifacts/ARTIFACTS.md](../artifacts/ARTIFACTS.md) |
 | Cross-machine active rebuild contract | [../artifacts/ACTIVE_REBUILD.json](../artifacts/ACTIVE_REBUILD.json) |
 | Feature status authority | [FEATURE_REGISTRY.md](FEATURE_REGISTRY.md) |
-| Subtitle font candidate registry | [SUBTITLE_FONT_CANDIDATE_SWEEP.md](SUBTITLE_FONT_CANDIDATE_SWEEP.md) |
+| Subtitle font candidate registry | SUBTITLE_FONT_CANDIDATE_SWEEP.md |
 | Operator review shape | [OPERATOR_REVIEW_UX.md](OPERATOR_REVIEW_UX.md) |
-| Review workflow map | [EPISODE_REVIEW_WORKFLOW.md](EPISODE_REVIEW_WORKFLOW.md) |
+| Review workflow map | EPISODE_REVIEW_WORKFLOW.md |
 
 ## Open Surfaces
 

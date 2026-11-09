@@ -523,7 +523,7 @@ archive markerより前の`Current Capsule` / `Next Action`だけに限定する
 This file is the active resume surface. It should answer "where are we now?"
 without requiring the reader to scan historical closeouts.
 
-Long historical closeouts moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md).
+Long historical closeouts moved to RUNTIME_HISTORY.md.
 Do not treat archived lane/slice labels or old action wording as current
 instructions.
 
@@ -1010,8 +1010,8 @@ caption presentationだけを1回の補正renderで直した。endpointは再審
 画質、rights、thumbnail、public/publishing、端末間portabilityを証明しない。現在の最短経路は
 このexact SHAへの一問回答であり、未回答のままsuccessor実装や追加renderへ進まない。
 詳細な契約・証跡は
-[OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md](output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md)、
-監修向けの残作業と遠い目標は[SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md)を
+OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md、
+監修向けの残作業と遠い目標はSUPERVISOR_STATUS_REPORT.mdを
 正本とする。
 
 ## 2026-07-17 Sync and Development Readiness
@@ -1035,7 +1035,7 @@ That live result is useful evidence availability, not a reason to reopen the
 closed OUT-08 decision or any production/public gate. Full validation requires
 Pillow explicitly: `uvx --with pillow pytest -q` passed 521 tests; both GUI
 smokes passed. The detailed supervisory readback and proposed long-range goal
-ladder are in [SUPERVISOR_STATUS_REPORT.md](SUPERVISOR_STATUS_REPORT.md).
+ladder are in SUPERVISOR_STATUS_REPORT.md.
 
 ## Accepted OUT-08 Real Unused-Range Vertical Shorts Mini-Batch
 
@@ -1769,7 +1769,7 @@ by `32b1d33`, where ED-10ar was replaced by the tracked internal review video
 candidate package. Current `main` and `origin/main` matched at
 `cffc5b33ea0f993d9fddef65a6facf8bdbdf3ec5` when the mismatch was classified,
 with `HEAD...origin/main = 0 0` and a clean worktree. The exact retired paths
-are kept in [HANDOFF.md](HANDOFF.md), not in this active resume surface.
+are kept in HANDOFF.md, not in this active resume surface.
 
 Access classification: `stale_path`, not branch/worktree mismatch,
 not not-generated, and not ignored-local-only. Do not ask the user to search
@@ -2517,7 +2517,7 @@ gates.
 - Human-readable entry: [index.md](index.md)
 - Static dashboard: [dashboard/index.html](dashboard/index.html)
 - Machine-readable dashboard: [dashboard/project-status.json](dashboard/project-status.json)
-- Feature table: [features/index.md](features/index.md)
+- Feature table: features/index.md
 - Artifact registry: [../artifacts/ARTIFACTS.md](../artifacts/ARTIFACTS.md)
 
 Repo-root launcher order for a fresh terminal:
@@ -2595,7 +2595,7 @@ uvx python -m src.cli.main build-docs-dashboard --format json
 
 ## Historical Resume Notes
 
-Detailed historical resume notes were moved to [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md)
+Detailed historical resume notes were moved to RUNTIME_HISTORY.md
 on 2026-06-17 JST under `Archived Runtime Resume Notes - 2026-06-17`.
 The sections below preserve the former capsule, read order, candidate decision,
 source identity, boundaries, next actions, and restart checklist as historical
@@ -2724,7 +2724,7 @@ Review focus:
    - Preserve the accepted diagnostic font-size direction
      `round(frame_height * 0.115)`.
    - Use
-     [SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md](SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md);
+     SUBTITLE_TYPOGRAPHY_DECORATION_COMPARISON.md;
      the adjusted `cut_002` / `cut_003` overlay proof is generated and ready
      for human visual judgement.
    - Do not reopen font size. If the proof needs revision, keep it to one
@@ -2773,7 +2773,7 @@ step.
 ## History / Archive Links
 
 - Full historical closeouts:
-  [RUNTIME_HISTORY.md](RUNTIME_HISTORY.md)
+  RUNTIME_HISTORY.md
 - Feature state:
   [FEATURE_REGISTRY.md](FEATURE_REGISTRY.md)
 - Operator response shape and reviewability states:

@@ -128,6 +128,6 @@ python -m src.cli.main audit-thumbnail \
 
 ## 関連
 
-- [SLICE1_WALKTHROUGH.md](SLICE1_WALKTHROUGH.md) — episode 単位の通し手順
+- SLICE1_WALKTHROUGH.md — episode 単位の通し手順
 - [docs/SCHEMAS/v1/thumbnail_patch_input.md](../SCHEMAS/v1/thumbnail_patch_input.md) — patch-thumbnail に渡す入力 schema
 - NLMYTGen 側 audit/patch CLI 仕様: NLMYTGen の `audit-thumbnail-template` / `patch-thumbnail-template`

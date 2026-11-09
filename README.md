@@ -34,7 +34,7 @@ mapping検証、manifest、localhost review packageまでを一コマンドで�
 `5d391ffd...a584`、validation passed、resume時render非実行・同一SHAを確認した。
 これはinternal automation acceptanceであり、rights、production subtitle/design、thumbnail、
 winner、public/publishing/upload acceptanceではない。詳細は
-[docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md](docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md)。
+docs/output_layer/OUT_12_ONE_COMMAND_REAL_VIDEO_AUTOMATION.md。
 
 OUT-11 note: 人間レビューでSOURCE-04 `465d732c...16524`は問題なしと確定し、MP4を一切
 変更せずaccepted receiptへ移した。OUT-10は新しい診察場面を途中で切っていた
@@ -46,14 +46,14 @@ bindし、5-sourceは`accepted_internal`、winnerなしとして閉じた。OUT-
 endpoint debtとSOURCE-05の歌唱・歌詞・話者未確認は保持するが、追加Short repair/reviewは再開しない。
 winner、共通crop/字幕/speaker-color policy、rights、production、thumbnail、public/publishingは
 未承認。詳細は
-[docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md](docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md)。
+docs/output_layer/OUT_11_FIVE_SOURCE_SHORT_PORTFOLIO_WAVE.md。
 
 OUT-10 note: 30.014s predecessorは導入を維持したが、その直後に始まる意識確認場面を閉じず、
 人間レビューで未受理となった。終端だけをsource `34.785s`へ延長し、50 cue、media 34.800s、
 exact MP4 `62d4b45b...97cdd`としてOUT-11の修復二本reviewの先頭へ固定した。34.800sから始まる
 別キャラクター紹介は含めていない。
 詳細は
-[docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md](docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md)。
+docs/output_layer/OUT_10_THIRD_SOURCE_PORTFOLIO_EXPANSION.md。
 
 OUT-09 note: OUT-08と異なる実source `D4i4fjs9PWc` / episodeから生成した候補へ、
 人間の実見で判明した「中央16:9内のnative captionが小さい」「full-source blurが字幕字形を
@@ -65,7 +65,7 @@ fallbackとfrosted subtitle surfaceを禁止している。MP4は
 `b6b90a4b...73da50`、media/frame/mobile/browser QAはpassed、human reviewはaccepted internal。
 旧MP4 `300ee360...e0c9`と失敗repair `3e7ef9d8...2916`はlineageとしてのみ保持する。
 rights、production、thumbnail、public/publishing gateは閉じたまま。詳細は
-[docs/output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md](docs/output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md)。
+docs/output_layer/OUT_09_SECOND_SOURCE_SHORT_REPEATABILITY.md。
 
 OUT-08 note: authoritative episode evidence の未使用範囲から、重複しない 2 本の
 実尺 vertical Shorts 候補を 1 回の atomic render で生成し、単一列の localhost
@@ -179,7 +179,7 @@ upload、public releaseは開始しておらず、独立した未承認gateの�
 
 ## 1 episode 通し手順
 
-[docs/walkthrough/SLICE1_WALKTHROUGH.md](docs/walkthrough/SLICE1_WALKTHROUGH.md) — `init-episode` から `patch-thumbnail` までの 11 ステップ runbook。
+docs/walkthrough/SLICE1_WALKTHROUGH.md — `init-episode` から `patch-thumbnail` までの 11 ステップ runbook。
 [docs/walkthrough/YMM4_THUMBNAIL_TEMPLATE_AUTHORING.md](docs/walkthrough/YMM4_THUMBNAIL_TEMPLATE_AUTHORING.md) — YMM4 上で `thumb.*` Remark 付き base template を authoring する手順。
 
 ローカル素材から制作判断面までの最小確認:
@@ -208,7 +208,7 @@ uvx python -m src.cli.main build-local-preview-pack `
 追跡対象の動画・画像成果は無い（動画の実体は repo 外。`docs/NON_REPO_ARTIFACT_HANDOFF.md`）。開ける静的成果は次のとおり。
 
 - [ダッシュボード](docs/dashboard/index.html)
-- [オペレーター cockpit](docs/content_planning/operator_cockpit.html)
-- [字幕スタイル family palette proof](docs/style_intent/subtitle-style-family-palette-proof.html)
-- [字幕 visual selector proof](docs/style_intent/subtitle-visual-selector-proof.html)
-- [local output readback](docs/output_layer/local_output_readback.html)
+- オペレーター cockpit
+- 字幕スタイル family palette proof
+- 字幕 visual selector proof
+- local output readback

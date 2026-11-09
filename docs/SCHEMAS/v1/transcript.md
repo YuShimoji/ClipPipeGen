@@ -255,7 +255,7 @@ ED-10 adds `engine="subtitle_track"` for imported subtitle-track transcripts. Th
 
 ### Vosk JP smoke
 
-operator runbook: [JP_STT_SMOKE.md](../../JP_STT_SMOKE.md)（model 入手 / 日本語 audio source 候補 / smoke 手順 / readback / トラブルシュート）
+operator runbook: JP_STT_SMOKE.md（model 入手 / 日本語 audio source 候補 / smoke 手順 / readback / トラブルシュート）
 
 ### Language ↔ Model 一貫性（ED-07c）
 

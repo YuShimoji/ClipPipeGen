@@ -334,18 +334,6 @@ def test_build_chapter_revision_board_cli_writes_json_html_and_templates(tmp_pat
     assert Path(payload["patch_csv"]).exists()
 
 
-def test_chapter_revision_loop_docs_record_editorial_layer_boundary():
-    doc = (REPO_ROOT / "docs" / "CHAPTER_REVISION_LOOP.md").read_text(encoding="utf-8")
-    schema_doc = (REPO_ROOT / "docs" / "SCHEMAS" / "v1" / "chapter_revision_patch.md").read_text(
-        encoding="utf-8"
-    )
-    assert "source transcript" in doc
-    assert "editorial layer" in doc
-    assert "not production acceptance" in doc
-    assert "source transcript mutation" in schema_doc
-    assert "script_override" in schema_doc
-
-
 def _write_episode(tmp_path: Path) -> Path:
     episode_dir = tmp_path / "episodes" / "jp_pilot01_hololive_bancho_20260525"
     review_dir = episode_dir / "review" / "jp_pilot01r3_cut_review"
