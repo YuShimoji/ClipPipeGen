@@ -126,3 +126,7 @@ cross-project 作業の冒頭 1 行 scope 宣言 (例: `Scope: NLMYTGen / Writin
 スライス区切りでは drift を内部チェックする (個別ケース過剰調整 / 工程内最適化 / docs だけ増えて実装に戻れていない / 単発 artifact を統合無しで完了扱い / ユーザーが毎回方向検知を強いられる / 次工程の consumer 不明確)。発火している項目だけ次の一手への影響と合わせて自然文で触れる。発火がなければその旨を一文で済ます。固定見出しを並べる出力はしない。
 
 ## Imported Claude Cowork project instructions
+
+共通の開発思想は `~/.claude/docs/ops/principles.md`（正本は Recordinator の `docs/PRINCIPLES.md`）。文書・作業場所を増やす前に読む。
+
+growth-baseline: files=278 md=42 worktrees=2
