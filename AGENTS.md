@@ -15,6 +15,9 @@
 3. [docs/INVARIANTS.md](docs/INVARIANTS.md) — 非交渉条件
 4. [docs/AUTOMATION_BOUNDARY.md](docs/AUTOMATION_BOUNDARY.md) — integration マップ・実装済／未実装の区分
 
+- 共通の開発思想は `~/.claude/docs/ops/principles.md`（正本は Recordinator の `docs/PRINCIPLES.md`）。
+- Task・進捗・問い・提案・返却は、Recordinator の Task に書く（principles の「Task」、手順は `recordinator-forms`）。Project ID: p6313bfe824。
+
 これで足りない時のみ、必要な該当節だけ追加で読む：
 
 - [docs/LANES.md](docs/LANES.md) — レーン責務の詳細
